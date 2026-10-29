@@ -1,0 +1,28 @@
+{
+  "collectionName": "components_sections_faq_accordions",
+  "info": {
+    "displayName": "FAQ Accordion",
+    "icon": "question",
+    "description": "Accordion list of frequently asked questions"
+  },
+  "options": {},
+  "attributes": {
+    "kicker": {
+      "type": "string"
+    },
+    "heading": {
+      "type": "string",
+      "required": true,
+      "default": "Frequently Asked Questions"
+    },
+    "description": {
+      "type": "text"
+    },
+    "items": {
+      "type": "component",
+      "repeatable": true,
+      "component": "elements.faq-item",
+      "required": true
+    }
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "kind": "collectionType",
+  "collectionName": "office_locations",
+  "info": {
+    "singularName": "office-location",
+    "pluralName": "office-locations",
+    "displayName": "Office Location",
+    "description": "Global office presence and contact details"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "officeName": {
+      "type": "string",
+      "required": true
+    },
+    "country": {
+      "type": "string",
+      "required": true
+    },
+    "address": {
+      "type": "text",
+      "required": true
+    },
+    "email": {
+      "type": "string",
+      "required": true
+    },
+    "phoneNumbers": {
+      "type": "string",
+      "required": true
+    },
+    "isHeadquarters": {
+      "type": "boolean",
+      "default": false
+    },
+    "order": {
+      "type": "integer",
+      "default": 0
+    },
+    "latitude": {
+      "type": "decimal"
+    },
+    "longitude": {
+      "type": "decimal"
+    }
+  }
+}

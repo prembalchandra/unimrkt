@@ -1,0 +1,28 @@
+{
+  "collectionName": "components_case_study_approach_steps",
+  "info": {
+    "displayName": "Approach Step",
+    "icon": "arrowRight",
+    "description": "Step in research methodology or execution process"
+  },
+  "options": {},
+  "attributes": {
+    "stepNumber": {
+      "type": "string",
+      "required": true
+    },
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "text"
+    },
+    "icon": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["images"]
+    }
+  }
+}

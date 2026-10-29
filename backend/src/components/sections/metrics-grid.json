@@ -1,0 +1,26 @@
+{
+  "collectionName": "components_sections_metrics_grids",
+  "info": {
+    "displayName": "Metrics Grid",
+    "icon": "dashboard",
+    "description": "Grid of key statistical counters and achievements"
+  },
+  "options": {},
+  "attributes": {
+    "kicker": {
+      "type": "string"
+    },
+    "heading": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "text"
+    },
+    "metrics": {
+      "type": "component",
+      "repeatable": true,
+      "component": "elements.metric-card"
+    }
+  }
+}

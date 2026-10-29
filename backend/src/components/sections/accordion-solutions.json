@@ -1,0 +1,23 @@
+{
+  "collectionName": "components_sections_accordion_solutions",
+  "info": {
+    "displayName": "Accordion Solutions",
+    "icon": "expand",
+    "description": "Expanding horizontal or vertical accordion solution cards"
+  },
+  "options": {},
+  "attributes": {
+    "heading": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "text"
+    },
+    "cards": {
+      "type": "component",
+      "repeatable": true,
+      "component": "elements.feature-item"
+    }
+  }
+}

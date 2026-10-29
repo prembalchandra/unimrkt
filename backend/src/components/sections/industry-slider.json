@@ -1,0 +1,27 @@
+{
+  "collectionName": "components_sections_industry_sliders",
+  "info": {
+    "displayName": "Industry Slider",
+    "icon": "slideshow",
+    "description": "Carousel or grid showcasing served industries"
+  },
+  "options": {},
+  "attributes": {
+    "kicker": {
+      "type": "string",
+      "default": "INDUSTRIES WE SERVE"
+    },
+    "heading": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "text"
+    },
+    "slides": {
+      "type": "component",
+      "repeatable": true,
+      "component": "elements.feature-item"
+    }
+  }
+}

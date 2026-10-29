@@ -1,0 +1,66 @@
+import React from 'react';
+import Link from 'next/link';
+
+export default function AboutHero({ dynamicHero = null }) {
+  const kicker = dynamicHero?.kicker || 'ABOUT UNIMRKT RESEARCH';
+  const title =
+    dynamicHero?.title ||
+    'Empowering Global Decisions with Uncompromising Research Fidelity';
+  const description =
+    dynamicHero?.description ||
+    'Unimrkt Research is a premier global full-service market research and data collection agency operating across 90+ countries with offices in India, the USA, and the UK.';
+  const primaryBtnLabel = dynamicHero?.primaryButton?.label || 'Meet Our Leadership';
+  const primaryBtnUrl = dynamicHero?.primaryButton?.url || '/team';
+  const secondaryBtnLabel = dynamicHero?.secondaryButton?.label;
+  const secondaryBtnUrl = dynamicHero?.secondaryButton?.url || '/contact';
+
+  return (
+    <>
+      <section className="hero-common-area">
+        <div className="hero-common-banner">
+          <img
+            src="/asstes/images/unimrkt-resarch-our-team-banner.png"
+            className="hero-common-banner-area"
+            alt={title}
+          />
+        </div>
+        <div className="srcn-container">
+          <div className="hero-common-row">
+            <div className="hero-common-content">
+              <div className="hero-common-contnet-area">
+                <span className="-hero-common-sub-tille-area">
+                  <i className="fa-solid fa-bolt" style={{ fontSize: '0.75rem', color: '#ff526b' }}></i>
+                  {kicker}
+                </span>
+                <h1 className="hero-commmon-heading-area">{title}</h1>
+                <p className="hero-common-title">{description}</p>
+              </div>
+              <div className="hero-btn-area">
+                <Link href={primaryBtnUrl} className="hero-common-btn-area btn-sm">
+                  <span>{primaryBtnLabel}</span>
+                  <img src="/asstes/images/icon/arrow-right-icon-img.png" alt="Arrow Right" />
+                </Link>
+                {secondaryBtnLabel && (
+                  <Link href={secondaryBtnUrl} className="hero-common-btn-area btn-border-sm">
+                    <span>{secondaryBtnLabel}</span>
+                    <img src="/asstes/images/icon/arrow-right-icon-img.png" alt="Arrow Right" />
+                  </Link>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div className="team-breadcrumb">
+        <div className="srcn-container">
+          <nav aria-label="Breadcrumb">
+            <Link href="/">Home</Link>
+            <span aria-hidden="true">›</span>
+            <span aria-current="page">About Us</span>
+          </nav>
+        </div>
+      </div>
+    </>
+  );
+}

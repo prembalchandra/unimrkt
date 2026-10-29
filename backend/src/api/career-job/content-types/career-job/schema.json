@@ -1,0 +1,72 @@
+{
+  "kind": "collectionType",
+  "collectionName": "career_jobs",
+  "info": {
+    "singularName": "career-job",
+    "pluralName": "career-jobs",
+    "displayName": "Career Job Opening",
+    "description": "Job vacancies and career listings"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "title",
+      "required": true
+    },
+    "department": {
+      "type": "enumeration",
+      "enum": [
+        "Primary Research",
+        "Secondary Research",
+        "Quality Assurance",
+        "Data Analytics",
+        "Sales & Marketing",
+        "Operations"
+      ],
+      "required": true
+    },
+    "jobType": {
+      "type": "enumeration",
+      "enum": [
+        "Full Time",
+        "Part Time",
+        "Internship",
+        "Contract"
+      ],
+      "default": "Full Time"
+    },
+    "location": {
+      "type": "string",
+      "default": "Gurugram, India"
+    },
+    "postedDate": {
+      "type": "date"
+    },
+    "description": {
+      "type": "blocks",
+      "required": true
+    },
+    "skillsRequired": {
+      "type": "component",
+      "repeatable": true,
+      "component": "elements.list-item"
+    },
+    "qualifications": {
+      "type": "component",
+      "repeatable": true,
+      "component": "elements.list-item"
+    },
+    "isActive": {
+      "type": "boolean",
+      "default": true
+    }
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "collectionName": "components_sections_values_grids",
+  "info": {
+    "displayName": "Values Grid",
+    "icon": "shield",
+    "description": "Grid of core company values and cultural pillars"
+  },
+  "options": {},
+  "attributes": {
+    "kicker": {
+      "type": "string",
+      "default": "Core Values of Unimrkt"
+    },
+    "heading": {
+      "type": "string",
+      "required": true,
+      "default": "What Drives Us"
+    },
+    "description": {
+      "type": "text"
+    },
+    "values": {
+      "type": "component",
+      "repeatable": true,
+      "component": "elements.feature-item"
+    }
+  }
+}

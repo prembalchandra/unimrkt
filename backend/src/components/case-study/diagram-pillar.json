@@ -1,0 +1,28 @@
+{
+  "collectionName": "components_case_study_diagram_pillars",
+  "info": {
+    "displayName": "Diagram Pillar",
+    "icon": "layer",
+    "description": "Research question pillar or framework node"
+  },
+  "options": {},
+  "attributes": {
+    "stepNumber": {
+      "type": "string",
+      "required": true
+    },
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "text"
+    },
+    "icon": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["images"]
+    }
+  }
+}

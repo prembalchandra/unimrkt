@@ -1,0 +1,27 @@
+{
+  "collectionName": "components_elements_feature_items",
+  "info": {
+    "displayName": "Feature Item",
+    "icon": "star",
+    "description": "Represents a capability, feature, or benefit card"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "text"
+    },
+    "icon": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["images"]
+    },
+    "iconClass": {
+      "type": "string"
+    }
+  }
+}

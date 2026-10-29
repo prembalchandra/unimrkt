@@ -1,0 +1,24 @@
+{
+  "collectionName": "components_case_study_impact_items",
+  "info": {
+    "displayName": "Impact Item",
+    "icon": "thumbUp",
+    "description": "Measurable outcome or impact highlight"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "text"
+    },
+    "icon": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["images"]
+    }
+  }
+}

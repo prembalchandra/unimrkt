@@ -1,0 +1,76 @@
+{
+  "kind": "collectionType",
+  "collectionName": "services",
+  "info": {
+    "singularName": "service",
+    "pluralName": "services",
+    "displayName": "Service",
+    "description": "Research services offering pages and catalog"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "title",
+      "required": true
+    },
+    "shortDescription": {
+      "type": "text"
+    },
+    "icon": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["images"]
+    },
+    "bannerImage": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["images"]
+    },
+    "featuredImage": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["images"]
+    },
+    "category": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::service-category.service-category",
+      "inversedBy": "services"
+    },
+    "caseStudies": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::case-study.case-study",
+      "inversedBy": "services"
+    },
+    "sections": {
+      "type": "dynamiczone",
+      "components": [
+        "sections.hero-common",
+        "sections.question-cta",
+        "sections.research-reach",
+        "sections.accordion-solutions",
+        "sections.metrics-grid",
+        "sections.faq-accordion",
+        "sections.client-logos",
+        "sections.rich-text-block"
+      ]
+    },
+    "seo": {
+      "type": "component",
+      "repeatable": false,
+      "component": "shared.seo"
+    }
+  }
+}

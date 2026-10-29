@@ -1,0 +1,25 @@
+{
+  "collectionName": "components_elements_metric_cards",
+  "info": {
+    "displayName": "Metric Card",
+    "icon": "chartBubble",
+    "description": "Key performance indicator or impact metric"
+  },
+  "options": {},
+  "attributes": {
+    "number": {
+      "type": "string",
+      "required": true
+    },
+    "label": {
+      "type": "string",
+      "required": true
+    },
+    "icon": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["images"]
+    }
+  }
+}

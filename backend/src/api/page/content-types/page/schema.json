@@ -1,0 +1,46 @@
+{
+  "kind": "collectionType",
+  "collectionName": "pages",
+  "info": {
+    "singularName": "page",
+    "pluralName": "pages",
+    "displayName": "Page",
+    "description": "Flexible CMS pages built with Dynamic Zones"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "title",
+      "required": true
+    },
+    "seo": {
+      "type": "component",
+      "repeatable": false,
+      "component": "shared.seo"
+    },
+    "sections": {
+      "type": "dynamiczone",
+      "components": [
+        "sections.home-hero",
+        "sections.hero-common",
+        "sections.question-cta",
+        "sections.research-reach",
+        "sections.industry-slider",
+        "sections.accordion-solutions",
+        "sections.metrics-grid",
+        "sections.faq-accordion",
+        "sections.client-logos",
+        "sections.values-grid",
+        "sections.rich-text-block"
+      ]
+    }
+  }
+}

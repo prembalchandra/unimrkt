@@ -1,0 +1,46 @@
+{
+  "kind": "collectionType",
+  "collectionName": "contact_submissions",
+  "info": {
+    "singularName": "contact-submission",
+    "pluralName": "contact-submissions",
+    "displayName": "Contact Submission",
+    "description": "Inquiries submitted via contact forms"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "email": {
+      "type": "email",
+      "required": true
+    },
+    "countryCode": {
+      "type": "string",
+      "default": "+91"
+    },
+    "phone": {
+      "type": "string",
+      "required": true
+    },
+    "company": {
+      "type": "string"
+    },
+    "message": {
+      "type": "text"
+    },
+    "consent": {
+      "type": "boolean",
+      "required": true,
+      "default": true
+    },
+    "sourcePage": {
+      "type": "string"
+    }
+  }
+}

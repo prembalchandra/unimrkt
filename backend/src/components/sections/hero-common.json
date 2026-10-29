@@ -1,0 +1,37 @@
+{
+  "collectionName": "components_sections_hero_commons",
+  "info": {
+    "displayName": "Hero Common",
+    "icon": "landscape",
+    "description": "Standard hero banner with title, kicker, description, background and CTA buttons"
+  },
+  "options": {},
+  "attributes": {
+    "kicker": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "text"
+    },
+    "bannerImage": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["images"]
+    },
+    "primaryButton": {
+      "type": "component",
+      "repeatable": false,
+      "component": "elements.button-link"
+    },
+    "secondaryButton": {
+      "type": "component",
+      "repeatable": false,
+      "component": "elements.button-link"
+    }
+  }
+}

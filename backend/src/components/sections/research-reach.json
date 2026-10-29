@@ -1,0 +1,27 @@
+{
+  "collectionName": "components_sections_research_reaches",
+  "info": {
+    "displayName": "Research Reach",
+    "icon": "earth",
+    "description": "Global research reach showcase with capability cards"
+  },
+  "options": {},
+  "attributes": {
+    "kicker": {
+      "type": "string",
+      "default": "OUR REACH"
+    },
+    "heading": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "text"
+    },
+    "cards": {
+      "type": "component",
+      "repeatable": true,
+      "component": "elements.feature-item"
+    }
+  }
+}

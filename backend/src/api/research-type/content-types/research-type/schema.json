@@ -1,0 +1,40 @@
+{
+  "kind": "collectionType",
+  "collectionName": "research_types",
+  "info": {
+    "singularName": "research-type",
+    "pluralName": "research-types",
+    "displayName": "Research Type",
+    "description": "Taxonomy for research types (e.g. Market Research, Primary Research, B2B Research, Consumer Insights)"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "name",
+      "required": true
+    },
+    "description": {
+      "type": "text"
+    },
+    "caseStudies": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::case-study.case-study",
+      "mappedBy": "researchType"
+    },
+    "blogs": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::blog.blog",
+      "mappedBy": "researchTypes"
+    }
+  }
+}

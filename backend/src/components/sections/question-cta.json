@@ -1,0 +1,31 @@
+{
+  "collectionName": "components_sections_question_ctas",
+  "info": {
+    "displayName": "Question CTA",
+    "icon": "question",
+    "description": "Have A Question CTA banner with image and action button"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true,
+      "default": "Have A Question? Let's Find The Answer."
+    },
+    "description": {
+      "type": "text",
+      "required": true
+    },
+    "button": {
+      "type": "component",
+      "repeatable": false,
+      "component": "elements.button-link"
+    },
+    "visualImage": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["images"]
+    }
+  }
+}

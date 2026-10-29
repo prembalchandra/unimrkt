@@ -1,0 +1,28 @@
+{
+  "collectionName": "components_elements_nav_links",
+  "info": {
+    "displayName": "Navigation Link",
+    "icon": "bulletList",
+    "description": "Navigation item with optional dropdown sub-links"
+  },
+  "options": {},
+  "attributes": {
+    "label": {
+      "type": "string",
+      "required": true
+    },
+    "url": {
+      "type": "string",
+      "required": true
+    },
+    "isExternal": {
+      "type": "boolean",
+      "default": false
+    },
+    "subLinks": {
+      "type": "component",
+      "repeatable": true,
+      "component": "elements.button-link"
+    }
+  }
+}

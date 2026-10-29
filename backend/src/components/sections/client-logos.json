@@ -1,0 +1,21 @@
+{
+  "collectionName": "components_sections_client_logos",
+  "info": {
+    "displayName": "Client Logos",
+    "icon": "picture",
+    "description": "Grid or ticker of enterprise client partner logos"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "default": "Trusted by Global Enterprises"
+    },
+    "logos": {
+      "type": "media",
+      "multiple": true,
+      "required": true,
+      "allowedTypes": ["images"]
+    }
+  }
+}

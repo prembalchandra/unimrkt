@@ -1,0 +1,8 @@
+# Strapi 5 ignores
+node_modules/
+.tmp/
+build/
+.cache/
+public/uploads/
+.env
+.env.local

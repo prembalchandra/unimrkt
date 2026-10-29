@@ -1,0 +1,48 @@
+{
+  "collectionName": "components_sections_home_heroes",
+  "info": {
+    "displayName": "Home Hero",
+    "icon": "play",
+    "description": "Video hero section with rotating service highlights"
+  },
+  "options": {},
+  "attributes": {
+    "eyebrow": {
+      "type": "string",
+      "default": "Market Intelligence"
+    },
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "text",
+      "required": true
+    },
+    "video": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["videos", "files"]
+    },
+    "videoUrl": {
+      "type": "string"
+    },
+    "fallbackImage": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["images"]
+    },
+    "cta": {
+      "type": "component",
+      "repeatable": false,
+      "component": "elements.button-link"
+    },
+    "servicePills": {
+      "type": "component",
+      "repeatable": true,
+      "component": "elements.feature-item"
+    }
+  }
+}

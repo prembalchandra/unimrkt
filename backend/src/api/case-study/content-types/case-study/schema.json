@@ -1,0 +1,137 @@
+{
+  "kind": "collectionType",
+  "collectionName": "case_studies",
+  "info": {
+    "singularName": "case-study",
+    "pluralName": "case-studies",
+    "displayName": "Case Study",
+    "description": "Comprehensive client case studies and research success stories"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "title",
+      "required": true
+    },
+    "excerpt": {
+      "type": "text",
+      "required": true
+    },
+    "heroImage": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
+      "allowedTypes": ["images"]
+    },
+    "featured": {
+      "type": "boolean",
+      "default": false
+    },
+    "publishedDate": {
+      "type": "date"
+    },
+    "industry": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::industry.industry",
+      "inversedBy": "caseStudies"
+    },
+    "researchType": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::research-type.research-type",
+      "inversedBy": "caseStudies"
+    },
+    "services": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::service.service",
+      "mappedBy": "caseStudies"
+    },
+    "challengeKicker": {
+      "type": "string",
+      "default": "THE CHALLENGE"
+    },
+    "challengeTitle": {
+      "type": "string"
+    },
+    "challengeDescription": {
+      "type": "text"
+    },
+    "challengeSubtitle": {
+      "type": "string"
+    },
+    "challengeBullets": {
+      "type": "component",
+      "repeatable": true,
+      "component": "elements.list-item"
+    },
+    "challengeSummary": {
+      "type": "text"
+    },
+    "challengeImage": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["images"]
+    },
+    "researchQuestionKicker": {
+      "type": "string",
+      "default": "THE RESEARCH QUESTION"
+    },
+    "researchQuestionTitle": {
+      "type": "string"
+    },
+    "researchQuestionDescription": {
+      "type": "text"
+    },
+    "researchPillars": {
+      "type": "component",
+      "repeatable": true,
+      "component": "case-study.diagram-pillar"
+    },
+    "approachEyebrow": {
+      "type": "string",
+      "default": "Our Approach"
+    },
+    "approachTitle": {
+      "type": "string"
+    },
+    "approachDescription": {
+      "type": "text"
+    },
+    "approachSteps": {
+      "type": "component",
+      "repeatable": true,
+      "component": "case-study.approach-step"
+    },
+    "impactKicker": {
+      "type": "string",
+      "default": "THE IMPACT"
+    },
+    "impactTitle": {
+      "type": "string"
+    },
+    "impactDescription": {
+      "type": "text"
+    },
+    "impactCards": {
+      "type": "component",
+      "repeatable": true,
+      "component": "case-study.impact-item"
+    },
+    "seo": {
+      "type": "component",
+      "repeatable": false,
+      "component": "shared.seo"
+    }
+  }
+}

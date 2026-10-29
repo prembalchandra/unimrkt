@@ -1,0 +1,37 @@
+{
+  "collectionName": "components_elements_button_links",
+  "info": {
+    "displayName": "Button Link",
+    "icon": "cursor",
+    "description": "Call to action button or link"
+  },
+  "options": {},
+  "attributes": {
+    "label": {
+      "type": "string",
+      "required": true
+    },
+    "url": {
+      "type": "string",
+      "required": true
+    },
+    "variant": {
+      "type": "enumeration",
+      "enum": [
+        "primary",
+        "secondary",
+        "outline",
+        "text"
+      ],
+      "default": "primary"
+    },
+    "isExternal": {
+      "type": "boolean",
+      "default": false
+    },
+    "showArrow": {
+      "type": "boolean",
+      "default": true
+    }
+  }
+}
