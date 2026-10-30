@@ -8,7 +8,8 @@
     "develop": "node ./node_modules/@strapi/strapi/bin/strapi.js develop --no-build-admin --no-watch-admin",
     "start": "node ./node_modules/@strapi/strapi/bin/strapi.js start",
     "build": "node ./node_modules/@strapi/strapi/bin/strapi.js build",
-    "postinstall": "node scripts/patch-preview.js",
+    "sync-media": "node scripts/sync-media-library.js",
+    "postinstall": "node scripts/patch-preview.js && node scripts/sync-media-library.js",
     "strapi": "node ./node_modules/@strapi/strapi/bin/strapi.js"
   },
   "dependencies": {

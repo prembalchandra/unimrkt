@@ -40,15 +40,33 @@ export default function ElementorLiveEditor() {
 
   const fileInputRef = useRef(null);
 
-  // Preset media library images
-  const mediaLibraryPresets = [
-    { name: 'About Hero Banner', url: '/asstes/images/unimrkt-resarch-our-team-banner.png' },
-    { name: 'Global Map Banner', url: '/asstes/images/unimrkt-resarch-map-banner-img.png' },
-    { name: 'Automotive Banner', url: '/asstes/images/automotives-card-img.png' },
-    { name: 'Industrial B2B', url: '/asstes/images/b2b-industrial-card-img.png' },
-    { name: 'Team Photo', url: '/asstes/images/automotives-about-img.png' },
-    { name: 'Unimrkt Logo Red', url: '/asstes/images/unimrkt-logo-red.png' },
-  ];
+  // Full Media Library state (holds all 300+ images from website)
+  const [mediaLibraryImages, setMediaLibraryImages] = useState([]);
+  const [mediaCategories, setMediaCategories] = useState({});
+  const [activeMediaCategory, setActiveMediaCategory] = useState('All');
+  const [mediaSearchQuery, setMediaSearchQuery] = useState('');
+  const [isLoadingMedia, setIsLoadingMedia] = useState(false);
+
+  // Load all images from API
+  useEffect(() => {
+    fetchMediaImages();
+  }, []);
+
+  const fetchMediaImages = async () => {
+    try {
+      setIsLoadingMedia(true);
+      const res = await fetch('/api/media');
+      const data = await res.json();
+      if (data?.images) {
+        setMediaLibraryImages(data.images);
+        setMediaCategories(data.categories || {});
+      }
+    } catch (e) {
+      console.error('Failed to load media library:', e);
+    } finally {
+      setIsLoadingMedia(false);
+    }
+  };
 
   // 1. Auto-detect if inside iframe (Strapi Preview) or via query param
   useEffect(() => {
@@ -187,7 +205,9 @@ export default function ElementorLiveEditor() {
     setCurrentImgTarget(imgEl);
     setCustomImgUrl(imgEl.getAttribute('src') || '');
     setCustomImgAlt(imgEl.getAttribute('alt') || '');
+    setImageModalTab('library');
     setIsImageModalOpen(true);
+    fetchMediaImages();
   };
 
   // Apply new image to target
@@ -236,6 +256,7 @@ export default function ElementorLiveEditor() {
       const data = await res.json();
       if (res.ok && data.url) {
         applyImageToTarget(data.url, file.name);
+        fetchMediaImages();
       } else {
         // Fallback to data URL
         const reader = new FileReader();
@@ -451,10 +472,16 @@ export default function ElementorLiveEditor() {
             {/* Modal Tabs */}
             <div className="modal-tabs">
               <button
+                className={`modal-tab ${imageModalTab === 'library' ? 'active' : ''}`}
+                onClick={() => setImageModalTab('library')}
+              >
+                🖼️ Media Library ({mediaLibraryImages.length || 308})
+              </button>
+              <button
                 className={`modal-tab ${imageModalTab === 'upload' ? 'active' : ''}`}
                 onClick={() => setImageModalTab('upload')}
               >
-                📤 Upload File from PC
+                📤 Upload New File
               </button>
               <button
                 className={`modal-tab ${imageModalTab === 'url' ? 'active' : ''}`}
@@ -462,29 +489,90 @@ export default function ElementorLiveEditor() {
               >
                 🔗 Image URL
               </button>
-              <button
-                className={`modal-tab ${imageModalTab === 'library' ? 'active' : ''}`}
-                onClick={() => setImageModalTab('library')}
-              >
-                🖼️ Media Library
-              </button>
             </div>
 
             {/* Modal Body */}
             <div className="modal-body">
-              {/* Current Preview */}
-              <div className="modal-preview-box">
-                <span className="preview-label">Live Preview:</span>
-                <div className="preview-img-wrapper">
+              {/* Selected Image Bar */}
+              <div className="modal-preview-bar">
+                <div className="preview-thumb-box">
                   <img
                     src={customImgUrl || '/asstes/images/unimrkt-resarch-our-team-banner.png'}
                     alt="Preview"
                     className="elementor-ui-img preview-thumb"
                   />
                 </div>
+                <div className="preview-info-box">
+                  <strong>Selected: {customImgAlt || customImgUrl.split('/').pop() || 'No image selected'}</strong>
+                  <span className="preview-url-text">{customImgUrl}</span>
+                </div>
               </div>
 
-              {/* Tab 1: Upload */}
+              {/* Tab 1: FULL MEDIA LIBRARY (308 IMAGES) */}
+              {imageModalTab === 'library' && (
+                <div className="modal-library-container">
+                  {/* Category filters & Search */}
+                  <div className="library-toolbar">
+                    <div className="library-categories">
+                      {['All', 'Banners & Pages', 'Team Members', 'Gallery', 'Icons & Logos', 'Uploaded Files'].map((cat) => (
+                        <button
+                          key={cat}
+                          className={`category-pill ${activeMediaCategory === cat ? 'active' : ''}`}
+                          onClick={() => setActiveMediaCategory(cat)}
+                        >
+                          {cat} {mediaCategories[cat] !== undefined ? `(${mediaCategories[cat]})` : ''}
+                        </button>
+                      ))}
+                    </div>
+                    <div className="library-search-box">
+                      <input
+                        type="text"
+                        value={mediaSearchQuery}
+                        onChange={(e) => setMediaSearchQuery(e.target.value)}
+                        placeholder="🔍 Search all 308 images..."
+                      />
+                    </div>
+                  </div>
+
+                  {/* Images Grid */}
+                  <div className="modal-library-grid">
+                    {mediaLibraryImages
+                      .filter((img) => {
+                        const matchesCat = activeMediaCategory === 'All' || img.category === activeMediaCategory;
+                        const matchesSearch =
+                          !mediaSearchQuery ||
+                          img.name.toLowerCase().includes(mediaSearchQuery.toLowerCase()) ||
+                          img.title.toLowerCase().includes(mediaSearchQuery.toLowerCase());
+                        return matchesCat && matchesSearch;
+                      })
+                      .map((img) => (
+                        <div
+                          key={img.id}
+                          className={`media-grid-item ${customImgUrl === img.url ? 'selected' : ''}`}
+                          onClick={() => {
+                            setCustomImgUrl(img.url);
+                            setCustomImgAlt(img.title);
+                          }}
+                          title={`${img.name} (${img.size} KB)`}
+                        >
+                          <div className="media-img-wrap">
+                            <img src={img.url} alt={img.name} className="elementor-ui-img grid-img" loading="lazy" />
+                          </div>
+                          <span className="media-img-title">{img.name}</span>
+                          <span className="media-img-size">{img.ext} • {img.size} KB</span>
+                        </div>
+                      ))}
+                  </div>
+
+                  {mediaLibraryImages.length === 0 && (
+                    <div className="media-empty-state">
+                      {isLoadingMedia ? 'Loading all images...' : 'No images found.'}
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* Tab 2: Upload */}
               {imageModalTab === 'upload' && (
                 <div className="modal-upload-area">
                   <input
@@ -500,7 +588,7 @@ export default function ElementorLiveEditor() {
                   >
                     <span className="upload-icon">☁️</span>
                     <strong>{isUploading ? 'Uploading Image...' : 'Click to Upload Image from Computer'}</strong>
-                    <p>Supports PNG, JPG, WEBP, SVG</p>
+                    <p>Supports PNG, JPG, WEBP, SVG (Auto saved to Media Library)</p>
                     <button type="button" className="browse-files-btn" disabled={isUploading}>
                       {isUploading ? 'Uploading...' : '📁 Browse Files'}
                     </button>
@@ -508,7 +596,7 @@ export default function ElementorLiveEditor() {
                 </div>
               )}
 
-              {/* Tab 2: URL */}
+              {/* Tab 3: URL */}
               {imageModalTab === 'url' && (
                 <div className="modal-url-form">
                   <label>Image Web Address (URL / Path)</label>
@@ -525,25 +613,6 @@ export default function ElementorLiveEditor() {
                     onChange={(e) => setCustomImgAlt(e.target.value)}
                     placeholder="Image description..."
                   />
-                </div>
-              )}
-
-              {/* Tab 3: Presets */}
-              {imageModalTab === 'library' && (
-                <div className="modal-presets-grid">
-                  {mediaLibraryPresets.map((preset, i) => (
-                    <div
-                      key={i}
-                      className={`preset-card ${customImgUrl === preset.url ? 'active' : ''}`}
-                      onClick={() => {
-                        setCustomImgUrl(preset.url);
-                        setCustomImgAlt(preset.name);
-                      }}
-                    >
-                      <img src={preset.url} alt={preset.name} className="elementor-ui-img preset-img" />
-                      <span>{preset.name}</span>
-                    </div>
-                  ))}
                 </div>
               )}
             </div>
@@ -1153,42 +1222,174 @@ export default function ElementorLiveEditor() {
           border-color: #e2498a;
         }
 
-        .modal-presets-grid {
-          display: grid;
-          grid-template-columns: repeat(3, 1fr);
-          gap: 12px;
+        /* Modal Preview Bar */
+        .modal-preview-bar {
+          background: #181824;
+          border: 1px solid rgba(255, 255, 255, 0.08);
+          border-radius: 6px;
+          padding: 10px 14px;
+          display: flex;
+          align-items: center;
+          gap: 14px;
+          margin-bottom: 16px;
         }
-        .preset-card {
+        .preview-thumb-box {
+          width: 52px;
+          height: 52px;
+          border-radius: 4px;
+          overflow: hidden;
+          background: #12121a;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .preview-thumb {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+        .preview-info-box {
+          flex: 1;
+          overflow: hidden;
+        }
+        .preview-info-box strong {
+          display: block;
+          font-size: 13px;
+          color: #ffffff;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+        .preview-url-text {
+          font-size: 11px;
+          color: #9ca3af;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          display: block;
+          margin-top: 2px;
+        }
+
+        /* Library Toolbar */
+        .library-toolbar {
+          display: flex;
+          flex-direction: column;
+          gap: 10px;
+          margin-bottom: 16px;
+        }
+        .library-categories {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 6px;
+        }
+        .category-pill {
+          background: #181824;
+          border: 1px solid rgba(255, 255, 255, 0.08);
+          color: #9ca3af;
+          padding: 5px 10px;
+          font-size: 11px;
+          border-radius: 20px;
+          cursor: pointer;
+          transition: all 0.15s ease;
+        }
+        .category-pill:hover {
+          color: #ffffff;
+          border-color: #e2498a;
+        }
+        .category-pill.active {
+          background: #e2498a;
+          color: #ffffff;
+          border-color: #e2498a;
+        }
+
+        .library-search-box input {
+          width: 100%;
+          background: #181824;
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          color: #ffffff;
+          padding: 8px 12px;
+          border-radius: 4px;
+          font-size: 12px;
+          box-sizing: border-box;
+        }
+        .library-search-box input:focus {
+          outline: none;
+          border-color: #e2498a;
+        }
+
+        /* Media Library Grid (Scrollable) */
+        .modal-library-grid {
+          display: grid;
+          grid-template-columns: repeat(4, 1fr);
+          gap: 12px;
+          max-height: 380px;
+          overflow-y: auto;
+          padding-right: 4px;
+        }
+        @media (max-width: 600px) {
+          .modal-library-grid {
+            grid-template-columns: repeat(2, 1fr);
+          }
+        }
+        .media-grid-item {
           background: #181824;
           border: 2px solid transparent;
           border-radius: 6px;
           padding: 8px;
           cursor: pointer;
           transition: all 0.15s ease;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
           text-align: center;
         }
-        .preset-card:hover {
+        .media-grid-item:hover {
           border-color: #0073aa;
-          background: #252538;
+          background: #232336;
+          transform: translateY(-2px);
         }
-        .preset-card.active {
+        .media-grid-item.selected {
           border-color: #e2498a;
-          background: rgba(226, 73, 138, 0.15);
+          background: rgba(226, 73, 138, 0.18);
+          box-shadow: 0 0 12px rgba(226, 73, 138, 0.4);
         }
-        .preset-img {
+        .media-img-wrap {
           width: 100%;
           height: 80px;
-          object-fit: cover;
+          background: #12121a;
           border-radius: 4px;
+          overflow: hidden;
+          display: flex;
+          align-items: center;
+          justify-content: center;
           margin-bottom: 6px;
         }
-        .preset-card span {
+        .grid-img {
+          max-width: 100%;
+          max-height: 100%;
+          object-fit: contain;
+        }
+        .media-img-title {
           font-size: 11px;
           color: #d1d5db;
           display: block;
+          width: 100%;
           white-space: nowrap;
           overflow: hidden;
           text-overflow: ellipsis;
+        }
+        .media-img-size {
+          font-size: 9px;
+          color: #6b7280;
+          margin-top: 2px;
+        }
+
+        .media-empty-state {
+          text-align: center;
+          padding: 40px;
+          color: #9ca3af;
+          font-size: 13px;
         }
 
         .modal-footer {
