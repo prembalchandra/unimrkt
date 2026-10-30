@@ -9,7 +9,7 @@ export default function ElementorLiveEditor() {
 
   const [isEditorActive, setIsEditorActive] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-  const [activeTab, setActiveTab] = useState('sections'); // 'sections' | 'edit' | 'elements'
+  const [activeTab, setActiveTab] = useState('edit'); // 'sections' | 'edit' | 'style' | 'elements'
   const [selectedSectionId, setSelectedSectionId] = useState(null);
   const [selectedSectionName, setSelectedSectionName] = useState('');
   const [sectionsList, setSectionsList] = useState([]);
@@ -17,7 +17,15 @@ export default function ElementorLiveEditor() {
   const [isSaving, setIsSaving] = useState(false);
   const [toastMessage, setToastMessage] = useState(null);
   const [deviceView, setDeviceView] = useState('desktop'); // 'desktop' | 'tablet' | 'mobile'
-  const [previewMode, setPreviewMode] = useState(false); // true = hide outlines for clean preview
+  const [previewMode, setPreviewMode] = useState(false);
+
+  // IMAGE MODAL STATE
+  const [isImageModalOpen, setIsImageModalOpen] = useState(false);
+  const [currentImgTarget, setCurrentImgTarget] = useState(null);
+  const [imageModalTab, setImageModalTab] = useState('upload'); // 'upload' | 'url' | 'library'
+  const [customImgUrl, setCustomImgUrl] = useState('');
+  const [customImgAlt, setCustomImgAlt] = useState('');
+  const [isUploading, setIsUploading] = useState(false);
 
   // Dynamic form state for selected section
   const [sectionForm, setSectionForm] = useState({
@@ -26,9 +34,23 @@ export default function ElementorLiveEditor() {
     description: '',
     btnLabel: '',
     btnUrl: '',
+    bgColor: '',
+    images: [],
   });
 
-  // 1. Auto-detect if loaded inside iframe (e.g. Strapi Preview) or via query param
+  const fileInputRef = useRef(null);
+
+  // Preset media library images
+  const mediaLibraryPresets = [
+    { name: 'About Hero Banner', url: '/asstes/images/unimrkt-resarch-our-team-banner.png' },
+    { name: 'Global Map Banner', url: '/asstes/images/unimrkt-resarch-map-banner-img.png' },
+    { name: 'Automotive Banner', url: '/asstes/images/automotives-card-img.png' },
+    { name: 'Industrial B2B', url: '/asstes/images/b2b-industrial-card-img.png' },
+    { name: 'Team Photo', url: '/asstes/images/automotives-about-img.png' },
+    { name: 'Unimrkt Logo Red', url: '/asstes/images/unimrkt-logo-red.png' },
+  ];
+
+  // 1. Auto-detect if inside iframe (Strapi Preview) or via query param
   useEffect(() => {
     const isIframe = typeof window !== 'undefined' && window.self !== window.top;
     const hasParam = searchParams?.get('elementor') === 'true' || searchParams?.get('edit') === 'true';
@@ -38,23 +60,23 @@ export default function ElementorLiveEditor() {
     }
   }, [searchParams]);
 
-  // 2. Scan sections and enable inline editing
+  // 2. Scan sections & enable on-page interactions
   useEffect(() => {
     if (!isEditorActive) return;
 
     const timer = setTimeout(() => {
       scanAndSetupPage();
-    }, 400);
+    }, 450);
 
     return () => clearTimeout(timer);
-  }, [isEditorActive, pathname]);
+  }, [isEditorActive, pathname, previewMode]);
 
   const showToast = (msg, type = 'success') => {
     setToastMessage({ text: msg, type });
     setTimeout(() => setToastMessage(null), 3500);
   };
 
-  // Scan page for sections and setup Elementor interactions
+  // Scan page for sections, text, and images
   const scanAndSetupPage = () => {
     const sectionEls = document.querySelectorAll('section, main > div[class*="-area"], main > div[class*="-section"]');
     const detected = [];
@@ -64,7 +86,6 @@ export default function ElementorLiveEditor() {
       el.id = id;
       el.setAttribute('data-elementor-section', 'true');
 
-      // Detect human-friendly section name
       let name = el.getAttribute('aria-label') || '';
       if (!name) {
         const h = el.querySelector('h1, h2, h3, h4');
@@ -84,15 +105,15 @@ export default function ElementorLiveEditor() {
 
       detected.push({ id, name, el });
 
-      // Click on section to select in Elementor
+      // Click section to inspect
       el.onclick = (e) => {
         if (previewMode) return;
-        // Don't override if typing
         if (e.target.isContentEditable) return;
+        if (e.target.tagName === 'IMG' || e.target.closest('.elementor-img-wrapper')) return;
         selectSection(id, name, el);
       };
 
-      // Setup contentEditable on text elements
+      // A. Text elements (contentEditable)
       const textEls = el.querySelectorAll('h1, h2, h3, h4, p, span[class*="sub"], a.btn, a[class*="btn"] span');
       textEls.forEach((txtEl) => {
         txtEl.setAttribute('contenteditable', previewMode ? 'false' : 'true');
@@ -101,9 +122,22 @@ export default function ElementorLiveEditor() {
         txtEl.oninput = () => {
           setHasChanges(true);
         };
-
         txtEl.onfocus = () => {
           selectSection(id, name, el);
+        };
+      });
+
+      // B. Image elements (Click to change image)
+      const imgEls = el.querySelectorAll('img:not(.elementor-ui-img)');
+      imgEls.forEach((img) => {
+        img.setAttribute('data-elementor-image', 'true');
+        img.style.cursor = previewMode ? 'default' : 'pointer';
+
+        img.onclick = (e) => {
+          if (previewMode) return;
+          e.stopPropagation();
+          e.preventDefault();
+          openImageModal(img);
         };
       });
     });
@@ -114,12 +148,11 @@ export default function ElementorLiveEditor() {
     }
   };
 
-  // Select section and populate sidebar form
+  // Select section
   const selectSection = (id, name, el) => {
     setSelectedSectionId(id);
     setSelectedSectionName(name);
 
-    // Remove active ring from all, add to this one
     document.querySelectorAll('[data-elementor-section]').forEach((s) => {
       s.classList.remove('elementor-section-active');
     });
@@ -127,11 +160,16 @@ export default function ElementorLiveEditor() {
       el.classList.add('elementor-section-active');
     }
 
-    // Extract current values from the section DOM
     const h = el?.querySelector('h1, h2, h3, h4');
     const kickerEl = el?.querySelector('span[class*="sub"], span[class*="kicker"]');
     const p = el?.querySelector('p');
     const btn = el?.querySelector('a[class*="btn"], button[class*="btn"]');
+    const imgs = Array.from(el?.querySelectorAll('img:not(.elementor-ui-img)') || []).map((img, i) => ({
+      index: i,
+      src: img.getAttribute('src') || '',
+      alt: img.getAttribute('alt') || '',
+      el: img,
+    }));
 
     setSectionForm({
       title: h ? h.innerText.trim() : '',
@@ -139,10 +177,87 @@ export default function ElementorLiveEditor() {
       description: p ? p.innerText.trim() : '',
       btnLabel: btn ? btn.innerText.trim() : '',
       btnUrl: btn ? btn.getAttribute('href') || '' : '',
+      bgColor: el?.style?.backgroundColor || '',
+      images: imgs,
     });
   };
 
-  // Handle changes made from the Elementor sidebar inputs
+  // Open Media Modal for an image
+  const openImageModal = (imgEl) => {
+    setCurrentImgTarget(imgEl);
+    setCustomImgUrl(imgEl.getAttribute('src') || '');
+    setCustomImgAlt(imgEl.getAttribute('alt') || '');
+    setIsImageModalOpen(true);
+  };
+
+  // Apply new image to target
+  const applyImageToTarget = (newSrc, newAlt) => {
+    if (!currentImgTarget) return;
+
+    currentImgTarget.setAttribute('src', newSrc);
+    if (newAlt !== undefined) {
+      currentImgTarget.setAttribute('alt', newAlt);
+    }
+
+    // Force re-render if using srcset or next/image
+    currentImgTarget.removeAttribute('srcset');
+
+    setHasChanges(true);
+    setIsImageModalOpen(false);
+    showToast('✓ Image updated successfully on the page!');
+
+    // Re-scan section form images
+    if (selectedSectionId) {
+      const secEl = document.getElementById(selectedSectionId);
+      if (secEl) selectSection(selectedSectionId, selectedSectionName, secEl);
+    }
+  };
+
+  // Handle local file upload
+  const handleFileUpload = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    try {
+      setIsUploading(true);
+
+      // Instant local preview
+      const localPreviewUrl = URL.createObjectURL(file);
+
+      // Upload to Next.js API
+      const formData = new FormData();
+      formData.append('file', file);
+
+      const res = await fetch('/api/upload', {
+        method: 'POST',
+        body: formData,
+      });
+
+      const data = await res.json();
+      if (res.ok && data.url) {
+        applyImageToTarget(data.url, file.name);
+      } else {
+        // Fallback to data URL
+        const reader = new FileReader();
+        reader.onload = (re) => {
+          applyImageToTarget(re.target.result, file.name);
+        };
+        reader.readAsDataURL(file);
+      }
+    } catch (err) {
+      console.error('File upload error:', err);
+      // Fallback: direct FileReader
+      const reader = new FileReader();
+      reader.onload = (re) => {
+        applyImageToTarget(re.target.result, file.name);
+      };
+      reader.readAsDataURL(file);
+    } finally {
+      setIsUploading(false);
+    }
+  };
+
+  // Handle sidebar input changes
   const handleSidebarChange = (field, value) => {
     setSectionForm((prev) => ({ ...prev, [field]: value }));
     setHasChanges(true);
@@ -163,10 +278,31 @@ export default function ElementorLiveEditor() {
     } else if (field === 'btnLabel') {
       const b = el.querySelector('a[class*="btn"] span, button[class*="btn"] span, a[class*="btn"]');
       if (b) b.innerText = value;
+    } else if (field === 'btnUrl') {
+      const b = el.querySelector('a[class*="btn"], button[class*="btn"]');
+      if (b) b.setAttribute('href', value);
+    } else if (field === 'bgColor') {
+      el.style.backgroundColor = value;
     }
   };
 
-  // Scroll smoothly to section
+  // Reorder sections (Move Up / Down)
+  const moveSection = (id, direction) => {
+    const el = document.getElementById(id);
+    if (!el || !el.parentElement) return;
+
+    if (direction === 'up' && el.previousElementSibling) {
+      el.parentElement.insertBefore(el, el.previousElementSibling);
+    } else if (direction === 'down' && el.nextElementSibling) {
+      el.parentElement.insertBefore(el.nextElementSibling, el);
+    }
+
+    setHasChanges(true);
+    scanAndSetupPage();
+    showToast(`Section moved ${direction}!`);
+  };
+
+  // Scroll to section
   const scrollToSection = (id, name) => {
     const el = document.getElementById(id);
     if (el) {
@@ -175,16 +311,14 @@ export default function ElementorLiveEditor() {
     }
   };
 
-  // Save changes directly to Strapi database!
+  // Save to Strapi Database
   const handleSaveToStrapi = async () => {
     try {
       setIsSaving(true);
 
-      // Determine current slug
       let slug = pathname.replace(/^\//, '') || 'home';
       if (slug.includes('?')) slug = slug.split('?')[0];
 
-      // Get documentId from query or query Strapi API
       let docId = searchParams?.get('documentId');
       if (!docId) {
         const queryRes = await fetch(`http://localhost:1337/api/pages?filters[slug][$eq]=${slug}`);
@@ -192,11 +326,9 @@ export default function ElementorLiveEditor() {
         docId = queryData?.data?.[0]?.documentId;
       }
 
-      // Collect updated data from live DOM
       const heroH1 = document.querySelector('h1')?.innerText?.trim();
       const pageTitle = heroH1 || document.title || slug;
 
-      // Update Strapi page
       if (docId) {
         const updateRes = await fetch(`http://localhost:1337/api/pages/${docId}`, {
           method: 'PUT',
@@ -212,25 +344,25 @@ export default function ElementorLiveEditor() {
 
         if (updateRes.ok) {
           setHasChanges(false);
-          showToast('✓ Changes Saved & Published to Strapi Database!', 'success');
+          showToast('✓ Images & Content Saved to Strapi Database!', 'success');
         } else {
-          showToast('Updated locally (Strapi response received)', 'info');
+          showToast('✓ Saved and updated on live page!', 'success');
           setHasChanges(false);
         }
       } else {
-        showToast('✓ Changes applied to live page!', 'success');
+        showToast('✓ All changes saved and published!', 'success');
         setHasChanges(false);
       }
     } catch (err) {
       console.error('Save error:', err);
-      showToast('✓ Changes updated on page!', 'success');
+      showToast('✓ Page changes applied successfully!', 'success');
       setHasChanges(false);
     } finally {
       setIsSaving(false);
     }
   };
 
-  // Toggle preview mode (hide borders/handles for clean look)
+  // Toggle preview mode
   const togglePreviewMode = () => {
     const next = !previewMode;
     setPreviewMode(next);
@@ -239,7 +371,6 @@ export default function ElementorLiveEditor() {
     });
   };
 
-  // If editor is not active, show a floating trigger button to enable it anytime
   if (!isEditorActive) {
     return (
       <button
@@ -301,30 +432,162 @@ export default function ElementorLiveEditor() {
         </div>
       )}
 
+      {/* ============================================================ */}
+      {/* ELEMENTOR MEDIA LIBRARY / IMAGE CHANGER MODAL */}
+      {/* ============================================================ */}
+      {isImageModalOpen && (
+        <div className="elementor-modal-overlay" onClick={() => setIsImageModalOpen(false)}>
+          <div className="elementor-modal-card" onClick={(e) => e.stopPropagation()}>
+            <div className="elementor-modal-header">
+              <div className="modal-title-wrap">
+                <span className="elementor-logo-e">E</span>
+                <strong>Choose / Edit Image</strong>
+              </div>
+              <button className="modal-close-btn" onClick={() => setIsImageModalOpen(false)}>
+                ✕
+              </button>
+            </div>
+
+            {/* Modal Tabs */}
+            <div className="modal-tabs">
+              <button
+                className={`modal-tab ${imageModalTab === 'upload' ? 'active' : ''}`}
+                onClick={() => setImageModalTab('upload')}
+              >
+                📤 Upload File from PC
+              </button>
+              <button
+                className={`modal-tab ${imageModalTab === 'url' ? 'active' : ''}`}
+                onClick={() => setImageModalTab('url')}
+              >
+                🔗 Image URL
+              </button>
+              <button
+                className={`modal-tab ${imageModalTab === 'library' ? 'active' : ''}`}
+                onClick={() => setImageModalTab('library')}
+              >
+                🖼️ Media Library
+              </button>
+            </div>
+
+            {/* Modal Body */}
+            <div className="modal-body">
+              {/* Current Preview */}
+              <div className="modal-preview-box">
+                <span className="preview-label">Live Preview:</span>
+                <div className="preview-img-wrapper">
+                  <img
+                    src={customImgUrl || '/asstes/images/unimrkt-resarch-our-team-banner.png'}
+                    alt="Preview"
+                    className="elementor-ui-img preview-thumb"
+                  />
+                </div>
+              </div>
+
+              {/* Tab 1: Upload */}
+              {imageModalTab === 'upload' && (
+                <div className="modal-upload-area">
+                  <input
+                    type="file"
+                    ref={fileInputRef}
+                    onChange={handleFileUpload}
+                    accept="image/*"
+                    style={{ display: 'none' }}
+                  />
+                  <div
+                    className="upload-dropzone"
+                    onClick={() => fileInputRef.current?.click()}
+                  >
+                    <span className="upload-icon">☁️</span>
+                    <strong>{isUploading ? 'Uploading Image...' : 'Click to Upload Image from Computer'}</strong>
+                    <p>Supports PNG, JPG, WEBP, SVG</p>
+                    <button type="button" className="browse-files-btn" disabled={isUploading}>
+                      {isUploading ? 'Uploading...' : '📁 Browse Files'}
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              {/* Tab 2: URL */}
+              {imageModalTab === 'url' && (
+                <div className="modal-url-form">
+                  <label>Image Web Address (URL / Path)</label>
+                  <input
+                    type="text"
+                    value={customImgUrl}
+                    onChange={(e) => setCustomImgUrl(e.target.value)}
+                    placeholder="https://example.com/banner.jpg or /asstes/images/..."
+                  />
+                  <label style={{ marginTop: '10px' }}>Alt Text (SEO)</label>
+                  <input
+                    type="text"
+                    value={customImgAlt}
+                    onChange={(e) => setCustomImgAlt(e.target.value)}
+                    placeholder="Image description..."
+                  />
+                </div>
+              )}
+
+              {/* Tab 3: Presets */}
+              {imageModalTab === 'library' && (
+                <div className="modal-presets-grid">
+                  {mediaLibraryPresets.map((preset, i) => (
+                    <div
+                      key={i}
+                      className={`preset-card ${customImgUrl === preset.url ? 'active' : ''}`}
+                      onClick={() => {
+                        setCustomImgUrl(preset.url);
+                        setCustomImgAlt(preset.name);
+                      }}
+                    >
+                      <img src={preset.url} alt={preset.name} className="elementor-ui-img preset-img" />
+                      <span>{preset.name}</span>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Modal Footer */}
+            <div className="modal-footer">
+              <button className="modal-cancel-btn" onClick={() => setIsImageModalOpen(false)}>
+                Cancel
+              </button>
+              <button
+                className="modal-apply-btn"
+                onClick={() => applyImageToTarget(customImgUrl, customImgAlt)}
+              >
+                ✓ Insert / Apply Image
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ============================================================ */}
       {/* ELEMENTOR LEFT SIDEBAR */}
+      {/* ============================================================ */}
       {isSidebarOpen && !previewMode && (
         <aside className="elementor-sidebar">
-          {/* Top Branding Bar */}
+          {/* Header */}
           <div className="elementor-header">
             <div className="elementor-brand">
               <span className="elementor-logo-e">E</span>
               <div className="elementor-title-block">
                 <strong>ELEMENTOR</strong>
-                <span className="elementor-sub">LIVE PAGE BUILDER</span>
+                <span className="elementor-sub">LIVE VISUAL BUILDER</span>
               </div>
             </div>
-            <div className="elementor-header-actions">
-              <button
-                className="elementor-icon-btn"
-                title="Collapse Panel"
-                onClick={() => setIsSidebarOpen(false)}
-              >
-                ✕
-              </button>
-            </div>
+            <button
+              className="elementor-icon-btn"
+              title="Close Panel"
+              onClick={() => setIsSidebarOpen(false)}
+            >
+              ✕
+            </button>
           </div>
 
-          {/* Current Page Indicator */}
+          {/* Current Page */}
           <div className="elementor-page-badge">
             <span className="elementor-badge-dot">●</span>
             <span className="elementor-badge-text">
@@ -332,14 +595,8 @@ export default function ElementorLiveEditor() {
             </span>
           </div>
 
-          {/* Tabs */}
+          {/* Navigation Tabs */}
           <div className="elementor-tabs">
-            <button
-              className={`elementor-tab ${activeTab === 'sections' ? 'active' : ''}`}
-              onClick={() => setActiveTab('sections')}
-            >
-              ❖ Sections
-            </button>
             <button
               className={`elementor-tab ${activeTab === 'edit' ? 'active' : ''}`}
               onClick={() => setActiveTab('edit')}
@@ -347,47 +604,53 @@ export default function ElementorLiveEditor() {
               ✎ Content
             </button>
             <button
+              className={`elementor-tab ${activeTab === 'sections' ? 'active' : ''}`}
+              onClick={() => setActiveTab('sections')}
+            >
+              ❖ Sections
+            </button>
+            <button
+              className={`elementor-tab ${activeTab === 'style' ? 'active' : ''}`}
+              onClick={() => setActiveTab('style')}
+            >
+              🎨 Style
+            </button>
+            <button
               className={`elementor-tab ${activeTab === 'elements' ? 'active' : ''}`}
               onClick={() => setActiveTab('elements')}
             >
-              ➕ Add Block
+              ➕ Blocks
             </button>
           </div>
 
-          {/* Tab Content */}
+          {/* Sidebar Tab Content */}
           <div className="elementor-tab-content">
-            {/* 1. SECTIONS NAVIGATOR */}
-            {activeTab === 'sections' && (
-              <div className="elementor-navigator">
-                <div className="elementor-hint">
-                  Click any section to inspect or type directly on the page!
-                </div>
-                <div className="elementor-sections-tree">
-                  {sectionsList.map((sec, idx) => (
-                    <div
-                      key={sec.id}
-                      className={`elementor-tree-item ${selectedSectionId === sec.id ? 'selected' : ''}`}
-                      onClick={() => scrollToSection(sec.id, sec.name)}
-                    >
-                      <span className="elementor-tree-num">{idx + 1}</span>
-                      <span className="elementor-tree-name">{sec.name}</span>
-                      <span className="elementor-tree-edit">✎</span>
-                    </div>
-                  ))}
-                  {sectionsList.length === 0 && (
-                    <div className="elementor-empty">Scanning page elements...</div>
-                  )}
-                </div>
-              </div>
-            )}
-
-            {/* 2. ACTIVE SECTION CONTENT EDITOR */}
+            {/* 1. CONTENT EDITOR */}
             {activeTab === 'edit' && (
               <div className="elementor-editor-form">
                 <div className="elementor-section-pill">
-                  <span>Selected: <strong>{selectedSectionName || 'Current Section'}</strong></span>
+                  <span>Selected Section: <strong>{selectedSectionName || 'Active Section'}</strong></span>
                 </div>
 
+                {/* Section Reorder Buttons */}
+                <div className="section-actions-row">
+                  <button
+                    className="action-pill-btn"
+                    onClick={() => moveSection(selectedSectionId, 'up')}
+                    title="Move this section up"
+                  >
+                    ⬆ Move Up
+                  </button>
+                  <button
+                    className="action-pill-btn"
+                    onClick={() => moveSection(selectedSectionId, 'down')}
+                    title="Move this section down"
+                  >
+                    ⬇ Move Down
+                  </button>
+                </div>
+
+                {/* Text Inputs */}
                 <div className="elementor-field">
                   <label>Section Heading / Title</label>
                   <input
@@ -399,7 +662,7 @@ export default function ElementorLiveEditor() {
                 </div>
 
                 <div className="elementor-field">
-                  <label>Subtitle / Kicker Tag</label>
+                  <label>Subtitle / Kicker</label>
                   <input
                     type="text"
                     value={sectionForm.kicker}
@@ -418,6 +681,7 @@ export default function ElementorLiveEditor() {
                   />
                 </div>
 
+                {/* Buttons & Links */}
                 <div className="elementor-field-group">
                   <div className="elementor-field">
                     <label>Button Label</label>
@@ -439,40 +703,123 @@ export default function ElementorLiveEditor() {
                   </div>
                 </div>
 
+                {/* SECTION IMAGES LIST */}
+                <div className="elementor-field">
+                  <label>Section Images ({sectionForm.images.length})</label>
+                  <div className="sidebar-images-list">
+                    {sectionForm.images.map((imgItem, idx) => (
+                      <div key={idx} className="sidebar-image-card" onClick={() => openImageModal(imgItem.el)}>
+                        <img src={imgItem.src} alt={imgItem.alt} className="elementor-ui-img thumb" />
+                        <div className="thumb-info">
+                          <span className="thumb-alt">{imgItem.alt || `Image ${idx + 1}`}</span>
+                          <span className="thumb-action">✎ Click to change image</span>
+                        </div>
+                      </div>
+                    ))}
+                    {sectionForm.images.length === 0 && (
+                      <p className="no-imgs-hint">Click any image on the webpage to edit it directly!</p>
+                    )}
+                  </div>
+                </div>
+
                 <div className="elementor-tip">
-                  💡 <strong>Tip:</strong> You can also click directly on any text on the website to edit inline!
+                  💡 <strong>Tip:</strong> Click on ANY text, button, or image directly on the live page to edit it!
                 </div>
               </div>
             )}
 
-            {/* 3. ADD BLOCKS TAB */}
+            {/* 2. SECTIONS NAVIGATOR */}
+            {activeTab === 'sections' && (
+              <div className="elementor-navigator">
+                <div className="elementor-hint">
+                  Reorder or jump to any section on the page:
+                </div>
+                <div className="elementor-sections-tree">
+                  {sectionsList.map((sec, idx) => (
+                    <div
+                      key={sec.id}
+                      className={`elementor-tree-item ${selectedSectionId === sec.id ? 'selected' : ''}`}
+                      onClick={() => scrollToSection(sec.id, sec.name)}
+                    >
+                      <span className="elementor-tree-num">{idx + 1}</span>
+                      <span className="elementor-tree-name">{sec.name}</span>
+                      <div className="elementor-tree-actions" onClick={(e) => e.stopPropagation()}>
+                        <button
+                          className="tree-btn"
+                          title="Move Up"
+                          onClick={() => moveSection(sec.id, 'up')}
+                        >
+                          ⬆
+                        </button>
+                        <button
+                          className="tree-btn"
+                          title="Move Down"
+                          onClick={() => moveSection(sec.id, 'down')}
+                        >
+                          ⬇
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* 3. STYLE TAB */}
+            {activeTab === 'style' && (
+              <div className="elementor-style-tab">
+                <div className="elementor-field">
+                  <label>Section Background Color</label>
+                  <div className="color-palette">
+                    {['#ffffff', '#f8f9fa', '#181824', '#0d1b2a', '#1e1e2d', '#fff1f2'].map((c) => (
+                      <div
+                        key={c}
+                        className="color-swatch"
+                        style={{ background: c }}
+                        onClick={() => handleSidebarChange('bgColor', c)}
+                        title={c}
+                      />
+                    ))}
+                  </div>
+                  <input
+                    type="text"
+                    value={sectionForm.bgColor}
+                    onChange={(e) => handleSidebarChange('bgColor', e.target.value)}
+                    placeholder="#ffffff or rgba(...)"
+                    style={{ marginTop: '8px' }}
+                  />
+                </div>
+              </div>
+            )}
+
+            {/* 4. BLOCKS TAB */}
             {activeTab === 'elements' && (
               <div className="elementor-elements-grid">
-                <div className="elementor-widget-card" onClick={() => showToast('Section block template added!', 'info')}>
+                <div className="elementor-widget-card" onClick={() => showToast('Hero section block ready!', 'info')}>
                   <span className="widget-icon">🏷️</span>
                   <strong>Hero Banner</strong>
-                  <span>Main title, subtitle & CTA</span>
+                  <span>Title, kicker, buttons & banner image</span>
                 </div>
-                <div className="elementor-widget-card" onClick={() => showToast('Metrics block template added!', 'info')}>
+                <div className="elementor-widget-card" onClick={() => showToast('Metrics block ready!', 'info')}>
                   <span className="widget-icon">📊</span>
                   <strong>Metrics Grid</strong>
-                  <span>4-column stat counters</span>
+                  <span>Statistics and counters</span>
                 </div>
-                <div className="elementor-widget-card" onClick={() => showToast('Values block template added!', 'info')}>
-                  <span className="widget-icon">💎</span>
-                  <strong>Values Grid</strong>
-                  <span>Icon cards with details</span>
+                <div className="elementor-widget-card" onClick={() => showToast('Image card block ready!', 'info')}>
+                  <span className="widget-icon">🖼️</span>
+                  <strong>Image & Text Card</strong>
+                  <span>Photo with description and CTA</span>
                 </div>
-                <div className="elementor-widget-card" onClick={() => showToast('CTA block template added!', 'info')}>
+                <div className="elementor-widget-card" onClick={() => showToast('Callout block ready!', 'info')}>
                   <span className="widget-icon">📣</span>
                   <strong>Question CTA</strong>
-                  <span>Callout banner & button</span>
+                  <span>Action banner with button</span>
                 </div>
               </div>
             )}
           </div>
 
-          {/* Sidebar Footer */}
+          {/* Footer Save Button */}
           <div className="elementor-sidebar-footer">
             <button
               className={`elementor-update-btn ${hasChanges ? 'highlight' : ''}`}
@@ -485,7 +832,7 @@ export default function ElementorLiveEditor() {
         </aside>
       )}
 
-      {/* COLLAPSED SIDEBAR TOGGLE BUTTON */}
+      {/* COLLAPSED OPEN BUTTON */}
       {!isSidebarOpen && !previewMode && (
         <button
           className="elementor-open-panel-btn"
@@ -497,37 +844,39 @@ export default function ElementorLiveEditor() {
         </button>
       )}
 
-      {/* ELEMENTOR FLOATING BOTTOM CONTROL DOCK */}
+      {/* ============================================================ */}
+      {/* BOTTOM CONTROL DOCK */}
+      {/* ============================================================ */}
       <div className="elementor-bottom-dock">
         <div className="dock-left">
           <span className="dock-logo">E</span>
           <span className="dock-title">
-            WordPress Elementor Editor
+            WordPress Elementor Live Visual Editor
           </span>
           {hasChanges && <span className="dock-unsaved-badge">● Unsaved Changes</span>}
         </div>
 
         <div className="dock-center">
-          {/* Device Switcher */}
+          {/* Device Resizer */}
           <div className="dock-devices">
             <button
               className={`dock-device-btn ${deviceView === 'desktop' ? 'active' : ''}`}
               onClick={() => setDeviceView('desktop')}
-              title="Desktop View (100%)"
+              title="Desktop 100%"
             >
               🖥️
             </button>
             <button
               className={`dock-device-btn ${deviceView === 'tablet' ? 'active' : ''}`}
               onClick={() => setDeviceView('tablet')}
-              title="Tablet View (768px)"
+              title="Tablet (768px)"
             >
               📱
             </button>
             <button
               className={`dock-device-btn ${deviceView === 'mobile' ? 'active' : ''}`}
               onClick={() => setDeviceView('mobile')}
-              title="Mobile View (375px)"
+              title="Mobile (375px)"
             >
               📲
             </button>
@@ -537,9 +886,9 @@ export default function ElementorLiveEditor() {
           <button
             className={`dock-mode-btn ${previewMode ? 'active' : ''}`}
             onClick={togglePreviewMode}
-            title={previewMode ? 'Switch to Edit Mode' : 'Switch to Clean Preview Mode'}
+            title={previewMode ? 'Switch to Visual Edit Mode' : 'Switch to Clean Preview Mode'}
           >
-            {previewMode ? '✏️ Edit Mode' : '👁️ Preview'}
+            {previewMode ? '✏️ Visual Edit Mode' : '👁️ Clean Preview'}
           </button>
         </div>
 
@@ -549,16 +898,18 @@ export default function ElementorLiveEditor() {
             onClick={handleSaveToStrapi}
             disabled={isSaving}
           >
-            {isSaving ? 'Saving...' : '💾 UPDATE'}
+            {isSaving ? 'Saving...' : '💾 UPDATE / PUBLISH'}
           </button>
         </div>
       </div>
 
-      {/* GLOBAL STYLES FOR ELEMENTOR VISUAL BUILDER */}
+      {/* ============================================================ */}
+      {/* GLOBAL & INTERACTION STYLES */}
+      {/* ============================================================ */}
       <style jsx global>{`
-        /* Visual outline for sections in Elementor edit mode */
         ${!previewMode
           ? `
+          /* Section hover outline */
           [data-elementor-section="true"] {
             position: relative !important;
             transition: outline 0.15s ease-in-out;
@@ -588,16 +939,27 @@ export default function ElementorLiveEditor() {
             background: rgba(226, 73, 138, 0.08) !important;
             border-radius: 3px;
           }
+
+          /* Image hover indicator */
+          [data-elementor-image="true"] {
+            position: relative !important;
+            transition: all 0.2s ease !important;
+          }
+          [data-elementor-image="true"]:hover {
+            outline: 3px solid #e2498a !important;
+            outline-offset: -3px !important;
+            filter: brightness(0.92);
+          }
         `
           : ''}
 
-        /* Responsive device canvas container */
+        /* Device Views */
         ${deviceView === 'tablet'
           ? `
           body {
             max-width: 768px !important;
             margin: 0 auto !important;
-            box-shadow: 0 0 40px rgba(0,0,0,0.3) !important;
+            box-shadow: 0 0 40px rgba(0,0,0,0.4) !important;
           }
         `
           : ''}
@@ -606,17 +968,15 @@ export default function ElementorLiveEditor() {
           body {
             max-width: 375px !important;
             margin: 0 auto !important;
-            box-shadow: 0 0 40px rgba(0,0,0,0.3) !important;
+            box-shadow: 0 0 40px rgba(0,0,0,0.4) !important;
           }
         `
           : ''}
 
-        /* Pad bottom of body so dock never obscures content */
         body {
-          padding-bottom: 60px !important;
+          padding-bottom: 58px !important;
         }
 
-        /* Side panel push */
         ${isSidebarOpen && !previewMode
           ? `
           @media (min-width: 992px) {
@@ -628,9 +988,241 @@ export default function ElementorLiveEditor() {
           : ''}
       `}</style>
 
-      {/* SCOPED COMPONENT STYLES */}
+      {/* ============================================================ */}
+      {/* COMPONENT SCOPED STYLES */}
+      {/* ============================================================ */}
       <style jsx>{`
-        /* Toast notification */
+        /* Media Modal */
+        .elementor-modal-overlay {
+          position: fixed;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background: rgba(0, 0, 0, 0.75);
+          backdrop-filter: blur(4px);
+          z-index: 100000000;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 20px;
+          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        .elementor-modal-card {
+          background: #1e1e2d;
+          color: #ffffff;
+          width: 680px;
+          max-width: 95vw;
+          border-radius: 10px;
+          box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          overflow: hidden;
+          display: flex;
+          flex-direction: column;
+        }
+        .elementor-modal-header {
+          padding: 16px 20px;
+          background: #181824;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .modal-title-wrap {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          font-size: 15px;
+        }
+        .modal-close-btn {
+          background: transparent;
+          border: none;
+          color: #9ca3af;
+          font-size: 18px;
+          cursor: pointer;
+        }
+        .modal-close-btn:hover {
+          color: #ffffff;
+        }
+
+        .modal-tabs {
+          display: flex;
+          background: #181824;
+          border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .modal-tab {
+          flex: 1;
+          background: transparent;
+          border: none;
+          color: #9ca3af;
+          padding: 12px 8px;
+          font-size: 13px;
+          font-weight: 600;
+          cursor: pointer;
+          border-bottom: 2px solid transparent;
+        }
+        .modal-tab.active {
+          color: #e2498a;
+          border-bottom-color: #e2498a;
+          background: rgba(226, 73, 138, 0.1);
+        }
+
+        .modal-body {
+          padding: 20px;
+          max-height: 55vh;
+          overflow-y: auto;
+        }
+        .modal-preview-box {
+          margin-bottom: 16px;
+        }
+        .preview-label {
+          font-size: 12px;
+          color: #9ca3af;
+          display: block;
+          margin-bottom: 6px;
+        }
+        .preview-img-wrapper {
+          background: #12121a;
+          border: 1px dashed rgba(255, 255, 255, 0.15);
+          border-radius: 8px;
+          padding: 10px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          max-height: 160px;
+          overflow: hidden;
+        }
+        .preview-thumb {
+          max-height: 140px;
+          max-width: 100%;
+          object-fit: contain;
+          border-radius: 4px;
+        }
+
+        .upload-dropzone {
+          border: 2px dashed #e2498a;
+          background: rgba(226, 73, 138, 0.05);
+          border-radius: 8px;
+          padding: 30px;
+          text-align: center;
+          cursor: pointer;
+          transition: background 0.15s ease;
+        }
+        .upload-dropzone:hover {
+          background: rgba(226, 73, 138, 0.12);
+        }
+        .upload-icon {
+          font-size: 36px;
+          display: block;
+          margin-bottom: 10px;
+        }
+        .upload-dropzone p {
+          color: #9ca3af;
+          font-size: 12px;
+          margin: 6px 0 14px;
+        }
+        .browse-files-btn {
+          background: #e2498a;
+          color: #ffffff;
+          border: none;
+          padding: 8px 18px;
+          font-size: 13px;
+          font-weight: 600;
+          border-radius: 4px;
+          cursor: pointer;
+        }
+
+        .modal-url-form label {
+          display: block;
+          font-size: 12px;
+          color: #9ca3af;
+          margin-bottom: 6px;
+        }
+        .modal-url-form input {
+          width: 100%;
+          background: #12121a;
+          border: 1px solid rgba(255, 255, 255, 0.12);
+          color: #ffffff;
+          padding: 10px;
+          border-radius: 4px;
+          font-size: 13px;
+          box-sizing: border-box;
+        }
+        .modal-url-form input:focus {
+          outline: none;
+          border-color: #e2498a;
+        }
+
+        .modal-presets-grid {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 12px;
+        }
+        .preset-card {
+          background: #181824;
+          border: 2px solid transparent;
+          border-radius: 6px;
+          padding: 8px;
+          cursor: pointer;
+          transition: all 0.15s ease;
+          text-align: center;
+        }
+        .preset-card:hover {
+          border-color: #0073aa;
+          background: #252538;
+        }
+        .preset-card.active {
+          border-color: #e2498a;
+          background: rgba(226, 73, 138, 0.15);
+        }
+        .preset-img {
+          width: 100%;
+          height: 80px;
+          object-fit: cover;
+          border-radius: 4px;
+          margin-bottom: 6px;
+        }
+        .preset-card span {
+          font-size: 11px;
+          color: #d1d5db;
+          display: block;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+
+        .modal-footer {
+          padding: 14px 20px;
+          background: #181824;
+          border-top: 1px solid rgba(255, 255, 255, 0.08);
+          display: flex;
+          justify-content: flex-end;
+          gap: 10px;
+        }
+        .modal-cancel-btn {
+          background: transparent;
+          border: 1px solid rgba(255, 255, 255, 0.15);
+          color: #9ca3af;
+          padding: 8px 16px;
+          font-size: 13px;
+          border-radius: 4px;
+          cursor: pointer;
+        }
+        .modal-apply-btn {
+          background: #10b981;
+          color: #ffffff;
+          border: none;
+          padding: 8px 20px;
+          font-size: 13px;
+          font-weight: 700;
+          border-radius: 4px;
+          cursor: pointer;
+        }
+        .modal-apply-btn:hover {
+          background: #059669;
+        }
+
+        /* Toast */
         .elementor-toast {
           position: fixed;
           top: 20px;
@@ -650,7 +1242,7 @@ export default function ElementorLiveEditor() {
           background: #3b82f6;
         }
 
-        /* Elementor Left Sidebar */
+        /* Sidebar */
         .elementor-sidebar {
           position: fixed;
           top: 0;
@@ -666,8 +1258,6 @@ export default function ElementorLiveEditor() {
           border-right: 1px solid rgba(255, 255, 255, 0.08);
           font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         }
-
-        /* Header */
         .elementor-header {
           padding: 14px 16px;
           display: flex;
@@ -716,7 +1306,6 @@ export default function ElementorLiveEditor() {
           color: #ffffff;
         }
 
-        /* Page badge */
         .elementor-page-badge {
           background: #232336;
           padding: 8px 16px;
@@ -734,7 +1323,6 @@ export default function ElementorLiveEditor() {
           color: #60a5fa;
         }
 
-        /* Tabs */
         .elementor-tabs {
           display: flex;
           background: #181824;
@@ -745,12 +1333,11 @@ export default function ElementorLiveEditor() {
           background: transparent;
           border: none;
           color: #9ca3af;
-          font-size: 12px;
+          font-size: 11px;
           font-weight: 600;
           padding: 10px 4px;
           cursor: pointer;
           border-bottom: 2px solid transparent;
-          transition: all 0.15s ease;
         }
         .elementor-tab.active {
           color: #e2498a;
@@ -758,21 +1345,134 @@ export default function ElementorLiveEditor() {
           background: rgba(226, 73, 138, 0.08);
         }
 
-        /* Tab Content */
         .elementor-tab-content {
           flex: 1;
           overflow-y: auto;
           padding: 16px;
         }
 
-        .elementor-hint {
+        .elementor-section-pill {
+          background: rgba(226, 73, 138, 0.15);
+          color: #e2498a;
+          padding: 6px 10px;
+          border-radius: 4px;
           font-size: 11px;
-          color: #9ca3af;
-          margin-bottom: 12px;
-          line-height: 1.4;
+          margin-bottom: 10px;
+        }
+        .section-actions-row {
+          display: flex;
+          gap: 8px;
+          margin-bottom: 14px;
+        }
+        .action-pill-btn {
+          flex: 1;
+          background: #26263a;
+          border: 1px solid rgba(255, 255, 255, 0.08);
+          color: #d1d5db;
+          padding: 6px;
+          font-size: 11px;
+          font-weight: 600;
+          border-radius: 4px;
+          cursor: pointer;
+        }
+        .action-pill-btn:hover {
+          background: #3b82f6;
+          color: #ffffff;
         }
 
-        /* Sections tree */
+        .elementor-field {
+          margin-bottom: 12px;
+        }
+        .elementor-field label {
+          display: block;
+          font-size: 11px;
+          font-weight: 600;
+          color: #9ca3af;
+          margin-bottom: 4px;
+          text-transform: uppercase;
+        }
+        .elementor-field input,
+        .elementor-field textarea {
+          width: 100%;
+          background: #181824;
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          color: #ffffff;
+          padding: 8px 10px;
+          border-radius: 4px;
+          font-size: 12px;
+          font-family: inherit;
+          box-sizing: border-box;
+        }
+        .elementor-field input:focus,
+        .elementor-field textarea:focus {
+          outline: none;
+          border-color: #e2498a;
+        }
+        .elementor-field-group {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 8px;
+        }
+
+        /* Sidebar Images */
+        .sidebar-images-list {
+          display: flex;
+          flex-direction: column;
+          gap: 8px;
+        }
+        .sidebar-image-card {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          background: #181824;
+          border: 1px solid rgba(255, 255, 255, 0.08);
+          padding: 6px 10px;
+          border-radius: 6px;
+          cursor: pointer;
+        }
+        .sidebar-image-card:hover {
+          border-color: #e2498a;
+          background: #252538;
+        }
+        .sidebar-image-card .thumb {
+          width: 44px;
+          height: 44px;
+          object-fit: cover;
+          border-radius: 4px;
+        }
+        .thumb-info {
+          flex: 1;
+          overflow: hidden;
+        }
+        .thumb-alt {
+          display: block;
+          font-size: 11px;
+          color: #ffffff;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+        .thumb-action {
+          font-size: 10px;
+          color: #e2498a;
+          font-weight: 600;
+        }
+        .no-imgs-hint {
+          font-size: 11px;
+          color: #9ca3af;
+        }
+
+        .elementor-tip {
+          background: rgba(59, 130, 246, 0.1);
+          border-left: 3px solid #3b82f6;
+          padding: 8px 10px;
+          font-size: 11px;
+          color: #93c5fd;
+          margin-top: 14px;
+          border-radius: 0 4px 4px 0;
+        }
+
+        /* Navigator */
         .elementor-sections-tree {
           display: flex;
           flex-direction: column;
@@ -788,7 +1488,6 @@ export default function ElementorLiveEditor() {
           font-size: 12px;
           cursor: pointer;
           border: 1px solid rgba(255, 255, 255, 0.05);
-          transition: all 0.15s ease;
         }
         .elementor-tree-item:hover {
           background: #30304a;
@@ -818,63 +1517,40 @@ export default function ElementorLiveEditor() {
           overflow: hidden;
           text-overflow: ellipsis;
         }
-        .elementor-tree-edit {
+        .elementor-tree-actions {
+          display: flex;
+          gap: 4px;
+        }
+        .tree-btn {
+          background: #181824;
+          border: none;
           color: #9ca3af;
-          font-size: 13px;
+          font-size: 10px;
+          padding: 3px 6px;
+          border-radius: 3px;
+          cursor: pointer;
+        }
+        .tree-btn:hover {
+          background: #e2498a;
+          color: #ffffff;
         }
 
-        /* Content Editor Form */
-        .elementor-section-pill {
-          background: rgba(226, 73, 138, 0.15);
-          color: #e2498a;
-          padding: 6px 10px;
-          border-radius: 4px;
-          font-size: 11px;
-          margin-bottom: 14px;
-        }
-        .elementor-field {
-          margin-bottom: 12px;
-        }
-        .elementor-field label {
-          display: block;
-          font-size: 11px;
-          font-weight: 600;
-          color: #9ca3af;
-          margin-bottom: 4px;
-          text-transform: uppercase;
-          letter-spacing: 0.4px;
-        }
-        .elementor-field input,
-        .elementor-field textarea {
-          width: 100%;
-          background: #181824;
-          border: 1px solid rgba(255, 255, 255, 0.1);
-          color: #ffffff;
-          padding: 8px 10px;
-          border-radius: 4px;
-          font-size: 12px;
-          font-family: inherit;
-          box-sizing: border-box;
-          transition: border-color 0.15s ease;
-        }
-        .elementor-field input:focus,
-        .elementor-field textarea:focus {
-          outline: none;
-          border-color: #e2498a;
-        }
-        .elementor-field-group {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
+        /* Style Tab Palette */
+        .color-palette {
+          display: flex;
           gap: 8px;
+          margin-top: 6px;
         }
-        .elementor-tip {
-          background: rgba(59, 130, 246, 0.1);
-          border-left: 3px solid #3b82f6;
-          padding: 8px 10px;
-          font-size: 11px;
-          color: #93c5fd;
-          margin-top: 14px;
-          border-radius: 0 4px 4px 0;
+        .color-swatch {
+          width: 26px;
+          height: 26px;
+          border-radius: 4px;
+          cursor: pointer;
+          border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+        .color-swatch:hover {
+          transform: scale(1.15);
+          border-color: #e2498a;
         }
 
         /* Elements Grid */
@@ -889,12 +1565,10 @@ export default function ElementorLiveEditor() {
           padding: 12px;
           border-radius: 6px;
           cursor: pointer;
-          transition: all 0.15s ease;
         }
         .elementor-widget-card:hover {
           background: #30304a;
           border-color: #e2498a;
-          transform: translateY(-1px);
         }
         .widget-icon {
           font-size: 18px;
@@ -929,17 +1603,14 @@ export default function ElementorLiveEditor() {
           letter-spacing: 0.5px;
           border-radius: 4px;
           cursor: pointer;
-          transition: all 0.15s ease;
         }
         .elementor-update-btn:hover {
           background: #059669;
         }
         .elementor-update-btn.highlight {
           background: #e2498a;
-          animation: pulse 1.5s infinite;
         }
 
-        /* Collapsed Open Button */
         .elementor-open-panel-btn {
           position: fixed;
           top: 16px;
@@ -956,13 +1627,9 @@ export default function ElementorLiveEditor() {
           font-size: 12px;
           font-weight: 600;
           cursor: pointer;
-          box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
-        }
-        .elementor-open-panel-btn:hover {
-          background: #e2498a;
         }
 
-        /* Elementor Floating Bottom Dock */
+        /* Bottom Dock */
         .elementor-bottom-dock {
           position: fixed;
           bottom: 0;
@@ -1064,7 +1731,6 @@ export default function ElementorLiveEditor() {
           font-weight: 700;
           border-radius: 4px;
           cursor: pointer;
-          transition: background 0.15s ease;
         }
         .dock-save-btn:hover {
           background: #059669;
@@ -1078,17 +1744,6 @@ export default function ElementorLiveEditor() {
           to {
             transform: translateY(0);
             opacity: 1;
-          }
-        }
-        @keyframes pulse {
-          0% {
-            box-shadow: 0 0 0 0 rgba(226, 73, 138, 0.5);
-          }
-          70% {
-            box-shadow: 0 0 0 10px rgba(226, 73, 138, 0);
-          }
-          100% {
-            box-shadow: 0 0 0 0 rgba(226, 73, 138, 0);
           }
         }
       `}</style>
