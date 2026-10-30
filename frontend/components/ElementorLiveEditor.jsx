@@ -7,6 +7,7 @@ export default function ElementorLiveEditor() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
+  const [isAdmin, setIsAdmin] = useState(false);
   const [isEditorActive, setIsEditorActive] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [activeTab, setActiveTab] = useState('edit'); // 'sections' | 'edit' | 'style' | 'elements'
@@ -70,14 +71,50 @@ export default function ElementorLiveEditor() {
     }
   };
 
-  // 1. Auto-detect if inside iframe (Strapi Preview) or via query param
+  // 1. Auto-detect if inside Strapi admin iframe, via query param, or admin session
   useEffect(() => {
-    const isIframe = typeof window !== 'undefined' && window.self !== window.top;
-    const hasParam = searchParams?.get('elementor') === 'true' || searchParams?.get('edit') === 'true';
+    if (typeof window === 'undefined') return;
 
-    if (isIframe || hasParam) {
+    const isIframe = window.self !== window.top;
+    const hasParam =
+      searchParams?.get('elementor') === 'true' ||
+      searchParams?.get('edit') === 'true' ||
+      searchParams?.get('preview') === 'true';
+    const isSessionAdmin =
+      window.sessionStorage?.getItem('unimrkt_admin_mode') === 'true';
+    const isReferrerAdmin =
+      document.referrer &&
+      (document.referrer.includes(':1337') || document.referrer.includes('/admin'));
+
+    if (isIframe || hasParam || isSessionAdmin || isReferrerAdmin) {
+      setIsAdmin(true);
       setIsEditorActive(true);
+      try {
+        window.sessionStorage?.setItem('unimrkt_admin_mode', 'true');
+      } catch (e) {}
     }
+
+    // Keyboard shortcut to toggle admin mode: Ctrl+Alt+E
+    const handleKeyDown = (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.altKey && (e.key === 'e' || e.key === 'E')) {
+        setIsAdmin((prev) => {
+          const next = !prev;
+          try {
+            if (next) {
+              window.sessionStorage?.setItem('unimrkt_admin_mode', 'true');
+              setIsEditorActive(true);
+            } else {
+              window.sessionStorage?.removeItem('unimrkt_admin_mode');
+              setIsEditorActive(false);
+            }
+          } catch (err) {}
+          return next;
+        });
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
   }, [searchParams]);
 
   // 2. Scan sections & enable on-page interactions
@@ -393,6 +430,11 @@ export default function ElementorLiveEditor() {
       el.setAttribute('contenteditable', next ? 'false' : 'true');
     });
   };
+
+  // If NOT in admin mode, NEVER show anything on public website
+  if (!isAdmin) {
+    return null;
+  }
 
   if (!isEditorActive) {
     return (
@@ -1064,6 +1106,19 @@ export default function ElementorLiveEditor() {
             disabled={isSaving}
           >
             {isSaving ? 'Saving...' : '💾 UPDATE / PUBLISH'}
+          </button>
+          <button
+            className="dock-exit-btn"
+            onClick={() => {
+              try {
+                window.sessionStorage?.removeItem('unimrkt_admin_mode');
+              } catch (e) {}
+              setIsAdmin(false);
+              setIsEditorActive(false);
+            }}
+            title="Exit Elementor Mode"
+          >
+            ✕ Exit
           </button>
         </div>
       </div>
@@ -2123,6 +2178,22 @@ export default function ElementorLiveEditor() {
         }
         .dock-save-btn:hover {
           background: #059669;
+        }
+        .dock-exit-btn {
+          background: rgba(255, 255, 255, 0.12);
+          color: #e2e8f0;
+          border: 1px solid rgba(255, 255, 255, 0.2);
+          border-radius: 4px;
+          padding: 6px 12px;
+          font-size: 11px;
+          font-weight: 600;
+          cursor: pointer;
+          transition: all 0.2s;
+        }
+        .dock-exit-btn:hover {
+          background: #ef4444;
+          color: #ffffff;
+          border-color: #ef4444;
         }
 
         @keyframes slideDown {
