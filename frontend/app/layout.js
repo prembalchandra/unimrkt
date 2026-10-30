@@ -1,5 +1,7 @@
+import { Suspense } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import ElementorLiveEditor from '@/components/ElementorLiveEditor';
 
 export const metadata = {
   metadataBase: new URL('https://www.unimrkt.com'),
@@ -123,6 +125,9 @@ export default function RootLayout({ children }) {
         <Header />
         <main>{children}</main>
         <Footer />
+        <Suspense fallback={null}>
+          <ElementorLiveEditor />
+        </Suspense>
       </body>
     </html>
   );

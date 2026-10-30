@@ -33,7 +33,7 @@ module.exports = ({ env }) => ({
             });
             const slug = doc?.slug || '';
             const path = (slug === 'home' || !slug) ? '' : slug;
-            return `${clientUrl}/${path}`;
+            return `${clientUrl}/${path}?elementor=true&documentId=${documentId}&locale=${locale || ''}&status=${status || 'draft'}`;
           }
           if (uid === 'api::blog.blog') {
             const doc = await strapi.documents('api::blog.blog').findOne({
