@@ -40,12 +40,14 @@ export default function ElementorLiveEditor() {
 
   const fileInputRef = useRef(null);
 
-  // Full Media Library state (holds all 300+ images from website)
+  // Full Media Library state (holds all images with 50-per-page pagination)
   const [mediaLibraryImages, setMediaLibraryImages] = useState([]);
   const [mediaCategories, setMediaCategories] = useState({});
   const [activeMediaCategory, setActiveMediaCategory] = useState('All');
   const [mediaSearchQuery, setMediaSearchQuery] = useState('');
   const [isLoadingMedia, setIsLoadingMedia] = useState(false);
+  const [mediaPage, setMediaPage] = useState(1);
+  const MEDIA_PER_PAGE = 50;
 
   // Load all images from API
   useEffect(() => {
@@ -508,44 +510,88 @@ export default function ElementorLiveEditor() {
                 </div>
               </div>
 
-              {/* Tab 1: FULL MEDIA LIBRARY (308 IMAGES) */}
-              {imageModalTab === 'library' && (
-                <div className="modal-library-container">
-                  {/* Category filters & Search */}
-                  <div className="library-toolbar">
-                    <div className="library-categories">
-                      {['All', 'Banners & Pages', 'Team Members', 'Gallery', 'Icons & Logos', 'Uploaded Files'].map((cat) => (
-                        <button
-                          key={cat}
-                          className={`category-pill ${activeMediaCategory === cat ? 'active' : ''}`}
-                          onClick={() => setActiveMediaCategory(cat)}
-                        >
-                          {cat} {mediaCategories[cat] !== undefined ? `(${mediaCategories[cat]})` : ''}
-                        </button>
-                      ))}
-                    </div>
-                    <div className="library-search-box">
-                      <input
-                        type="text"
-                        value={mediaSearchQuery}
-                        onChange={(e) => setMediaSearchQuery(e.target.value)}
-                        placeholder="🔍 Search all 308 images..."
-                      />
-                    </div>
-                  </div>
+              {/* Tab 1: FULL MEDIA LIBRARY (50 PER PAGE PAGINATION) */}
+              {imageModalTab === 'library' && (() => {
+                const filteredImages = mediaLibraryImages.filter((img) => {
+                  const matchesCat = activeMediaCategory === 'All' || img.category === activeMediaCategory;
+                  const matchesSearch =
+                    !mediaSearchQuery ||
+                    img.name.toLowerCase().includes(mediaSearchQuery.toLowerCase()) ||
+                    img.title.toLowerCase().includes(mediaSearchQuery.toLowerCase());
+                  return matchesCat && matchesSearch;
+                });
 
-                  {/* Images Grid */}
-                  <div className="modal-library-grid">
-                    {mediaLibraryImages
-                      .filter((img) => {
-                        const matchesCat = activeMediaCategory === 'All' || img.category === activeMediaCategory;
-                        const matchesSearch =
-                          !mediaSearchQuery ||
-                          img.name.toLowerCase().includes(mediaSearchQuery.toLowerCase()) ||
-                          img.title.toLowerCase().includes(mediaSearchQuery.toLowerCase());
-                        return matchesCat && matchesSearch;
-                      })
-                      .map((img) => (
+                const totalItems = filteredImages.length;
+                const totalPages = Math.max(1, Math.ceil(totalItems / MEDIA_PER_PAGE));
+                const currentPage = Math.min(Math.max(1, mediaPage), totalPages);
+                const startIndex = (currentPage - 1) * MEDIA_PER_PAGE;
+                const endIndex = Math.min(startIndex + MEDIA_PER_PAGE, totalItems);
+                const currentImages = filteredImages.slice(startIndex, endIndex);
+
+                return (
+                  <div className="modal-library-container">
+                    {/* Category filters & Search */}
+                    <div className="library-toolbar">
+                      <div className="library-categories">
+                        {['All', 'Banners & Pages', 'Team Members', 'Gallery', 'Icons & Logos', 'Uploaded Files'].map((cat) => (
+                          <button
+                            key={cat}
+                            className={`category-pill ${activeMediaCategory === cat ? 'active' : ''}`}
+                            onClick={() => {
+                              setActiveMediaCategory(cat);
+                              setMediaPage(1);
+                            }}
+                          >
+                            {cat} {mediaCategories[cat] !== undefined ? `(${mediaCategories[cat]})` : ''}
+                          </button>
+                        ))}
+                      </div>
+                      <div className="library-search-box">
+                        <input
+                          type="text"
+                          value={mediaSearchQuery}
+                          onChange={(e) => {
+                            setMediaSearchQuery(e.target.value);
+                            setMediaPage(1);
+                          }}
+                          placeholder={`🔍 Search ${totalItems} images...`}
+                        />
+                      </div>
+                    </div>
+
+                    {/* Pagination Top Bar */}
+                    <div className="library-pagination-bar top">
+                      <span className="pagination-count-label">
+                        Showing <strong>{totalItems > 0 ? startIndex + 1 : 0} – {endIndex}</strong> of <strong>{totalItems}</strong> images (50 per page)
+                      </span>
+                      {totalPages > 1 && (
+                        <div className="pagination-buttons">
+                          <button
+                            className="page-nav-btn"
+                            disabled={currentPage <= 1}
+                            onClick={() => setMediaPage((p) => Math.max(1, p - 1))}
+                            title="Previous 50 Images"
+                          >
+                            ◀ Prev
+                          </button>
+                          <span className="page-indicator">
+                            Page <strong>{currentPage}</strong> of <strong>{totalPages}</strong>
+                          </span>
+                          <button
+                            className="page-nav-btn"
+                            disabled={currentPage >= totalPages}
+                            onClick={() => setMediaPage((p) => Math.min(totalPages, p + 1))}
+                            title="Next 50 Images"
+                          >
+                            Next ▶
+                          </button>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Images Grid (Max 50 images rendered per page) */}
+                    <div className="modal-library-grid">
+                      {currentImages.map((img) => (
                         <div
                           key={img.id}
                           className={`media-grid-item ${customImgUrl === img.url ? 'selected' : ''}`}
@@ -562,15 +608,65 @@ export default function ElementorLiveEditor() {
                           <span className="media-img-size">{img.ext} • {img.size} KB</span>
                         </div>
                       ))}
-                  </div>
-
-                  {mediaLibraryImages.length === 0 && (
-                    <div className="media-empty-state">
-                      {isLoadingMedia ? 'Loading all images...' : 'No images found.'}
                     </div>
-                  )}
-                </div>
-              )}
+
+                    {totalItems === 0 && (
+                      <div className="media-empty-state">
+                        {isLoadingMedia ? 'Loading images...' : 'No images found.'}
+                      </div>
+                    )}
+
+                    {/* Pagination Bottom Bar */}
+                    {totalPages > 1 && (
+                      <div className="library-pagination-bar bottom">
+                        <div className="pagination-pills">
+                          <button
+                            className="page-nav-btn"
+                            disabled={currentPage <= 1}
+                            onClick={() => setMediaPage(1)}
+                            title="First Page"
+                          >
+                            « First
+                          </button>
+                          <button
+                            className="page-nav-btn"
+                            disabled={currentPage <= 1}
+                            onClick={() => setMediaPage((p) => Math.max(1, p - 1))}
+                          >
+                            ‹ Prev
+                          </button>
+
+                          {Array.from({ length: totalPages }, (_, i) => i + 1).map((pNum) => (
+                            <button
+                              key={pNum}
+                              className={`page-num-btn ${currentPage === pNum ? 'active' : ''}`}
+                              onClick={() => setMediaPage(pNum)}
+                            >
+                              {pNum}
+                            </button>
+                          ))}
+
+                          <button
+                            className="page-nav-btn"
+                            disabled={currentPage >= totalPages}
+                            onClick={() => setMediaPage((p) => Math.min(totalPages, p + 1))}
+                          >
+                            Next ›
+                          </button>
+                          <button
+                            className="page-nav-btn"
+                            disabled={currentPage >= totalPages}
+                            onClick={() => setMediaPage(totalPages)}
+                            title="Last Page"
+                          >
+                            Last »
+                          </button>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                );
+              })()}
 
               {/* Tab 2: Upload */}
               {imageModalTab === 'upload' && (
@@ -1390,6 +1486,98 @@ export default function ElementorLiveEditor() {
           padding: 40px;
           color: #9ca3af;
           font-size: 13px;
+        }
+
+        /* Library Pagination Bars (Top & Bottom) */
+        .library-pagination-bar {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          padding: 10px 0;
+          font-family: inherit;
+        }
+        .library-pagination-bar.top {
+          border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+          margin-bottom: 12px;
+        }
+        .library-pagination-bar.bottom {
+          border-top: 1px solid rgba(255, 255, 255, 0.08);
+          margin-top: 14px;
+          padding-top: 12px;
+          justify-content: center;
+        }
+        .pagination-count-label {
+          font-size: 12px;
+          color: #9ca3af;
+        }
+        .pagination-count-label strong {
+          color: #ffffff;
+        }
+        .pagination-buttons {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+        }
+        .page-indicator {
+          font-size: 11px;
+          color: #9ca3af;
+        }
+        .page-indicator strong {
+          color: #e2498a;
+        }
+        .pagination-pills {
+          display: flex;
+          align-items: center;
+          flex-wrap: wrap;
+          gap: 6px;
+          justify-content: center;
+        }
+        .page-nav-btn {
+          background: #181824;
+          border: 1px solid rgba(255, 255, 255, 0.12);
+          color: #d1d5db;
+          padding: 5px 11px;
+          font-size: 11px;
+          font-weight: 600;
+          border-radius: 4px;
+          cursor: pointer;
+          transition: all 0.15s ease;
+        }
+        .page-nav-btn:hover:not(:disabled) {
+          background: #252538;
+          border-color: #e2498a;
+          color: #ffffff;
+        }
+        .page-nav-btn:disabled {
+          opacity: 0.35;
+          cursor: not-allowed;
+        }
+        .page-num-btn {
+          background: #181824;
+          border: 1px solid rgba(255, 255, 255, 0.08);
+          color: #9ca3af;
+          min-width: 28px;
+          height: 28px;
+          padding: 0 6px;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 11px;
+          border-radius: 4px;
+          cursor: pointer;
+          transition: all 0.15s ease;
+        }
+        .page-num-btn:hover {
+          color: #ffffff;
+          border-color: #0073aa;
+          background: #252538;
+        }
+        .page-num-btn.active {
+          background: #e2498a;
+          color: #ffffff;
+          border-color: #e2498a;
+          font-weight: bold;
+          box-shadow: 0 0 8px rgba(226, 73, 138, 0.4);
         }
 
         .modal-footer {
