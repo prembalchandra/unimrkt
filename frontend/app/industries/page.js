@@ -1,3 +1,4 @@
+import DynamicZoneRenderer from '@/components/DynamicZoneRenderer';
 import React from 'react';
 import IndustriesHero from './sections/IndustriesHero';
 import IndustriesAbout from './sections/IndustriesAbout';
@@ -12,54 +13,30 @@ import CommonTrustedPartnersTestimonials from '../../components/CommonTrustedPar
 import CommonBlogSection from '../../components/CommonBlogSection';
 import IndustriesFaq from './sections/IndustriesFaq';
 import ResearchCta from './sections/ResearchCta';
-import { getPageBySlug, getIndustries, findSection } from '../../lib/strapi';
+import { getPageBySlug, getIndustries, findSection, generatePageMetadata } from '../../lib/strapi';
 
-export const metadata = {
-  title: 'Industries We Serve | Healthcare, BFSI, Retail, Auto, Tech',
-  description:
-    'Tailored industry research solutions across Healthcare & Life Sciences, Banking & Financial Services, Retail & FMCG, Automotive & Mobility, and Technology & Telecom.',
-  keywords: [
-    'healthcare market research',
-    'financial services research',
-    'retail FMCG market research',
-    'automotive market intelligence',
-    'technology telecom research',
-    'industry verticals research',
-  ],
-  alternates: {
-    canonical: '/industries',
-  },
-  openGraph: {
-    title: 'Industries We Serve | Unimrkt Research',
-    description:
-      'Uncovering evolving market trends, consumer behavior, and competitive insights across major global industry sectors.',
-    url: 'https://www.unimrkt.com/industries',
-    siteName: 'Unimrkt Research',
-    locale: 'en_US',
-    type: 'website',
-    images: [
-      {
-        url: '/asstes/images/industries-hero-banner-img.png',
-        width: 1200,
-        height: 630,
-        alt: 'Industries We Serve - Unimrkt Research',
-      },
-    ],
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Industries We Serve | Unimrkt Research',
-    description:
-      'Uncovering evolving market trends, consumer behavior, and competitive insights across major global industry sectors.',
-    images: ['/asstes/images/industries-hero-banner-img.png'],
-  },
-};
+export async function generateMetadata() {
+  return await generatePageMetadata(
+    'industries',
+    'Industries We Serve | Healthcare, BFSI, Retail, Auto, Tech',
+    'Market intelligence tailored for Automotive, Healthcare, Technology, BFSI, Retail, Energy, FMCG, and Industrial Manufacturing sectors across global regions.'
+  );
+}
 
 export default async function IndustriesPage() {
   const [pageData, strapiIndustries] = await Promise.all([
     getPageBySlug('industries').catch(() => null),
     getIndustries(24).catch(() => []),
   ]);
+
+  
+  if (pageData?.sections && pageData.sections.length > 0) {
+    return (
+      <main>
+        <DynamicZoneRenderer sections={pageData.sections} pageContext={{ industries: strapiIndustries, pageData }} />
+      </main>
+    );
+  }
 
   const heroSection = findSection(pageData, 'sections.hero-common');
   const ctaSection = findSection(pageData, 'sections.question-cta');

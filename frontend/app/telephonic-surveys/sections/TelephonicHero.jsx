@@ -1,5 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
+import { getStrapiMediaUrl } from '@/lib/strapi';
 
 export default function TelephonicHero({ dynamicHero = null }) {
   const kicker = dynamicHero?.kicker || 'TELEPHONIC SURVEYS';
@@ -9,12 +10,16 @@ export default function TelephonicHero({ dynamicHero = null }) {
     'Reach the right respondents and capture reliable insights through professionally managed telephonic surveys.';
   const primaryBtnLabel = dynamicHero?.primaryButton?.label || 'Get a Free Quote';
   const primaryBtnUrl = dynamicHero?.primaryButton?.url || '/contact';
+  const bannerImage = getStrapiMediaUrl(
+    dynamicHero?.bannerImage,
+    '/asstes/images/unimrkt-research-telephonic-surveys-banner.webp'
+  );
 
   return (
     <section className="hero-common-area">
       <div className="hero-common-banner">
         <img
-          src="/asstes/images/unimrkt-research-telephonic-surveys-banner.webp"
+          src={bannerImage}
           className="hero-common-banner-area"
           alt={title}
         />

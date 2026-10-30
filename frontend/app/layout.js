@@ -1,6 +1,7 @@
 import { Suspense } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import { getGlobalSettings } from '@/lib/strapi';
 import ElementorLiveEditor from '@/components/ElementorLiveEditor';
 
 export const metadata = {
@@ -98,7 +99,8 @@ const jsonLdOrg = {
   ],
 };
 
-export default function RootLayout({ children }) {
+export default async function RootLayout({ children }) {
+  const globalSettings = await getGlobalSettings().catch(() => null);
   return (
     <html lang="en">
       <head>
@@ -124,9 +126,9 @@ export default function RootLayout({ children }) {
         />
       </head>
       <body>
-        <Header />
+        <Header globalSettings={globalSettings} />
         <main>{children}</main>
-        <Footer />
+        <Footer globalSettings={globalSettings} />
         <Suspense fallback={null}>
           <ElementorLiveEditor />
         </Suspense>

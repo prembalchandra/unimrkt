@@ -1,6 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import LazyVideo from '@/components/LazyVideo';
+import { getStrapiMediaUrl } from '@/lib/strapi';
 
 export default function PrimaryresearchResearchCta({ dynamicCta = null }) {
   const title = dynamicCta?.title || 'Start Your Research Journey';
@@ -9,6 +10,7 @@ export default function PrimaryresearchResearchCta({ dynamicCta = null }) {
     'Partner with Unimrkt Research to uncover actionable market intelligence, understand your industry, and make confident business decisions.';
   const btnLabel = dynamicCta?.button?.label || 'Talk to our experts';
   const btnUrl = dynamicCta?.button?.url || '/contact';
+  const posterImg = getStrapiMediaUrl(dynamicCta?.visualImage, '/asstes/images/the-impact-banner-img.webp');
 
   return (
     <section className="research-cta-section" id="cta">
@@ -17,7 +19,7 @@ export default function PrimaryresearchResearchCta({ dynamicCta = null }) {
           <LazyVideo
             className="research-cta-bg-image"
             src="/asstes/images/commonvideo-banner.mp4"
-            poster="/asstes/images/the-impact-banner-img.webp"
+            poster={posterImg}
           />
 
           <div className="research-cta-overlay"></div>

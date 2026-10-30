@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
+import { getStrapiMediaUrl } from '@/lib/strapi';
 
 const heroServicesData = [
   {
@@ -147,7 +148,7 @@ const canonicalServices = [
   },
 ];
 
-export default function HeroSection() {
+export default function HeroSection({ dynamicData = null }) {
   const [activeServiceIdx, setActiveServiceIdx] = useState(3);
   const [isFading, setIsFading] = useState(false);
 
@@ -402,7 +403,15 @@ export default function HeroSection() {
     };
   }, [numServices]);
 
-  const currentContent = heroServicesData[activeServiceIdx] || heroServicesData[3];
+  const defaultContent = heroServicesData[activeServiceIdx] || heroServicesData[3];
+  const currentContent = {
+    badge: (activeServiceIdx === 3 && dynamicData?.eyebrow) ? dynamicData.eyebrow : defaultContent.badge,
+    heading: (activeServiceIdx === 3 && dynamicData?.title) ? dynamicData.title : defaultContent.heading,
+    desc: (activeServiceIdx === 3 && dynamicData?.description) ? dynamicData.description : defaultContent.desc,
+    cta: (activeServiceIdx === 3 && dynamicData?.cta?.label) ? dynamicData.cta.label : defaultContent.cta,
+  };
+  const posterImg = getStrapiMediaUrl(dynamicData?.fallbackImage, '/asstes/images/unimrkt-resarch-map-banner-img.webp');
+  const videoSrc = dynamicData?.videoUrl || '/asstes/images/home-banner-video.mp4';
 
   return (
     <section className="hero-section" id="about">
@@ -415,8 +424,9 @@ export default function HeroSection() {
           muted
           playsInline
           preload="metadata"
-          poster="/asstes/images/unimrkt-resarch-map-banner-img.webp"
+          poster={posterImg}
         >
+          <source src={videoSrc} type="video/mp4" />
           <source src="/asstes/images/home-banner-video.mp4" type="video/mp4" />
           <source src="/img/home-banner-video.mp4" type="video/mp4" />
         </video>

@@ -1,0 +1,31 @@
+{
+  "collectionName": "components_sections_contact_forms",
+  "info": {
+    "displayName": "Contact Form Section",
+    "icon": "mail",
+    "description": "Interactive inquiry form with contact details"
+  },
+  "options": {},
+  "attributes": {
+    "kicker": {
+      "type": "string",
+      "default": "GET IN TOUCH"
+    },
+    "heading": {
+      "type": "string",
+      "required": true,
+      "default": "Let's Connect and Build Your Research Blueprint"
+    },
+    "description": {
+      "type": "text"
+    },
+    "supportEmail": {
+      "type": "string",
+      "default": "sales@unimrkt.com"
+    },
+    "supportPhone": {
+      "type": "string",
+      "default": "+91-124-424-5210"
+    }
+  }
+}

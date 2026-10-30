@@ -1,5 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
+import { getStrapiMediaUrl } from '@/lib/strapi';
 
 export default function AutomotiveHero({ dynamicHero = null }) {
   const kicker = dynamicHero?.kicker || 'AUTOMOTIVE INDUSTRY';
@@ -10,13 +11,17 @@ export default function AutomotiveHero({ dynamicHero = null }) {
     'From electric vehicle (EV) adoption barriers to connected vehicle cockpits and fleet electrification, we deliver deep buyer insights and competitive intelligence.';
   const primaryBtnLabel = dynamicHero?.primaryButton?.label || 'Consult an Automotive Specialist';
   const primaryBtnUrl = dynamicHero?.primaryButton?.url || '/contact';
+  const bannerImage = getStrapiMediaUrl(
+    dynamicHero?.bannerImage,
+    '/asstes/images/automation-connected-automobile-banner-img.webp'
+  );
 
   return (
     <>
       <section className="hero-common-area">
         <div className="hero-common-banner">
           <img
-            src="/asstes/images/automation-connected-automobile-banner-img.webp"
+            src={bannerImage}
             className="hero-common-banner-area"
             alt={title}
           />

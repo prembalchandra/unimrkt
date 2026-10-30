@@ -1,5 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
+import { getStrapiMediaUrl } from '@/lib/strapi';
 
 export default function ContactHero({ dynamicHero = null }) {
   const kicker = dynamicHero?.kicker || 'Contact Us';
@@ -10,13 +11,17 @@ export default function ContactHero({ dynamicHero = null }) {
     'Tell us what you’re trying to understand. Our research experts will help you find the right path forward.';
   const primaryBtnLabel = dynamicHero?.primaryButton?.label || 'Start a Conversation';
   const primaryBtnUrl = dynamicHero?.primaryButton?.url || '#contact-form';
+  const bannerImage = getStrapiMediaUrl(
+    dynamicHero?.bannerImage,
+    '/asstes/images/contac-banner-img.webp'
+  );
 
   return (
     <>
       <section className="hero-common-area">
         <div className="hero-common-banner">
           <img
-            src="/asstes/images/contac-banner-img.webp"
+            src={bannerImage}
             className="hero-common-banner-area"
             alt={title}
           />

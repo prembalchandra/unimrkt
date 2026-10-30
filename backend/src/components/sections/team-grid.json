@@ -1,0 +1,23 @@
+{
+  "collectionName": "components_sections_team_grids",
+  "info": {
+    "displayName": "Team Grid",
+    "icon": "user",
+    "description": "Leadership and executive directory section"
+  },
+  "options": {},
+  "attributes": {
+    "kicker": {
+      "type": "string",
+      "default": "EXECUTIVE LEADERSHIP"
+    },
+    "heading": {
+      "type": "string",
+      "required": true,
+      "default": "Meet Our Leadership & Research Experts"
+    },
+    "description": {
+      "type": "text"
+    }
+  }
+}

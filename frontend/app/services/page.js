@@ -1,3 +1,4 @@
+import DynamicZoneRenderer from '@/components/DynamicZoneRenderer';
 import ServicesHero from './sections/ServicesHero';
 import ServicesAboutOverview from './sections/ServicesAboutOverview';
 import EndToEndSolutions from './sections/EndToEndSolutions';
@@ -12,53 +13,27 @@ import CommonBlogSection from '../../components/CommonBlogSection';
 import ServicesFaq from './sections/ServicesFaq';
 import InsightsEditorial from './sections/InsightsEditorial';
 import ResearchCta from './sections/ResearchCta';
-import { getPageBySlug, findSection } from '../../lib/strapi';
+import { getPageBySlug, findSection, generatePageMetadata } from '../../lib/strapi';
 
-export const metadata = {
-  title: 'End-to-End Market Research Services | Unimrkt Research',
-  description:
-    'Comprehensive qualitative and quantitative research services, CATI telephone surveys, CAWI online panels, survey programming, data analytics, and reporting.',
-  keywords: [
-    'market research services',
-    'qualitative research services',
-    'quantitative market research',
-    'CATI telephone surveys',
-    'survey programming',
-    'data collection services',
-    'B2B market research',
-    'consumer research solutions',
-  ],
-  alternates: {
-    canonical: '/services',
-  },
-  openGraph: {
-    title: 'End-to-End Market Research Services | Unimrkt Research',
-    description:
-      'Comprehensive qualitative and quantitative research services, CATI telephone surveys, CAWI online panels, and market intelligence solutions.',
-    url: 'https://www.unimrkt.com/services',
-    siteName: 'Unimrkt Research',
-    locale: 'en_US',
-    type: 'website',
-    images: [
-      {
-        url: '/asstes/images/services-hero-banner-img.png',
-        width: 1200,
-        height: 630,
-        alt: 'Unimrkt Research Services',
-      },
-    ],
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'End-to-End Market Research Services | Unimrkt Research',
-    description:
-      'Comprehensive qualitative and quantitative research services, CATI telephone surveys, CAWI online panels, and market intelligence solutions.',
-    images: ['/asstes/images/services-hero-banner-img.png'],
-  },
-};
+export async function generateMetadata() {
+  return await generatePageMetadata(
+    'services',
+    'Market Research Services | Primary, Secondary, CATI & Analytics',
+    'Comprehensive research solutions: qualitative in-depth interviews, quantitative surveys, CATI telephonic reach, survey scripting, and advanced business analytics.'
+  );
+}
 
 export default async function ServicesPage() {
   const pageData = await getPageBySlug('services').catch(() => null);
+
+  
+  if (pageData?.sections && pageData.sections.length > 0) {
+    return (
+      <main>
+        <DynamicZoneRenderer sections={pageData.sections} pageContext={{ pageData }} />
+      </main>
+    );
+  }
 
   const heroSection = findSection(pageData, 'sections.hero-common');
   const metricsSection = findSection(pageData, 'sections.metrics-grid');

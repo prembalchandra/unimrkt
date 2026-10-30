@@ -1,8 +1,12 @@
 import React from 'react';
 import Link from 'next/link';
 import LazyVideo from '@/components/LazyVideo';
+import { getStrapiMediaUrl } from '@/lib/strapi';
 
-export default function Footer() {
+export default function Footer({ globalSettings = null }) {
+  const logoSrc = getStrapiMediaUrl(globalSettings?.footerLogo, '/asstes/images/unimrkt-resarch-logo.webp');
+  const siteDesc = globalSettings?.tagline || '{siteDesc}';
+  const copyrightText = globalSettings?.copyright || '© 2026 Unimrkt Research. All rights reserved.';
   return (
     <footer className="unimrkt-resarch-footer-area">
       <LazyVideo
@@ -17,7 +21,7 @@ export default function Footer() {
             <div className="footer-wapper-lift-col">
               <div className="footer-wapper-logo-area">
                 <Link href="/" className="footer-logo-box">
-                  <img src="/asstes/images/unimrkt-resarch-logo.webp" alt="Unimrkt Research" />
+                  <img src={logoSrc} alt={globalSettings?.siteName || "Unimrkt Research"} />
                 </Link>
               </div>
               <p className="footer-wapper-title-area">

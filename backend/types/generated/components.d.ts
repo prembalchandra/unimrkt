@@ -148,6 +148,22 @@ export interface ElementsSocialLink extends Struct.ComponentSchema {
   };
 }
 
+export interface ElementsTestimonialItem extends Struct.ComponentSchema {
+  collectionName: 'components_elements_testimonial_items';
+  info: {
+    description: 'Client testimonial quote and author details';
+    displayName: 'Testimonial Item';
+    icon: 'user';
+  };
+  attributes: {
+    author: Schema.Attribute.String & Schema.Attribute.Required;
+    avatar: Schema.Attribute.Media<'images'>;
+    company: Schema.Attribute.String;
+    quote: Schema.Attribute.Text & Schema.Attribute.Required;
+    role: Schema.Attribute.String;
+  };
+}
+
 export interface LayoutFooterColumn extends Struct.ComponentSchema {
   collectionName: 'components_layout_footer_columns';
   info: {
@@ -175,6 +191,23 @@ export interface SectionsAccordionSolutions extends Struct.ComponentSchema {
   };
 }
 
+export interface SectionsBlogsSlider extends Struct.ComponentSchema {
+  collectionName: 'components_sections_blogs_sliders';
+  info: {
+    description: 'Latest research articles and market intelligence';
+    displayName: 'Blogs Slider';
+    icon: 'book';
+  };
+  attributes: {
+    description: Schema.Attribute.Text;
+    heading: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.DefaultTo<'Market Intelligence & Strategic Perspectives'>;
+    kicker: Schema.Attribute.String &
+      Schema.Attribute.DefaultTo<'LATEST INSIGHTS'>;
+  };
+}
+
 export interface SectionsCalloutBox extends Struct.ComponentSchema {
   collectionName: 'components_sections_callout_boxes';
   info: {
@@ -189,6 +222,23 @@ export interface SectionsCalloutBox extends Struct.ComponentSchema {
   };
 }
 
+export interface SectionsCaseStudiesSlider extends Struct.ComponentSchema {
+  collectionName: 'components_sections_case_studies_sliders';
+  info: {
+    description: 'Featured enterprise client success stories';
+    displayName: 'Case Studies Slider';
+    icon: 'briefcase';
+  };
+  attributes: {
+    description: Schema.Attribute.Text;
+    heading: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.DefaultTo<'Real-World Results & Commercial Impact'>;
+    kicker: Schema.Attribute.String &
+      Schema.Attribute.DefaultTo<'PROVEN IMPACT'>;
+  };
+}
+
 export interface SectionsClientLogos extends Struct.ComponentSchema {
   collectionName: 'components_sections_client_logos';
   info: {
@@ -200,6 +250,27 @@ export interface SectionsClientLogos extends Struct.ComponentSchema {
     logos: Schema.Attribute.Media<'images', true> & Schema.Attribute.Required;
     title: Schema.Attribute.String &
       Schema.Attribute.DefaultTo<'Trusted by Global Enterprises'>;
+  };
+}
+
+export interface SectionsContactForm extends Struct.ComponentSchema {
+  collectionName: 'components_sections_contact_forms';
+  info: {
+    description: 'Interactive inquiry form with contact details';
+    displayName: 'Contact Form Section';
+    icon: 'mail';
+  };
+  attributes: {
+    description: Schema.Attribute.Text;
+    heading: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.DefaultTo<"Let's Connect and Build Your Research Blueprint">;
+    kicker: Schema.Attribute.String &
+      Schema.Attribute.DefaultTo<'GET IN TOUCH'>;
+    supportEmail: Schema.Attribute.String &
+      Schema.Attribute.DefaultTo<'sales@unimrkt.com'>;
+    supportPhone: Schema.Attribute.String &
+      Schema.Attribute.DefaultTo<'+91-124-424-5210'>;
   };
 }
 
@@ -218,6 +289,23 @@ export interface SectionsFaqAccordion extends Struct.ComponentSchema {
     items: Schema.Attribute.Component<'elements.faq-item', true> &
       Schema.Attribute.Required;
     kicker: Schema.Attribute.String;
+  };
+}
+
+export interface SectionsGalleryShowcase extends Struct.ComponentSchema {
+  collectionName: 'components_sections_gallery_showcases';
+  info: {
+    description: 'Moments, culture, and fieldwork photo gallery';
+    displayName: 'Gallery Showcase';
+    icon: 'picture';
+  };
+  attributes: {
+    description: Schema.Attribute.Text;
+    heading: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.DefaultTo<'Moments, Milestones & Celebrations'>;
+    kicker: Schema.Attribute.String &
+      Schema.Attribute.DefaultTo<'LIFE AT UNIMRKT'>;
   };
 }
 
@@ -334,6 +422,41 @@ export interface SectionsRichTextBlock extends Struct.ComponentSchema {
   };
 }
 
+export interface SectionsTeamGrid extends Struct.ComponentSchema {
+  collectionName: 'components_sections_team_grids';
+  info: {
+    description: 'Leadership and executive directory section';
+    displayName: 'Team Grid';
+    icon: 'user';
+  };
+  attributes: {
+    description: Schema.Attribute.Text;
+    heading: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.DefaultTo<'Meet Our Leadership & Research Experts'>;
+    kicker: Schema.Attribute.String &
+      Schema.Attribute.DefaultTo<'EXECUTIVE LEADERSHIP'>;
+  };
+}
+
+export interface SectionsTestimonialsSlider extends Struct.ComponentSchema {
+  collectionName: 'components_sections_testimonials_sliders';
+  info: {
+    description: 'Client testimonials and partner reviews slider';
+    displayName: 'Testimonials Slider';
+    icon: 'quote-right';
+  };
+  attributes: {
+    description: Schema.Attribute.Text;
+    heading: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.DefaultTo<'What Global Enterprises Say About Unimrkt'>;
+    kicker: Schema.Attribute.String &
+      Schema.Attribute.DefaultTo<'TRUSTED BY LEADERS'>;
+    testimonials: Schema.Attribute.Component<'elements.testimonial-item', true>;
+  };
+}
+
 export interface SectionsValuesGrid extends Struct.ComponentSchema {
   collectionName: 'components_sections_values_grids';
   info: {
@@ -391,11 +514,16 @@ declare module '@strapi/strapi' {
       'elements.metric-card': ElementsMetricCard;
       'elements.nav-link': ElementsNavLink;
       'elements.social-link': ElementsSocialLink;
+      'elements.testimonial-item': ElementsTestimonialItem;
       'layout.footer-column': LayoutFooterColumn;
       'sections.accordion-solutions': SectionsAccordionSolutions;
+      'sections.blogs-slider': SectionsBlogsSlider;
       'sections.callout-box': SectionsCalloutBox;
+      'sections.case-studies-slider': SectionsCaseStudiesSlider;
       'sections.client-logos': SectionsClientLogos;
+      'sections.contact-form': SectionsContactForm;
       'sections.faq-accordion': SectionsFaqAccordion;
+      'sections.gallery-showcase': SectionsGalleryShowcase;
       'sections.hero-common': SectionsHeroCommon;
       'sections.home-hero': SectionsHomeHero;
       'sections.industry-slider': SectionsIndustrySlider;
@@ -403,6 +531,8 @@ declare module '@strapi/strapi' {
       'sections.question-cta': SectionsQuestionCta;
       'sections.research-reach': SectionsResearchReach;
       'sections.rich-text-block': SectionsRichTextBlock;
+      'sections.team-grid': SectionsTeamGrid;
+      'sections.testimonials-slider': SectionsTestimonialsSlider;
       'sections.values-grid': SectionsValuesGrid;
       'shared.seo': SharedSeo;
     }

@@ -2,6 +2,7 @@
 
 import React, { useState, useMemo } from 'react';
 import Link from 'next/link';
+import { getStrapiMediaUrl } from '@/lib/strapi';
 
 const blogCardsData = [
   {
@@ -104,14 +105,11 @@ export default function BlogGrid({ initialBlogs = [] }) {
 
   const activeBlogsList = useMemo(() => {
     if (initialBlogs && initialBlogs.length > 0) {
-      const strapiUrl = process.env.NEXT_PUBLIC_STRAPI_URL || 'http://127.0.0.1:1337';
       return initialBlogs.map((b, idx) => ({
         id: b.id || b.documentId || idx,
         category: b.category?.slug || 'market-research',
         tag: b.category?.name || b.tag || 'Market Research',
-        img: b.coverImage?.url
-          ? (b.coverImage.url.startsWith('http') ? b.coverImage.url : `${strapiUrl}${b.coverImage.url}`)
-          : '/asstes/images/customer-experience-img.webp',
+        img: getStrapiMediaUrl(b.featuredImage || b.coverImage, '/asstes/images/customer-experience-img.webp'),
         title: b.title,
         desc: b.excerpt || b.description || '',
         link: b.slug ? `/blog/${b.slug}` : '/blog-details',

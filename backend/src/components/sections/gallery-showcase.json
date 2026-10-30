@@ -1,0 +1,23 @@
+{
+  "collectionName": "components_sections_gallery_showcases",
+  "info": {
+    "displayName": "Gallery Showcase",
+    "icon": "picture",
+    "description": "Moments, culture, and fieldwork photo gallery"
+  },
+  "options": {},
+  "attributes": {
+    "kicker": {
+      "type": "string",
+      "default": "LIFE AT UNIMRKT"
+    },
+    "heading": {
+      "type": "string",
+      "required": true,
+      "default": "Moments, Milestones & Celebrations"
+    },
+    "description": {
+      "type": "text"
+    }
+  }
+}

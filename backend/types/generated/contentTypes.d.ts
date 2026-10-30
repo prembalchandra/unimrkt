@@ -876,6 +876,12 @@ export interface ApiPagePage extends Struct.CollectionTypeSchema {
         'sections.client-logos',
         'sections.values-grid',
         'sections.rich-text-block',
+        'sections.testimonials-slider',
+        'sections.team-grid',
+        'sections.gallery-showcase',
+        'sections.blogs-slider',
+        'sections.case-studies-slider',
+        'sections.contact-form',
       ]
     >;
     seo: Schema.Attribute.Component<'shared.seo', false>;

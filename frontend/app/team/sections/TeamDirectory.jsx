@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { getStrapiMediaUrl } from '@/lib/strapi';
 
 const teamMembers = [
   {
@@ -166,19 +167,19 @@ export default function TeamDirectory({ initialTeam = [] }) {
 
   const mergedMembers = React.useMemo(() => {
     if (!initialTeam || initialTeam.length === 0) return teamMembers;
-    return teamMembers.map((local) => {
-      const strapiMatch = initialTeam.find(
-        (s) => s.name?.trim().toLowerCase() === local.name?.trim().toLowerCase()
+    return initialTeam.map((member, idx) => {
+      const localMatch = teamMembers.find(
+        (l) => l.name?.trim().toLowerCase() === member.name?.trim().toLowerCase()
       );
-      if (strapiMatch) {
-        return {
-          ...local,
-          role: strapiMatch.role || local.role,
-          bio: strapiMatch.bio || local.bio,
-          linkedin: strapiMatch.linkedinUrl || strapiMatch.linkedin_url || local.linkedin,
-        };
-      }
-      return local;
+      const photoUrl = getStrapiMediaUrl(member.photo, localMatch?.image || '/asstes/images/team/anurag-magoo.webp');
+      return {
+        id: member.id || member.documentId || idx,
+        name: member.name,
+        role: member.role || localMatch?.role || '',
+        bio: member.bio || localMatch?.bio || '',
+        image: photoUrl,
+        linkedin: member.linkedinUrl || member.linkedin_url || localMatch?.linkedin || '',
+      };
     });
   }, [initialTeam]);
 

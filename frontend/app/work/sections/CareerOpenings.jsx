@@ -220,7 +220,7 @@ const jobCardsData = [
   },
 ];
 
-export default function CareerOpenings() {
+export default function CareerOpenings({ initialJobs = [] }) {
   const [searchQuery, setSearchQuery] = useState('');
   const [department, setDepartment] = useState('');
   const [jobType, setJobType] = useState('');
@@ -261,8 +261,30 @@ export default function CareerOpenings() {
   const [formLocation, setFormLocation] = useState('');
   const [formMessage, setFormMessage] = useState('');
 
+  const allJobs = useMemo(() => {
+    if (initialJobs && initialJobs.length > 0) {
+      return initialJobs.map((j) => {
+        const matchingFallback = jobCardsData.find((fb) => fb.title.toLowerCase() === j.title?.toLowerCase()) || jobCardsData[0];
+        return {
+          id: j.id || j.documentId,
+          title: j.title,
+          department: (j.department || 'Operations').toLowerCase(),
+          type: (j.jobType || 'Full Time').toLowerCase(),
+          location: (j.location || 'Gurugram, India').toLowerCase(),
+          locationLabel: j.location || 'Gurugram, India',
+          typeLabel: j.jobType || 'Full Time',
+          deptLabel: j.department || 'Operations',
+          dateLabel: j.postedDate ? new Date(j.postedDate).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : 'Recent',
+          metaText: `${j.location || 'Gurugram, India'} · ${j.jobType || 'Full Time'} · ${j.department || 'Operations'}`,
+          description: matchingFallback.description,
+        };
+      });
+    }
+    return jobCardsData;
+  }, [initialJobs]);
+
   const filteredJobs = useMemo(() => {
-    return jobCardsData.filter((job) => {
+    return allJobs.filter((job) => {
       const q = searchQuery.toLowerCase().trim();
       const matchSearch =
         !q ||

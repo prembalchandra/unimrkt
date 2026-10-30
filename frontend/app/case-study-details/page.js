@@ -1,3 +1,4 @@
+import DynamicZoneRenderer from '@/components/DynamicZoneRenderer';
 import CaseDetailHero from './sections/CaseDetailHero';
 import CaseDetailChallenge from './sections/CaseDetailChallenge';
 import CaseDetailResearchQuestion from './sections/CaseDetailResearchQuestion';
@@ -6,50 +7,27 @@ import CaseDetailImpact from './sections/CaseDetailImpact';
 import CaseDetailFaq from './sections/CaseDetailFaq';
 import InsightsEditorial from './sections/InsightsEditorial';
 import ResearchCta from './sections/ResearchCta';
-import { getPageBySlug, findSection } from '../../lib/strapi';
+import { getPageBySlug, findSection, generatePageMetadata } from '../../lib/strapi';
 
-export const metadata = {
-  title: 'Financial Services Customer Intelligence Case Study | Unimrkt Research',
-  description:
-    'How research uncovered evolving customer needs, digital expectations, and decision-making drivers to help a financial services organization strengthen customer strategy.',
-  keywords: [
-    'financial services research case study',
-    'customer intelligence banking',
-    'digital banking customer expectations',
-    'fintech market intelligence',
-    'customer retention strategy research',
-  ],
-  alternates: {
-    canonical: '/case-study-details',
-  },
-  openGraph: {
-    title: 'Financial Services Customer Intelligence Case Study | Unimrkt Research',
-    description:
-      'How research uncovered evolving customer needs, digital expectations, and decision-making drivers to help a financial services organization strengthen customer strategy.',
-    url: 'https://www.unimrkt.com/case-study-details',
-    siteName: 'Unimrkt Research',
-    locale: 'en_US',
-    type: 'article',
-    images: [
-      {
-        url: '/asstes/images/case-study-banking.webp',
-        width: 1200,
-        height: 630,
-        alt: 'Financial Services Research Case Study',
-      },
-    ],
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Financial Services Customer Intelligence Case Study | Unimrkt Research',
-    description:
-      'How research uncovered evolving customer needs and decision-making drivers to help financial services strengthen customer strategy.',
-    images: ['/asstes/images/case-study-banking.webp'],
-  },
-};
+export async function generateMetadata() {
+  return await generatePageMetadata(
+    'case-study-details',
+    'Case Study In-Depth Analysis | Methodology & Business Outcomes',
+    'Detailed breakdown of research objectives, cross-market methodology, data validation frameworks, and tangible business results achieved for enterprise clients.'
+  );
+}
 
 export default async function CaseStudyDetailPage() {
   const pageData = await getPageBySlug('case-study-details').catch(() => null);
+
+  
+  if (pageData?.sections && pageData.sections.length > 0) {
+    return (
+      <main>
+        <DynamicZoneRenderer sections={pageData.sections} pageContext={{ pageData }} />
+      </main>
+    );
+  }
 
   const heroSection = findSection(pageData, 'sections.hero-common');
   const ctaSection = findSection(pageData, 'sections.question-cta');

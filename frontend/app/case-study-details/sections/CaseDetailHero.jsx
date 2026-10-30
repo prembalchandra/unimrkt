@@ -1,5 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
+import { getStrapiMediaUrl } from '@/lib/strapi';
 
 export default function CaseDetailHero({ dynamicHero = null }) {
   const kicker = dynamicHero?.kicker || 'BANKING & FINANCE';
@@ -9,6 +10,10 @@ export default function CaseDetailHero({ dynamicHero = null }) {
   const description =
     dynamicHero?.description ||
     'How research uncovered evolving customer needs, digital expectations, and decision-making drivers to help a financial services organization strengthen its customer strategy.';
+  const heroImg = getStrapiMediaUrl(
+    dynamicHero?.bannerImage,
+    '/asstes/images/case-study-banking.webp'
+  );
 
   return (
     <section className="cs-detail-hero-section">
@@ -36,7 +41,7 @@ export default function CaseDetailHero({ dynamicHero = null }) {
 
             <div className="cs-hero-img-box">
               <img
-                src="/asstes/images/case-study-banking.webp"
+                src={heroImg}
                 alt={title}
               />
             </div>

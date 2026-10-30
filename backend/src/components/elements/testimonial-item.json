@@ -1,0 +1,31 @@
+{
+  "collectionName": "components_elements_testimonial_items",
+  "info": {
+    "displayName": "Testimonial Item",
+    "icon": "user",
+    "description": "Client testimonial quote and author details"
+  },
+  "options": {},
+  "attributes": {
+    "quote": {
+      "type": "text",
+      "required": true
+    },
+    "author": {
+      "type": "string",
+      "required": true
+    },
+    "role": {
+      "type": "string"
+    },
+    "company": {
+      "type": "string"
+    },
+    "avatar": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["images"]
+    }
+  }
+}

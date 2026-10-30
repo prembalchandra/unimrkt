@@ -4,8 +4,9 @@ import React, { useEffect, useRef } from 'react';
 import Link from 'next/link';
 import Swiper from 'swiper';
 import { Navigation, Autoplay } from 'swiper/modules';
+import { getStrapiMediaUrl } from '@/lib/strapi';
 
-const blogMarketTrends = [
+const defaultMarketTrends = [
   {
     id: 1,
     img: '/asstes/images/market-trends-card-img1.webp',
@@ -50,8 +51,22 @@ const blogMarketTrends = [
   },
 ];
 
-export default function CommonBlogSection() {
+export default function CommonBlogSection({ dynamicBlogs = [], data = {} }) {
   const swiperRef = useRef(null);
+
+  const kicker = data.kicker || 'LATEST BLOGS';
+  const heading = data.heading || 'Exploring Market Trends';
+  const description = data.description || 'Discover Emerging Market Trends That Shape Smarter Business Decisions.';
+
+  const blogCards = (dynamicBlogs && dynamicBlogs.length > 0)
+    ? dynamicBlogs.map((b, idx) => ({
+        id: b.id || b.documentId || idx,
+        img: getStrapiMediaUrl(b.featuredImage || b.coverImage, '/asstes/images/customer-experience-img.webp'),
+        title: b.title,
+        snippet: b.excerpt || b.description || '',
+        link: b.slug ? `/blog/${b.slug}` : '/blog-details',
+      }))
+    : defaultMarketTrends;
 
   useEffect(() => {
     let swiperInstance = null;
@@ -109,12 +124,12 @@ export default function CommonBlogSection() {
       <div className="market-trends-container">
         <div className="market-trends-layout">
           <div className="market-trends-left-col">
-            <span className="market-trends-kicker  sub-title-red">LATEST BLOGS</span>
+            <span className="market-trends-kicker sub-title-red">{kicker}</span>
             <h2 className="market-trends-title section-main-heading">
-              Exploring<br />Market Trends
+              {heading}
             </h2>
             <p className="market-trends-desc section-sub-text">
-              Discover Emerging Market Trends That Shape Smarter Business Decisions.
+              {description}
             </p>
             <div className="market-trends-nav-btns" aria-label="Slider navigation">
               <button className="market-trends-nav-btn market-trends-prev" aria-label="Previous slide">
@@ -130,7 +145,7 @@ export default function CommonBlogSection() {
           <div className="market-trends-slider-col">
             <div className="swiper market-trends-swiper" ref={swiperRef}>
               <div className="swiper-wrapper">
-                {blogMarketTrends.map((card) => (
+                {blogCards.map((card) => (
                   <div key={card.id} className="swiper-slide market-trends-slide">
                     <Link href={card.link} className="market-trends-card">
                       <div className="market-trends-card-img-wrap">

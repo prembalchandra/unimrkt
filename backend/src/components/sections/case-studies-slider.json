@@ -1,0 +1,23 @@
+{
+  "collectionName": "components_sections_case_studies_sliders",
+  "info": {
+    "displayName": "Case Studies Slider",
+    "icon": "briefcase",
+    "description": "Featured enterprise client success stories"
+  },
+  "options": {},
+  "attributes": {
+    "kicker": {
+      "type": "string",
+      "default": "PROVEN IMPACT"
+    },
+    "heading": {
+      "type": "string",
+      "required": true,
+      "default": "Real-World Results & Commercial Impact"
+    },
+    "description": {
+      "type": "text"
+    }
+  }
+}

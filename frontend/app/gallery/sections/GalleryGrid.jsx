@@ -3,6 +3,7 @@
 import React, { useState, useMemo, useEffect, useRef, useCallback } from 'react';
 import Swiper from 'swiper';
 import { Navigation, Pagination, Keyboard, Autoplay } from 'swiper/modules';
+import { getStrapiMediaUrl } from '@/lib/strapi';
 
 import 'swiper/css';
 import 'swiper/css/navigation';
@@ -87,7 +88,7 @@ const galleryItemsData = [
   },
 ];
 
-export default function GalleryGrid() {
+export default function GalleryGrid({ initialGallery = [] }) {
   const [activeCategory, setActiveCategory] = useState('all');
   const [visibleCount, setVisibleCount] = useState(6);
   const [isOpen, setIsOpen] = useState(false);
@@ -101,13 +102,35 @@ export default function GalleryGrid() {
   const swiperInstanceRef = useRef(null);
   const modalRef = useRef(null);
 
-  const filteredItems = useMemo(() => {
-    if (activeCategory === 'all') return galleryItemsData;
+  const allItems = useMemo(() => {
+    if (initialGallery && initialGallery.length > 0) {
+      return initialGallery.map((g) => {
+        let cats = ['team-culture'];
+        if (g.category === 'research') cats = ['research-process'];
+        else if (g.category === 'fieldwork') cats = ['field-work'];
+        else if (g.category === 'events') cats = ['events-conferences'];
+        else if (g.category === 'team') cats = ['team-culture'];
+        else if (g.category) cats = [g.category];
 
-    return galleryItemsData.filter((item) =>
+        return {
+          id: g.id || g.documentId,
+          categories: cats,
+          src: getStrapiMediaUrl(g.image, '/asstes/images/gallery/gallery_item_01.webp'),
+          title: g.title || '',
+          alt: g.caption || g.title || 'Gallery image',
+        };
+      });
+    }
+    return galleryItemsData;
+  }, [initialGallery]);
+
+  const filteredItems = useMemo(() => {
+    if (activeCategory === 'all') return allItems;
+
+    return allItems.filter((item) =>
       item.categories.includes(activeCategory)
     );
-  }, [activeCategory]);
+  }, [activeCategory, allItems]);
 
   const displayedItems = filteredItems.slice(0, visibleCount);
   const hasMore = visibleCount < filteredItems.length;

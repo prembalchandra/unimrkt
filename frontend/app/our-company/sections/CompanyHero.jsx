@@ -1,5 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
+import { getStrapiMediaUrl } from '@/lib/strapi';
 
 export default function CompanyHero({ dynamicHero = null }) {
   const kicker = dynamicHero?.kicker || 'Our Company';
@@ -9,13 +10,17 @@ export default function CompanyHero({ dynamicHero = null }) {
     'Introduce Unimrkt as a global market research partner helping organisations understand people, markets, and opportunities.';
   const primaryBtnLabel = dynamicHero?.primaryButton?.label || 'Explore Our Capabilities';
   const primaryBtnUrl = dynamicHero?.primaryButton?.url || '/team';
+  const bannerImage = getStrapiMediaUrl(
+    dynamicHero?.bannerImage,
+    '/asstes/images/our-company-banner-img.webp'
+  );
 
   return (
     <>
       <section className="hero-common-area">
         <div className="hero-common-banner">
           <img
-            src="/asstes/images/our-company-banner-img.webp"
+            src={bannerImage}
             className="hero-common-banner-area"
             alt={title}
           />

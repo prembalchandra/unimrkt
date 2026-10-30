@@ -1,0 +1,23 @@
+{
+  "collectionName": "components_sections_blogs_sliders",
+  "info": {
+    "displayName": "Blogs Slider",
+    "icon": "book",
+    "description": "Latest research articles and market intelligence"
+  },
+  "options": {},
+  "attributes": {
+    "kicker": {
+      "type": "string",
+      "default": "LATEST INSIGHTS"
+    },
+    "heading": {
+      "type": "string",
+      "required": true,
+      "default": "Market Intelligence & Strategic Perspectives"
+    },
+    "description": {
+      "type": "text"
+    }
+  }
+}

@@ -39,7 +39,13 @@
         "sections.faq-accordion",
         "sections.client-logos",
         "sections.values-grid",
-        "sections.rich-text-block"
+        "sections.rich-text-block",
+        "sections.testimonials-slider",
+        "sections.team-grid",
+        "sections.gallery-showcase",
+        "sections.blogs-slider",
+        "sections.case-studies-slider",
+        "sections.contact-form"
       ]
     }
   }

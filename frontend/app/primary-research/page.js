@@ -1,3 +1,4 @@
+import DynamicZoneRenderer from '@/components/DynamicZoneRenderer';
 import PrimaryHero from './sections/PrimaryHero';
 import TrustedClients from './sections/TrustedClients';
 import AbouPrimaryOverview from './sections/AbouPrimaryOverview';
@@ -10,53 +11,27 @@ import CommonBlogSection from '../../components/CommonBlogSection';
 import FqaPrimaryresearch from './sections/FqaPrimaryresearch';
 import PrimaryresEditorialAbout from './sections/PrimaryresEditorialAbout';
 import PrimaryresearchResearchCta from './sections/PrimaryresearchResearchCta';
-import { getPageBySlug, findSection } from '../../lib/strapi';
+import { getPageBySlug, findSection, generatePageMetadata } from '../../lib/strapi';
 
-export const metadata = {
-  title: 'Primary Research Services | Qualitative & Quantitative Fieldwork',
-  description:
-    'Collect first-hand market intelligence through customized primary research solutions: in-depth interviews, executive recruitment, focus groups, and multi-market fieldwork.',
-  keywords: [
-    'primary research services',
-    'qualitative fieldwork',
-    'quantitative fieldwork',
-    'in-depth interviews',
-    'focus group discussions',
-    'respondent recruitment',
-    'survey fieldwork',
-    'unimrkt primary research',
-  ],
-  alternates: {
-    canonical: '/primary-research',
-  },
-  openGraph: {
-    title: 'Primary Research Services | Unimrkt Research',
-    description:
-      'Customized primary research solutions that uncover customer opinions, validate business decisions, and fuel strategic growth across 90+ countries.',
-    url: 'https://www.unimrkt.com/primary-research',
-    siteName: 'Unimrkt Research',
-    locale: 'en_US',
-    type: 'website',
-    images: [
-      {
-        url: '/asstes/images/unimrkt-reseach-primary-research-banner-img.webp',
-        width: 1200,
-        height: 630,
-        alt: 'Primary Research Services - Unimrkt Research',
-      },
-    ],
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Primary Research Services | Unimrkt Research',
-    description:
-      'Customized primary research solutions that uncover customer opinions, validate business decisions, and fuel strategic growth across 90+ countries.',
-    images: ['/asstes/images/unimrkt-reseach-primary-research-banner-img.webp'],
-  },
-};
+export async function generateMetadata() {
+  return await generatePageMetadata(
+    'primary-research',
+    'Primary Market Research Services | Qualitative & Quantitative Depth',
+    'End-to-end primary market research delivering authenticated first-hand data through rigorous sampling, multi-channel fieldwork, and direct respondent engagement.'
+  );
+}
 
 export default async function PrimaryResearchPage() {
   const pageData = await getPageBySlug('primary-research').catch(() => null);
+
+  
+  if (pageData?.sections && pageData.sections.length > 0) {
+    return (
+      <main>
+        <DynamicZoneRenderer sections={pageData.sections} pageContext={{ pageData }} />
+      </main>
+    );
+  }
 
   const heroSection = findSection(pageData, 'sections.hero-common');
   const ctaSection = findSection(pageData, 'sections.question-cta');

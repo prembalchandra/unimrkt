@@ -1,5 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
+import { getStrapiMediaUrl } from '@/lib/strapi';
 
 export default function BlogHero({ dynamicHero = null }) {
   const kicker = dynamicHero?.kicker || 'BLOGS & ARTICLES';
@@ -9,13 +10,17 @@ export default function BlogHero({ dynamicHero = null }) {
     'Stay updated with deep dives, methodologies, and actionable market intelligence that keep your enterprise ahead of trends.';
   const primaryBtnLabel = dynamicHero?.primaryButton?.label || 'Browse Articles';
   const primaryBtnUrl = dynamicHero?.primaryButton?.url || '#blogs-grid';
+  const bannerImage = getStrapiMediaUrl(
+    dynamicHero?.bannerImage,
+    '/asstes/images/blog-hero-banner-img.webp'
+  );
 
   return (
     <>
       <section className="hero-common-area">
         <div className="hero-common-banner">
           <img
-            src="/asstes/images/blog-hero-banner-img.webp"
+            src={bannerImage}
             className="hero-common-banner-area"
             alt={title}
           />

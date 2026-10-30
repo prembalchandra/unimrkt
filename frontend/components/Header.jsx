@@ -3,8 +3,10 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { getStrapiMediaUrl } from '@/lib/strapi';
 
-export default function Header() {
+export default function Header({ globalSettings = null }) {
+  const logoSrc = getStrapiMediaUrl(globalSettings?.headerLogo, '/asstes/images/unimrkt-resarch-logo.webp');
   const [isSticky, setIsSticky] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isAboutSubmenuOpen, setIsAboutSubmenuOpen] = useState(false);
@@ -75,14 +77,14 @@ export default function Header() {
             <div className="header-col-lift-area">
               <div className="header-logo-area">
                 <Link href="/" className="logo">
-                  <img src="/asstes/images/unimrkt-resarch-logo.webp" alt="Unimrkt Research" />
+                  <img src={logoSrc} alt="Unimrkt Research" />
                 </Link>
               </div>
             </div>
             <div className="header-col-conter-area">
               <div className="header-drawer-logo-area">
                 <Link href="/" className="logo" onClick={() => setIsMobileMenuOpen(false)}>
-                  <img src="/asstes/images/unimrkt-resarch-logo.webp" alt="Unimrkt Research" />
+                  <img src={logoSrc} alt="Unimrkt Research" />
                 </Link>
               </div>
               <div className="header-menu-area">

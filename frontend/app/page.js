@@ -1,3 +1,4 @@
+import DynamicZoneRenderer from '@/components/DynamicZoneRenderer';
 import React from 'react';
 import HeroSection from './homesections/HeroSection';
 import GlobalResearchSection from './homesections/GlobalResearchSection';
@@ -10,51 +11,15 @@ import MomentsSection from './homesections/MomentsSection';
 import HomeFaq from './homesections/HomeFaq';
 import HomeInsightsEditorial from './homesections/HomeInsightsEditorial';
 import HomeresearchCta from './homesections/HomeresearchCta';
-import { getBlogPosts, getPageBySlug, findSection, getIndustries, getServices } from '../lib/strapi';
+import { getBlogPosts, getPageBySlug, findSection, getIndustries, getServices, generatePageMetadata } from '../lib/strapi';
 
-export const metadata = {
-  title: 'Unimrkt Research | Structured Market Intelligence & Global Solutions',
-  description:
-    'Delivering structured market data enabling organizations to gain complete clarity into market dynamics, minimize risks, and uncover new opportunities across 90+ countries.',
-  keywords: [
-    'market intelligence',
-    'global market research',
-    'CATI telephone surveys',
-    'qualitative research',
-    'quantitative research',
-    'primary market research',
-    'B2B research partner',
-    'consumer insights',
-    'Unimrkt Research',
-  ],
-  alternates: {
-    canonical: '/',
-  },
-  openGraph: {
-    title: 'Unimrkt Research | Structured Market Intelligence & Global Solutions',
-    description:
-      'Delivering structured market data enabling organizations to gain complete clarity into market dynamics, minimize risks, and uncover new opportunities.',
-    url: 'https://www.unimrkt.com',
-    siteName: 'Unimrkt Research',
-    locale: 'en_US',
-    type: 'website',
-    images: [
-      {
-        url: '/asstes/images/unimrkt-resarch-map-banner-img.webp',
-        width: 1200,
-        height: 630,
-        alt: 'Unimrkt Research - Global Market Intelligence',
-      },
-    ],
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Unimrkt Research | Structured Market Intelligence & Global Solutions',
-    description:
-      'Delivering structured market data enabling organizations to gain complete clarity into market dynamics, minimize risks, and uncover new opportunities.',
-    images: ['/asstes/images/unimrkt-resarch-map-banner-img.webp'],
-  },
-};
+export async function generateMetadata() {
+  return await generatePageMetadata(
+    'home',
+    'Unimrkt Research | Structured Market Intelligence & Global Solutions',
+    'Delivering structured market data enabling organizations to gain complete clarity into market dynamics, minimize risks, and uncover new opportunities across 90+ countries.'
+  );
+}
 
 export default async function HomePage() {
   const [pageData, latestBlogs, industries, services] = await Promise.all([

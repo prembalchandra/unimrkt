@@ -1,5 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
+import { getStrapiMediaUrl } from '@/lib/strapi';
 
 export default function GalleryHero({ dynamicHero = null }) {
   const kicker = dynamicHero?.kicker || 'OUR GALLERY';
@@ -9,13 +10,17 @@ export default function GalleryHero({ dynamicHero = null }) {
     'Explore our gallery to see the people, processes and projects that drive our research excellence.';
   const primaryBtnLabel = dynamicHero?.primaryButton?.label;
   const primaryBtnUrl = dynamicHero?.primaryButton?.url || '#gallerySlider';
+  const bannerImage = getStrapiMediaUrl(
+    dynamicHero?.bannerImage,
+    '/asstes/images/gallery-banner-img.webp'
+  );
 
   return (
     <>
       <section className="hero-common-area">
         <div className="hero-common-banner">
           <img
-            src="/asstes/images/gallery-banner-img.webp"
+            src={bannerImage}
             className="hero-common-banner-area"
             alt={title}
           />

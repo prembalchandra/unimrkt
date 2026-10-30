@@ -1,5 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
+import { getStrapiMediaUrl } from '@/lib/strapi';
 
 export default function FaqHero({ dynamicHero = null }) {
   const kicker = dynamicHero?.kicker || 'FREQUENTLY ASKED QUESTIONS';
@@ -11,13 +12,17 @@ export default function FaqHero({ dynamicHero = null }) {
     'Find fast, accurate answers about our global primary research capabilities, CATI operations, sampling panels, project delivery timelines, and ISO data compliance.';
   const primaryBtnLabel = dynamicHero?.primaryButton?.label || 'Have a Specific Question?';
   const primaryBtnUrl = dynamicHero?.primaryButton?.url || '/contact';
+  const bannerImage = getStrapiMediaUrl(
+    dynamicHero?.bannerImage,
+    '/asstes/images/the-impact-banner-img.webp'
+  );
 
   return (
     <>
       <section className="hero-common-area">
         <div className="hero-common-banner">
           <img
-            src="/asstes/images/the-impact-banner-img.webp"
+            src={bannerImage}
             className="hero-common-banner-area"
             alt={title}
           />

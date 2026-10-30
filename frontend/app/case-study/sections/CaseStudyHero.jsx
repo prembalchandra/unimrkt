@@ -1,5 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
+import { getStrapiMediaUrl } from '@/lib/strapi';
 
 export default function CaseStudyHero({ dynamicHero = null }) {
   const kicker = dynamicHero?.kicker || 'CASE STUDIES';
@@ -9,13 +10,17 @@ export default function CaseStudyHero({ dynamicHero = null }) {
     'Discover how our tailored market research solutions help businesses solve critical challenges, uncover growth opportunities, and make confident decisions.';
   const primaryBtnLabel = dynamicHero?.primaryButton?.label || 'Explore Case Studies';
   const primaryBtnUrl = dynamicHero?.primaryButton?.url || '#blogs-grid';
+  const bannerImage = getStrapiMediaUrl(
+    dynamicHero?.bannerImage,
+    '/asstes/images/case-study-banner-img.webp'
+  );
 
   return (
     <>
       <section className="hero-common-area">
         <div className="hero-common-banner">
           <img
-            src="/asstes/images/case-study-banner-img.webp"
+            src={bannerImage}
             className="hero-common-banner-area"
             alt={title}
           />

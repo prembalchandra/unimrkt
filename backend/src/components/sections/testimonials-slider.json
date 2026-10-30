@@ -1,0 +1,28 @@
+{
+  "collectionName": "components_sections_testimonials_sliders",
+  "info": {
+    "displayName": "Testimonials Slider",
+    "icon": "quote-right",
+    "description": "Client testimonials and partner reviews slider"
+  },
+  "options": {},
+  "attributes": {
+    "kicker": {
+      "type": "string",
+      "default": "TRUSTED BY LEADERS"
+    },
+    "heading": {
+      "type": "string",
+      "required": true,
+      "default": "What Global Enterprises Say About Unimrkt"
+    },
+    "description": {
+      "type": "text"
+    },
+    "testimonials": {
+      "type": "component",
+      "repeatable": true,
+      "component": "elements.testimonial-item"
+    }
+  }
+}
