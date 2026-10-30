@@ -414,7 +414,8 @@ export default function HeroSection() {
           loop
           muted
           playsInline
-          preload="auto"
+          preload="metadata"
+          poster="/asstes/images/unimrkt-resarch-map-banner-img.webp"
         >
           <source src="/asstes/images/home-banner-video.mp4" type="video/mp4" />
           <source src="/img/home-banner-video.mp4" type="video/mp4" />

@@ -1,32 +1,10 @@
 'use client';
 
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
 import Link from 'next/link';
+import LazyVideo from '@/components/LazyVideo';
 
 export default function GlobalResearchSection({ dynamicData = null }) {
-  const videoRef = useRef(null);
-
-  useEffect(() => {
-    const vid = videoRef.current;
-    if (vid) {
-      vid.muted = true;
-      vid.defaultMuted = true;
-      const playPromise = vid.play();
-      if (playPromise !== undefined) {
-        playPromise.catch(() => {
-          const unlock = () => {
-            vid.play().catch(() => { });
-            ['click', 'touchstart', 'scroll'].forEach((evt) => {
-              window.removeEventListener(evt, unlock);
-            });
-          };
-          ['click', 'touchstart', 'scroll'].forEach((evt) => {
-            window.addEventListener(evt, unlock, { once: true, passive: true });
-          });
-        });
-      }
-    }
-  }, []);
 
   const kicker = dynamicData?.kicker || 'About Us';
   const heading = dynamicData?.heading || (
@@ -50,17 +28,11 @@ export default function GlobalResearchSection({ dynamicData = null }) {
         </div>
 
         <div className="global-research-banner-wrap">
-          <video
-            ref={videoRef}
+          <LazyVideo
             className="global-research-video"
-            autoPlay
-            loop
-            muted
-            playsInline
-            preload="auto"
-          >
-            <source src="/asstes/images/homeaboutvideo-banner-img.mp4" type="video/mp4" />
-          </video>
+            src="/asstes/images/homeaboutvideo-banner-img.mp4"
+            poster="/asstes/images/about-hero-banner-img.webp"
+          />
         </div>
 
         <div className="global-research-bottom-row">

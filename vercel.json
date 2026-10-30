@@ -3,5 +3,46 @@
   "framework": "nextjs",
   "installCommand": "npm --prefix frontend install --legacy-peer-deps",
   "buildCommand": "npm --prefix frontend run build",
-  "outputDirectory": "frontend/.next"
+  "outputDirectory": "frontend/.next",
+  "headers": [
+    {
+      "source": "/asstes/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        },
+        {
+          "key": "Expires",
+          "value": "Thu, 31 Dec 2037 23:59:59 GMT"
+        }
+      ]
+    },
+    {
+      "source": "/_next/static/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        },
+        {
+          "key": "Expires",
+          "value": "Thu, 31 Dec 2037 23:59:59 GMT"
+        }
+      ]
+    },
+    {
+      "source": "/(.*)\\.(png|jpg|jpeg|webp|svg|ico|mp4|webm|woff2|woff|ttf|css|js)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        },
+        {
+          "key": "Expires",
+          "value": "Thu, 31 Dec 2037 23:59:59 GMT"
+        }
+      ]
+    }
+  ]
 }

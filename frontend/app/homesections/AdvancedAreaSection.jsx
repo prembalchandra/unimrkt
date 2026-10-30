@@ -1,74 +1,21 @@
 'use client';
 
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
 import Link from 'next/link';
+import LazyVideo from '@/components/LazyVideo';
 
 export default function AdvancedAreaSection() {
-  const videoRef = useRef(null);
-
-  useEffect(() => {
-    const vid = videoRef.current;
-    if (!vid) return;
-
-    vid.muted = true;
-    vid.defaultMuted = true;
-    vid.playbackRate = 0.5;
-
-    const handlePlay = () => {
-      vid.playbackRate = 0.5;
-    };
-    vid.addEventListener('play', handlePlay);
-    vid.addEventListener('loadedmetadata', handlePlay);
-
-    const playVid = () => {
-      const p = vid.play();
-      if (p !== undefined) {
-        p.catch(() => {
-          const trigger = () => {
-            vid.play().catch(() => {});
-            ['click', 'touchstart', 'scroll', 'keydown'].forEach((evt) => {
-              window.removeEventListener(evt, trigger);
-            });
-          };
-          ['click', 'touchstart', 'scroll', 'keydown'].forEach((evt) => {
-            window.addEventListener(evt, trigger, { once: true, passive: true });
-          });
-        });
-      }
-    };
-
-    playVid();
-
-    const handleVisibility = () => {
-      if (!document.hidden && vid.paused) {
-        vid.play().catch(() => {});
-      }
-    };
-    document.addEventListener('visibilitychange', handleVisibility);
-
-    return () => {
-      vid.removeEventListener('play', handlePlay);
-      vid.removeEventListener('loadedmetadata', handlePlay);
-      document.removeEventListener('visibilitychange', handleVisibility);
-    };
-  }, []);
-
   return (
     <section className="advanced-area">
       <div className="cati-showcase-box-area">
         <div className="cati-video-backdrop-wrap">
-          <video
-            ref={videoRef}
+          <LazyVideo
             className="cati-wave-video"
             id="catiWaveVideo"
-            autoPlay
-            loop
-            muted
-            playsInline
-            preload="auto"
-          >
-            <source src="/asstes/images/advanced-banner-video2.mp4" type="video/mp4" />
-          </video>
+            src="/asstes/images/advanced-banner-video2.mp4"
+            poster="/asstes/images/advanced-banner-img.webp"
+            playbackRate={0.5}
+          />
         </div>
         <div className="srcn-container">
           <div className="cati-showcase-row">

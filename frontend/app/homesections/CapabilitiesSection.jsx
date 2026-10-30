@@ -15,6 +15,7 @@ export default function CapabilitiesSection() {
     workstations: '0+',
     experience: '0+ YEARS',
   });
+  const [sectionInView, setSectionInView] = useState(false);
   const hasCountedRef = useRef(false);
 
   useEffect(() => {
@@ -59,9 +60,12 @@ export default function CapabilitiesSection() {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting && !hasCountedRef.current) {
-            hasCountedRef.current = true;
-            animateCounters();
+          if (entry.isIntersecting) {
+            setSectionInView(true);
+            if (!hasCountedRef.current) {
+              hasCountedRef.current = true;
+              animateCounters();
+            }
           }
         });
       },
@@ -69,9 +73,12 @@ export default function CapabilitiesSection() {
     );
 
     const rect = statsSection.getBoundingClientRect();
-    if (rect.top < window.innerHeight && rect.bottom >= 0 && !hasCountedRef.current) {
-      hasCountedRef.current = true;
-      animateCounters();
+    if (rect.top < window.innerHeight && rect.bottom >= 0) {
+      setSectionInView(true);
+      if (!hasCountedRef.current) {
+        hasCountedRef.current = true;
+        animateCounters();
+      }
     }
 
     observer.observe(statsSection);
@@ -158,7 +165,7 @@ export default function CapabilitiesSection() {
                   playsInline
                   preload="none"
                 >
-                  <source src="/asstes/images/video-banner2.mp4" type="video/mp4" />
+                  {sectionInView && <source src="/asstes/images/video-banner2.mp4" type="video/mp4" />}
                 </video>
                 <div className="stat-video-overlay"></div>
               </div>
@@ -201,7 +208,7 @@ export default function CapabilitiesSection() {
                   playsInline
                   preload="none"
                 >
-                  <source src="/asstes/images/video-banner2.mp4" type="video/mp4" />
+                  {sectionInView && <source src="/asstes/images/video-banner2.mp4" type="video/mp4" />}
                 </video>
                 <div className="stat-video-overlay"></div>
               </div>
@@ -245,7 +252,7 @@ export default function CapabilitiesSection() {
                   playsInline
                   preload="none"
                 >
-                  <source src="/asstes/images/video-banner2.mp4" type="video/mp4" />
+                  {sectionInView && <source src="/asstes/images/video-banner2.mp4" type="video/mp4" />}
                 </video>
                 <div className="stat-video-overlay"></div>
               </div>

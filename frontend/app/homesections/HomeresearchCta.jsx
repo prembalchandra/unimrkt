@@ -1,5 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
+import LazyVideo from '@/components/LazyVideo';
 
 export default function HomeresearchCta({ dynamicCta = null }) {
   const title = dynamicCta?.title || 'Global Research Panel';
@@ -13,15 +14,11 @@ export default function HomeresearchCta({ dynamicCta = null }) {
     <section className="research-cta-sections" id="cta">
       <div className="srcn-containers">
         <div className="research-cta-banner-wrapper research-home-banner-wrapper">
-          <video
+          <LazyVideo
             className="research-cta-bg-image"
-            autoPlay
-            muted
-            loop
-            playsInline
-          >
-            <source src="/asstes/images/commonvideo-banner.mp4" type="video/mp4" />
-          </video>
+            src="/asstes/images/commonvideo-banner.mp4"
+            poster="/asstes/images/the-impact-banner-img.webp"
+          />
 
           <div className="research-cta-overlay"></div>
           <div className="srcn-container research-cta-content">

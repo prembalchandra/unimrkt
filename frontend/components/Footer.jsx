@@ -1,12 +1,15 @@
 import React from 'react';
 import Link from 'next/link';
+import LazyVideo from '@/components/LazyVideo';
 
 export default function Footer() {
   return (
     <footer className="unimrkt-resarch-footer-area">
-      <video className="footer-banner-video" autoPlay muted loop playsInline preload="auto" aria-hidden="true">
-        <source src="/asstes/images/video-banner.mp4" type="video/mp4" />
-      </video>
+      <LazyVideo
+        className="footer-banner-video"
+        src="/asstes/images/video-banner.mp4"
+        poster="/asstes/images/map-banner-img.webp"
+      />
       <div className="footer-video-overlay" aria-hidden="true"></div>
       <div className="srcn-container">
         <div className="footer-wapper-area">

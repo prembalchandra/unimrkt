@@ -4,6 +4,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import Swiper from 'swiper';
 import { Autoplay, Navigation, Pagination } from 'swiper/modules';
+import LazyVideo from '@/components/LazyVideo';
 
 const industriesData = [
   {
@@ -39,7 +40,6 @@ const industriesData = [
 ];
 
 export default function IndustriesSection() {
-  const videoRef = useRef(null);
   const swiperContainerRef = useRef(null);
   const prevBtnRef = useRef(null);
   const nextBtnRef = useRef(null);
@@ -48,21 +48,6 @@ export default function IndustriesSection() {
   const [activeMobileCard, setActiveMobileCard] = useState(null);
 
   useEffect(() => {
-    const vid = videoRef.current;
-    if (vid) {
-      vid.muted = true;
-      vid.defaultMuted = true;
-      vid.playbackRate = 0.75;
-
-      const handlePlay = () => {
-        vid.playbackRate = 0.75;
-      };
-      vid.addEventListener('play', handlePlay);
-      vid.addEventListener('loadedmetadata', handlePlay);
-
-      const p = vid.play();
-      if (p !== undefined) p.catch(() => {});
-    }
     if (swiperContainerRef.current) {
       swiperInstanceRef.current = new Swiper(swiperContainerRef.current, {
         modules: [Autoplay, Navigation, Pagination],
@@ -132,18 +117,13 @@ export default function IndustriesSection() {
         <div className="industries-banner-wapper-banner">
           <div className="industries-banner-box">
             <div className="industries-backdrop-wrap">
-              <video
-                ref={videoRef}
+              <LazyVideo
                 className="industries-video-bg"
                 id="industriesBannerVideo"
-                autoPlay
-                loop
-                muted
-                playsInline
-                preload="auto"
-              >
-                <source src="/asstes/images/indutries-banner-video.mp4" type="video/mp4" />
-              </video>
+                src="/asstes/images/indutries-banner-video.mp4"
+                poster="/asstes/images/industries-banner-img.webp"
+                playbackRate={0.75}
+              />
               <div className="industries-city-backdrop"></div>
             </div>
             <div className="industries-banner-content">

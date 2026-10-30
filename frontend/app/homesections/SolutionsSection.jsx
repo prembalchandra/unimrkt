@@ -2,11 +2,11 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
+import LazyVideo from '@/components/LazyVideo';
 
 export default function SolutionsSection() {
   const [activeCard, setActiveCard] = useState(null);
   const sectionRef = useRef(null);
-  const videoRef = useRef(null);
 
   useEffect(() => {
     const handleOutsideClick = (e) => {
@@ -19,29 +19,6 @@ export default function SolutionsSection() {
     return () => {
       document.removeEventListener('click', handleOutsideClick);
     };
-  }, []);
-
-  // Smooth reliable autoplay on modern browsers
-  useEffect(() => {
-    const vid = videoRef.current;
-    if (vid) {
-      vid.muted = true;
-      vid.defaultMuted = true;
-      const playPromise = vid.play();
-      if (playPromise !== undefined) {
-        playPromise.catch(() => {
-          const unlock = () => {
-            vid.play().catch(() => {});
-            ['click', 'touchstart', 'scroll'].forEach((evt) => {
-              window.removeEventListener(evt, unlock);
-            });
-          };
-          ['click', 'touchstart', 'scroll'].forEach((evt) => {
-            window.addEventListener(evt, unlock, { once: true, passive: true });
-          });
-        });
-      }
-    }
   }, []);
 
   const handleCardClick = (cardKey) => {
@@ -57,18 +34,11 @@ export default function SolutionsSection() {
   return (
     <section className="solutions-banner-section" id="solutions" ref={sectionRef}>
       <div className="solutions-space-bg">
-        <video
-          ref={videoRef}
+        <LazyVideo
           className="solutions-video-bg"
-          autoPlay
-          loop
-          muted
-          playsInline
-          preload="auto"
-        >
-          <source src="/asstes/images/research-solutions-video-banner.mp4" type="video/mp4" />
-          <source src="/img/research-solutions-video-banner.mp4" type="video/mp4" />
-        </video>
+          src="/asstes/images/research-solutions-video-banner.mp4"
+          poster="/asstes/images/services-banner-img.webp"
+        />
         <div className="solutions-shade-overlay"></div>
         <div className="space-earth-layer"></div>
       </div>

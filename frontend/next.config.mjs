@@ -1,5 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  compress: true,
+  poweredByHeader: false,
   reactStrictMode: false,
   eslint: {
     ignoreDuringBuilds: true,
@@ -30,6 +32,45 @@ const nextConfig = {
           {
             key: 'Access-Control-Allow-Headers',
             value: '*',
+          },
+        ],
+      },
+      {
+        source: '/asstes/:path*',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+          {
+            key: 'Expires',
+            value: 'Thu, 31 Dec 2037 23:59:59 GMT',
+          },
+        ],
+      },
+      {
+        source: '/_next/static/:path*',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+          {
+            key: 'Expires',
+            value: 'Thu, 31 Dec 2037 23:59:59 GMT',
+          },
+        ],
+      },
+      {
+        source: '/:all*(png|jpg|jpeg|webp|svg|ico|mp4|webm|woff2|woff|ttf|css|js)',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+          {
+            key: 'Expires',
+            value: 'Thu, 31 Dec 2037 23:59:59 GMT',
           },
         ],
       },
