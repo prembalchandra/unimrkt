@@ -27,7 +27,7 @@ const allIndustries = [
   {
     id: 'food-beverage',
     title: 'Food & Beverage',
-    image: '/asstes/images/food-&-beverage-img.webp',
+    image: '/asstes/images/food-and-beverage-img.webp',
     link: '/services',
     desc: 'Discover changing consumption habits, product preferences, category trends, brand perceptions and purchase drivers.',
   },
@@ -41,7 +41,7 @@ const allIndustries = [
   {
     id: 'media-entertainment',
     title: 'Media & Entertainment',
-    image: '/asstes/images/media-&-entertainment-img.webp',
+    image: '/asstes/images/media-and-entertainment-img.webp',
     link: '/services',
     desc: 'Explore content consumption, audience engagement, platform preferences, subscriptions, advertising and monetization.',
   },

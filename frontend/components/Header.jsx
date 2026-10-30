@@ -72,7 +72,6 @@ export default function Header() {
       <div className="srcn-container">
         <div className="header-wapper-area">
           <div className={`header-row-area ${isMobileMenuOpen ? 'menu-open' : ''}`}>
-            {/* Brand Logo */}
             <div className="header-col-lift-area">
               <div className="header-logo-area">
                 <Link href="/" className="logo">
@@ -80,8 +79,6 @@ export default function Header() {
                 </Link>
               </div>
             </div>
-
-            {/* Center Navigation Menu (Desktop & Mobile) */}
             <div className="header-col-conter-area">
               <div className="header-drawer-logo-area">
                 <Link href="/" className="logo" onClick={() => setIsMobileMenuOpen(false)}>
@@ -91,7 +88,6 @@ export default function Header() {
               <div className="header-menu-area">
                 <nav className="header-menu-navber">
                   <ul className="header-listing-area">
-                    {/* ABOUT UNIMRKT Dropdown (Matches User Screenshot) */}
                     <li
                       className={`header-itme-area header-itme-submenu-toggle header-about-dropdown-toggle ${
                         isAboutSubmenuOpen ? 'submenu-open' : ''
@@ -164,8 +160,6 @@ export default function Header() {
                         </ul>
                       </div>
                     </li>
-
-                    {/* Services Dropdown */}
                     <li className={`header-itme-area header-itme-submenu-toggle ${isSubmenuOpen ? 'submenu-open' : ''}`}>
                       <a
                         href="/services"
@@ -239,8 +233,6 @@ export default function Header() {
                 </nav>
               </div>
             </div>
-
-            {/* Right Header Action Area */}
             <div className="header-right-action-area">
               <div className="header-btn-area">
                 <Link href="/contact" className="btn-sm" onClick={() => setIsMobileMenuOpen(false)}>

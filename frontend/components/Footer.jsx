@@ -26,8 +26,6 @@ export default function Footer() {
                 <img className="footer-certification-logo" src="/asstes/images/icon/msri-logo-img.png" alt="MRSI corporate member" />
               </div>
             </div>
-
-            {/* Column 2: Our Company */}
             <div className="footer-nav-col">
               <h3>Our Company</h3>
               <ul>
@@ -38,8 +36,6 @@ export default function Footer() {
                 <li className="footer-time-area"><Link href="/gallery" className="footer-menu-link">Gallery</Link></li>
               </ul>
             </div>
-
-            {/* Column 3: Services */}
             <div className="footer-nav-col">
               <h3>Services</h3>
               <ul>
@@ -50,8 +46,6 @@ export default function Footer() {
                 <li className="footer-time-area"><Link href="/services" className="footer-menu-link">Data Analytics</Link></li>
               </ul>
             </div>
-
-            {/* Column 4: Quick Links */}
             <div className="footer-nav-col">
               <h3>Quick Links</h3>
               <ul>
@@ -62,8 +56,6 @@ export default function Footer() {
                 <li className="footer-time-area"><Link href="/faq" className="footer-menu-link">FAQs</Link></li>
               </ul>
             </div>
-
-            {/* Column 5: Connect with us */}
             <div className="footer-nav-col">
               <h3>Connect with us</h3>
               <div className="footer-social-links">
