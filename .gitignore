@@ -22,7 +22,6 @@ backend/.cache
 old_node_modules
 */old_node_modules
 backend/old_node_modules
-backend/build
 .strapi
 */.strapi
 backend/.strapi
