@@ -6,6 +6,8 @@
     "dev": "npm --prefix frontend run dev",
     "build": "npm --prefix frontend run build",
     "start": "npm --prefix frontend run start",
-    "install": "npm --prefix frontend install --legacy-peer-deps"
+    "install": "npm --prefix frontend install --legacy-peer-deps",
+    "vercel-install": "npm --prefix frontend install --legacy-peer-deps",
+    "vercel-build": "npm --prefix frontend run build"
   }
 }
