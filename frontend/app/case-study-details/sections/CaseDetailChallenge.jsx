@@ -8,7 +8,7 @@ export default function CaseDetailChallenge() {
           {/* Left: Circular Avatar Image */}
           <div className="cs-challenge-visual">
             <div className="cs-challenge-avatar-frame">
-              <img src="/asstes/images/challenge-portrait.png" alt="Financial Expectations Challenge" />
+              <img src="/asstes/images/challenge-portrait.webp" alt="Financial Expectations Challenge" />
             </div>
           </div>
 

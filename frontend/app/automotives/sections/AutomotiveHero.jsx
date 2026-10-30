@@ -16,7 +16,7 @@ export default function AutomotiveHero({ dynamicHero = null }) {
       <section className="hero-common-area">
         <div className="hero-common-banner">
           <img
-            src="/asstes/images/automation-connected-automobile-banner-img.png"
+            src="/asstes/images/automation-connected-automobile-banner-img.webp"
             className="hero-common-banner-area"
             alt={title}
           />

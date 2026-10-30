@@ -7,37 +7,37 @@ import { Autoplay, Pagination, Navigation } from 'swiper/modules';
 const methodologies = [
   {
     id: 1,
-    image: '/asstes/images/online-surveys-card-img.png',
+    image: '/asstes/images/online-surveys-card-img.webp',
     title: 'CAWI Surveys',
     desc: 'Deploying responsive quantitative surveys to verified EV owners, intenders, and passenger car drivers worldwide.',
   },
   {
     id: 2,
-    image: '/asstes/images/smart-survey-management-card-img.png',
+    image: '/asstes/images/smart-survey-management-card-img.webp',
     title: 'In-Facility Surveys',
     desc: 'Conducting structured executive interviews with fleet directors, dealership principals, and automotive engineers.',
   },
   {
     id: 3,
-    image: '/asstes/images/interview-controls-card-img.png',
+    image: '/asstes/images/interview-controls-card-img.webp',
     title: 'In-Depth Executive Interviews',
     desc: 'One-on-one qualitative discovery with Tier-1 procurement leads and mobility innovators on strategic roadmaps.',
   },
   {
     id: 4,
-    image: '/asstes/images/real-time-monitoring-card-img.png',
+    image: '/asstes/images/real-time-monitoring-card-img.webp',
     title: 'Focus Group Discussions (FGDs)',
     desc: 'Physical and virtual vehicle clinics evaluating cockpit ergonomics, digital infotainment, and styling appeal.',
   },
   {
     id: 5,
-    image: '/asstes/images/telephonic-surveys-card-img.png',
+    image: '/asstes/images/telephonic-surveys-card-img.webp',
     title: 'Mystery Shopping & Audits',
     desc: 'Assessing dealer network sales etiquette, EV customer handover protocols, and test drive quality standards.',
   },
   {
     id: 6,
-    image: '/asstes/images/data-validation-card-img.png',
+    image: '/asstes/images/data-validation-card-img.webp',
     title: 'Brand Health Tracking',
     desc: 'Continuous multi-market monitoring of OEM brand equity, consideration funnel, and net promoter score (NPS).',
   },

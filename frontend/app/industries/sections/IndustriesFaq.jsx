@@ -46,7 +46,7 @@ export default function IndustriesFaq() {
   return (
     <section className="faq-section-area" id="industries-faq">
       <div className="worldmap-bg">
-        <img src="/asstes/images/unimrkt-resarch-map-banner-img.png" alt="fqa banner" />
+        <img src="/asstes/images/unimrkt-resarch-map-banner-img.webp" alt="fqa banner" />
       </div>
       <div className="srcn-container">
         <div className="section-header-area" style={{ textAlign: 'center', marginBottom: '38px' }}>

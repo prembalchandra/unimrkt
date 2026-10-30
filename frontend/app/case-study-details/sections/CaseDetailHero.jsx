@@ -36,7 +36,7 @@ export default function CaseDetailHero({ dynamicHero = null }) {
 
             <div className="cs-hero-img-box">
               <img
-                src="/asstes/images/case-study-banking.jpg"
+                src="/asstes/images/case-study-banking.webp"
                 alt={title}
               />
             </div>

@@ -63,7 +63,7 @@ export default function QuestionsToInsightsSection() {
         <div className="questions-insights-layout">
           <div className="questions-insights-visual">
             <img
-              src="/asstes/images/questions-to-insights-img.png"
+              src="/asstes/images/questions-to-insights-img.webp"
               alt="Unimrkt Research Specialist Analysing Insights"
               loading="lazy"
             />

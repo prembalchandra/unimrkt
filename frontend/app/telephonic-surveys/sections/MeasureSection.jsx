@@ -7,31 +7,31 @@ const accordionPanels = [
     id: 1,
     title: 'Smart Survey Management',
     desc: 'Structured questionnaires and controlled interview flows.',
-    image: '/asstes/images/smart-survey-management-card-img.png',
+    image: '/asstes/images/smart-survey-management-card-img.webp',
   },
   {
     id: 2,
     title: 'Real-Time Monitoring',
     desc: 'Live supervisor dashboards and field interview tracking.',
-    image: '/asstes/images/real-time-monitoring-card-img.png',
+    image: '/asstes/images/real-time-monitoring-card-img.webp',
   },
   {
     id: 3,
     title: 'Interview Controls',
     desc: 'Strict quota enforcement and verified demographic protocols.',
-    image: '/asstes/images/interview-controls-card-img.png',
+    image: '/asstes/images/interview-controls-card-img.webp',
   },
   {
     id: 4,
     title: 'Data Validation',
     desc: 'Automated speeder checks and multi-point audio audits.',
-    image: '/asstes/images/data-validation-card-img.png',
+    image: '/asstes/images/data-validation-card-img.webp',
   },
   {
     id: 5,
     title: 'Centralized Data',
     desc: 'Unified reporting and instant data synchronization across markets.',
-    image: '/asstes/images/centralized-data-card-img.png',
+    image: '/asstes/images/centralized-data-card-img.webp',
   },
 ];
 

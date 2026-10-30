@@ -7,13 +7,13 @@ const caseStudies = [
   {
     id: 1,
     title: 'Vehicle Product Acceptance Study Through Car Clinics',
-    image: '/asstes/images/automotive-success-story-1.png',
+    image: '/asstes/images/automotive-success-story-1.webp',
     link: '/case-study-details',
   },
   {
     id: 2,
     title: 'Future Mobility & Car Design Preference Research',
-    image: '/asstes/images/automotive-success-story-2.png',
+    image: '/asstes/images/automotive-success-story-2.webp',
     link: '/case-study-details',
   },
 ];

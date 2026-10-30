@@ -6,7 +6,7 @@ const services = [
     title: "Telephonic Surveys",
     description:
       "Efficient phone-based surveys capturing valuable respondent insights.",
-    image: "/asstes/images/telephonic-surveys-card-img.png",
+    image: "/asstes/images/telephonic-surveys-card-img.webp",
     alt: "Telephonic Surveys",
     href: "/telephonic-surveys",
   },
@@ -14,7 +14,7 @@ const services = [
     title: "Online Surveys",
     description:
       "Scalable digital questionnaires connecting you with verified global respondents.",
-    image: "/asstes/images/online-surveys-card-img.png",
+    image: "/asstes/images/online-surveys-card-img.webp",
     alt: "Online Surveys",
     href: "/services",
   },
@@ -22,7 +22,7 @@ const services = [
     title: "In-Depth Interviews",
     description:
       "One-on-one expert conversations uncovering profound qualitative market perspectives.",
-    image: "/asstes/images/interview-controls-card-img.png",
+    image: "/asstes/images/interview-controls-card-img.webp",
     alt: "In-Depth Interviews",
     href: "/services",
   },
@@ -30,7 +30,7 @@ const services = [
     title: "CATI Surveys",
     description:
       "Structured computer-assisted interviewing ensuring speed, compliance, and accuracy.",
-    image: "/asstes/images/smart-survey-management-card-img.png",
+    image: "/asstes/images/smart-survey-management-card-img.webp",
     alt: "CATI Surveys",
     href: "/telephonic-surveys",
   },

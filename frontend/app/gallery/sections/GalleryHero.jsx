@@ -15,7 +15,7 @@ export default function GalleryHero({ dynamicHero = null }) {
       <section className="hero-common-area">
         <div className="hero-common-banner">
           <img
-            src="/asstes/images/gallery-banner-img.png"
+            src="/asstes/images/gallery-banner-img.webp"
             className="hero-common-banner-area"
             alt={title}
           />

@@ -15,7 +15,7 @@ export default function CompanyHero({ dynamicHero = null }) {
       <section className="hero-common-area">
         <div className="hero-common-banner">
           <img
-            src="/asstes/images/our-company-banner-img.png"
+            src="/asstes/images/our-company-banner-img.webp"
             className="hero-common-banner-area"
             alt={title}
           />

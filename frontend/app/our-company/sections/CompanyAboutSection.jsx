@@ -34,7 +34,7 @@ export default function CompanyAboutSection({ dynamicRichText = null }) {
 
           <div className="telephonic-overview-visual-wrap">
             <div className="telephonic-overview-figure abou-Primary-img">
-              <img src="/asstes/images/company-about-img.png" alt={title} />
+              <img src="/asstes/images/company-about-img.webp" alt={title} />
             </div>
           </div>
         </div>

@@ -17,7 +17,7 @@ export default function ServicesHero({ dynamicHero = null }) {
     <section className="hero-common-area">
       <div className="hero-common-banner">
         <img
-          src="/asstes/images/services-banner-img.png"
+          src="/asstes/images/services-banner-img.webp"
           className="hero-common-banner-area"
           alt={title}
         />

@@ -497,7 +497,7 @@ export default function ElementorLiveEditor() {
               <div className="modal-preview-bar">
                 <div className="preview-thumb-box">
                   <img
-                    src={customImgUrl || '/asstes/images/unimrkt-resarch-our-team-banner.png'}
+                    src={customImgUrl || '/asstes/images/unimrkt-resarch-our-team-banner.webp'}
                     alt="Preview"
                     className="elementor-ui-img preview-thumb"
                   />

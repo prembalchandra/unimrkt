@@ -6,7 +6,7 @@ export default function NotFoundHero() {
   return (
     <section className="notfound-page-wrapper">
       <div class="hero-common-banner"><img
-            src="/asstes/images/404-banner.png"
+            src="/asstes/images/404-banner.webp"
             alt="404 Page Not Found Background"
             className="notfound-banner-bg hero-common-banner-area"
           /></div>

@@ -29,7 +29,7 @@ export default function TelephonicOverview() {
           <div className="telephonic-overview-visual-wrap">
             <div className="telephonic-overview-figure abou-Primary-img">
               <img
-                src="/asstes/images/unimrkt-research-voices-img.png"
+                src="/asstes/images/unimrkt-research-voices-img.webp"
                 alt="Telephonic survey interviewer holding a clipboard"
               />
             </div>

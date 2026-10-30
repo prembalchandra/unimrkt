@@ -30,7 +30,7 @@ export default function ServicesQuestionCTA({ dynamicCta = null }) {
 
             <div className="question-cta-image">
               <img
-                src="/asstes/images/question-img.png"
+                src="/asstes/images/question-img.webp"
                 alt="People thinking and asking questions"
                 loading="lazy"
               />

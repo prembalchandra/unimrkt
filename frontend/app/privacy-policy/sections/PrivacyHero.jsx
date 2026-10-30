@@ -13,7 +13,7 @@ export default function PrivacyHero({ dynamicHero = null }) {
       <section className="hero-common-area">
         <div className="hero-common-banner">
           <img
-            src="/asstes/images/unimrkt-research-privacy-policy-banner-img.png"
+            src="/asstes/images/unimrkt-research-privacy-policy-banner-img.webp"
             className="hero-common-banner-area"
             alt={title}
           />

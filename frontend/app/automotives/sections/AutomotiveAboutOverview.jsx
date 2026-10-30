@@ -21,7 +21,7 @@ export default function AutomotiveAboutOverview() {
 
           <div className="telephonic-overview-visual-wrap">
             <div className="telephonic-overview-figure abou-Primary-img">
-              <img src="/asstes/images/automotives-about-img.png" alt="First-Hand Insights That Power Better Business Decisions" />
+              <img src="/asstes/images/automotives-about-img.webp" alt="First-Hand Insights That Power Better Business Decisions" />
             </div>
           </div>
         </div>

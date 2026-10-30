@@ -54,7 +54,7 @@ export const metadata = {
       'Delivering structured market data enabling organizations to gain complete clarity into market dynamics, minimize risks, and uncover new opportunities.',
     images: [
       {
-        url: '/asstes/images/unimrkt-resarch-map-banner-img.png',
+        url: '/asstes/images/unimrkt-resarch-map-banner-img.webp',
         width: 1200,
         height: 630,
         alt: 'Unimrkt Research - Global Market Intelligence',
@@ -66,7 +66,7 @@ export const metadata = {
     title: 'Unimrkt Research | Structured Market Intelligence',
     description:
       'Delivering structured market data enabling organizations to gain complete clarity into market dynamics, minimize risks, and uncover new opportunities.',
-    images: ['/asstes/images/unimrkt-resarch-map-banner-img.png'],
+    images: ['/asstes/images/unimrkt-resarch-map-banner-img.webp'],
   },
   icons: {
     icon: '/favicon.ico',

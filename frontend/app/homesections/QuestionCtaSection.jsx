@@ -5,7 +5,7 @@ export default function QuestionCtaSection({
   title = "Have A Question?\nLet's Find The Answer.",
   description = 'Reach out to our experts to get answers to your questions and explore tailored research solutions that accelerate your business growth.',
   button = { label: 'Get in Touch With Us', url: '/contact' },
-  visualImageUrl = '/asstes/images/question-img.png',
+  visualImageUrl = '/asstes/images/question-img.webp',
 } = {}) {
   return (
     <section className="question-cta-section">
@@ -22,7 +22,7 @@ export default function QuestionCtaSection({
             </Link>
           </div>
           <div className="question-cta-visual">
-            <img src={visualImageUrl || '/asstes/images/question-img.png'} alt="Unimrkt Research Consultation Team" />
+            <img src={visualImageUrl || '/asstes/images/question-img.webp'} alt="Unimrkt Research Consultation Team" />
           </div>
         </div>
       </div>

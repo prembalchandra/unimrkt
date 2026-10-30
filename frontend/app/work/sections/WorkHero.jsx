@@ -15,7 +15,7 @@ export default function WorkHero({ dynamicHero = null }) {
       <section className="hero-common-area">
         <div className="hero-common-banner">
           <img
-            src="/asstes/images/unimrkt-reseach-work-banner-img.png"
+            src="/asstes/images/unimrkt-reseach-work-banner-img.webp"
             className="hero-common-banner-area"
             alt={title}
           />

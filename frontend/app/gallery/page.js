@@ -28,7 +28,7 @@ export const metadata = {
     type: 'website',
     images: [
       {
-        url: '/asstes/images/gallery-banner-img.png',
+        url: '/asstes/images/gallery-banner-img.webp',
         width: 1200,
         height: 630,
         alt: 'Unimrkt Research Gallery',
@@ -40,7 +40,7 @@ export const metadata = {
     title: 'Our Moments & Culture Gallery | Unimrkt Research',
     description:
       'Explore the Unimrkt Research gallery to discover our research activities, events, team moments, and corporate highlights.',
-    images: ['/asstes/images/gallery-banner-img.png'],
+    images: ['/asstes/images/gallery-banner-img.webp'],
   },
 };
 

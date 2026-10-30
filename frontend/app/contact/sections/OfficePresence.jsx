@@ -12,7 +12,7 @@ const offices = [
     address: '5th floor, Nirmal Tower, 412-415, Udyog Vihar, Phase IV, Gurugram, Haryana-122015',
     email: 'sales@unimrkt.com',
     phones: 'Sales & Business Queries: +91 124 424 5210, +91 9870 377 557',
-    banner: '/asstes/images/contact-map-banner-img.png',
+    banner: '/asstes/images/contact-map-banner-img.webp',
   },
   {
     id: 'usa',
@@ -23,7 +23,7 @@ const offices = [
     address: '98 Cuthbert Road Suite 466, Great Neck, NY 11021, USA',
     email: 'sales@unimrkt.com',
     phones: '+1 646 712 9302',
-    banner: '/asstes/images/contact-banner-usa.jpg',
+    banner: '/asstes/images/contact-banner-usa.webp',
   },
   {
     id: 'uk',
@@ -34,7 +34,7 @@ const offices = [
     address: 'The Old Dairy, 12 Stephen Rd, Headington, Oxford, Oxfordshire, United Kingdom OX3 9AY',
     email: 'sales@unimrkt.com',
     phones: '+1 646 712 9302',
-    banner: '/asstes/images/contact-banner-uk.jpg',
+    banner: '/asstes/images/contact-banner-uk.webp',
   },
 ];
 

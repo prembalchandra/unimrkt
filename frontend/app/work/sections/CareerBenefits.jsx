@@ -17,7 +17,7 @@ export default function CareerBenefits() {
       <div className="srcn-container">
         <div className="career-benefits-layout">
           <div className="career-benefits-image">
-            <img src="/asstes/images/jab-about-img.png" alt="Colleagues reviewing research and data together" loading="lazy" />
+            <img src="/asstes/images/jab-about-img.webp" alt="Colleagues reviewing research and data together" loading="lazy" />
           </div>
 
           <div className="career-benefits-content">

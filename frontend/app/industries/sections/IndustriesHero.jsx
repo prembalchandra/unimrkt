@@ -17,7 +17,7 @@ export default function IndustriesHero({ dynamicHero = null }) {
       <section className="hero-common-area">
         <div className="hero-common-banner">
           <img
-            src="/asstes/images/industries-banner-img.png"
+            src="/asstes/images/industries-banner-img.webp"
             className="hero-common-banner-area"
             alt={title}
           />

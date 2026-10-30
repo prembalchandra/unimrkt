@@ -110,7 +110,7 @@ export default function CaseStudiesImpactCta({
                 <div className="case-man-image-layer">
                   <div className="case-man-image-wrapper">
                     <img
-                      src="/asstes/images/case-study-man-img.png"
+                      src="/asstes/images/case-study-man-img.webp"
                       alt="Unimrkt Research Analyst"
                       className="case-man-img"
                       loading="lazy"

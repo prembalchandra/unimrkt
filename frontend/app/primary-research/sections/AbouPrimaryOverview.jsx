@@ -49,7 +49,7 @@ export default function AbouPrimaryOverview() {
 
           <div className="telephonic-overview-visual-wrap">
             <div className="telephonic-overview-figure abou-Primary-img">
-              <img src="/asstes/images/primary-research-about-img.png" alt="First-Hand Insights That Power Better Business Decisions" />
+              <img src="/asstes/images/primary-research-about-img.webp" alt="First-Hand Insights That Power Better Business Decisions" />
             </div>
           </div>
         </div>

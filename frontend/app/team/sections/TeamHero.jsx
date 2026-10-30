@@ -15,7 +15,7 @@ export default function TeamHero({ dynamicHero = null }) {
       <section className="hero-common-area">
         <div className="hero-common-banner">
           <img
-            src="/asstes/images/unimrkt-resarch-our-team-banner.png"
+            src="/asstes/images/unimrkt-resarch-our-team-banner.webp"
             className="hero-common-banner-area"
             alt={title}
           />

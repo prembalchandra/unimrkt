@@ -19,7 +19,7 @@ From product development and brand positioning to customer satisfaction and mark
 
           <div className="telephonic-overview-visual-wrap">
             <div className="telephonic-overview-figure ">
-              <img src="/asstes/images/automotive-research-img.png" alt="First-Hand Insights That Power Better Business Decisions" />
+              <img src="/asstes/images/automotive-research-img.webp" alt="First-Hand Insights That Power Better Business Decisions" />
             </div>
           </div>
         </div>

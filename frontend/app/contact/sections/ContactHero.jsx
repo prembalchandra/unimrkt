@@ -16,7 +16,7 @@ export default function ContactHero({ dynamicHero = null }) {
       <section className="hero-common-area">
         <div className="hero-common-banner">
           <img
-            src="/asstes/images/contac-banner-img.png"
+            src="/asstes/images/contac-banner-img.webp"
             className="hero-common-banner-area"
             alt={title}
           />

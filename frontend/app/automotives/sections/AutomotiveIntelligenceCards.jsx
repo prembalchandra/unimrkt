@@ -5,19 +5,19 @@ import React from 'react';
 const intelligenceCards = [
   {
     id: 1,
-    image: '/asstes/images/market-trends-card-img1.png',
+    image: '/asstes/images/market-trends-card-img1.webp',
     title: 'Vehicle Buyer Behavior',
     desc: 'Decoding consumer purchase drivers, EV price elasticity, brand perception, and post-purchase dealership experiences across key international demographics.',
   },
   {
     id: 2,
-    image: '/asstes/images/market-trends-card-img2.png',
+    image: '/asstes/images/market-trends-card-img2.webp',
     title: 'Commercial Fleet Transition',
     desc: 'Forecasting fleet electrification pace, total cost of ownership (TCO) expectations, depot charging readiness, and telematics adoption hurdles.',
   },
   {
     id: 3,
-    image: '/asstes/images/market-trends-card-img3.png',
+    image: '/asstes/images/market-trends-card-img3.webp',
     title: 'Connected Cockpit & ADAS',
     desc: 'Evaluating driver trust in autonomous safety systems, in-vehicle software usability, infotainment preferences, and subscription monetization models.',
   },

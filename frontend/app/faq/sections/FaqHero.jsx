@@ -17,7 +17,7 @@ export default function FaqHero({ dynamicHero = null }) {
       <section className="hero-common-area">
         <div className="hero-common-banner">
           <img
-            src="/asstes/images/the-impact-banner-img.png"
+            src="/asstes/images/the-impact-banner-img.webp"
             className="hero-common-banner-area"
             alt={title}
           />

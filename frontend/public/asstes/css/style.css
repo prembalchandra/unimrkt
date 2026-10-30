@@ -904,7 +904,7 @@ button {
 
 .quality-first-section {
     position: relative;
-    background: url("../images/response-matters-banner-img.png") center 50% / cover no-repeat;
+    background: url("../images/response-matters-banner-img.webp") center 50% / cover no-repeat;
     padding: 60px 0px 64px;
     overflow: hidden;
 }
@@ -3096,7 +3096,7 @@ button {
     grid-template-columns: minmax(0px, 0.96fr) minmax(0px, 1.04fr);
     align-items: stretch;
     gap: 26px;
-    background-image: url("/asstes/images/map-banner-img.png");
+    background-image: url("/asstes/images/map-banner-img.webp");
     background-position: center center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -3170,7 +3170,7 @@ button {
         linear-gradient(90deg,
             rgba(108, 42, 74, 0.82) 0%,
             rgba(190, 44, 40, 0.82) 100%),
-        url('/asstes/images/contact-map-banner-img.png');
+        url('/asstes/images/contact-map-banner-img.webp');
 
     background-size: cover;
     background-position: center;
@@ -3844,7 +3844,7 @@ button {
     position: absolute;
     inset: 0;
     z-index: -2;
-    background-image: url('/asstes/images/unimrkt-research-banner-img.png');
+    background-image: url('/asstes/images/unimrkt-research-banner-img.webp');
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
@@ -4318,7 +4318,7 @@ button {
     isolation: isolate;
     overflow: hidden;
     padding: clamp(48px, 6vw, 76px) 0;
-    background-image: url('../images/quote-banner-img.png');
+    background-image: url('../images/quote-banner-img.webp');
     background-position: center center;
     background-size: cover;
     background-repeat: no-repeat;
@@ -4606,7 +4606,7 @@ button {
     isolation: isolate;
     overflow: hidden;
     padding: clamp(40px, 5vw, 45px) 0px;
-    background-image: url("/asstes/images/line-banner-img.png");
+    background-image: url("/asstes/images/line-banner-img.webp");
     background-position: center center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -7141,7 +7141,7 @@ ol {
     isolation: isolate;
     overflow: hidden;
     padding: 2px 0 50px;
-    background-image: url(/asstes/images/line-banner-img.png);
+    background-image: url(/asstes/images/line-banner-img.webp);
     background-position: center center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -7641,7 +7641,7 @@ ol {
     background-image:
         linear-gradient(rgba(9, 11, 17, 0.88),
             rgba(9, 11, 17, 0.82)),
-        url("../images/the-impact-banner-img.png");
+        url("../images/the-impact-banner-img.webp");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -9423,7 +9423,7 @@ ol {
     width: 100%;
     padding: clamp(50px, 6vw, 56px) 0 clamp(60px, 7vw, 56px);
     background-color: #fafbfc;
-    background-image: url("/asstes/images/line-banner-img.png");
+    background-image: url("/asstes/images/line-banner-img.webp");
     background-position: top center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -9717,7 +9717,7 @@ ol {
     overflow: hidden;
     box-shadow: 0 16px 42px rgba(15, 23, 42, 0.08);
 
-    background-image: url("../images/questions-banner-img.png");
+    background-image: url("../images/questions-banner-img.webp");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -10105,7 +10105,7 @@ ol {
     position: relative;
     width: 100%;
     padding: clamp(55px, 6.5vw, 95px) 0 clamp(60px, 7vw, 100px);
-    background-image: url("/asstes/images/clent-banner-img.png");
+    background-image: url("/asstes/images/clent-banner-img.webp");
     background-position: top center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -10245,7 +10245,7 @@ ol {
     width: 100%;
     padding: clamp(65px, 7vw, 105px) 0 clamp(70px, 7.5vw, 115px);
     background-color: #ffffff;
-    background-image: url("/asstes/images/clent-banner-img.png");
+    background-image: url("/asstes/images/clent-banner-img.webp");
     background-position: center center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -10428,7 +10428,7 @@ ol {
     width: 100%;
     padding: clamp(90px, 10vw, 125px) 0 clamp(55px, 6.5vw, 90px);
     background-color: #fafbfc;
-    background-image: url("/asstes/images/line-banner-img.png");
+    background-image: url("/asstes/images/line-banner-img.webp");
     background-position: top center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -10707,7 +10707,7 @@ ol {
     width: 100%;
     padding: clamp(55px, 6.5vw, 95px) 0 clamp(60px, 7vw, 100px);
     background-color: #fafbfc;
-    background-image: url("/asstes/images/line-banner-img.png");
+    background-image: url("/asstes/images/line-banner-img.webp");
     background-position: top center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -10878,7 +10878,7 @@ ol {
     align-items: center;
     justify-content: center;
     padding: 60px 0px;
-    background: #090c13 url(/asstes/images/business-challenges-banner-img.png) center center / cover no-repeat;
+    background: #090c13 url(/asstes/images/business-challenges-banner-img.webp) center center / cover no-repeat;
     color: #ffffff;
     overflow: hidden;
 }
@@ -10998,7 +10998,7 @@ text-align: start;
     width: 100%;
     padding: clamp(55px, 6.5vw, 95px) 0 clamp(60px, 7vw, 100px);
     background-color: #fafbfc;
-    background-image: url("/asstes/images/line-banner-img.png");
+    background-image: url("/asstes/images/line-banner-img.webp");
     background-position: top center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -11167,7 +11167,7 @@ text-align: start;
     position: relative;
     width: 100%;
     border-radius: clamp(26px, 2.5vw, 36px);
-    background-image: linear-gradient(rgba(17, 24, 39, 0.88), rgba(17, 24, 39, 0.92)), url("/asstes/images/the-impact-banner-img.png");
+    background-image: linear-gradient(rgba(17, 24, 39, 0.88), rgba(17, 24, 39, 0.92)), url("/asstes/images/the-impact-banner-img.webp");
     background-position: center center;
     background-size: cover;
     background-repeat: no-repeat;
@@ -12762,7 +12762,7 @@ text-align: start;
 .moments-pattern-backdrop {
     position: absolute;
     inset: 0;
-    background-image: url("/asstes/images/line-banner-img.png");
+    background-image: url("/asstes/images/line-banner-img.webp");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -13750,7 +13750,7 @@ text-align: start;
     padding: 56px 48px;
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 40px;
-    background-image: url("/asstes/images/case-studies-dot-banner-img.jpg");
+    background-image: url("/asstes/images/case-studies-dot-banner-img.webp");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;

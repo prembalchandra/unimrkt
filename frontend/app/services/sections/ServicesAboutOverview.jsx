@@ -20,7 +20,7 @@ export default function ServicesAboutOverview() {
 
           <div className="telephonic-overview-visual-wrap">
             <div className="telephonic-overview-figure">
-              <img src="/asstes/images/unimrkt-resarch-services-about-img.png" alt="First-Hand Insights That Power Better Business Decisions" />
+              <img src="/asstes/images/unimrkt-resarch-services-about-img.webp" alt="First-Hand Insights That Power Better Business Decisions" />
             </div>
           </div>
         </div>

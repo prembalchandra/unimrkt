@@ -93,7 +93,7 @@ export default function BlogDetailContent({ dynamicHero = null }) {
 
             <figure className="blog-detail-hero-image">
               <img
-                src="/asstes/images/market-trends-card-img1.png"
+                src="/asstes/images/market-trends-card-img1.webp"
                 alt="Market research professionals reviewing industry data and trends"
               />
               <figcaption>

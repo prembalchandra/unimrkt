@@ -8,32 +8,32 @@ import { Autoplay, Navigation, Pagination } from 'swiper/modules';
 const industriesData = [
   {
     title: 'Healthcare & Life Sciences',
-    image: '/asstes/images/case-study-healthcare.jpg',
+    image: '/asstes/images/case-study-healthcare.webp',
     desc: 'Delivering research-driven insights that support innovation, patient outcomes, and healthcare advancement.',
   },
   {
     title: 'Banking & Financial Services',
-    image: '/asstes/images/case-study-banking.jpg',
+    image: '/asstes/images/case-study-banking.webp',
     desc: 'Empowering financial institutions with actionable intelligence across retail banking, fintech, and risk management.',
   },
   {
     title: 'Retail & Consumer Goods',
-    image: '/asstes/images/case-study-fmcg.jpg',
+    image: '/asstes/images/case-study-fmcg.webp',
     desc: 'Uncovering evolving consumer preferences, omnichannel purchasing behavior, and market trends to drive brand growth.',
   },
   {
     title: 'Automotive & Mobility',
-    image: '/asstes/images/case-study-automotive.jpg',
+    image: '/asstes/images/case-study-automotive.webp',
     desc: 'Accelerating mobility innovation with deep insights into EV adoption, autonomous tech, and connected fleets.',
   },
   {
     title: 'Technology & Telecom',
-    image: '/asstes/images/case-study-telecom.jpg',
+    image: '/asstes/images/case-study-telecom.webp',
     desc: 'Navigating rapid digital transformation with data-backed market analysis across SaaS, cloud, and telecommunications.',
   },
   {
     title: 'Energy & Sustainability',
-    image: '/asstes/images/case-study-energy.jpg',
+    image: '/asstes/images/case-study-energy.webp',
     desc: 'Powering clean transition strategies through renewable market data, ESG benchmarks, and consumer green habits.',
   },
 ];

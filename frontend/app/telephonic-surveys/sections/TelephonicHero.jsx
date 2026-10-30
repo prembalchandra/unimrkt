@@ -14,7 +14,7 @@ export default function TelephonicHero({ dynamicHero = null }) {
     <section className="hero-common-area">
       <div className="hero-common-banner">
         <img
-          src="/asstes/images/unimrkt-research-telephonic-surveys-banner.png"
+          src="/asstes/images/unimrkt-research-telephonic-surveys-banner.webp"
           className="hero-common-banner-area"
           alt={title}
         />

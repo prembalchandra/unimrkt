@@ -41,7 +41,7 @@ export const metadata = {
     type: 'website',
     images: [
       {
-        url: '/asstes/images/case-study-automotive.jpg',
+        url: '/asstes/images/case-study-automotive.webp',
         width: 1200,
         height: 630,
         alt: 'Automotive & Smart Mobility Market Research',
@@ -53,7 +53,7 @@ export const metadata = {
     title: 'Automotive & Smart Mobility Market Research | Unimrkt Research',
     description:
       'Comprehensive automotive market research covering EV transition, connected cockpits, commercial fleets, and dealership experiences.',
-    images: ['/asstes/images/case-study-automotive.jpg'],
+    images: ['/asstes/images/case-study-automotive.webp'],
   },
 };
 

@@ -47,7 +47,7 @@ export default function ServicesFaq({ dynamicFaq = null }) {
   return (
     <section className="faq-section-area">
       <div className="worldmap-bg">
-        <img src="/asstes/images/unimrkt-resarch-map-banner-img.png" alt="fqa banner" />
+        <img src="/asstes/images/unimrkt-resarch-map-banner-img.webp" alt="fqa banner" />
       </div>
       <div className="srcn-container">
         <div className="section-header-area">

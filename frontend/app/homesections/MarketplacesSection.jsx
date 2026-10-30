@@ -17,7 +17,7 @@ export default function MarketplacesSection() {
           <div className="office-hub-card">
             <div className="office-image-box">
               <img
-                src="/asstes/images/office-india.png"
+                src="/asstes/images/office-india.webp"
                 alt="India Office - Gurugram & New Delhi"
               />
             </div>
@@ -63,7 +63,7 @@ export default function MarketplacesSection() {
           <div className="office-hub-card">
             <div className="office-image-box">
               <img
-                src="/asstes/images/office-usa.png"
+                src="/asstes/images/office-usa.webp"
                 alt="United States of America Office - New York"
               />
             </div>
@@ -106,7 +106,7 @@ export default function MarketplacesSection() {
           <div className="office-hub-card">
             <div className="office-image-box">
               <img
-                src="/asstes/images/office-uk.png"
+                src="/asstes/images/office-uk.webp"
                 alt="United Kingdom Office - Oxford & London"
               />
             </div>

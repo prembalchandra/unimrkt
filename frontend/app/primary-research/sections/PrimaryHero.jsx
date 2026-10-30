@@ -17,7 +17,7 @@ export default function PrimaryHero({ dynamicHero = null }) {
     <section className="hero-common-area">
       <div className="hero-common-banner">
         <img
-          src="/asstes/images/unimrkt-reseach-primary-research-banner-img.png"
+          src="/asstes/images/unimrkt-reseach-primary-research-banner-img.webp"
           className="hero-common-banner-area"
           alt={title}
         />

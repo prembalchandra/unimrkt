@@ -75,7 +75,7 @@ export default function AdvancedAreaSection() {
             <div className="cati-image-col">
               <div className="cati-cutout-wrap">
                 <img
-                  src="/asstes/images/advanced-banner-img.png"
+                  src="/asstes/images/advanced-banner-img.webp"
                   alt="500+ Advanced CATI Workstations"
                   className="cati-cutout-img"
                 />
