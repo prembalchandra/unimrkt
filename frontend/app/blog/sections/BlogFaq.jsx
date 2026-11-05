@@ -30,7 +30,8 @@ const blogFaqs = [
   },
 ];
 
-export default function BlogFaq() {
+export default function BlogFaq({ dynamicFaq = null }) {
+  const heading = dynamicFaq?.heading || 'Frequently Asked Questions';
   const [openIndex, setOpenIndex] = useState(null);
 
   const toggleAccordion = (index) => {
@@ -44,7 +45,7 @@ export default function BlogFaq() {
       </div>
       <div className="srcn-container">
         <div className="section-header-area">
-          <h2 className="section-main-heading">Frequently Asked Questions</h2>
+          <h2 className="section-main-heading">{heading}</h2>
         </div>
 
         <div className="faq-accordion-container">

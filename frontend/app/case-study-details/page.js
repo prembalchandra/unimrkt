@@ -21,13 +21,7 @@ export default async function CaseStudyDetailPage() {
   const pageData = await getPageBySlug('case-study-details').catch(() => null);
 
   
-  if (pageData?.sections && pageData.sections.length > 0) {
-    return (
-      <main>
-        <DynamicZoneRenderer sections={pageData.sections} pageContext={{ pageData }} />
-      </main>
-    );
-  }
+  // Preserved full page design wired directly to Strapi DB dynamic sections
 
   const heroSection = findSection(pageData, 'sections.hero-common');
   const ctaSection = findSection(pageData, 'sections.question-cta');

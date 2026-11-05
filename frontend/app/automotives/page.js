@@ -28,17 +28,12 @@ export default async function AutomotivesPage() {
   const pageData = await getPageBySlug('automotives').catch(() => null);
 
   
-  if (pageData?.sections && pageData.sections.length > 0) {
-    return (
-      <main>
-        <DynamicZoneRenderer sections={pageData.sections} pageContext={{ pageData }} />
-      </main>
-    );
-  }
+  // Preserved full page design wired directly to Strapi DB dynamic sections
 
   const heroSection = findSection(pageData, 'sections.hero-common');
   const ctaSection = findSection(pageData, 'sections.question-cta');
 
+    const faqSection = findSection(pageData, 'sections.faq-accordion');
   return (
     <>
       <AutomotiveHero dynamicHero={heroSection} />
@@ -51,7 +46,7 @@ export default async function AutomotivesPage() {
       <AutomotiveEmpowerCta />
       <ContactFormSection />
       <CommonBlogSection />
-      <AutomotiveFaq />
+      <AutomotiveFaq dynamicFaq={faqSection} />
       <AutomotiveOverview />
       <AutomotiveEditorialabout />
       <ResearchCta dynamicCta={ctaSection} />

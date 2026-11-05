@@ -1,13 +1,13 @@
 import React from 'react';
 
-export default function InsightsEditorial() {
+export default function InsightsEditorial({ dynamicData = null }) {
   return (
     <section className="insights-editorial-section">
       <div className="srcn-container">
         <div className="insights-editorial-box">
-          <span className="sub-title-red">Contact Us</span>
+          <span className="sub-title-red">{dynamicData?.kicker || "Contact Us"}</span>
           <h2 className="insights-editorial-heading section-main-heading">
-            Have a Research Question? Let’s Talk.
+            {dynamicData?.heading || "Have a Research Question? Let’s Talk."}
           </h2>
           <div className="insights-editorial-text-wrap">
             <p>

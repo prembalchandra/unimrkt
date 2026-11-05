@@ -29,7 +29,11 @@ const faqs = [
   }
 ];
 
-export default function TelephonicFaq() {
+export default function TelephonicFaq({ dynamicFaq = null }) {
+  const heading = dynamicFaq?.heading || 'Frequently Asked Questions';
+  const displayFaqs = dynamicFaq?.items && dynamicFaq.items.length > 0
+    ? dynamicFaq.items
+    : faqs;
   const [openIndex, setOpenIndex] = useState(0);
 
   const toggleFaq = (index) => {
@@ -43,11 +47,11 @@ export default function TelephonicFaq() {
       </div>
       <div className="srcn-container">
         <div className="section-header-area">
-          <h2 className="section-main-heading">Frequently Asked Questions</h2>
+          <h2 className="section-main-heading">{heading}</h2>
         </div>
 
         <div className="faq-accordion-container">
-          {faqs.map((faq, index) => {
+          {displayFaqs.map((faq, index) => {
             const isOpen = openIndex === index;
             return (
               <div key={index} className={`faq-accordion-item ${isOpen ? 'active' : ''}`}>

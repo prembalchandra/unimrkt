@@ -18,13 +18,7 @@ export default async function TeamPage() {
     getPageBySlug('team').catch(() => null),
   ]);
 
-  if (pageData?.sections && pageData.sections.length > 0) {
-    return (
-      <main>
-        <DynamicZoneRenderer sections={pageData.sections} pageContext={{ team: strapiTeam, pageData }} />
-      </main>
-    );
-  }
+  // Preserved full page design wired directly to Strapi DB dynamic sections
 
   const heroSection = findSection(pageData, 'sections.hero-common');
   const ctaSection = findSection(pageData, 'sections.question-cta');

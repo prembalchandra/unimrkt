@@ -19,13 +19,7 @@ export default async function GalleryPage() {
     getGalleryItems(30).catch(() => []),
   ]);
 
-  if (pageData?.sections && pageData.sections.length > 0) {
-    return (
-      <main>
-        <DynamicZoneRenderer sections={pageData.sections} pageContext={{ gallery: galleryItems, pageData }} />
-      </main>
-    );
-  }
+  // Preserved full page design wired directly to Strapi DB dynamic sections
 
   const heroSection = findSection(pageData, 'sections.hero-common');
   const ctaSection = findSection(pageData, 'sections.question-cta');

@@ -23,24 +23,36 @@ const values = [
   },
 ];
 
-export default function ResearchValue() {
+export default function ResearchValue({ dynamicValues = null }) {
+  const kicker = dynamicValues?.kicker || 'Why work with Unimrkt';
+  const heading = dynamicValues?.heading || 'More Than Research.\nA Partner For Better Decisions.';
+  const description = dynamicValues?.description ||
+    'From defining the research question to delivering actionable insights, our team helps businesses build confidence through accurate data, sharper strategy, and measurable outcomes.';
+
+  const displayValues = dynamicValues?.values && dynamicValues.values.length > 0
+    ? dynamicValues.values.map((v, idx) => ({
+        icon: values[idx % values.length]?.icon || '/asstes/images/icon/Research-icon-img.png',
+        title: v.title,
+        desc: v.description || v.desc || '',
+      }))
+    : values;
+
   return (
     <section className="research-value-section">
       <div className="srcn-container">
         <div className="research-value-wrap">
           <div className="research-value-header">
-            <span className="research-value-kicker career-values-kicker">Why work with Unimrkt</span>
-            <h2 className="research-value-title section-main-heading">
-              More Than Research.<br />A Partner For Better Decisions.
+            <span className="research-value-kicker career-values-kicker">{kicker}</span>
+            <h2 className="research-value-title section-main-heading" style={{ whiteSpace: 'pre-line' }}>
+              {heading}
             </h2>
             <p className="research-value-subtitle section-sub-text">
-              From defining the research question to delivering actionable insights, our team helps businesses build
-              confidence through accurate data, sharper strategy, and measurable outcomes.
+              {description}
             </p>
           </div>
 
           <div className="research-value-grid">
-            {values.map((val, idx) => (
+            {displayValues.map((val, idx) => (
               <article key={idx} className="research-value-card">
                 <div className="value-icon-wrap">
                   <img src={val.icon} alt={val.title} />

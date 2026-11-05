@@ -23,16 +23,25 @@ const stats = [
   },
 ];
 
-export default function ResearchImpact() {
+export default function ResearchImpact({ dynamicMetrics = null }) {
+  const heading = dynamicMetrics?.heading || 'Research at a Global Scale';
+  const displayStats = dynamicMetrics?.metrics && dynamicMetrics.metrics.length > 0
+    ? dynamicMetrics.metrics.map((m, idx) => ({
+        icon: stats[idx % stats.length]?.icon || '/asstes/images/icon/countries-icon-img.png',
+        number: m.number,
+        label: m.label,
+      }))
+    : stats;
+
   return (
     <section className="research-impact-section">
       <div className="srcn-container">
         <div className="section-header-area research-impact-header">
-          <h2 className="section-main-heading research-impact-title">Research at a Global Scale</h2>
+          <h2 className="section-main-heading research-impact-title">{heading}</h2>
         </div>
 
         <div className="research-impact-grid">
-          {stats.map((stat, idx) => (
+          {displayStats.map((stat, idx) => (
             <article key={idx} className="research-impact-col">
               <div className="research-impact-card">
                 <div className="research-impact-icon">

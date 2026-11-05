@@ -30,7 +30,7 @@ const contactFaqs = [
   },
 ];
 
-export default function ContactFaq() {
+export default function ContactFaq({ dynamicFaq = null }) {
   const [openIndex, setOpenIndex] = useState(null);
 
   const toggleAccordion = (index) => {
@@ -44,11 +44,11 @@ export default function ContactFaq() {
       </div>
       <div className="srcn-container">
         <div className="section-header-area">
-          <h2 className="section-main-heading">Frequently Asked Questions</h2>
+          <h2 className="section-main-heading">{dynamicFaq?.heading || "Frequently Asked Questions"}</h2>
         </div>
 
         <div className="faq-accordion-container">
-          {contactFaqs.map((faq, index) => {
+          {(dynamicFaq?.items && dynamicFaq.items.length > 0 ? dynamicFaq.items : contactFaqs).map((faq, index) => {
             const isOpen = openIndex === index;
             return (
               <div

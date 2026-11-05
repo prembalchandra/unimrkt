@@ -33,7 +33,8 @@ const faqs = [
   },
 ];
 
-export default function CaseStudyFaq() {
+export default function CaseStudyFaq({ dynamicFaq = null }) {
+  const heading = dynamicFaq?.heading || 'Frequently Asked Questions';
   const [openIndex, setOpenIndex] = useState(0);
 
   const toggleFaq = (index) => {
@@ -47,7 +48,7 @@ export default function CaseStudyFaq() {
       </div>
       <div className="srcn-container">
         <div className="section-header-area">
-          <h2 className="section-main-heading">Frequently Asked Questions</h2>
+          <h2 className="section-main-heading">{heading}</h2>
         </div>
 
         <div className="faq-accordion-container">

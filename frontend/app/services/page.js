@@ -27,13 +27,7 @@ export default async function ServicesPage() {
   const pageData = await getPageBySlug('services').catch(() => null);
 
   
-  if (pageData?.sections && pageData.sections.length > 0) {
-    return (
-      <main>
-        <DynamicZoneRenderer sections={pageData.sections} pageContext={{ pageData }} />
-      </main>
-    );
-  }
+  // Preserved full page design wired directly to Strapi DB dynamic sections
 
   const heroSection = findSection(pageData, 'sections.hero-common');
   const metricsSection = findSection(pageData, 'sections.metrics-grid');

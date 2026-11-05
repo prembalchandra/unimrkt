@@ -24,18 +24,13 @@ export default async function WorkPage() {
     getCareerJobs(20).catch(() => []),
   ]);
 
-  if (pageData?.sections && pageData.sections.length > 0) {
-    return (
-      <main>
-        <DynamicZoneRenderer sections={pageData.sections} pageContext={{ jobs: careerJobs, pageData }} />
-      </main>
-    );
-  }
+  // Preserved full page design wired directly to Strapi DB dynamic sections
 
   const heroSection = findSection(pageData, 'sections.hero-common');
   const valuesSection = findSection(pageData, 'sections.values-grid');
   const ctaSection = findSection(pageData, 'sections.question-cta');
 
+    const faqSection = findSection(pageData, 'sections.faq-accordion');
   return (
     <>
       <WorkHero dynamicHero={heroSection} />
@@ -44,7 +39,7 @@ export default async function WorkPage() {
       <CareerOpenings />
       <CareerJourney />
       <CareerJoin />
-      <WorkFaq />
+      <WorkFaq dynamicFaq={faqSection} />
       <InsightsEditorial />
       <ResearchCta dynamicCta={ctaSection} />
     </>

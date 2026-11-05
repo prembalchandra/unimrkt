@@ -35,7 +35,11 @@ const industryFaqs = [
   },
 ];
 
-export default function IndustriesFaq() {
+export default function IndustriesFaq({ dynamicFaq = null }) {
+  const heading = dynamicFaq?.heading || 'Frequently Asked Questions';
+  const displayFaqs = dynamicFaq?.items && dynamicFaq.items.length > 0
+    ? dynamicFaq.items
+    : industryFaqs;
   const [openIndex, setOpenIndex] = useState(0);
 
   // Self-contained FAQ JavaScript toggle logic
@@ -55,7 +59,7 @@ export default function IndustriesFaq() {
         </div>
 
         <div className="faq-accordion-container">
-          {industryFaqs.map((faq, index) => {
+          {displayFaqs.map((faq, index) => {
             const isOpen = openIndex === index;
             return (
               <div key={index} className={`faq-accordion-item ${isOpen ? 'active' : ''}`}>

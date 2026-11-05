@@ -1,4 +1,3 @@
-import DynamicZoneRenderer from '@/components/DynamicZoneRenderer';
 import React from 'react';
 import ContactHero from './sections/ContactHero';
 import ResearchImpact from './sections/ResearchImpact';
@@ -22,28 +21,23 @@ export async function generateMetadata() {
 export default async function ContactPage() {
   const pageData = await getPageBySlug('contact').catch(() => null);
 
-  
-  if (pageData?.sections && pageData.sections.length > 0) {
-    return (
-      <main>
-        <DynamicZoneRenderer sections={pageData.sections} pageContext={{ pageData }} />
-      </main>
-    );
-  }
-
   const heroSection = findSection(pageData, 'sections.hero-common');
+  const metricsSection = findSection(pageData, 'sections.metrics-grid');
+  const valuesSection = findSection(pageData, 'sections.values-grid');
+  const faqSection = findSection(pageData, 'sections.faq-accordion');
+  const richTextSection = findSection(pageData, 'sections.rich-text-block');
   const ctaSection = findSection(pageData, 'sections.question-cta');
 
   return (
     <main>
       <ContactHero dynamicHero={heroSection} />
-      <ResearchImpact />
+      <ResearchImpact dynamicMetrics={metricsSection} />
       <OfficePresence />
-      <ResearchValue />
+      <ResearchValue dynamicValues={valuesSection} />
       <ContactProcess />
       <ContactForm />
-      <ContactFaq />
-      <InsightsEditorial />
+      <ContactFaq dynamicFaq={faqSection} />
+      <InsightsEditorial dynamicData={richTextSection} />
       <ResearchCta dynamicCta={ctaSection} />
     </main>
   );

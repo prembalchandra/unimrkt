@@ -25,17 +25,12 @@ export default async function PrimaryResearchPage() {
   const pageData = await getPageBySlug('primary-research').catch(() => null);
 
   
-  if (pageData?.sections && pageData.sections.length > 0) {
-    return (
-      <main>
-        <DynamicZoneRenderer sections={pageData.sections} pageContext={{ pageData }} />
-      </main>
-    );
-  }
+  // Preserved full page design wired directly to Strapi DB dynamic sections
 
   const heroSection = findSection(pageData, 'sections.hero-common');
   const ctaSection = findSection(pageData, 'sections.question-cta');
 
+    const faqSection = findSection(pageData, 'sections.faq-accordion');
   return (
     <>
       <PrimaryHero dynamicHero={heroSection} />
@@ -47,7 +42,7 @@ export default async function PrimaryResearchPage() {
       <IndustriesArea />
       <ContactFormSection />
       <CommonBlogSection />
-      <FqaPrimaryresearch />
+      <FqaPrimaryresearch dynamicFaq={faqSection} />
       <PrimaryresEditorialAbout />
       <PrimaryresearchResearchCta dynamicCta={ctaSection} />
     </>

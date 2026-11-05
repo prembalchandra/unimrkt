@@ -24,29 +24,26 @@ export default async function OurCompanyPage() {
   const pageData = await getPageBySlug('our-company').catch(() => null);
 
   
-  if (pageData?.sections && pageData.sections.length > 0) {
-    return (
-      <main>
-        <DynamicZoneRenderer sections={pageData.sections} pageContext={{ pageData }} />
-      </main>
-    );
-  }
+  // Preserved full page design wired directly to Strapi DB dynamic sections
 
   const heroSection = findSection(pageData, 'sections.hero-common');
   const richTextSection = findSection(pageData, 'sections.rich-text-block');
   const ctaSection = findSection(pageData, 'sections.question-cta');
 
+    const metricsSection = findSection(pageData, 'sections.metrics-grid');
+  const valuesSection = findSection(pageData, 'sections.values-grid');
+  const faqSection = findSection(pageData, 'sections.faq-accordion');
   return (
     <main>
       <CompanyHero dynamicHero={heroSection} />
-      <OurcompanyResearchImpact />
+      <OurcompanyResearchImpact dynamicMetrics={metricsSection} />
       <CompanyAboutSection dynamicRichText={richTextSection} />
       <CompanyOverview />
       <CompnayIndustriesUnderstand />
       <CompanyOurResearchEcosystem />
       <CompnayOurValues />
       <CommonBlogSection />
-      <CompnayOurFqa />
+      <CompnayOurFqa dynamicFaq={faqSection} />
       <ResearchCta dynamicCta={ctaSection} />
     </main>
   );

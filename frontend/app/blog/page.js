@@ -22,23 +22,18 @@ export default async function BlogPage() {
     getPageBySlug('blog').catch(() => null),
   ]);
 
-  if (pageData?.sections && pageData.sections.length > 0) {
-    return (
-      <main>
-        <DynamicZoneRenderer sections={pageData.sections} pageContext={{ blogs: strapiBlogs, pageData }} />
-      </main>
-    );
-  }
+  // Preserved full page design wired directly to Strapi DB dynamic sections
 
   const heroSection = findSection(pageData, 'sections.hero-common');
   const ctaSection = findSection(pageData, 'sections.question-cta');
 
+    const faqSection = findSection(pageData, 'sections.faq-accordion');
   return (
     <main>
       <BlogHero dynamicHero={heroSection} />
       <BlogGrid initialBlogs={strapiBlogs} />
       <CommonBlogSection />
-      <BlogFaq />
+      <BlogFaq dynamicFaq={faqSection} />
       <InsightsEditorial />
       <ResearchCta dynamicCta={ctaSection} />
     </main>

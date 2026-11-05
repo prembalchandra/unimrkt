@@ -30,7 +30,11 @@ const blogFaqs = [
   },
 ];
 
-export default function FqaPrimaryresearch() {
+export default function FqaPrimaryresearch({ dynamicFaq = null }) {
+  const heading = dynamicFaq?.heading || 'Frequently Asked Questions';
+  const displayFaqs = dynamicFaq?.items && dynamicFaq.items.length > 0
+    ? dynamicFaq.items
+    : blogFaqs;
   const [openIndex, setOpenIndex] = useState(null);
 
   const toggleAccordion = (index) => {
@@ -44,11 +48,11 @@ export default function FqaPrimaryresearch() {
       </div>
       <div className="srcn-container">
         <div className="section-header-area">
-          <h2 className="section-main-heading">Frequently Asked Questions</h2>
+          <h2 className="section-main-heading">{heading}</h2>
         </div>
 
         <div className="faq-accordion-container">
-          {blogFaqs.map((faq, index) => {
+          {displayFaqs.map((faq, index) => {
             const isOpen = openIndex === index;
             return (
               <div
