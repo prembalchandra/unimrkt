@@ -1,57 +1,80 @@
 import React from 'react';
 
-const stats = [
+const defaultMetrics = [
   {
-    icon: '/asstes/images/icon/countries-icon-img.png',
     number: '90+',
     label: 'Countries',
+    icon: (
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="size-11 text-brand-600" aria-hidden="true">
+        <circle cx="12" cy="12" r="10"></circle>
+        <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"></path>
+        <path d="M2 12h20"></path>
+      </svg>
+    ),
   },
   {
-    icon: '/asstes/images/icon/every-stage-icon-img.png',
     number: '22+',
     label: 'Languages',
+    icon: (
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="size-11 text-brand-600" aria-hidden="true">
+        <path d="m5 8 6 6"></path>
+        <path d="m4 14 6-6 2-3"></path>
+        <path d="M2 5h12"></path>
+        <path d="M7 2h1"></path>
+        <path d="m22 22-5-10-5 10"></path>
+        <path d="M14 18h6"></path>
+      </svg>
+    ),
   },
   {
-    icon: '/asstes/images/icon/phone-icon-img.png',
     number: '450+',
     label: 'CATI Stations',
+    icon: (
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="size-11 text-brand-600" aria-hidden="true">
+        <path d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384"></path>
+      </svg>
+    ),
   },
   {
-    icon: '/asstes/images/icon/experience-icon-img.png',
     number: '16+',
     label: 'Years of Experience',
+    icon: (
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="size-11 text-brand-600" aria-hidden="true">
+        <path d="m15.477 12.89 1.515 8.526a.5.5 0 0 1-.81.47l-3.58-2.687a1 1 0 0 0-1.197 0l-3.586 2.686a.5.5 0 0 1-.81-.469l1.514-8.526"></path>
+        <circle cx="12" cy="8" r="6"></circle>
+      </svg>
+    ),
   },
 ];
 
-export default function ResearchImpact({ dynamicMetrics = null }) {
+export default function OurcompanyResearchImpact({ dynamicMetrics = null }) {
   const heading = dynamicMetrics?.heading || 'Research Without Borders';
-  const displayStats = dynamicMetrics?.metrics && dynamicMetrics.metrics.length > 0
-    ? dynamicMetrics.metrics.map((m, idx) => ({
-        icon: stats[idx % stats.length]?.icon || '/asstes/images/icon/countries-icon-img.png',
-        number: m.number,
-        label: m.label,
-      }))
-    : stats;
+  const metrics = dynamicMetrics?.metrics || defaultMetrics;
+
   return (
-    <section className="research-impact-section">
-      <div className="srcn-container">
-        <div className="section-header-area research-impact-header">
-          <h2 className="section-main-heading research-impact-title">{heading}</h2>
-        </div>
-        <div className="research-impact-grid">
-          {displayStats.map((stat, idx) => (
-            <article key={idx} className="research-impact-col">
-              <div className="research-impact-card">
-                <div className="research-impact-icon">
-                  <img src={stat.icon} alt={stat.label} />
-                </div>
-                <div className="research-impact-contnet-area">
-                  <h3 className="research-impact-number">{stat.number}</h3>
-                  <p className="research-impact-label">{stat.label}</p>
+    <section className="bg-white py-16 sm:py-20 lg:py-24">
+      <div className="mx-auto w-full max-w-container px-4 sm:px-6 lg:px-8">
+        <h2 className="text-center text-2xl font-semibold leading-[1.2] text-heading sm:text-3xl lg:text-[36px]">
+          {heading}
+        </h2>
+        <div className="mt-12 grid grid-cols-2 gap-6 sm:grid-cols-4">
+          {metrics.map((item, idx) => {
+            const defaultItem = defaultMetrics[idx % defaultMetrics.length];
+            return (
+              <div
+                key={idx}
+                className="flex flex-col items-center gap-4 rounded-[19px] border border-[#e2e2e0] bg-white/65 p-6 text-center backdrop-blur-[12px] transition-all duration-300 hover:shadow-lg hover:-translate-y-1"
+              >
+                <span className="flex size-20 items-center justify-center rounded-full border border-brand-600/10 bg-white/80">
+                  {defaultItem.icon}
+                </span>
+                <div>
+                  <p className="font-display text-3xl font-bold text-heading sm:text-[34px]">{item.number}</p>
+                  <p className="mt-3 text-base text-black">{item.label}</p>
                 </div>
               </div>
-            </article>
-          ))}
+            );
+          })}
         </div>
       </div>
     </section>

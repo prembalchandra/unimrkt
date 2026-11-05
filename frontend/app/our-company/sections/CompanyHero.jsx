@@ -9,55 +9,57 @@ export default function CompanyHero({ dynamicHero = null }) {
     dynamicHero?.description ||
     'Introduce Unimrkt as a global market research partner helping organisations understand people, markets, and opportunities.';
   const primaryBtnLabel = dynamicHero?.primaryButton?.label || 'Explore Our Capabilities';
-  const primaryBtnUrl = dynamicHero?.primaryButton?.url || '/team';
+  const primaryBtnUrl = dynamicHero?.primaryButton?.url || '/services';
+
   const bannerImage = getStrapiMediaUrl(
     dynamicHero?.bannerImage,
-    '/asstes/images/our-company-banner-img.webp'
+    '/uploads/our_company_hero_bg_8864c57e95.jpg'
   );
 
   return (
-    <>
-      <section className="hero-common-area">
-        <div className="hero-common-banner">
-          <img
-            src={bannerImage}
-            className="hero-common-banner-area"
-            alt={title}
-          />
-        </div>
-        <div className="srcn-container">
-          <div className="hero-common-row">
-            <div className="hero-common-content">
-              <div className="hero-common-contnet-area">
-                <span className="-hero-common-sub-tille-area">
-                  <i className="fa-solid fa-bolt" style={{ fontSize: '0.75rem', color: '#ff526b' }}></i>
-                  {kicker}
-                </span>
-                <h1 className="hero-commmon-heading-area">{title}</h1>
-                <p className="hero-common-title">{description}</p>
-              </div>
-              <div className="hero-btn-area">
-                <Link href={primaryBtnUrl} className="hero-common-btn-area btn-sm">
-                  <span>{primaryBtnLabel}</span>
-                  <img src="/asstes/images/icon/arrow-right-icon-img.png" alt="Arrow Right" />
-                </Link>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <div className="team-breadcrumb">
-        <div className="srcn-container">
-          <nav aria-label="Breadcrumb">
-            <Link href="/">Home</Link>
-            <span aria-hidden="true">›</span>
-            <Link href="/about">About Us</Link>
-            <span aria-hidden="true">›</span>
-            <span aria-current="page">Our Company</span>
-          </nav>
+    <section className="relative flex min-h-[480px] w-full flex-col justify-end overflow-hidden text-white sm:min-h-[560px] lg:min-h-[768px]">
+      <img
+        alt={title}
+        fetchPriority="high"
+        decoding="async"
+        className="object-cover"
+        style={{
+          position: 'absolute',
+          height: '100%',
+          width: '100%',
+          left: 0,
+          top: 0,
+          right: 0,
+          bottom: 0,
+          color: 'transparent',
+        }}
+        src={bannerImage}
+      />
+      <div className="absolute inset-0 bg-gradient-to-r from-[#040112] via-[#040112]/75 to-[#040112]/40"></div>
+      <div className="absolute inset-0 bg-[#040112]/35"></div>
+      <div className="relative z-10 mx-auto w-full max-w-container px-4 pb-16 pt-32 sm:px-6 lg:px-8 lg:pb-[70px] lg:pt-40">
+        <p className="inline-flex items-center gap-3 rounded-lg border border-white/10 bg-white/10 px-[17px] py-[9px] backdrop-blur-[2px] font-sans text-[13px] font-bold uppercase tracking-[3px] text-white">
+          <span className="size-2 shrink-0 rounded-full bg-brand-600" aria-hidden="true"></span>
+          {kicker}
+        </p>
+        <h1 className="mt-3 max-w-[930px] text-4xl font-semibold capitalize leading-[1.2] text-white sm:text-5xl lg:text-[60px] lg:tracking-[-3px]">
+          {title}
+        </h1>
+        <p className="mt-6 max-w-[884px] text-base leading-[1.9] text-white/85 sm:text-lg">
+          {description}
+        </p>
+        <div className="mt-8">
+          <Link
+            href={primaryBtnUrl}
+            className="inline-flex items-center justify-center gap-1 rounded-btn px-10 min-h-[60px] font-sans text-[13px] font-bold uppercase leading-[1.3] tracking-[0.06em] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 bg-gradient-to-r from-gradient-from to-gradient-to text-white hover:brightness-110 focus-visible:ring-brand-600"
+          >
+            {primaryBtnLabel}
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="size-4" aria-hidden="true">
+              <path d="M7 17L17 7M17 7H9M17 7v8" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round"></path>
+            </svg>
+          </Link>
         </div>
       </div>
-    </>
+    </section>
   );
 }

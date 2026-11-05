@@ -1,278 +1,216 @@
-
 'use client';
 
-import React, { useState, useEffect, useRef, useCallback } from 'react';
-import Swiper from 'swiper';
-import { Navigation, Pagination, Keyboard } from 'swiper/modules';
-
-import 'swiper/css';
-import 'swiper/css/navigation';
-import 'swiper/css/pagination';
-
-const galleryItems = [
-  {
-    type: 'video',
-    src: '/asstes/images/video-banner2.mp4',
-    poster: '/asstes/images/gallery-banner-img.webp',
-    alt: 'Strategic Research Team in Innovation Session',
-    isLarge: true,
-  },
-  {
-    type: 'video',
-    src: '/asstes/images/video-banner.mp4',
-    poster: '/asstes/images/the-impact-banner-img.webp',
-    alt: 'Team celebrating successful project release',
-    isLarge: true,
-  },
-  {
-    type: 'image',
-    src: '/asstes/images/unimrkt-reseach-work-banner-img.webp',
-    alt: 'Research team at work',
-    isLarge: false,
-  },
-  {
-    type: 'image',
-    src: '/asstes/images/research-needs-banner-img.webp',
-    alt: 'Research presentation',
-    isLarge: false,
-  },
-  {
-    type: 'image',
-    src: '/asstes/images/challenge-portrait.webp',
-    alt: 'Team discussing research challenges',
-    isLarge: false,
-  },
-  {
-    type: 'image',
-    src: '/asstes/images/have-question-team.webp',
-    alt: 'Research professionals',
-    isLarge: false,
-  },
-];
+import React from 'react';
+import Link from 'next/link';
 
 export default function MomentsSection() {
-  const [isOpen, setIsOpen] = useState(false);
-  const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
-
-  const swiperContainerRef = useRef(null);
-  const prevBtnRef = useRef(null);
-  const nextBtnRef = useRef(null);
-  const paginationRef = useRef(null);
-  const swiperInstanceRef = useRef(null);
-  const modalRef = useRef(null);
-
-  const pauseAllVideos = useCallback(() => {
-    if (!modalRef.current) return;
-
-    modalRef.current
-      .querySelectorAll('.lightbox-video-player')
-      .forEach((video) => video.pause());
-  }, []);
-
-  const openLightbox = useCallback((index) => {
-    setCurrentSlideIndex(index);
-    setIsOpen(true);
-    document.body.style.overflow = 'hidden';
-  }, []);
-
-  const closeLightbox = useCallback(() => {
-    pauseAllVideos();
-    setIsOpen(false);
-    document.body.style.overflow = '';
-  }, [pauseAllVideos]);
-
-  useEffect(() => {
-    if (!isOpen || !swiperContainerRef.current) return;
-
-    if (!swiperInstanceRef.current) {
-      swiperInstanceRef.current = new Swiper(
-        swiperContainerRef.current,
-        {
-          modules: [Navigation, Pagination, Keyboard],
-          slidesPerView: 1,
-          spaceBetween: 30,
-          speed: 400,
-          grabCursor: true,
-          initialSlide: currentSlideIndex,
-          keyboard: { enabled: true },
-          navigation: {
-            nextEl: nextBtnRef.current,
-            prevEl: prevBtnRef.current,
-          },
-          pagination: {
-            el: paginationRef.current,
-            clickable: true,
-          },
-          on: {
-            slideChange() {
-              pauseAllVideos();
-              setCurrentSlideIndex(this.activeIndex);
-            },
-          },
-        }
-      );
-    } else {
-      swiperInstanceRef.current.update();
-      swiperInstanceRef.current.slideTo(currentSlideIndex, 0);
-    }
-
-    const handleKeyDown = (event) => {
-      if (event.key === 'Escape') closeLightbox();
-    };
-
-    document.addEventListener('keydown', handleKeyDown);
-
-    return () => {
-      document.removeEventListener('keydown', handleKeyDown);
-    };
-  }, [isOpen, currentSlideIndex, closeLightbox, pauseAllVideos]);
-
-  useEffect(() => {
-    return () => {
-      document.body.style.overflow = '';
-
-      if (swiperInstanceRef.current) {
-        swiperInstanceRef.current.destroy(true, true);
-        swiperInstanceRef.current = null;
-      }
-    };
-  }, []);
-
   return (
-    <>
-      <section className="moments-section" id="moments">
-  
+    <section className="py-16 sm:py-20 lg:py-24 bg-white text-slate-900 lg:!pb-[92px] lg:!pt-[67.5px] !bg-[#f7f7f4]">
+      <div className="mx-auto w-full max-w-container px-4 sm:px-6 lg:px-8 min-[1664px]:px-0">
+        <div className="flex flex-col items-center text-center">
+          <h2 className="text-3xl sm:text-4xl lg:text-[50px] font-semibold capitalize !leading-[1.2] lg:tracking-[-3px] text-heading">
+            Moments of Excellence
+          </h2>
+          <p className="text-base !leading-[1.9] opacity-80 mt-[3px] max-w-none text-heading lg:whitespace-nowrap">
+            Showcasing the expertise, innovation, and dedication behind every research project and client success story.
+          </p>
+        </div>
 
-        <div className="srcn-container">
-          <div className="moments-header text-center">
-            <h2 className="moments-title">
-              Moments Of Excellence
-            </h2>
-
-            <p className="moments-subtitle">
-              Discovering the expertise, innovations and enthusiasm
-              behind every research project and client success story.
-            </p>
-          </div>
-
-          <div className="bento-gallery-grid">
-            {galleryItems.map((item, index) => (
-              <button
-                type="button"
-                key={item.src}
-                className={`bento-item ${
-                  item.isLarge ? 'bento-large' : 'bento-small'
-                } gallery-card ${
-                  item.type === 'video' ? 'has-video' : ''
-                }`}
-                onClick={() => openLightbox(index)}
-                aria-label={`Open ${item.type}: ${item.alt}`}
-              >
-                <img
-                  src={item.type === 'video' ? item.poster : item.src}
-                  alt={item.alt}
-                  loading="lazy"
-                />
-
-                {item.type === 'video' && (
-                  <span className="gallery-play-btn">
-                    <i className="fa-solid fa-play"></i>
-                  </span>
-                )}
-              </button>
-            ))}
-          </div>
-
-          <div className="moments-cta-box text-center">
-            <a
-            href='/gallery'
-              type="button"
-              className="moments-explore-btn btn-sm"
+        <div className="mt-9 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          {/* Card 1: Large Video Card */}
+          <div className="relative overflow-hidden rounded-video-lg bg-ink-900 aspect-[790/370] sm:col-span-2 group">
+            <div className="block h-full w-full">
+              <img
+                alt="Moments of Excellence"
+                loading="eager"
+                className="object-cover opacity-70 transition-transform duration-500 group-hover:scale-105"
+                style={{
+                  position: 'absolute',
+                  height: '100%',
+                  width: '100%',
+                  left: 0,
+                  top: 0,
+                  right: 0,
+                  bottom: 0,
+                  color: 'transparent',
+                }}
+                src="/uploads/gallery_large_1_7f89e8a396.jpg"
+              />
+            </div>
+            <div
+              className="pointer-events-none absolute inset-0 flex items-center justify-center transition-opacity"
+              aria-hidden="true"
             >
-              <span>EXPLORE GALLERY</span>
-              <img src="/asstes/images/icon/arrow-right-icon-img.png" alt="Arrow Right"></img>
-            </a>
+              <div className="flex size-[50px] items-center justify-center rounded-full bg-white/20 backdrop-blur-sm transition-transform duration-300 group-hover:scale-110">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="size-5 translate-x-0.5 text-white"
+                >
+                  <path
+                    d="M8 5.14v13.72a1 1 0 0 0 1.5.86l11-6.86a1 1 0 0 0 0-1.72l-11-6.86A1 1 0 0 0 8 5.14z"
+                    fill="currentColor"
+                  ></path>
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          {/* Card 2: Large Video Card */}
+          <div className="relative overflow-hidden rounded-video-lg bg-ink-900 aspect-[790/370] sm:col-span-2 group">
+            <div className="block h-full w-full">
+              <img
+                alt="Moments of Excellence"
+                loading="eager"
+                className="object-cover opacity-70 transition-transform duration-500 group-hover:scale-105"
+                style={{
+                  position: 'absolute',
+                  height: '100%',
+                  width: '100%',
+                  left: 0,
+                  top: 0,
+                  right: 0,
+                  bottom: 0,
+                  color: 'transparent',
+                }}
+                src="/uploads/gallery_large_2_4e72e58ce0.jpg"
+              />
+            </div>
+            <div
+              className="pointer-events-none absolute inset-0 flex items-center justify-center transition-opacity"
+              aria-hidden="true"
+            >
+              <div className="flex size-[50px] items-center justify-center rounded-full bg-white/20 backdrop-blur-sm transition-transform duration-300 group-hover:scale-110">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="size-5 translate-x-0.5 text-white"
+                >
+                  <path
+                    d="M8 5.14v13.72a1 1 0 0 0 1.5.86l11-6.86a1 1 0 0 0 0-1.72l-11-6.86A1 1 0 0 0 8 5.14z"
+                    fill="currentColor"
+                  ></path>
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          {/* Card 3: Small Card */}
+          <div className="relative overflow-hidden rounded-video-lg bg-ink-900 aspect-[380/370] group">
+            <div className="block h-full w-full">
+              <img
+                alt="Moments of Excellence"
+                loading="eager"
+                className="object-cover transition-transform duration-500 group-hover:scale-105"
+                style={{
+                  position: 'absolute',
+                  height: '100%',
+                  width: '100%',
+                  left: 0,
+                  top: 0,
+                  right: 0,
+                  bottom: 0,
+                  color: 'transparent',
+                }}
+                src="/uploads/gallery_small_1_0399c8a5d7.jpg"
+              />
+            </div>
+          </div>
+
+          {/* Card 4: Small Card */}
+          <div className="relative overflow-hidden rounded-video-lg bg-ink-900 aspect-[380/370] group">
+            <div className="block h-full w-full">
+              <img
+                alt="Moments of Excellence"
+                loading="eager"
+                className="object-cover transition-transform duration-500 group-hover:scale-105"
+                style={{
+                  position: 'absolute',
+                  height: '100%',
+                  width: '100%',
+                  left: 0,
+                  top: 0,
+                  right: 0,
+                  bottom: 0,
+                  color: 'transparent',
+                }}
+                src="/uploads/gallery_small_2_030b8b4afb.jpg"
+              />
+            </div>
+          </div>
+
+          {/* Card 5: Small Card */}
+          <div className="relative overflow-hidden rounded-video-lg bg-ink-900 aspect-[380/370] group">
+            <div className="block h-full w-full">
+              <img
+                alt="Moments of Excellence"
+                loading="eager"
+                className="object-cover transition-transform duration-500 group-hover:scale-105"
+                style={{
+                  position: 'absolute',
+                  height: '100%',
+                  width: '100%',
+                  left: 0,
+                  top: 0,
+                  right: 0,
+                  bottom: 0,
+                  color: 'transparent',
+                }}
+                src="/uploads/gallery_small_3_054d8506f3.jpg"
+              />
+            </div>
+          </div>
+
+          {/* Card 6: Small Card */}
+          <div className="relative overflow-hidden rounded-video-lg bg-ink-900 aspect-[380/370] group">
+            <div className="block h-full w-full">
+              <img
+                alt="Moments of Excellence"
+                loading="eager"
+                className="object-cover transition-transform duration-500 group-hover:scale-105"
+                style={{
+                  position: 'absolute',
+                  height: '100%',
+                  width: '100%',
+                  left: 0,
+                  top: 0,
+                  right: 0,
+                  bottom: 0,
+                  color: 'transparent',
+                }}
+                src="/uploads/gallery_small_4_279aef17dd.jpg"
+              />
+            </div>
           </div>
         </div>
-      </section>
 
-      <div
-        ref={modalRef}
-        className={`lightbox-modal ${isOpen ? 'active' : ''}`}
-        id="lightboxModal"
-        aria-hidden={!isOpen}
-        onClick={(event) => {
-          if (event.target === modalRef.current) {
-            closeLightbox();
-          }
-        }}
-      >
-        <button
-          type="button"
-          className="lightbox-close"
-          aria-label="Close gallery"
-          onClick={closeLightbox}
-        >
-          &times;
-        </button>
-
-        <div className="lightbox-swiper-container">
-          <button
-            type="button"
-            ref={prevBtnRef}
-            className="lightbox-nav-btn lightbox-prev"
-            aria-label="Previous slide"
+        {/* Bottom Button */}
+        <div className="mt-[46px] flex flex-wrap justify-center gap-3">
+          <Link
+            href="/gallery"
+            className="inline-flex items-center justify-center gap-1 rounded-btn px-10 min-h-[60px] font-sans text-[13px] font-bold uppercase leading-[1.3] tracking-[0.06em] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 motion-reduce:transition-none disabled:opacity-50 disabled:pointer-events-none bg-gradient-to-r from-gradient-from to-gradient-to text-white hover:brightness-110 focus-visible:ring-brand-600"
           >
-            <i className="fa-solid fa-arrow-left"></i>
-          </button>
-
-          <div
-            ref={swiperContainerRef}
-            className="swiper lightbox-swiper"
-            id="lightboxSwiper"
-          >
-            <div className="swiper-wrapper">
-              {galleryItems.map((item) => (
-                <div
-                  key={item.src}
-                  className="swiper-slide lightbox-slide"
-                >
-                  <div className="lightbox-media-box">
-                    {item.type === 'video' ? (
-                      <video
-                        className="lightbox-video-player"
-                        controls
-                        playsInline
-                        preload="metadata"
-                        poster={item.poster}
-                      >
-                        <source src={item.src} type="video/mp4" />
-                        Your browser does not support video playback.
-                      </video>
-                    ) : (
-                      <img src={item.src} alt={item.alt} />
-                    )}
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            <div
-              ref={paginationRef}
-              className="lightbox-pagination"
-            ></div>
-          </div>
-
-          <button
-            type="button"
-            ref={nextBtnRef}
-            className="lightbox-nav-btn lightbox-next"
-            aria-label="Next slide"
-          >
-            <i className="fa-solid fa-arrow-right"></i>
-          </button>
+            Browse Gallery
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              className="size-4"
+              aria-hidden="true"
+            >
+              <path
+                d="M7 17L17 7M17 7H9M17 7v8"
+                stroke="currentColor"
+                strokeWidth="1.75"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              ></path>
+            </svg>
+          </Link>
         </div>
       </div>
-    </>
+    </section>
   );
 }

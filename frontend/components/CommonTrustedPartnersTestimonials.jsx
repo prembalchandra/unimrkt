@@ -1,8 +1,6 @@
 'use client';
 
-import React, { useEffect, useRef } from 'react';
-import Swiper from 'swiper';
-import { Autoplay, Pagination } from 'swiper/modules';
+import React from 'react';
 
 const testimonials = [
   {
@@ -29,116 +27,68 @@ const testimonials = [
     author: 'Rajesh Mehta',
     role: 'Vice President – Business Intelligence',
   },
-  {
-    id: 4,
-    title: 'Seamless Global Reach & Localization',
-    quote:
-      'Reaching specialized commercial fleet operators across 6 European hubs seemed daunting until Unimrkt mobilized native-language interviewers within days.',
-    author: 'Elena Rostova',
-    role: 'Chief Strategy Officer, Mobility Systems',
-  },
-  {
-    id: 5,
-    title: 'High Precision Data Quality',
-    quote:
-      'The audit trail, speeder checks, and call monitoring controls set Unimrkt apart from standard survey vendors. Every dataset is pristine and ready for decision-makers.',
-    author: 'Michael Chen',
-    role: 'VP Analytics, Global Fintech Solutions',
-  },
-  {
-    id: 6,
-    title: 'Unrivaled Respondent Engagement',
-    quote:
-      'Even when recruiting C-level executives for strategic technology audits, Unimrkt exceeded our quota targets with exceptional respondent engagement and depth.',
-    author: 'Emily Watson',
-    role: 'Partner, Global Strategy Consultancy',
-  },
 ];
 
 export default function CommonTrustedPartnersTestimonials() {
-  const sliderRef = useRef(null);
-  const paginationRef = useRef(null);
-  const swiperInstanceRef = useRef(null);
-
-  useEffect(() => {
-    if (!sliderRef.current) return;
-
-    swiperInstanceRef.current = new Swiper(sliderRef.current, {
-      modules: [Autoplay, Pagination],
-      slidesPerView: 1,
-      spaceBetween: 16,
-      grabCursor: true,
-      loop: true,
-      speed: 700,
-      autoplay: {
-        delay: 3000,
-        disableOnInteraction: false,
-        pauseOnMouseEnter: false,
-      },
-      pagination: {
-        el: paginationRef.current,
-        clickable: true,
-        renderBullet: function (index, className) {
-          return `<span class="${className}" role="button" aria-label="Go to slide ${index + 1}"></span>`;
-        },
-      },
-      breakpoints: {
-        0: {
-          slidesPerView: 1,
-          spaceBetween: 16,
-        },
-        640: {
-          slidesPerView: 1.25,
-          spaceBetween: 18,
-        },
-        768: {
-          slidesPerView: 2.5,
-          spaceBetween: 20,
-        },
-        1024: {
-          slidesPerView: 3.5,
-          spaceBetween: 24,
-        },
-        1280: {
-          slidesPerView: 3.5,
-          spaceBetween: 28,
-        },
-      },
-    });
-
-    return () => {
-      if (swiperInstanceRef.current) {
-        swiperInstanceRef.current.destroy(true, true);
-      }
-    };
-  }, []);
-
   return (
-    <section className="testimonials-showcase-section" id="testimonials">
-      <div className="testimonials-showcase-container">
-        <div className="testimonials-header">
-          <span className="testimonials-kicker">CLIENT SUCCESS STORIES</span>
-          <h2 className="testimonials-heading">Trusted Research Partner For Businesses Worldwide</h2>
-        </div>
-        <div className='common-swiper-box'>
-          <div className="swiper testimonials-swiper" ref={sliderRef}>
-            <div className="swiper-wrapper">
-              {testimonials.map((item) => (
-                <div key={item.id} className="swiper-slide testimonials-slide">
-                  <article className="testimonial-showcase-card">
-                    <div className="testimonial-quote-icon" aria-hidden="true">“</div>
-                    <h3 className="testimonial-title">{item.title}</h3>
-                    <p className="testimonial-quote-body">{item.quote}</p>
-                    <div className="testimonial-author-wrap">
-                      <h4 className="testimonial-author-name">{item.author}</h4>
-                      <p className="testimonial-author-role">{item.role}</p>
-                    </div>
-                  </article>
-                </div>
-              ))}
-            </div>
-            <div className="testimonials-pagination" ref={paginationRef}></div>
-          </div>
+    <section className="relative bg-white py-16 lg:h-[821px] lg:pb-0 lg:pt-[99.6px]">
+      <div className="pointer-events-none absolute inset-x-0 top-1/2 h-[55%] overflow-hidden opacity-[0.06] mix-blend-darken lg:top-[696px] lg:h-[697px]" aria-hidden="true">
+        <img
+          alt=""
+          loading="lazy"
+          width={2000}
+          height={889}
+          className="absolute left-[-0.03%] top-0 h-[121.23%] w-[100.05%] max-w-none object-cover object-left-top"
+          style={{ color: 'transparent' }}
+          src="/images/industries/client-waves.png"
+        />
+      </div>
+      <header className="mx-auto flex flex-col items-center text-center relative px-4 sm:px-6">
+        <p className="font-sans text-[13px] font-bold uppercase leading-[15.6px] tracking-[3px] text-[#cc1f1f]">
+          Client Success Stories
+        </p>
+        <h2 className="font-sans text-[32px] font-semibold capitalize leading-[38px] tracking-[-1.5px] sm:text-[40px] sm:leading-[48px] lg:text-[50px] lg:leading-[60px] lg:tracking-[-3px] mt-[7px] text-[#02060e]" style={{ maxWidth: '704px' }}>
+          Trusted Research Partner for Businesses Worldwide
+        </h2>
+      </header>
+
+      <ul className="relative mt-[29.9px] flex snap-x snap-mandatory scroll-px-4 gap-8 overflow-x-auto sm:scroll-px-6 scroll-smooth px-4 pb-6 pt-4 [scrollbar-width:none] sm:px-6 lg:scroll-pl-[max(32px,calc(50vw-800px))] lg:pl-[max(32px,calc(50vw-800px))] lg:pr-8 [&::-webkit-scrollbar]:hidden">
+        {testimonials.map((item) => (
+          <li
+            key={item.id}
+            className="w-[85vw] shrink-0 cursor-pointer snap-start rounded-[24px] border border-[#eee] bg-white pb-[34px] pl-[48px] pr-[48px] pt-[47px] shadow-[6px_6px_54px_0px_rgba(0,0,0,0.08)] transition-all duration-300 ease-out hover:-translate-y-2 hover:scale-[1.02] hover:shadow-xl sm:w-[590px] lg:min-h-[385px]"
+          >
+            <img
+              alt=""
+              aria-hidden="true"
+              loading="lazy"
+              width={50}
+              height={34}
+              className="h-[34px] w-[50px]"
+              style={{ color: 'transparent' }}
+              src="/icons/industries/quote.svg"
+            />
+            <h3 className="mt-[22.7px] font-sans text-[21px] font-semibold leading-[28.14px] text-[#04264e]">
+              {item.title}
+            </h3>
+            <p className="mt-[19.5px] font-sans text-[14px] font-normal leading-[26.18px] text-black opacity-70 lg:pr-[8px]">
+              {item.quote}
+            </p>
+            <p className="mt-[37.3px] font-sans text-[16px] font-semibold leading-[21.44px] text-[#04264e]">
+              {item.author}
+            </p>
+            <p className="mt-[8px] font-sans text-[14px] font-normal leading-[26.18px] text-black opacity-70">
+              {item.role}
+            </p>
+          </li>
+        ))}
+      </ul>
+
+      <div className="relative mt-[1px] flex justify-center">
+        <div className="flex items-center" role="tablist" aria-label="Slide navigation">
+          <span className="block h-[15px] w-8 rounded-[40px] bg-[#b63a40]"></span>
+          <span className="ml-2 block size-[15px] rounded-full bg-[#e2e2e2]"></span>
+          <span className="ml-2 block size-[15px] rounded-full bg-[#e2e2e2]"></span>
         </div>
       </div>
     </section>

@@ -1,96 +1,118 @@
 'use client';
 
 import React, { useState } from 'react';
+import Link from 'next/link';
 
-const industryFaqs = [
+const defaultFaqItems = [
   {
-    question: 'What industry sectors does Unimrkt Research cover?',
+    id: 1,
+    question: 'What industries does Unimrkt Research serve?',
     answer:
-      'We conduct quantitative and qualitative research across 10+ major global sectors, including Automotive & Mobility, Healthcare & Life Sciences, BFSI & Fintech, Retail & E-commerce, Technology & SaaS, Consumer Goods (FMCG), Energy & Utilities, Telecommunications, and Media & Entertainment across 90+ countries.',
+      'Unimrkt Research serves diverse global industries including Automotive & Mobility, Banking & Financial Services, Healthcare & Pharmaceuticals, Consumer Goods & Retail, Technology & Telecom, Aerospace & Defence, and Energy.',
   },
   {
-    question: 'How do you recruit senior decision-makers and specialized respondents?',
+    id: 2,
+    question: 'What research methodologies do you use for industry-specific studies?',
     answer:
-      'We leverage verified proprietary B2B panels, telephone outreach (CATI), and multi-channel screening. Every executive, physician, or technical buyer is thoroughly screened, vetted, and identity-verified to ensure authentic, qualified domain perspectives.',
+      'We combine quantitative telephonic (CATI) and online surveys with qualitative in-depth interviews (IDIs), focus group discussions (FGDs), and secondary desk research tailored to specific industry audiences and regulatory requirements.',
   },
   {
-    question: 'Can you tailor research methodologies for regulated industries?',
+    id: 3,
+    question: 'Is your research approach customized for each industry?',
     answer:
-      'Yes. Our questionnaires, fieldwork workflows, and data handling protocols are custom-designed to comply with stringent industry standards, including HIPAA and adverse event reporting for Healthcare, and GDPR/CCPA for financial and consumer data privacy.',
+      'Yes, every engagement is customized to the target market, stakeholder profile, decision context, and regulatory nuances of your industry sector.',
   },
   {
-    question: 'How do you ensure high data quality and eliminate fraud?',
+    id: 4,
+    question: 'How does an industry research engagement typically start?',
     answer:
-      'We implement a multi-stage validation engine including digital fingerprinting, IP deduplication, speeder/straight-liner detection, audio audit verifications, and consistency scoring to deliver pristine, audit-ready data sets.',
+      'It starts with a scoping consultation to define research objectives, target geographies, audience quotas, and timeline, followed by study design and fieldwork execution.',
   },
   {
-    question: 'In how many countries and languages can research be executed?',
+    id: 5,
+    question: 'How do you ensure data quality across different industries?',
     answer:
-      'We conduct fieldwork across 90+ countries across the Americas, Europe, APAC, Middle East, and Africa, supporting over 25+ local languages with native-speaking interviewers and localized survey instruments.',
-  },
-  {
-    question: 'What deliverables and data formats do you provide upon project completion?',
-    answer:
-      'We deliver clean data sets (SPSS, Excel, CSV), cross-tabulations, visual PowerPoint/PDF executive reports, interactive dashboard visualizations, and strategic insight summaries tailored for board and C-suite presentations.',
+      'We operate under ISO 20252 and ISO 27001 guidelines with native language moderators, rigorous respondent verification, and multi-tier quality checks on every dataset.',
   },
 ];
 
 export default function IndustriesFaq({ dynamicFaq = null }) {
-  const heading = dynamicFaq?.heading || 'Frequently Asked Questions';
-  const displayFaqs = dynamicFaq?.items && dynamicFaq.items.length > 0
-    ? dynamicFaq.items
-    : industryFaqs;
-  const [openIndex, setOpenIndex] = useState(0);
+  const [openId, setOpenId] = useState(null);
 
-  // Self-contained FAQ JavaScript toggle logic
-  const toggleFaq = (index) => {
-    setOpenIndex((prev) => (prev === index ? null : index));
-  };
+  const rawItems = dynamicFaq?.items || dynamicFaq?.faqItems || defaultFaqItems;
+  const items = rawItems.map((item, index) => ({
+    id: item.id || index + 1,
+    question: item.question || item.title,
+    answer: item.answer || item.description || item.content,
+  }));
+
+  const heading = dynamicFaq?.heading || 'Frequently Asked Questions';
 
   return (
-    <section className="faq-section-area" id="industries-faq">
-      <div className="worldmap-bg">
-        <img src="/asstes/images/unimrkt-resarch-map-banner-img.webp" alt="fqa banner" />
-      </div>
-      <div className="srcn-container">
-        <div className="section-header-area" style={{ textAlign: 'center', marginBottom: '38px' }}>
-          <span className="industries-showcase-kicker">FREQUENTLY ASKED QUESTIONS</span>
-          <h2 className="industries-showcase-heading" style={{ margin: '8px auto 0' }}>Everything You Need To Know</h2>
+    <section className="relative overflow-hidden bg-white pb-16 pt-16 lg:h-[986px] lg:pb-0 lg:pt-[43px]">
+      <div className="pointer-events-none absolute inset-x-0 top-[93px] h-[719px] overflow-hidden" aria-hidden="true">
+        <div className="absolute left-1/2 top-[-71px] h-[787px] w-[1377px] -translate-x-1/2 opacity-[0.08]">
+          <img
+            alt=""
+            loading="lazy"
+            decoding="async"
+            className="object-cover"
+            style={{
+              position: 'absolute',
+              height: '100%',
+              width: '100%',
+              left: 0,
+              top: 0,
+              right: 0,
+              bottom: 0,
+              color: 'transparent',
+            }}
+            src="/figma-home/faq-worldmap.png"
+          />
         </div>
-
-        <div className="faq-accordion-container">
-          {displayFaqs.map((faq, index) => {
-            const isOpen = openIndex === index;
+      </div>
+      <div className="relative flex flex-col items-center px-4 sm:px-6">
+        <Link
+          className="inline-flex h-[60px] w-[222px] items-center justify-center gap-1 rounded-[4px] bg-gradient-to-r from-gradient-from to-gradient-to px-10 font-sans text-[13px] font-bold uppercase leading-[16.9px] tracking-[0.78px] text-white transition-[filter] duration-300 ease-in-out hover:brightness-110"
+          href="/blogs"
+        >
+          Browse Blogs
+        </Link>
+        <h2 className="font-sans text-[32px] font-semibold capitalize leading-[38px] tracking-[-1.5px] sm:text-[40px] sm:leading-[48px] lg:text-[50px] lg:leading-[60px] lg:tracking-[-3px] mt-[43px] text-center text-[#02060e]">
+          {heading}
+        </h2>
+        <div className="mt-[44.9px] flex w-full max-w-[1160px] flex-col gap-4">
+          {items.map((e) => {
+            const isOpen = openId === e.id;
             return (
-              <div key={index} className={`faq-accordion-item ${isOpen ? 'active' : ''}`}>
-                <div
-                  className="faq-accordion-header"
-                  onClick={() => toggleFaq(index)}
-                  role="button"
-                  tabIndex={0}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter' || e.key === ' ') {
-                      e.preventDefault();
-                      toggleFaq(index);
-                    }
-                  }}
+              <div
+                key={e.id}
+                className="rounded-[14px] border border-[#f9edf8] bg-white shadow-[0px_8px_14px_0px_rgba(235,235,241,0.7)] transition-all duration-200"
+              >
+                <button
+                  type="button"
+                  onClick={() => setOpenId(isOpen ? null : e.id)}
                   aria-expanded={isOpen}
+                  className="flex min-h-[88px] w-full items-center justify-between gap-4 px-7 py-5 text-left"
                 >
-                  <span className="faq-question-text">{faq.question}</span>
-                  <span className="faq-icon-indicator" aria-hidden="true">
-                    {isOpen ? '−' : '+'}
+                  <span className="font-accent text-[18px] font-bold leading-[22.68px] text-[#280c27]">
+                    {e.question}
                   </span>
-                </div>
-
-                <div
-                  className={`faq-accordion-collapse ${isOpen ? 'show' : ''}`}
-                >
-                  <div className="faq-accordion-body">
-                    <p className="faq-accordion-content">
-                      {faq.answer}
-                    </p>
+                  <span
+                    className={`flex size-[30px] shrink-0 items-center justify-center text-[#280c27] transition-transform duration-200 ${
+                      isOpen ? 'rotate-45 text-brand-600' : ''
+                    }`}
+                  >
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="size-[22.5px]" aria-hidden="true">
+                      <path d="M12 5v14M5 12h14" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round"></path>
+                    </svg>
+                  </span>
+                </button>
+                {isOpen && (
+                  <div className="px-7 pb-6 text-sm leading-relaxed text-[#475569]">
+                    {e.answer}
                   </div>
-                </div>
+                )}
               </div>
             );
           })}

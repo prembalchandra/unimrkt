@@ -1,4 +1,4 @@
- 'use client';
+'use client';
 
 import React, { useState } from 'react';
 
@@ -34,9 +34,7 @@ export default function HomeFaq({ dynamicFaq = null }) {
   const [openIndex, setOpenIndex] = useState(null);
 
   const toggleFaq = (index) => {
-    setOpenIndex((currentIndex) =>
-      currentIndex === index ? null : index
-    );
+    setOpenIndex((currentIndex) => (currentIndex === index ? null : index));
   };
 
   const activeFaqs =
@@ -46,43 +44,86 @@ export default function HomeFaq({ dynamicFaq = null }) {
   const heading = dynamicFaq?.heading || 'Frequently Asked Questions';
 
   return (
-   <section className="faq-section-area">
-      <div className="worldmap-bg">
-        <img src="/asstes/images/unimrkt-resarch-map-banner-img.webp" alt="fqa banner" />
-      </div>
-      <div className="srcn-container">
-        <div className="section-header-area">
-          <h2 className="section-main-heading">{heading}</h2>
+    <section className="py-16 sm:py-20 lg:py-24 bg-white text-slate-900 relative lg:!pb-[92px] lg:!pt-[114.5px]">
+      <div
+        className="pointer-events-none absolute inset-x-0 top-0 h-[719px] overflow-hidden"
+        aria-hidden="true"
+      >
+        <div className="absolute left-1/2 top-[-71px] h-[787px] w-[1377px] -translate-x-1/2 opacity-[0.08]">
+          <img
+            alt=""
+            loading="lazy"
+            decoding="async"
+            className="object-cover"
+            style={{
+              position: 'absolute',
+              height: '100%',
+              width: '100%',
+              left: 0,
+              top: 0,
+              right: 0,
+              bottom: 0,
+              color: 'transparent',
+            }}
+            src="/figma-home/faq-worldmap.png"
+          />
         </div>
+      </div>
 
-        <div className="faq-accordion-container">
+      <div className="mx-auto flex w-full max-w-container flex-col items-center px-4 sm:px-6 lg:px-8 relative">
+        <h2 className="text-3xl sm:text-4xl lg:text-[50px] font-semibold capitalize !leading-[1.2] lg:tracking-[-3px] text-heading text-center">
+          {heading}
+        </h2>
+        <div className="mx-auto mt-10 flex w-full max-w-4xl flex-col gap-4">
           {activeFaqs.map((faq, index) => {
             const isOpen = openIndex === index;
             return (
               <div
                 key={index}
-                className={`faq-accordion-item ${isOpen ? 'active' : ''}`}
+                className="rounded-faq border border-[#f9edf8] bg-white shadow-faq transition-all duration-200"
               >
-                <div
-                  className="faq-accordion-header"
+                <button
+                  type="button"
                   onClick={() => toggleFaq(index)}
-                  style={{ cursor: 'pointer' }}
+                  className="flex min-h-[44px] w-full items-center justify-between gap-4 px-6 py-5 text-left focus:outline-none"
+                  aria-expanded={isOpen}
                 >
-                  <span className="faq-question-text">{faq.question}</span>
-                  <span className="faq-icon-indicator" aria-hidden="true">
-                    {isOpen ? '−' : '+'}
+                  <span className="font-accent text-lg font-bold text-faq-text">
+                    {faq.question}
                   </span>
-                </div>
-                <div
-                  className="faq-accordion-body"
-                  style={{
-                    display: isOpen ? 'block' : 'none',
-                    maxHeight: isOpen ? '500px' : '0',
-                    transition: 'all 0.3s ease',
-                  }}
-                >
-                  <div className="faq-accordion-content">{faq.answer}</div>
-                </div>
+                  <span className="shrink-0 text-faq-text">
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="size-5 transition-transform duration-200"
+                      aria-hidden="true"
+                    >
+                      {isOpen ? (
+                        <path
+                          d="M5 12h14"
+                          stroke="currentColor"
+                          strokeWidth="1.75"
+                          strokeLinecap="round"
+                        ></path>
+                      ) : (
+                        <path
+                          d="M12 5v14M5 12h14"
+                          stroke="currentColor"
+                          strokeWidth="1.75"
+                          strokeLinecap="round"
+                        ></path>
+                      )}
+                    </svg>
+                  </span>
+                </button>
+                {isOpen && (
+                  <div className="overflow-hidden">
+                    <p className="px-6 pb-5 text-sm leading-relaxed opacity-80 text-heading">
+                      {faq.answer}
+                    </p>
+                  </div>
+                )}
               </div>
             );
           })}

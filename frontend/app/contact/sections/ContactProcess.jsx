@@ -1,12 +1,6 @@
-
 'use client';
 
-import React, { useEffect, useRef } from 'react';
-import Swiper from 'swiper';
-import { Autoplay, Pagination } from 'swiper/modules';
-
-import 'swiper/css';
-import 'swiper/css/pagination';
+import React, { useRef } from 'react';
 
 const steps = [
   {
@@ -42,100 +36,44 @@ const steps = [
 ];
 
 export default function ContactProcess() {
-  const sliderRef = useRef(null);
-
-  useEffect(() => {
-    if (!sliderRef.current) return;
-
-    const paginationEl = sliderRef.current.querySelector(
-      '.contact-process-pagination'
-    );
-
-    const swiperInstance = new Swiper(sliderRef.current, {
-      modules: [Autoplay, Pagination],
-
-      slidesPerView: 1,
-      slidesPerGroup: 1,
-      spaceBetween: 18,
-      loop: true,
-
-      speed: 700,
-      watchOverflow: true,
-      grabCursor: true,
-
-      autoplay: {
-        delay: 3000,
-        disableOnInteraction: false,
-        pauseOnMouseEnter: false,
-      },
-
-      pagination: {
-        el: paginationEl,
-        clickable: true,
-      },
-
-      breakpoints: {
-        640: {
-          slidesPerView: 2,
-          spaceBetween: 18,
-        },
-        992: {
-          slidesPerView: 3.5,
-          spaceBetween: 22,
-        },
-      },
-    });
-
-    return () => {
-      swiperInstance.destroy(true, true);
-    };
-  }, []);
+  const scrollRef = useRef(null);
 
   return (
-    <section className="contact-process-section">
-      <div className="contact-process-container">
+    <section className="bg-[#f9f9f7] py-16 lg:pb-[181px] lg:pt-[83px]">
+      <div className="px-4 text-center sm:px-6">
+        <p className="font-sans text-[13px] font-bold uppercase leading-[1.2] tracking-[3px] text-[#cc1f1f]">
+          How it works
+        </p>
+        <h2 className="mx-auto mt-[26px] max-w-[905px] font-sans text-[32px] font-semibold capitalize leading-[1.2] tracking-[-1.5px] text-[#02060e] sm:text-[42px] lg:text-[52px] lg:tracking-[-3px]">
+          What Happens After You Contact Us?
+        </h2>
+        <p className="mx-auto mt-6 max-w-[885px] font-sans text-[16px] font-normal leading-[1.9] text-[#02060e]/80">
+          A simple process designed to understand your requirement and connect you with the right research expertise.
+        </p>
+      </div>
 
-        <div className="contact-process-header">
-          <span className="contact-process-kicker career-values-kicker">
-            How it works
-          </span>
-
-          <h2 className="contact-process-title section-main-heading">
-            What Happens After You Contact Us?
-          </h2>
-
-          <p className="contact-process-subtitle section-sub-text">
-            A simple process designed to understand your requirement and
-            connect you with the right research expert.
-          </p>
-        </div>
-
-        <div className="common-swiper-box">
-          <div
-            className="swiper contact-process-slider"
-            ref={sliderRef}
-          >
-            <div className="swiper-wrapper">
-              {steps.map((step) => (
-                <article
-                  key={step.number}
-                  className="swiper-slide contact-process-card"
-                >
-                  <div className="contact-process-number">
-                    {step.number}
-                  </div>
-
-                  <h3>{step.title}</h3>
-
-                  <p>{step.desc}</p>
-                </article>
-              ))}
-            </div>
-
-            <div className="contact-process-pagination"></div>
-          </div>
-        </div>
-
+      <div className="mt-8 lg:mt-[47px]">
+        <ul
+          ref={scrollRef}
+          aria-label="How it works"
+          className="flex gap-8 overflow-x-auto scroll-smooth px-4 pb-10 pt-2 [scrollbar-width:none] sm:px-6 lg:px-8 min-[1700px]:pl-[calc((100vw_-_1600px)/2)] min-[1700px]:pr-0 [&::-webkit-scrollbar]:hidden"
+        >
+          {steps.map((step) => (
+            <li key={step.number} className="w-[min(460px,86vw)] shrink-0">
+              <div className="relative h-[282px] rounded-[24px] border border-[#e0e0df] bg-white p-8 shadow-[6px_6px_54px_0px_rgba(0,0,0,0.08)]">
+                <span className="flex size-[70px] items-center justify-center rounded-full bg-[#a3282a] font-sans text-[32px] font-semibold leading-[1.2] text-white">
+                  {step.number}
+                </span>
+                <h3 className="mt-6 font-sans text-[22px] font-semibold leading-[1.3] text-[#04264e]">
+                  {step.title}
+                </h3>
+                <p className="mt-3 font-sans text-[15px] font-normal leading-[1.6] text-black/70">
+                  {step.desc}
+                </p>
+              </div>
+            </li>
+          ))}
+        </ul>
       </div>
     </section>
   );

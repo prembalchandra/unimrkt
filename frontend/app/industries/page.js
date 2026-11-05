@@ -1,19 +1,20 @@
-import DynamicZoneRenderer from '@/components/DynamicZoneRenderer';
 import React from 'react';
 import IndustriesHero from './sections/IndustriesHero';
+import IndustriesBreadcrumb from './sections/IndustriesBreadcrumb';
 import IndustriesAbout from './sections/IndustriesAbout';
 import IndustriesGrid from './sections/IndustriesGrid';
 import PartnerIndustriesSection from './sections/PartnerIndustriesSection';
-import QuestionsToInsightsSection from './sections/QuestionsToInsightsSection';
 import QuestionCTA from './sections/QuestionCTA';
+import QuestionsToInsightsSection from './sections/QuestionsToInsightsSection';
 import BusinessOutcomesSection from './sections/BusinessOutcomesSection';
 import LocalInsightGlobalReach from './sections/LocalInsightGlobalReach';
 import ResearchProcessImpact from './sections/ResearchProcessImpact';
 import CommonTrustedPartnersTestimonials from '../../components/CommonTrustedPartnersTestimonials';
 import CommonBlogSection from '../../components/CommonBlogSection';
 import IndustriesFaq from './sections/IndustriesFaq';
+import IndustriesAboutServices from './sections/IndustriesAboutServices';
 import ResearchCta from './sections/ResearchCta';
-import { getPageBySlug, getIndustries, findSection, generatePageMetadata } from '../../lib/strapi';
+import { getPageBySlug, getIndustries, getBlogPosts, findSection, generatePageMetadata } from '../../lib/strapi';
 
 export async function generateMetadata() {
   return await generatePageMetadata(
@@ -24,21 +25,20 @@ export async function generateMetadata() {
 }
 
 export default async function IndustriesPage() {
-  const [pageData, strapiIndustries] = await Promise.all([
+  const [pageData, strapiIndustries, blogs] = await Promise.all([
     getPageBySlug('industries').catch(() => null),
-    getIndustries(24).catch(() => []),
+    getIndustries(30).catch(() => []),
+    getBlogPosts(6).catch(() => []),
   ]);
-
-  
-  // Preserved full page design wired directly to Strapi DB dynamic sections
 
   const heroSection = findSection(pageData, 'sections.hero-common');
   const ctaSection = findSection(pageData, 'sections.question-cta');
+  const faqSection = findSection(pageData, 'sections.faq-accordion');
 
-    const faqSection = findSection(pageData, 'sections.faq-accordion');
   return (
     <main>
       <IndustriesHero dynamicHero={heroSection} />
+      <IndustriesBreadcrumb />
       <IndustriesAbout />
       <IndustriesGrid initialIndustries={strapiIndustries} />
       <PartnerIndustriesSection />
@@ -48,8 +48,9 @@ export default async function IndustriesPage() {
       <LocalInsightGlobalReach />
       <ResearchProcessImpact />
       <CommonTrustedPartnersTestimonials />
-      <CommonBlogSection />
+      <CommonBlogSection blogs={blogs} />
       <IndustriesFaq dynamicFaq={faqSection} />
+      <IndustriesAboutServices />
       <ResearchCta dynamicCta={ctaSection} />
     </main>
   );

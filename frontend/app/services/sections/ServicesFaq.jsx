@@ -2,80 +2,97 @@
 
 import React, { useState } from 'react';
 
-const defaultFaqs = [
+const defaultFaqItems = [
   {
-    question: 'What research services does Unimrkt Research offer?',
-    answer: 'Unimrkt Research offers comprehensive end-to-end market research services, including primary research, qualitative research (focus groups, in-depth interviews), quantitative research (CATI, online surveys), business research, competitive intelligence, and specialized research support functions across 90+ countries.'
+    id: 1,
+    question: 'What services does Unimrkt Research provide?',
+    answer:
+      'Unimrkt Research provides comprehensive qualitative and quantitative research, secondary research, CATI, CAWI, and online global panel services across B2B and B2C sectors.',
   },
   {
-    question: 'How does Unimrkt choose the right research methodology?',
-    answer: 'We evaluate your specific business objectives, target audience demographics, geographic scope, timeline, and data depth requirements. Based on these factors, our research specialists recommend the most effective methodology—whether qualitative, quantitative, or a blended hybrid approach—to ensure actionable, high-quality insights.'
+    id: 2,
+    question: 'How do I choose the right research service for my project?',
+    answer:
+      'Our team assesses your business question, target audience, timeline, and decision stakes to recommend the optimal mix of qualitative, quantitative, or blended research methodologies.',
   },
   {
-    question: 'What is the difference between qualitative and quantitative research?',
-    answer: 'Qualitative research focuses on understanding the underlying motivations, perceptions, and attitudes through open-ended methods like focus groups and in-depth interviews. Quantitative research measures attitudes, opinions, and behaviors at scale using structured questionnaires, numerical data, and statistical analysis for conclusive decision-making.'
+    id: 3,
+    question: 'Can Unimrkt Research handle global and multi-country research projects?',
+    answer:
+      'Yes, we operate in 90+ countries across 22+ languages with in-house native moderators, CATI stations, and vetted global consumer & executive panels.',
   },
   {
-    question: 'Can Unimrkt conduct research across different industries?',
-    answer: 'Yes, we have extensive industry expertise across diverse sectors including Automotive & Mobility, Healthcare & Life Sciences, Banking & Financial Services, Consumer & Retail, Technology & SaaS, Energy & Utilities, and Industrial B2B markets worldwide.'
+    id: 4,
+    question: 'Which industries do you serve?',
+    answer:
+      'We serve Healthcare & Life Sciences, BFSI, Automotive & Mobility, Consumer Goods & Retail, Technology & Telecom, Industrial Manufacturing, and Energy sectors.',
   },
   {
-    question: 'Does Unimrkt provide primary market research?',
-    answer: 'Yes, primary market research is a core capability at Unimrkt. We collect firsthand data directly from target consumers, B2B executives, healthcare professionals, and niche decision-makers through tailored qualitative and quantitative methodologies.'
+    id: 5,
+    question: 'Why choose Unimrkt Research as your research partner?',
+    answer:
+      'With 16+ years of specialized market research experience, strict ISO 20252 / 27001 data quality controls, and customized consultative support, we turn complex market signals into high-confidence business outcomes.',
   },
-  {
-    question: 'Does Unimrkt conduct research across multiple markets and geographies?',
-    answer: 'Absolutely. We operate across 90+ countries in the Americas, Europe, APAC, the Middle East, and Africa, supporting 22+ languages with native-speaking interviewers and localized survey instruments to ensure culturally accurate and reliable data.'
-  },
-  {
-    question: 'Can Unimrkt customize a research solution for a specific business requirement?',
-    answer: 'Yes. Every business challenge is unique, and we tailor research frameworks, questionnaires, sampling strategies, and analytical reporting to align precisely with your strategic goals and decision-making requirements.'
-  }
 ];
 
 export default function ServicesFaq({ dynamicFaq = null }) {
-  const [openIndex, setOpenIndex] = useState(null);
+  const [openId, setOpenId] = useState(1);
 
-  const toggleFaq = (index) => {
-    setOpenIndex((prev) => (prev === index ? null : index));
-  };
+  const rawItems = dynamicFaq?.items || dynamicFaq?.faqItems || defaultFaqItems;
+  const items = rawItems.map((item, index) => ({
+    id: item.id || index + 1,
+    question: item.question || item.title,
+    answer: item.answer || item.description || item.content,
+  }));
 
   const heading = dynamicFaq?.heading || 'Frequently Asked Questions';
-  const faqList =
-    dynamicFaq?.items && dynamicFaq.items.length > 0 ? dynamicFaq.items : defaultFaqs;
 
   return (
-    <section className="faq-section-area">
-      <div className="worldmap-bg">
-        <img src="/asstes/images/unimrkt-resarch-map-banner-img.webp" alt="fqa banner" />
-      </div>
-      <div className="srcn-container">
-        <div className="section-header-area">
-          <h2 className="section-main-heading">{heading}</h2>
-        </div>
-
-        <div className="faq-accordion-container">
-          {faqList.map((faq, index) => {
-            const isOpen = openIndex === index;
+    <section className="relative overflow-hidden bg-white py-16 sm:py-20 lg:py-24">
+      <img
+        alt=""
+        loading="lazy"
+        decoding="async"
+        className="pointer-events-none absolute inset-0 object-contain opacity-[0.05]"
+        style={{
+          position: 'absolute',
+          height: '100%',
+          width: '100%',
+          left: 0,
+          top: 0,
+          right: 0,
+          bottom: 0,
+          color: 'transparent',
+        }}
+        src="/uploads/faq_worldmap_bg_63310f1a2e.png"
+      />
+      <div className="mx-auto w-full max-w-container px-4 sm:px-6 lg:px-8 relative">
+        <h2 className="text-3xl sm:text-4xl lg:text-[50px] font-semibold capitalize !leading-[1.2] lg:tracking-[-3px] text-heading text-center">
+          {heading}
+        </h2>
+        <div className="mx-auto mt-10 flex max-w-4xl flex-col gap-4">
+          {items.map((e) => {
+            const isOpen = openId === e.id;
             return (
-              <div key={index} className={`faq-accordion-item ${isOpen ? 'active' : ''}`}>
-                <div className="faq-accordion-header" onClick={() => toggleFaq(index)} style={{ cursor: 'pointer' }}>
-                  <span className="faq-question-text">{faq.question}</span>
-                  <span className="faq-icon-indicator" aria-hidden="true">
-                    {isOpen ? '−' : '+'}
-                  </span>
-                </div>
-
-                <div
-                  className="faq-accordion-body"
-                  style={{
-                    display: isOpen ? 'block' : 'none',
-                    padding: isOpen ? '16px 20px' : '0 20px',
-                    transition: 'all 0.3s ease'
-                  }}
+              <div key={e.id} className="rounded-2xl border border-[#e2e8f0] bg-white shadow-sm transition-all duration-200">
+                <button
+                  type="button"
+                  onClick={() => setOpenId(isOpen ? null : e.id)}
+                  className="flex min-h-[44px] w-full items-center justify-between gap-4 px-6 py-5 text-left"
+                  aria-expanded={isOpen}
                 >
-                  <p>{faq.answer}</p>
-                </div>
+                  <span className="font-sans text-lg font-bold text-heading">{e.question}</span>
+                  <span className={`shrink-0 text-heading transition-transform duration-200 ${isOpen ? 'rotate-45 text-brand-600' : ''}`}>
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="size-5" aria-hidden="true">
+                      <path d="M12 5v14M5 12h14" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round"></path>
+                    </svg>
+                  </span>
+                </button>
+                {isOpen && (
+                  <div className="overflow-hidden">
+                    <p className="px-6 pb-5 text-sm leading-relaxed opacity-80 text-gray-700">{e.answer}</p>
+                  </div>
+                )}
               </div>
             );
           })}

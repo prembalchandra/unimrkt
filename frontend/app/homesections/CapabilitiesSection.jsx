@@ -1,282 +1,131 @@
 'use client';
 
-import React, { useEffect, useRef, useState } from 'react';
-import Link from 'next/link';
+import React, { useState } from 'react';
+
+const statsData = [
+  {
+    number: '250000+',
+    label: 'CATI Surveys Completed Every Year',
+    desc: 'Delivering reliable insights through 250,000+ CATI surveys conducted annually across global markets.',
+    image: '/uploads/stat_cati_surveys_e8b384b390.jpg',
+  },
+  {
+    number: '500+',
+    label: 'Advanced CATI Workstations',
+    desc: 'Equipped to deliver high-volume, accurate, and efficient telephone research nationwide, supported by advanced technology, skilled interviewers, and robust quality control processes.',
+    image: '/uploads/stat_cati_stations_5a1dabbd81.jpg',
+  },
+  {
+    number: '16+ Years',
+    label: 'Of Experience',
+    desc: 'Delivering trusted research excellence for over 16 years.',
+    image: '/uploads/stat_experience_500090bf55.jpg',
+  },
+];
 
 export default function CapabilitiesSection() {
-  const sectionRef = useRef(null);
-  const videoRefs = useRef([]);
-  const playTimersRef = useRef({});
-  const [hoveredRow, setHoveredRow] = useState(null);
-
-  // Counter displays
-  const [counts, setCounts] = useState({
-    surveys: '0+',
-    workstations: '0+',
-    experience: '0+ YEARS',
-  });
-  const [sectionInView, setSectionInView] = useState(false);
-  const hasCountedRef = useRef(false);
-
-  useEffect(() => {
-    const statsSection = sectionRef.current;
-    if (!statsSection) return;
-
-    const animateCounters = () => {
-      const duration = 2000;
-      const startTime = performance.now();
-
-      const targets = [
-        { key: 'surveys', target: 250000, suffix: '' },
-        { key: 'workstations', target: 450, suffix: '' },
-        { key: 'experience', target: 16, suffix: ' YEARS' },
-      ];
-
-      const step = (currentTime) => {
-        const elapsed = currentTime - startTime;
-        const progress = Math.min(elapsed / duration, 1);
-        const easeOut = 1 - Math.pow(1 - progress, 3);
-
-        const newCounts = {};
-        targets.forEach(({ key, target, suffix }) => {
-          const currentVal = Math.floor(easeOut * target);
-          if (progress < 1) {
-            newCounts[key] = `${currentVal.toLocaleString()}+${suffix}`;
-          } else {
-            newCounts[key] = `${target.toLocaleString()}+${suffix}`;
-          }
-        });
-
-        setCounts(newCounts);
-
-        if (progress < 1) {
-          requestAnimationFrame(step);
-        }
-      };
-
-      requestAnimationFrame(step);
-    };
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setSectionInView(true);
-            if (!hasCountedRef.current) {
-              hasCountedRef.current = true;
-              animateCounters();
-            }
-          }
-        });
-      },
-      { threshold: 0.15 }
-    );
-
-    const rect = statsSection.getBoundingClientRect();
-    if (rect.top < window.innerHeight && rect.bottom >= 0) {
-      setSectionInView(true);
-      if (!hasCountedRef.current) {
-        hasCountedRef.current = true;
-        animateCounters();
-      }
-    }
-
-    observer.observe(statsSection);
-
-    // Outside click for mobile tap collapse
-    const handleDocClick = (e) => {
-      if (window.innerWidth <= 900 && !e.target.closest('.stat-interactive-row')) {
-        setHoveredRow(null);
-        videoRefs.current.forEach((vid) => {
-          if (vid) vid.pause();
-        });
-      }
-    };
-    document.addEventListener('click', handleDocClick);
-
-    return () => {
-      observer.disconnect();
-      document.removeEventListener('click', handleDocClick);
-    };
-  }, []);
-
-  const handleRowMouseEnter = (index) => {
-    setHoveredRow(index);
-    const video = videoRefs.current[index];
-    if (video) {
-      clearTimeout(playTimersRef.current[index]);
-      playTimersRef.current[index] = setTimeout(() => {
-        try {
-          video.currentTime = 0;
-          const p = video.play();
-          if (p !== undefined) p.catch(() => { });
-        } catch (err) { }
-      }, 50);
-    }
-  };
-
-  const handleRowMouseLeave = (index) => {
-    clearTimeout(playTimersRef.current[index]);
-    setHoveredRow(null);
-    const video = videoRefs.current[index];
-    if (video) {
-      try {
-        video.pause();
-      } catch (err) { }
-    }
-  };
-
-  const handleRowClick = (index) => {
-    if (window.innerWidth <= 900) {
-      const isAlready = hoveredRow === index;
-      videoRefs.current.forEach((v) => {
-        if (v) v.pause();
-      });
-
-      if (isAlready) {
-        setHoveredRow(null);
-      } else {
-        setHoveredRow(index);
-        const video = videoRefs.current[index];
-        if (video) video.play().catch(() => { });
-      }
-    }
-  };
+  const [hoveredIdx, setHoveredIdx] = useState(null);
 
   return (
-    <section className="capabilities-section" id="capabilities" ref={sectionRef}>
-      <div className="srcn-container">
-        <div className="capabilities-wrapper">
-          <div className="stats-interactive-container" id="statsInteractiveContainer">
-            {/* Row 1: 250000+ Surveys */}
-            <div
-              className={`stat-interactive-row ${hoveredRow === 0 ? 'is-hovered' : ''}`}
-              data-stat="surveys"
-              onMouseEnter={() => handleRowMouseEnter(0)}
-              onMouseLeave={() => handleRowMouseLeave(0)}
-              onClick={() => handleRowClick(0)}
-            >
-              <div className="stat-card-video-bg">
-                <video
-                  ref={(el) => (videoRefs.current[0] = el)}
-                  className="stat-video-player"
-                  loop
-                  muted
-                  playsInline
-                  preload="none"
+    <section className="py-16 sm:py-20 lg:py-24 bg-white text-slate-900 lg:pb-0 lg:pt-[44px]">
+      <div className="mx-auto w-full max-w-[960px] px-4 sm:px-6 lg:max-w-[1040px] lg:px-0">
+        <div>
+          {statsData.map((item, idx) => {
+            const isHovered = hoveredIdx === idx;
+            return (
+              <div key={idx}>
+                <div
+                  role="button"
+                  tabIndex={0}
+                  aria-expanded={isHovered}
+                  onMouseEnter={() => setHoveredIdx(idx)}
+                  onMouseLeave={() => setHoveredIdx(null)}
+                  onClick={() => setHoveredIdx(isHovered ? null : idx)}
+                  className={`group relative cursor-pointer overflow-hidden py-6 outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-brand-600/40 lg:h-[170px] lg:py-0 lg:pl-6 lg:pt-[34px] transition-colors duration-300 ${
+                    idx > 0 ? 'border-t-[3px] border-stat-divider' : ''
+                  }`}
                 >
-                  {sectionInView && <source src="/asstes/images/video-banner2.mp4" type="video/mp4" />}
-                </video>
-                <div className="stat-video-overlay"></div>
-              </div>
-              <div className="stat-row-layout">
-                <div className="stat-col-left">
-                  <span className="stat-number-display stat-counter-num" data-target="250000">
-                    {counts.surveys}
-                  </span>
-                  <span className="stat-hover-label">CATI Surveys Completed Every Year</span>
-                </div>
-                <div className="stat-col-middle">
-                  <p className="stat-hover-desc">
-                    Delivering reliable insights through 250,000+ CATI surveys conducted annually across global markets.
-                  </p>
-                </div>
-                <div className="stat-col-right">
-                  <Link href="/telephonic-surveys" className="stat-explore-cta">
-                    <span>Explore Fieldwork</span>
-                    <i className="fa-solid fa-arrow-right"></i>
-                  </Link>
-                </div>
-              </div>
-            </div>
+                  {/* Wave texture on hover */}
+                  <img
+                    src="/figma-home/stats-wave.png"
+                    alt=""
+                    aria-hidden="true"
+                    className={`pointer-events-none absolute inset-0 size-full object-cover transition-opacity duration-[350ms] ease-in-out ${
+                      isHovered ? 'opacity-100' : 'opacity-0'
+                    }`}
+                  />
 
-            <div className="stat-row-divider"></div>
+                  {/* Left Column: Number & Label */}
+                  <div className="relative transition-transform duration-[350ms] ease-in-out">
+                    <div className="relative w-fit origin-left whitespace-nowrap font-display text-[clamp(2.5rem,4.5vw,4.5rem)] uppercase leading-[0.85] tracking-[1px] lg:scale-x-[0.815]">
+                      <p
+                        className={`transition-colors duration-300 ${
+                          isHovered ? 'text-transparent' : 'text-stat-number'
+                        }`}
+                      >
+                        {item.number}
+                      </p>
+                      <p
+                        aria-hidden="true"
+                        className={`absolute inset-x-0 -bottom-[0.2em] -top-[0.2em] py-[0.2em] bg-gradient-to-r from-gradient-from to-gradient-to bg-clip-text text-transparent transition-opacity duration-[350ms] ease-in-out ${
+                          isHovered ? 'opacity-100' : 'opacity-0'
+                        }`}
+                      >
+                        {item.number}
+                      </p>
+                    </div>
+                    <p
+                      className={`mt-[10px] font-sans text-base font-semibold capitalize leading-[1.2] text-heading transition-all duration-[350ms] ease-in-out lg:text-[18px] ${
+                        isHovered ? 'translate-y-0 opacity-100' : 'translate-y-1 opacity-70'
+                      }`}
+                    >
+                      {item.label}
+                    </p>
+                  </div>
 
-            <div
-              className={`stat-interactive-row ${hoveredRow === 1 ? 'is-hovered' : ''}`}
-              data-stat="workstations"
-              onMouseEnter={() => handleRowMouseEnter(1)}
-              onMouseLeave={() => handleRowMouseLeave(1)}
-              onClick={() => handleRowClick(1)}
-            >
-              <div className="stat-card-video-bg">
-                <video
-                  ref={(el) => (videoRefs.current[1] = el)}
-                  className="stat-video-player"
-                  loop
-                  muted
-                  playsInline
-                  preload="none"
-                >
-                  {sectionInView && <source src="/asstes/images/video-banner2.mp4" type="video/mp4" />}
-                </video>
-                <div className="stat-video-overlay"></div>
-              </div>
-              <div className="stat-row-layout">
-                <div className="stat-col-left">
-                  <span className="stat-number-display stat-counter-num" data-target="450">
-                    {counts.workstations}
-                  </span>
-                  <span className="stat-hover-label">Advanced CATI Workstations</span>
-                </div>
-                <div className="stat-col-middle">
-                  <p className="stat-hover-desc">
-                    Equipped with state-of-the-art predictive dialing and skilled native interviewers nationwide.
-                  </p>
-                </div>
-                <div className="stat-col-right">
-                  <Link href="/telephonic-surveys" className="stat-explore-cta">
-                    <span>Explore Infrastructure</span>
-                    <i className="fa-solid fa-arrow-right"></i>
-                  </Link>
-                </div>
-              </div>
-            </div>
-
-            <div className="stat-row-divider"></div>
-
-            {/* Row 3: 16+ YEARS Research Excellence */}
-            <div
-              className={`stat-interactive-row ${hoveredRow === 2 ? 'is-hovered' : ''}`}
-              data-stat="experience"
-              onMouseEnter={() => handleRowMouseEnter(2)}
-              onMouseLeave={() => handleRowMouseLeave(2)}
-              onClick={() => handleRowClick(2)}
-            >
-              <div className="stat-card-video-bg">
-                <video
-                  ref={(el) => (videoRefs.current[2] = el)}
-                  className="stat-video-player"
-                  loop
-                  muted
-                  playsInline
-                  preload="none"
-                >
-                  {sectionInView && <source src="/asstes/images/video-banner2.mp4" type="video/mp4" />}
-                </video>
-                <div className="stat-video-overlay"></div>
-              </div>
-              <div className="stat-row-layout">
-                <div className="stat-col-left">
-                  <span className="stat-number-display stat-counter-num" data-target="16" data-suffix=" YEARS">
-                    {counts.experience}
-                  </span>
-                  <span className="stat-hover-label">Years Of Research Excellence</span>
-                </div>
-                <div className="stat-col-middle">
-                  <p className="stat-hover-desc">
-                    Over 16 years empowering Fortune 500 brands and global consultancies with precision intelligence.
-                  </p>
-                </div>
-                <div className="stat-col-right">
-                  <Link href="/about" className="stat-explore-cta">
-                    <span>Explore Our Legacy</span>
-                    <i className="fa-solid fa-arrow-right"></i>
-                  </Link>
+                  {/* Desktop Middle Description & Right Image */}
+                  <div
+                    className={`grid transition-[grid-template-rows] duration-[350ms] ease-in-out lg:contents ${
+                      isHovered ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'
+                    }`}
+                  >
+                    <div className="min-h-0 overflow-hidden lg:contents">
+                      <div className="relative flex flex-col gap-4 pt-4 lg:contents">
+                        <div className="lg:absolute lg:inset-y-0 lg:left-[43.18%] lg:flex lg:w-[25.33%] lg:items-center">
+                          <p
+                            className={`min-w-0 font-sans text-sm font-normal leading-[1.9] text-heading/80 xl:text-base transition-all duration-[350ms] ease-in-out ${
+                              isHovered
+                                ? 'translate-x-0 opacity-100'
+                                : 'translate-x-3 opacity-0 pointer-events-none'
+                            }`}
+                          >
+                            {item.desc}
+                          </p>
+                        </div>
+                        <div className="lg:absolute lg:inset-y-0 lg:right-[2.9%] lg:flex lg:w-[23.14%] lg:items-center">
+                          <div
+                            className={`relative aspect-[330.64/176] w-full max-w-[331px] overflow-hidden rounded-[8px] shadow-sm transition-all duration-[350ms] ease-in-out lg:max-w-none ${
+                              isHovered
+                                ? 'translate-x-0 opacity-100'
+                                : 'translate-x-3 opacity-0 pointer-events-none'
+                            }`}
+                          >
+                            <img
+                              alt={item.label}
+                              loading="lazy"
+                              decoding="async"
+                              className="object-cover size-full"
+                              src={item.image}
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
-          </div>
+            );
+          })}
         </div>
       </div>
     </section>

@@ -1,46 +1,135 @@
-'use client';
-
 import React from 'react';
 import Link from 'next/link';
-import LazyVideo from '@/components/LazyVideo';
 
 export default function AdvancedAreaSection() {
   return (
-    <section className="advanced-area">
-      <div className="cati-showcase-box-area">
-        <div className="cati-video-backdrop-wrap">
-          <LazyVideo
-            className="cati-wave-video"
-            id="catiWaveVideo"
-            src="/asstes/images/advanced-banner-video2.mp4"
-            poster="/asstes/images/advanced-banner-img.webp"
-            playbackRate={0.5}
-          />
+    <section className="py-16 sm:py-20 lg:py-24 bg-white text-slate-900 relative overflow-hidden lg:!py-0 lg:[container-type:inline-size]">
+      <div
+        className="pointer-events-none absolute left-0 top-0 z-0 h-full w-full overflow-hidden lg:h-[56.2632cqw]"
+        aria-hidden="true"
+      >
+        <video
+          className="pointer-events-none absolute inset-0 z-0 h-full w-full object-cover opacity-10 mix-blend-luminosity"
+          autoPlay
+          loop
+          muted
+          playsInline
+          preload="metadata"
+          poster="/figma-home/cati-wave.png"
+        >
+          <source src="/videos/2535858_Wave_Background_1920x1080.mp4" type="video/mp4" />
+        </video>
+      </div>
+
+      <div className="relative z-10 mx-auto grid max-w-3xl gap-10 px-4 sm:px-6 lg:block lg:h-[44.8421cqw] lg:max-w-none lg:px-0">
+        {/* 3 Call Center People Cutouts */}
+        <div
+          className="relative aspect-[931/720] w-full lg:absolute lg:left-[var(--l)] lg:top-[var(--t)] lg:w-[var(--w)]"
+          style={{
+            '--l': '3.7895cqw',
+            '--t': '7.8421cqw',
+            '--w': '48.9737cqw',
+          }}
+        >
+          <div
+            className="absolute overflow-hidden"
+            style={{ left: '0%', top: '3.457%', width: '43.827%', height: '96.543%' }}
+          >
+            <img
+              src="/figma-home/cati/p109.webp"
+              alt=""
+              className="absolute max-w-none"
+              style={{
+                left: '-110.42%',
+                top: '-16.42%',
+                width: '297.62%',
+                height: '116.42%',
+              }}
+            />
+          </div>
+          <div
+            className="absolute overflow-hidden"
+            style={{ left: '64.98%', top: '2.78%', width: '35.02%', height: '97.22%' }}
+          >
+            <img
+              src="/figma-home/cati/p110.webp"
+              alt=""
+              className="absolute max-w-none"
+              style={{
+                left: '-111.54%',
+                top: '-3.4%',
+                width: '265.25%',
+                height: '103.4%',
+              }}
+            />
+          </div>
+          <div
+            className="absolute overflow-hidden"
+            style={{ left: '32.12%', top: '0%', width: '46.56%', height: '100%' }}
+          >
+            <img
+              src="/figma-home/cati/p108.webp"
+              alt=""
+              className="absolute max-w-none"
+              style={{
+                left: '-94.12%',
+                top: '-12.39%',
+                width: '280.11%',
+                height: '112.39%',
+              }}
+            />
+          </div>
         </div>
-        <div className="srcn-container">
-          <div className="cati-showcase-row">
-            <div className="cati-image-col">
-              <div className="cati-cutout-wrap">
-                <img
-                  src="/asstes/images/advanced-banner-img.webp"
-                  alt="500+ Advanced CATI Workstations"
-                  className="cati-cutout-img"
-                />
-              </div>
-            </div>
-            <div className="cati-text-col">
-              <h2 className="cati-heading">
-                500+ Advanced<br />CATI Workstations
-              </h2>
-              <p className="cati-desc">
-                Equipped to deliver high-volume, accurate, and efficient telephone research nationwide, supported by
-                advanced technology, skilled interviewers, and robust quality control processes.
-              </p>
-              <Link href="/contact" className="btn-burgundy">
-                <span>GET STARTED TODAY</span>
-                <i className="fa-solid fa-arrow-up-right-from-square"></i>
-              </Link>
-            </div>
+
+        {/* Right Content Column */}
+        <div
+          className="lg:absolute lg:left-[var(--l)] lg:top-[var(--t)] lg:w-[var(--w)]"
+          style={{
+            '--l': '57.6316cqw',
+            '--t': '17.9474cqw',
+            '--w': '36.8421cqw',
+          }}
+        >
+          <h2
+            className="text-4xl font-semibold capitalize !leading-[1.2] tracking-[-0.05em] text-heading lg:max-w-[var(--w)] lg:text-[length:var(--fs)]"
+            style={{
+              '--w': '27.4737cqw',
+              '--fs': 'max(13px, 3.1579cqw)',
+            }}
+          >
+            500+ Advanced CATI Workstations
+          </h2>
+          <p
+            className="mt-4 text-base leading-[1.9] text-heading opacity-80 lg:mt-[0.47cqw] lg:max-w-[var(--w)] lg:text-[length:var(--fs)]"
+            style={{
+              '--w': '33.0000cqw',
+              '--fs': 'max(13px, 0.8421cqw)',
+            }}
+          >
+            Equipped to deliver high-volume, accurate, and efficient telephone research nationwide, supported by advanced technology, skilled interviewers, and robust quality control processes.
+          </p>
+          <div className="mt-8 flex flex-wrap gap-4 lg:mt-[2.47cqw]">
+            <Link
+              href="/contact"
+              className="inline-flex items-center justify-center gap-1 rounded-btn px-10 min-h-[60px] font-sans text-[13px] font-bold uppercase leading-[1.3] tracking-[0.06em] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 motion-reduce:transition-none disabled:opacity-50 disabled:pointer-events-none bg-gradient-to-r from-gradient-from to-gradient-to text-white hover:brightness-110 focus-visible:ring-brand-600"
+            >
+              Get Started Today
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                className="size-4"
+                aria-hidden="true"
+              >
+                <path
+                  d="M7 17L17 7M17 7H9M17 7v8"
+                  stroke="currentColor"
+                  strokeWidth="1.75"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                ></path>
+              </svg>
+            </Link>
           </div>
         </div>
       </div>

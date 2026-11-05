@@ -1,56 +1,80 @@
 import React from 'react';
-import Link from 'next/link';
 
-const companyPillars = [
+const cards = [
   {
-    icon: '/asstes/images/icon/global-reach-icon-img.png',
     title: 'Global Reach',
-    desc: 'Access diverse markets across continents.',
+    description: 'Access diverse markets across continents.',
+    icon: (
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="size-11 text-brand-600" aria-hidden="true">
+        <circle cx="12" cy="12" r="10"></circle>
+        <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"></path>
+        <path d="M2 12h20"></path>
+      </svg>
+    ),
   },
   {
-    icon: '/asstes/images/icon/deep-expertise-profile-2user-iocn-img.png',
     title: 'Deep Expertise',
-    desc: 'Experienced researchers across industries.',
+    description: 'Experienced researchers across industries.',
+    icon: (
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="size-11 text-brand-600" aria-hidden="true">
+        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+        <path d="M16 3.128a4 4 0 0 1 0 7.744"></path>
+        <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
+        <circle cx="9" cy="7" r="4"></circle>
+      </svg>
+    ),
   },
   {
-    icon: '/asstes/images/icon/faster-decisions-timer-icon-img.png',
     title: 'Faster Decisions',
-    desc: 'Clear insights delivered when they matter.',
+    description: 'Clear insights delivered when they matter.',
+    icon: (
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="size-11 text-brand-600" aria-hidden="true">
+        <line x1="10" x2="14" y1="2" y2="2"></line>
+        <line x1="12" x2="15" y1="14" y2="11"></line>
+        <circle cx="12" cy="14" r="8"></circle>
+      </svg>
+    ),
   },
   {
-    icon: '/asstes/images/icon/shield-tick-reliable-quality.png',
     title: 'Reliable Quality',
-    desc: 'Research built on rigorous standards.',
+    description: 'Research built on rigorous standards.',
+    icon: (
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="size-11 text-brand-600" aria-hidden="true">
+        <path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"></path>
+        <path d="m9 12 2 2 4-4"></path>
+      </svg>
+    ),
   },
 ];
 
 export default function CompanyOverview() {
   return (
-    <>
-      <section className="research-value-section">
-        <div className="srcn-container">
-          <div className="research-value-wrap">
-            <div className="research-value-header">
-              <span className="research-value-kicker career-values-kicker">Why Businesses Choose Unimrkt</span>
-              <h2 className="research-value-title section-main-heading">
-                Insights That Move Businesses Forward
-              </h2>
-              <p>Transforming complex data into clear, actionable insights that help businesses make smarter decisions and unlock new opportunities.</p>
-            </div>
-            <div className="research-value-grid">
-              {companyPillars.map((pillar, idx) => (
-                <article key={idx} className="research-value-card">
-                  <div className="value-icon-wrap">
-                    <img src={pillar.icon} alt={pillar.title} />
-                  </div>
-                  <h3>{pillar.title}</h3>
-                  <p>{pillar.desc}</p>
-                </article>
-              ))}
-            </div>
-          </div>
+    <section className="relative overflow-hidden bg-gradient-to-r from-gradient-from to-gradient-to py-16 text-white sm:py-20 lg:py-24">
+      <div className="mx-auto w-full max-w-container px-4 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-2xl text-center">
+          <p className="text-sm font-bold uppercase tracking-[0.2em] text-white">
+            Why Businesses Choose Unimrkt
+          </p>
+          <h2 className="mt-3 text-3xl font-semibold leading-[1.2] text-white sm:text-4xl lg:text-[44px] lg:tracking-[-1px]">
+            Insights That Move Businesses Forward
+          </h2>
+          <p className="mt-4 text-base leading-[1.9] text-white/80">
+            Transforming complex data into clear, actionable insights that help businesses make smarter decisions and unlock new opportunities.
+          </p>
         </div>
-      </section>
-    </>
+        <ul className="mt-12 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
+          {cards.map((item, idx) => (
+            <li
+              key={idx}
+              className="flex h-full flex-col items-center gap-4 rounded-[24px] border border-[#e0e0df] bg-white p-8 text-center shadow-blog transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
+            >
+              {item.icon}
+              <h3 className="text-lg font-semibold text-ink2">{item.title}</h3>
+              <p className="text-sm leading-[1.87] opacity-70 text-gray-700">{item.description}</p>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
   );
 }

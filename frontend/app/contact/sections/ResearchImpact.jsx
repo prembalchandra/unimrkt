@@ -1,60 +1,45 @@
 import React from 'react';
 
-const stats = [
-  {
-    icon: '/asstes/images/icon/countries-icon-img.png',
-    number: '90+',
-    label: 'Countries',
-  },
-  {
-    icon: '/asstes/images/icon/every-stage-icon-img.png',
-    number: '22+',
-    label: 'Languages',
-  },
-  {
-    icon: '/asstes/images/icon/phone-icon-img.png',
-    number: '450+',
-    label: 'CATI Stations',
-  },
-  {
-    icon: '/asstes/images/icon/experience-icon-img.png',
-    number: '16+',
-    label: 'Years of Experience',
-  },
+const defaultStats = [
+  { icon: '/figma-contact/stat-global.svg', number: '90+', label: 'Countries' },
+  { icon: '/figma-contact/stat-language.svg', number: '22+', label: 'Languages' },
+  { icon: '/figma-contact/stat-call.svg', number: '450+', label: 'CATI Stations' },
+  { icon: '/figma-contact/stat-medal.svg', number: '16+', label: 'Years of Experience' },
 ];
 
 export default function ResearchImpact({ dynamicMetrics = null }) {
   const heading = dynamicMetrics?.heading || 'Research at a Global Scale';
-  const displayStats = dynamicMetrics?.metrics && dynamicMetrics.metrics.length > 0
-    ? dynamicMetrics.metrics.map((m, idx) => ({
-        icon: stats[idx % stats.length]?.icon || '/asstes/images/icon/countries-icon-img.png',
-        number: m.number,
-        label: m.label,
-      }))
-    : stats;
+  const displayStats =
+    dynamicMetrics?.metrics && dynamicMetrics.metrics.length > 0
+      ? dynamicMetrics.metrics.map((m, idx) => ({
+          icon: defaultStats[idx % defaultStats.length].icon,
+          number: m.number,
+          label: m.label,
+        }))
+      : defaultStats;
 
   return (
-    <section className="research-impact-section">
-      <div className="srcn-container">
-        <div className="section-header-area research-impact-header">
-          <h2 className="section-main-heading research-impact-title">{heading}</h2>
-        </div>
-
-        <div className="research-impact-grid">
-          {displayStats.map((stat, idx) => (
-            <article key={idx} className="research-impact-col">
-              <div className="research-impact-card">
-                <div className="research-impact-icon">
-                  <img src={stat.icon} alt={stat.label} />
-                </div>
-                <div className="research-impact-contnet-area">
-                  <h3 className="research-impact-number">{stat.number}</h3>
-                  <p className="research-impact-label">{stat.label}</p>
-                </div>
-              </div>
-            </article>
-          ))}
-        </div>
+    <section className="bg-[#f9f9f7] px-4 py-14 sm:px-6 lg:pb-[58px] lg:pt-[43px]">
+      <h2 className="text-center font-sans text-[24px] font-semibold capitalize leading-[1.2] tracking-[-1px] text-[#02060e] sm:text-[28px]">
+        {heading}
+      </h2>
+      <div className="mx-auto mt-8 grid max-w-[1050px] grid-cols-2 gap-4 lg:mt-[28px] lg:grid-cols-4 lg:gap-[30px]">
+        {displayStats.map((item, idx) => (
+          <div
+            key={idx}
+            className="flex min-h-[220px] flex-col items-center rounded-[19px] border border-[#e2e2e0] bg-white/65 px-3 pt-8 text-center backdrop-blur-[12px] lg:h-[248px] lg:pt-[37px]"
+          >
+            <span className="flex size-20 items-center justify-center rounded-full border border-[#a3282a]/10 bg-white/80">
+              <img src={item.icon} alt={item.label} width="44" height="44" className="size-11" />
+            </span>
+            <p className="mt-[15px] font-sans text-[30px] font-bold leading-[1.34] text-[#04264e] sm:text-[34px]">
+              {item.number}
+            </p>
+            <p className="mt-3 font-sans text-[16px] font-normal leading-[1.34] text-black">
+              {item.label}
+            </p>
+          </div>
+        ))}
       </div>
     </section>
   );

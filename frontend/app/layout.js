@@ -120,6 +120,7 @@ export default async function RootLayout({ children }) {
         <link rel="stylesheet" href="/asstes/css/leaflet.css" />
         <link rel="stylesheet" href="/asstes/css/global.css?v=1.0" />
         <link rel="stylesheet" href="/asstes/css/style.css?v=3.5" />
+        <link rel="stylesheet" href="/staging-design.css" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdOrg) }}

@@ -1,4 +1,3 @@
-import DynamicZoneRenderer from '@/components/DynamicZoneRenderer';
 import React from 'react';
 import HeroSection from './homesections/HeroSection';
 import GlobalResearchSection from './homesections/GlobalResearchSection';
@@ -8,6 +7,7 @@ import AdvancedAreaSection from './homesections/AdvancedAreaSection';
 import IndustriesSection from './homesections/IndustriesSection';
 import MarketplacesSection from './homesections/MarketplacesSection';
 import MomentsSection from './homesections/MomentsSection';
+import HomeBlogSection from './homesections/HomeBlogSection';
 import HomeFaq from './homesections/HomeFaq';
 import HomeInsightsEditorial from './homesections/HomeInsightsEditorial';
 import HomeresearchCta from './homesections/HomeresearchCta';
@@ -35,7 +35,7 @@ export default async function HomePage() {
   const ctaSection = findSection(pageData, 'sections.question-cta');
 
   return (
-    <>
+    <main>
       <HeroSection dynamicData={homeHero} />
       <GlobalResearchSection dynamicData={metricsSection} />
       <SolutionsSection dynamicServices={services} />
@@ -44,9 +44,10 @@ export default async function HomePage() {
       <IndustriesSection dynamicIndustries={industries} />
       <MarketplacesSection />
       <MomentsSection />
+      <HomeBlogSection blogs={latestBlogs} />
       <HomeFaq dynamicFaq={faqSection} />
       <HomeInsightsEditorial />
       <HomeresearchCta dynamicCta={ctaSection} />
-    </>
+    </main>
   );
 }

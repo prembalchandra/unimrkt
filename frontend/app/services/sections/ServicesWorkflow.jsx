@@ -1,169 +1,79 @@
+import React from 'react';
 
-'use client';
-
-import React, { useEffect, useRef } from 'react';
-import Swiper from 'swiper';
-import { Autoplay, Pagination } from 'swiper/modules';
-
-import 'swiper/css';
-import 'swiper/css/pagination';
-
-
-const processSteps = [
+const steps = [
   {
-    num: '01',
-    icon: '/asstes/images/icon/understand-clipboard-tick-icon-img.png',
+    step: '01',
     title: 'Discover Your Objectives',
-    desc: ' Every successful research project starts with a clear understanding of the business challenge. We work closely with you to identify your goals, target audience, key questions and desired outcomes, creating a focused foundation for the right research approach and ensuring every insight contributes meaningfully to your business decisions.',
+    description: 'Aligning research goals, target audience, and business context to establish clear project milestones.',
+    icon: '/uploads/process_clipboard_tick_163f70e35c.svg',
   },
   {
-    num: '02',
-    icon: '/asstes/images/icon/design-brush-ion-img.png',
+    step: '02',
     title: 'Design the Research',
-    desc: 'Once objectives are clear, we develop the right research framework around your business needs. From methodology and audience definition to sample design, questionnaires and research tools, we carefully structure every element to ensure the study captures relevant information and delivers reliable, meaningful insights for confident decision-making.',
+    description: 'Carefully designing research methodologies to deliver reliable, actionable, and impactful results.',
+    icon: '/uploads/process_brush_4eb7a168ba.svg',
   },
   {
-    num: '03',
-    icon: '/asstes/images/icon/research-presention-chart-icon-img.png',
+    step: '03',
     title: 'Collect Quality Data',
-    desc: 'We use structured fieldwork processes, trained researchers and robust quality checks to collect accurate, reliable data from the right audiences. From respondent validation and interview monitoring to data consistency and verification, every stage is carefully managed to maintain research quality and provide a dependable foundation for meaningful analysis and insights.',
+    description: 'Gathering accurate, reliable data from trusted sources for meaningful business insights.',
+    icon: '/uploads/process_presentation_chart_a7b1453e99.svg',
   },
   {
-    num: '04',
-    icon: '/asstes/images/icon/analyze-chart-icon-img.png',
+    step: '04',
     title: 'Analyze & Validate',
-    desc: 'Once data is collected, we carefully analyze and validate the findings to identify meaningful patterns, trends and relationships. Our structured review process helps ensure data accuracy, consistency and relevance, allowing us to separate reliable signals from noise and build a strong foundation for actionable research insights.',
-  },
-   {
-    num: '05',
-    icon: '/asstes/images/icon/analyze-chart-icon-img.png',
-    title: 'Analyze & Validate',
-    desc: 'Once data is collected, we carefully analyze and validate the findings to identify meaningful patterns, trends and relationships. Our structured review process helps ensure data accuracy, consistency and relevance, allowing us to separate reliable signals from noise and build a strong foundation for actionable research insights.',
+    description: 'Transforming raw data into accurate, validated insights for confident business decisions.',
+    icon: '/uploads/process_chart_2696286093.svg',
   },
 ];
 
-export default function ResearchProcessImpact() {
-  const slidersRef = useRef(null);
-  const paginationRef = useRef(null);
-  const swiperInstanceRef = useRef(null);
-
-  useEffect(() => {
-    if (!slidersRef.current || !paginationRef.current) return;
-
-    const swiper = new Swiper(slidersRef.current, {
-      modules: [Autoplay, Pagination],
-      slidesPerView: 1,
-      slidesPerGroup: 1,
-      spaceBetween: 16,
-      speed: 700,
-      grabCursor: true,
-      loop: true,
-      watchOverflow: true,
-
-      autoplay: {
-        delay: 3000,
-        disableOnInteraction: false,
-        pauseOnMouseEnter: false,
-      },
-
-      pagination: {
-        el: paginationRef.current,
-        clickable: true,
-        dynamicBullets: false,
-      },
-
-      breakpoints: {
-        0: {
-          slidesPerView: 1,
-          spaceBetween: 16,
-        },
-        540: {
-          slidesPerView: 1.5,
-          spaceBetween: 16,
-        },
-        640: {
-          slidesPerView: 2.5,
-          spaceBetween: 18,
-        },
-        991: {
-          slidesPerView: 3.5,
-          spaceBetween: 18,
-        },
-
-        1400: {
-          slidesPerView: 3.5,
-          spaceBetween: 10,
-        },
-      },
-    });
-
-    swiperInstanceRef.current = swiper;
-
-    return () => {
-      swiper.destroy(true, true);
-      swiperInstanceRef.current = null;
-    };
-  }, []);
-
+export default function ServicesWorkflow() {
   return (
-    <section
-      className="research-process-section"
-      id="research-process"
-    >
-      <div className="research-process-container">
-        <header className="research-process-header section-header-area">
-          <span className="research-process-kicker career-values-kicker">
-            WORKFLOW
-          </span>
-          <h2 className="research-process-heading section-main-heading">
-          Research Process
+    <section className="relative overflow-hidden bg-[#fbfbfc] py-16 sm:py-20 lg:py-24">
+      <div className="mx-auto w-full max-w-container px-4 sm:px-6 lg:px-8 relative">
+        <header className="mx-auto max-w-3xl text-center">
+          <p className="font-nav text-sm font-semibold uppercase tracking-[0.2em] text-[#be2c28]">WORKFLOW</p>
+          <h2 className="text-3xl sm:text-4xl lg:text-[50px] font-semibold capitalize !leading-[1.2] lg:tracking-[-3px] text-heading mt-3">
+            Research Process
           </h2>
-          <p className="research-process-desc section-sub-text">
-          Our proven research process combines strategic planning, precise data collection, rigorous analysis, and actionable reporting to deliver reliable insights that support confident business decisions and measurable growth.
+          <p className="text-base !leading-[1.9] opacity-80 mt-4">
+            Our proven research process combines strategic planning, precise data collection, rigorous analysis, and actionable reporting to deliver reliable insights that support confident business decisions and measurable growth.
           </p>
         </header>
 
-        <div className='common-swiper-box'>
-          <div
-          className="research-process-swiper swiper"
-          ref={slidersRef}
-        >
-          <div className="swiper-wrapper">
-            {processSteps.map((step) => (
-              <div
-                className="swiper-slide research-process-slide"
-                key={step.num}
+        <ul className="mt-12 flex snap-x snap-mandatory gap-6 overflow-x-auto pb-4 [-ms-overflow-style:none] [scrollbar-width:none] sm:pb-0 lg:grid lg:grid-cols-4 lg:overflow-visible [&::-webkit-scrollbar]:hidden">
+          {steps.map((item, idx) => (
+            <li
+              key={idx}
+              className="relative min-w-[80%] shrink-0 snap-center overflow-hidden rounded-[24px] border border-[#e0e0df] bg-white p-8 shadow-blog sm:min-w-[45%] lg:min-w-0 lg:shrink"
+            >
+              <span
+                aria-hidden="true"
+                className="pointer-events-none absolute -top-2 right-4 select-none font-sans text-[66px] font-semibold capitalize leading-[1.2] tracking-[-1px] text-heading opacity-15"
               >
-                <article className="process-impact-card">
-                  <span className="process-impact-number">
-                    {step.num}
-                  </span>
+                {item.step}
+              </span>
+              <img
+                alt={item.title}
+                loading="lazy"
+                width={48}
+                height={48}
+                className="size-12 object-contain"
+                src={item.icon}
+              />
+              <h3 className="relative mt-6 text-xl font-semibold text-ink2">{item.title}</h3>
+              <p className="text-base !leading-[1.9] opacity-80 relative mt-2 text-sm leading-[1.87] opacity-70">
+                {item.description}
+              </p>
+            </li>
+          ))}
+        </ul>
 
-                  <div className="process-impact-icon-wrap">
-                    <img
-                      src={step.icon}
-                      alt={step.title}
-                      loading="lazy"
-                    />
-                  </div>
-
-                  <h3 className="process-impact-title">
-                    {step.title}
-                  </h3>
-
-                  <p className="process-impact-desc">
-                    {step.desc}
-                  </p>
-                </article>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        <div
-          className="research-process-pagination"
-          ref={paginationRef}
-        />
+        <div className="mt-6 flex items-center justify-center gap-2 lg:hidden" aria-hidden="true">
+          <span className="h-[15px] w-8 rounded-full bg-[#be2c28]"></span>
+          <span className="size-[15px] rounded-full bg-[#e0e0df]"></span>
+          <span className="size-[15px] rounded-full bg-[#e0e0df]"></span>
+          <span className="size-[15px] rounded-full bg-[#e0e0df]"></span>
         </div>
       </div>
     </section>

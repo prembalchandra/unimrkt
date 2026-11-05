@@ -1,19 +1,12 @@
-import DynamicZoneRenderer from '@/components/DynamicZoneRenderer';
+import React from 'react';
 import ServicesHero from './sections/ServicesHero';
-import ServicesAboutOverview from './sections/ServicesAboutOverview';
-import EndToEndSolutions from './sections/EndToEndSolutions';
-import WhyChooseUs from './sections/WhyChooseUs';
+import ServicesBreadcrumb from './sections/ServicesBreadcrumb';
+import ServicesList from './sections/ServicesList';
 import ServicesWorkflow from './sections/ServicesWorkflow';
-import ServicesQuestionCTA from './sections/ServicesQuestionCTA';
-import ResearchReachSection from './sections/ResearchReachSection';
-import ServicesIndustriesExpertise from '../../components/ServicesIndustriesExpertise';
-import CaseStudiesImpactCta from './sections/CaseStudiesImpactCta';
-import CommonTrustedPartnersTestimonials from '../../components/CommonTrustedPartnersTestimonials';
-import CommonBlogSection from '../../components/CommonBlogSection';
+import WhyChooseUs from './sections/WhyChooseUs';
 import ServicesFaq from './sections/ServicesFaq';
-import InsightsEditorial from './sections/InsightsEditorial';
 import ResearchCta from './sections/ResearchCta';
-import { getPageBySlug, findSection, generatePageMetadata } from '../../lib/strapi';
+import { getPageBySlug, findSection, getServices, generatePageMetadata } from '../../lib/strapi';
 
 export async function generateMetadata() {
   return await generatePageMetadata(
@@ -24,36 +17,24 @@ export async function generateMetadata() {
 }
 
 export default async function ServicesPage() {
-  const pageData = await getPageBySlug('services').catch(() => null);
-
-  
-  // Preserved full page design wired directly to Strapi DB dynamic sections
+  const [pageData, strapiServices] = await Promise.all([
+    getPageBySlug('services').catch(() => null),
+    getServices(20).catch(() => []),
+  ]);
 
   const heroSection = findSection(pageData, 'sections.hero-common');
-  const metricsSection = findSection(pageData, 'sections.metrics-grid');
   const faqSection = findSection(pageData, 'sections.faq-accordion');
   const ctaSection = findSection(pageData, 'sections.question-cta');
 
   return (
-    <>
+    <main>
       <ServicesHero dynamicHero={heroSection} />
-      <ServicesAboutOverview />
-      <EndToEndSolutions />
-      <WhyChooseUs />
+      <ServicesBreadcrumb />
+      <ServicesList dynamicServices={strapiServices} />
       <ServicesWorkflow />
-      <ServicesQuestionCTA dynamicCta={ctaSection} />
-      <ResearchReachSection
-        kicker={metricsSection?.kicker || 'Our Coverage'}
-        title={metricsSection?.heading || 'Research Reach That Goes Beyond Markets'}
-        description={metricsSection?.description}
-      />
-      <ServicesIndustriesExpertise />
-      <CaseStudiesImpactCta />
-      <CommonTrustedPartnersTestimonials />
-      <CommonBlogSection />
+      <WhyChooseUs />
       <ServicesFaq dynamicFaq={faqSection} />
-      <InsightsEditorial />
       <ResearchCta dynamicCta={ctaSection} />
-    </>
+    </main>
   );
 }

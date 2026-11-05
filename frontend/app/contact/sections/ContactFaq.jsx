@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 
-const contactFaqs = [
+const defaultFaqs = [
   {
     question: 'How can I contact Unimrkt Research for market research services?',
     answer:
@@ -21,7 +21,7 @@ const contactFaqs = [
   {
     question: 'Where are Unimrkt Research offices located?',
     answer:
-      'Unimrkt Research serves clients across multiple markets. For the latest information about our office locations and contact details, please visit the contact section of our website.',
+      'Unimrkt Research serves clients across multiple markets with global offices in Gurugram (India), Great Neck, NY (USA), and Headington, Oxford (UK).',
   },
   {
     question: 'How can I work with Unimrkt Research?',
@@ -31,50 +31,62 @@ const contactFaqs = [
 ];
 
 export default function ContactFaq({ dynamicFaq = null }) {
-  const [openIndex, setOpenIndex] = useState(null);
+  const [openIndex, setOpenIndex] = useState(0);
 
   const toggleAccordion = (index) => {
     setOpenIndex(openIndex === index ? null : index);
   };
 
-  return (
-    <section className="faq-section-area">
-      <div className="worldmap-bg">
-          <img src="/asstes/images/unimrkt-resarch-map-banner-img.webp" alt="fqa banner" />
-      </div>
-      <div className="srcn-container">
-        <div className="section-header-area">
-          <h2 className="section-main-heading">{dynamicFaq?.heading || "Frequently Asked Questions"}</h2>
-        </div>
+  const heading = dynamicFaq?.heading || 'Frequently Asked Questions';
+  const displayFaqs =
+    dynamicFaq?.items && dynamicFaq.items.length > 0 ? dynamicFaq.items : defaultFaqs;
 
-        <div className="faq-accordion-container">
-          {(dynamicFaq?.items && dynamicFaq.items.length > 0 ? dynamicFaq.items : contactFaqs).map((faq, index) => {
+  return (
+    <section className="relative bg-white py-16 sm:py-20 lg:py-24 lg:!pb-[70px] lg:!pt-[96.5px]">
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-[719px] overflow-hidden" aria-hidden="true">
+        <div className="absolute left-1/2 top-[-71px] h-[787px] w-[1377px] -translate-x-1/2 opacity-[0.08]">
+          <img
+            alt=""
+            src="/figma-home/faq-worldmap.png"
+            className="size-full object-cover"
+          />
+        </div>
+      </div>
+
+      <div className="relative mx-auto w-full max-w-[1050px] px-4 sm:px-6">
+        <h2 className="text-center font-sans text-[32px] font-semibold capitalize leading-[1.2] tracking-[-1px] text-[#02060e] sm:text-[40px] lg:text-[48px]">
+          {heading}
+        </h2>
+
+        <div className="mt-10 flex flex-col gap-4 lg:mt-12">
+          {displayFaqs.map((faq, index) => {
             const isOpen = openIndex === index;
             return (
               <div
                 key={index}
-                className={`faq-accordion-item ${isOpen ? 'active' : ''}`}
+                className="overflow-hidden rounded-[16px] border border-[#e0e0df] bg-white shadow-sm transition-all"
               >
-                <div
-                  className="faq-accordion-header"
+                <button
+                  type="button"
                   onClick={() => toggleAccordion(index)}
-                  style={{ cursor: 'pointer' }}
+                  className="flex w-full items-center justify-between p-6 text-left font-sans text-[18px] font-semibold text-[#04264e] transition-colors hover:text-brand-600 sm:text-[20px]"
                 >
-                  <span className="faq-question-text">{faq.question}</span>
-                  <span className="faq-icon-indicator" aria-hidden="true">
-                    {isOpen ? '−' : '+'}
+                  <span>{faq.question}</span>
+                  <span
+                    className={`ml-4 flex size-8 shrink-0 items-center justify-center rounded-full bg-[#f9f9f7] text-[#04264e] transition-transform duration-300 ${
+                      isOpen ? 'rotate-180 bg-brand-50 text-brand-600' : ''
+                    }`}
+                  >
+                    <svg viewBox="0 0 24 24" fill="none" className="size-4" stroke="currentColor" strokeWidth="2.5">
+                      <path d="M19 9l-7 7-7-7" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
                   </span>
-                </div>
-                <div
-                  className="faq-accordion-body"
-                  style={{
-                    display: isOpen ? 'block' : 'none',
-                    maxHeight: isOpen ? '500px' : '0',
-                    transition: 'all 0.3s ease',
-                  }}
-                >
-                  <div className="faq-accordion-content">{faq.answer}</div>
-                </div>
+                </button>
+                {isOpen && (
+                  <div className="px-6 pb-6 pt-1 font-sans text-[15px] leading-[1.7] text-black/75">
+                    <p>{faq.answer}</p>
+                  </div>
+                )}
               </div>
             );
           })}

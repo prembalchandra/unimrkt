@@ -1,147 +1,90 @@
-'use client';
+import React from 'react';
 
-import React, { useEffect, useRef } from 'react';
-import Swiper from 'swiper';
-import { Autoplay, Pagination } from 'swiper/modules';
-
-const processSteps = [
+const steps = [
   {
-    num: '01',
-    icon: '/asstes/images/icon/understanding-icon-img.png',
+    step: '01',
     title: 'Define',
-    desc: 'We define business challenges and research goals to uncover clear opportunities for growth. Our approach aligns research with strategic priorities, customer needs, market dynamics, and competitive realities, helping organizations identify the right questions, focus on meaningful insights, and develop actionable strategies that support informed decisions, innovation, and sustainable business growth.',
+    description: 'We define business challenges and research goals to uncover clear opportunities for growth.',
+    icon: (
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="size-[70px] text-brand-600" aria-hidden="true">
+        <path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"></path>
+        <path d="M14 2v5a1 1 0 0 0 1 1h5"></path>
+        <circle cx="11.5" cy="14.5" r="2.5"></circle>
+        <path d="M13.3 16.3 15 18"></path>
+      </svg>
+    ),
   },
   {
-    num: '02',
-    icon: '/asstes/images/icon/front-end-programming-icon-img.png',
+    step: '02',
     title: 'Discover',
-    desc: 'We discover meaningful insights, emerging trends, and untapped opportunities that help businesses make smarter, data-driven decisions. By understanding customers, markets, competitors, and evolving behaviours, we turn complex information into clear direction, enabling organizations to refine strategies, identify growth opportunities, strengthen market positioning, and build sustainable competitive advantage for long-term success.',
+    description: 'We discover insights, trends, and opportunities that help businesses make smarter decisions and grow.',
+    icon: (
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="size-[70px] text-brand-600" aria-hidden="true">
+        <circle cx="12" cy="12" r="10"></circle>
+        <path d="m16.24 7.76-1.804 5.411a2 2 0 0 1-1.265 1.265L7.76 16.24l1.804-5.411a2 2 0 0 1 1.265-1.265z"></path>
+      </svg>
+    ),
   },
   {
-    num: '03',
-    icon: '/asstes/images/icon/recruit-icon-img.png',
+    step: '03',
     title: 'Decode',
-    desc: 'We decode complex data into clear, actionable insights that reveal meaningful patterns, strategic direction, and new opportunities for business growth. By combining research, analysis, and market intelligence, we help organizations understand what matters, uncover emerging trends, reduce uncertainty, make confident decisions, optimize strategies, and create sustainable value across evolving markets.',
+    description: 'We decode complex data into clear insights that reveal meaning, direction, and opportunities for business growth.',
+    icon: (
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="size-[70px] text-brand-600" aria-hidden="true">
+        <rect x="14" y="14" width="4" height="6" rx="2"></rect>
+        <rect x="6" y="4" width="4" height="6" rx="2"></rect>
+        <path d="M6 20h4"></path>
+        <path d="M14 10h4"></path>
+        <path d="M6 14h2v6"></path>
+        <path d="M14 4h2v6"></path>
+      </svg>
+    ),
   },
   {
-    num: '04',
-    icon: '/asstes/images/icon/Interview-icon-img.png',
+    step: '04',
     title: 'Deliver',
-    desc: 'We deliver actionable insights that empower businesses to make confident, strategic decisions and achieve sustainable growth. Through rigorous research and market intelligence-driven recommendations, we help organizations seize opportunities, address challenges, connect with customers, strengthen strategic market performance, navigate market shifts, and build a stronger foundation for long-term success.',
-  },
-  {
-    num: '05',
-    icon: '/asstes/images/icon/deliver-icon-img.png',
-    title: 'Drive',
-    desc: 'We drive growth by turning actionable insights into focused strategies that create lasting business impact. By connecting research with real-world business priorities, we help organizations uncover opportunities, solve challenges, strengthen decision-making, optimize performance, adapt to changing markets, and build sustainable competitive advantage that delivers measurable value and long-term growth.',
+    description: 'We deliver actionable insights that empower businesses to make confident decisions and achieve sustainable growth.',
+    icon: (
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="size-[70px] text-brand-600" aria-hidden="true">
+        <path d="M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z"></path>
+        <path d="m21.854 2.147-10.94 10.939"></path>
+      </svg>
+    ),
   },
 ];
 
 export default function CompanyOurResearchEcosystem() {
-  const sliderRef = useRef(null);
-  const paginationRef = useRef(null);
-  const swiperInstanceRef = useRef(null);
-
-  useEffect(() => {
-    if (!sliderRef.current) return;
-
-    swiperInstanceRef.current = new Swiper(sliderRef.current, {
-      modules: [Autoplay, Pagination],
-      slidesPerView: 1,
-      spaceBetween: 16,
-      grabCursor: true,
-      loop: true,
-      speed: 700,
-      autoplay: {
-        delay: 3000,
-        disableOnInteraction: false,
-        pauseOnMouseEnter: false,
-      },
-      pagination: {
-        el: paginationRef.current,
-        clickable: true,
-        renderBullet: function (index, className) {
-          return `<span class="${className}" role="button" aria-label="Go to slide ${index + 1}"></span>`;
-        },
-      },
-      breakpoints: {
-        0: {
-          slidesPerView: 1,
-          spaceBetween: 16,
-        },
-        576: {
-          slidesPerView: 1.5,
-          spaceBetween: 18,
-        },
-        768: {
-          slidesPerView: 2.3,
-          spaceBetween: 20,
-        },
-        1024: {
-          slidesPerView: 3.3,
-          spaceBetween: 24,
-        },
-        1280: {
-          slidesPerView: 3.5,
-          spaceBetween: 26,
-        },
-      },
-    });
-
-    return () => {
-      if (swiperInstanceRef.current) {
-        swiperInstanceRef.current.destroy(true, true);
-      }
-    };
-  }, []);
-
   return (
-    <section className="telephonic-process-area" id="telephonic-process">
-      <div className="telephonic-process-container">
-        <div className="telephonic-process-header">
-          <span className="telephonic-process-eyebrow">
-            OUR RESEARCH ECOSYSTEM
-          </span>
-          <h2 className="telephonic-process-main-heading">
-            From Question To Business Decision
+    <section className="bg-white py-16 sm:py-20 lg:py-24">
+      <div className="mx-auto w-full max-w-container px-4 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-2xl text-center">
+          <p className="text-sm font-bold uppercase tracking-[0.2em] text-brand-600">
+            Our Research Ecosystem
+          </p>
+          <h2 className="mt-3 text-3xl font-semibold leading-[1.2] text-heading sm:text-4xl lg:text-[44px] lg:tracking-[-1px]">
+            From Question to Business Decision
           </h2>
-          <p className="telephonic-process-sub-heading">
+          <p className="mt-4 text-sm font-semibold uppercase tracking-wide text-heading/70">
             A highly visual interactive journey:
           </p>
         </div>
-
-        <div className="common-swiper-box">
-          <div className="swiper telephonic-process-slider" ref={sliderRef}>
-            <div className="swiper-wrapper">
-              {processSteps.map((step) => (
-                <div key={step.num} className="swiper-slide telephonic-process-slide">
-                  <article className="telephonic-process-card">
-                    <span className="telephonic-process-number">
-                      {step.num}
-                    </span>
-                    <div className="telephonic-process-icon">
-                      <img src={step.icon} alt={step.title} loading="lazy" />
-                    </div>
-                    <div className="telephonic-process-content">
-                      <h3 className="telephonic-process-card-heading">
-                        {step.title}
-                      </h3>
-                      <p className="telephonic-process-desc">
-                        {step.desc}
-                      </p>
-                    </div>
-                  </article>
-                </div>
-              ))}
-            </div>
-
-            <div
-              className="telephonic-process-pagination telephonic-process-dots"
-              ref={paginationRef}
-              aria-label="Process pagination"
-            />
-          </div>
-        </div>
+        <ul className="mt-12 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
+          {steps.map((item, idx) => (
+            <li
+              key={idx}
+              className="relative flex h-full flex-col gap-6 rounded-[24px] border border-[#e0e0df] bg-white p-6 shadow-blog transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
+            >
+              <p className="font-display text-[66px] capitalize leading-[1.2] tracking-[-1px] text-[#02060e] opacity-15">
+                {item.step}
+              </p>
+              {item.icon}
+              <div>
+                <h3 className="text-[22px] font-semibold text-[#04264e]">{item.title}</h3>
+                <p className="mt-2 text-sm leading-[1.87] text-black/70">{item.description}</p>
+              </div>
+            </li>
+          ))}
+        </ul>
       </div>
     </section>
   );

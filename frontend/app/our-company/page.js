@@ -1,14 +1,15 @@
-import DynamicZoneRenderer from '@/components/DynamicZoneRenderer';
 import React from 'react';
 import CompanyHero from './sections/CompanyHero';
+import CompanyBreadcrumb from './sections/CompanyBreadcrumb';
 import OurcompanyResearchImpact from './sections/OurcompanyResearchImpact';
 import CompanyAboutSection from './sections/CompanyAboutSection';
 import CompanyOverview from './sections/CompanyOverview';
-import CompnayIndustriesUnderstand from './sections/CompnayIndustriesUnderstand';
 import CompanyOurResearchEcosystem from './sections/CompanyOurResearchEcosystem';
 import CompnayOurValues from './sections/CompnayOurValues';
+import CompnayIndustriesUnderstand from './sections/CompnayIndustriesUnderstand';
 import CommonBlogSection from '../../components/CommonBlogSection';
 import CompnayOurFqa from './sections/CompnayOurFqa';
+import CompanyEditorial from './sections/CompanyEditorial';
 import ResearchCta from './sections/ResearchCta';
 import { getPageBySlug, findSection, generatePageMetadata } from '../../lib/strapi';
 
@@ -23,27 +24,25 @@ export async function generateMetadata() {
 export default async function OurCompanyPage() {
   const pageData = await getPageBySlug('our-company').catch(() => null);
 
-  
-  // Preserved full page design wired directly to Strapi DB dynamic sections
-
   const heroSection = findSection(pageData, 'sections.hero-common');
+  const metricsSection = findSection(pageData, 'sections.metrics-grid');
   const richTextSection = findSection(pageData, 'sections.rich-text-block');
+  const faqSection = findSection(pageData, 'sections.faq-accordion');
   const ctaSection = findSection(pageData, 'sections.question-cta');
 
-    const metricsSection = findSection(pageData, 'sections.metrics-grid');
-  const valuesSection = findSection(pageData, 'sections.values-grid');
-  const faqSection = findSection(pageData, 'sections.faq-accordion');
   return (
     <main>
       <CompanyHero dynamicHero={heroSection} />
+      <CompanyBreadcrumb />
       <OurcompanyResearchImpact dynamicMetrics={metricsSection} />
       <CompanyAboutSection dynamicRichText={richTextSection} />
       <CompanyOverview />
-      <CompnayIndustriesUnderstand />
       <CompanyOurResearchEcosystem />
       <CompnayOurValues />
+      <CompnayIndustriesUnderstand />
       <CommonBlogSection />
       <CompnayOurFqa dynamicFaq={faqSection} />
+      <CompanyEditorial />
       <ResearchCta dynamicCta={ctaSection} />
     </main>
   );

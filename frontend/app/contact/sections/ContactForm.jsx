@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { submitContactInquiry } from '../../../lib/strapi';
+import { submitContactInquiry } from '@/lib/strapi';
 
 export default function ContactForm() {
   const [formData, setFormData] = useState({
@@ -10,7 +10,7 @@ export default function ContactForm() {
     countryCode: '+91',
     phone: '',
     company: '',
-    consent: false,
+    consent: true,
   });
   const [submitted, setSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -25,6 +25,8 @@ export default function ContactForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!formData.name || !formData.email || !formData.company) return;
+
     setIsSubmitting(true);
     setSubmitted(true);
 
@@ -43,106 +45,124 @@ export default function ContactForm() {
     } finally {
       setIsSubmitting(false);
     }
-
-    const subject = encodeURIComponent(`New Market Research Enquiry from ${formData.name}`);
-    const body = encodeURIComponent(
-      `Name: ${formData.name}\nEmail: ${formData.email}\nPhone: ${formData.countryCode} ${formData.phone}\nCompany: ${formData.company}\nConsent: ${formData.consent ? 'Yes' : 'No'}`
-    );
-    window.location.href = `mailto:sales@unimrkt.com?subject=${subject}&body=${body}`;
   };
 
+  const inputStyle =
+    'h-[65px] w-full rounded-[10px] border-none bg-white px-5 font-sans text-[15px] font-medium text-[#04264e] placeholder:text-[#5e5e5e] focus:outline-none focus:ring-2 focus:ring-brand-600 shadow-sm';
+
   return (
-    <section className="contact-form-section" id="contact-form">
-      <div className="srcn-container">
-        <div className="contact-form-content">
-          <div className="contact-form-heading">
-            <span className="contact-form-kicker career-values-kicker">Contact Form</span>
-            <h2 className="section-main-heading">Let's Team Up!</h2>
-            <p className="section-sub-text">
-              Interested in high-end, extensive market research? Get in touch with our experts.
+    <section id="contact-form" className="relative overflow-hidden bg-[#101723] px-4 py-16 sm:px-6 lg:pb-[105px] lg:pt-[106px]">
+      <img
+        alt="Let’s Team Up!"
+        src="/uploads/contact_form_bg_2f600c3d05.jpg"
+        className="pointer-events-none absolute inset-0 size-full object-cover opacity-[0.16]"
+      />
+
+      <div className="relative mx-auto flex w-full max-w-[888px] flex-col items-center">
+        <p className="font-sans text-[13px] font-bold uppercase leading-[1.2] tracking-[3px] text-[#cc1f1f]">
+          Let’s Team Up!
+        </p>
+        <h2 className="mt-4 text-center font-sans text-[34px] font-semibold capitalize leading-[1.2] tracking-[-1.5px] text-white sm:text-[44px] lg:text-[52px] lg:tracking-[-3px]">
+          Let us scope your research study
+        </h2>
+        <p className="mt-4 max-w-[720px] text-center font-sans text-[16px] font-normal leading-[1.8] text-white/80">
+          Fill out the form below and one of our practice leads will respond within 2 business hours.
+        </p>
+
+        {submitted ? (
+          <div className="mt-10 w-full rounded-[20px] bg-white/10 p-8 text-center text-white backdrop-blur-md">
+            <h3 className="font-sans text-[24px] font-semibold text-white">Thank You!</h3>
+            <p className="mt-2 text-[16px] text-white/80">
+              Your inquiry has been submitted successfully. A research director will contact you shortly.
             </p>
           </div>
-
-          <form className="contact-form" onSubmit={handleSubmit}>
-            <label className="contact-form-field">
-              <span className="visually-hidden">Name</span>
+        ) : (
+          <form onSubmit={handleSubmit} className="mt-10 flex w-full flex-col gap-5">
+            <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
               <input
                 type="text"
                 name="name"
-                placeholder="Name*"
-                autoComplete="name"
                 required
                 value={formData.name}
                 onChange={handleChange}
+                placeholder="Name*"
+                className={inputStyle}
               />
-            </label>
-            <label className="contact-form-field">
-              <span className="visually-hidden">Email ID</span>
               <input
                 type="email"
                 name="email"
-                placeholder="Email ID*"
-                autoComplete="email"
                 required
                 value={formData.email}
                 onChange={handleChange}
+                placeholder="Email ID*"
+                className={inputStyle}
               />
-            </label>
-            <div className="contact-form-phone">
-              <label className="contact-form-country">
-                <span className="visually-hidden">Country calling code</span>
-                <select
-                  name="countryCode"
-                  aria-label="Country calling code"
-                  value={formData.countryCode}
-                  onChange={handleChange}
-                >
-                  <option value="+91">🇮🇳 +91</option>
-                  <option value="+1">🇺🇸 +1</option>
-                  <option value="+44">🇬🇧 +44</option>
-                </select>
-              </label>
-              <label className="contact-form-field">
-                <span className="visually-hidden">Phone number</span>
+            </div>
+
+            <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+              <div className="flex h-[65px] w-full items-center rounded-[10px] bg-white px-4 shadow-sm">
+                <span className="flex items-center gap-2 pr-3 border-r border-[#e0e0df]">
+                  <img src="/images/contact/contact-flag-india.png" alt="India" className="h-4 w-6 rounded-sm object-cover" />
+                  <span className="text-[14px] font-semibold text-[#04264e]">{formData.countryCode}</span>
+                </span>
                 <input
                   type="tel"
                   name="phone"
-                  placeholder="Phone number*"
-                  autoComplete="tel"
-                  required
                   value={formData.phone}
                   onChange={handleChange}
+                  placeholder="Phone Number"
+                  className="h-full w-full border-none bg-transparent pl-3 text-[15px] font-medium text-[#04264e] placeholder:text-[#5e5e5e] focus:outline-none"
                 />
-              </label>
-            </div>
-            <label className="contact-form-field">
-              <span className="visually-hidden">Company name</span>
+              </div>
+
               <input
                 type="text"
                 name="company"
-                placeholder="Company name*"
-                autoComplete="organization"
                 required
                 value={formData.company}
                 onChange={handleChange}
+                placeholder="Company Name*"
+                className={inputStyle}
               />
-            </label>
-            <label className="contact-form-consent">
-              <input
-                type="checkbox"
-                name="consent"
-                checked={formData.consent}
-                onChange={handleChange}
-                required
-              />
-              <span>I agree to be contacted about my research enquiry.</span>
-            </label>
-            <button className="contact-form-submit btn-sm" type="submit">
-              {submitted ? 'Message Sent!' : 'Send'}{' '}
-              <i className="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i>
-            </button>
+            </div>
+
+            <div className="mt-2 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+              <label className="flex items-center gap-3 cursor-pointer">
+                <input
+                  type="checkbox"
+                  name="consent"
+                  checked={formData.consent}
+                  onChange={handleChange}
+                  className="size-5 rounded border-white/20 bg-white/10 text-brand-600 focus:ring-brand-600"
+                />
+                <span className="font-sans text-[14px] text-white/80">
+                  I agree to receive communications from Unimrkt Research.
+                </span>
+              </label>
+
+              <div className="flex items-center gap-2">
+                <img
+                  src="/figma-industries/enquiry/recaptcha-logo.svg"
+                  alt="reCAPTCHA"
+                  className="h-7 w-auto opacity-80"
+                />
+              </div>
+            </div>
+
+            <div className="mt-4 flex justify-center">
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className="inline-flex min-h-[60px] items-center justify-center gap-2 rounded-btn bg-gradient-to-r from-gradient-from to-gradient-to px-12 font-sans text-[14px] font-bold uppercase tracking-[0.08em] text-white transition-all hover:brightness-110 disabled:opacity-50"
+              >
+                {isSubmitting ? 'Sending...' : 'Talk to an Expert'}
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="size-4">
+                  <path d="M7 17L17 7M17 7H9M17 7v8" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round"></path>
+                </svg>
+              </button>
+            </div>
           </form>
-        </div>
+        )}
       </div>
     </section>
   );

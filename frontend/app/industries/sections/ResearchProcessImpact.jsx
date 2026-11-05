@@ -1,130 +1,101 @@
-'use client';
+import React from 'react';
 
-import React, { useEffect, useRef } from 'react';
-import Swiper from 'swiper';
-import { Autoplay, Pagination } from 'swiper/modules';
-
-const processSteps = [
+const steps = [
   {
-    num: '01',
-    icon: '/asstes/images/icon/understand-clipboard-tick-icon-img.png',
+    step: '01',
     title: 'Understand',
-    desc: 'We begin by understanding your business question, objectives and the decisions you need to make. By identifying the core challenge, market context and information gaps, we establish a clear research direction that keeps the study focused, relevant and aligned with your strategic priorities, customer needs and desired business outcomes.',
+    icon: '/uploads/industries_icon_process_clipboard_774213b063.svg',
+    description:
+      'We begin by understanding your business question, objectives and the decisions you need to make. By identifying the core challenge, market context and information gaps, we establish a clear research direction that keeps the study focused, relevant and aligned with your strategic priorities, customer needs and desired business outcomes.',
   },
   {
-    num: '02',
-    icon: '/asstes/images/icon/design-brush-ion-img.png',
+    step: '02',
     title: 'Design',
-    desc: 'We select the right research methodology and audience based on your objectives, market and business needs. From qualitative and quantitative approaches to specialized research techniques, we identify the most relevant participants, markets and channels to ensure meaningful data, reliable findings and insights that directly address your research questions.',
+    icon: '/uploads/industries_icon_process_brush_b535199055.svg',
+    description:
+      'We select the right research methodology and audience based on your objectives, market and business needs. From qualitative and quantitative approaches to specialized research techniques, we identify the most relevant participants, markets and channels to ensure meaningful data, reliable findings and insights that directly address your research questions.',
   },
   {
-    num: '03',
-    icon: '/asstes/images/icon/research-presention-chart-icon-img.png',
+    step: '03',
     title: 'Research',
-    desc: 'We gather relevant primary and secondary data from credible sources and carefully selected audiences. Through surveys, interviews, discussions, desk research and other appropriate methods, we collect reliable evidence that provides a comprehensive understanding of market conditions, customer behaviors, industry trends and the factors influencing key business decisions.',
+    icon: '/uploads/industries_icon_process_presentation_3cf42d3bc4.svg',
+    description:
+      'We gather relevant primary and secondary data from credible sources and carefully selected audiences. Through surveys, interviews, discussions, desk research and other appropriate methods, we collect reliable evidence that provides a comprehensive understanding of market conditions, customer behaviors, industry trends and the factors influencing key business decisions.',
   },
   {
-    num: '04',
-    icon: '/asstes/images/icon/analyze-chart-icon-img.png',
+    step: '04',
     title: 'Analyze',
-    desc: 'We analyze the research to identify meaningful patterns, key drivers, emerging trends and untapped opportunities. By connecting data points across audiences, markets and industries, we uncover what influences decisions, where gaps exist and which opportunities can help businesses strengthen strategies and respond effectively to changing market needs.',
-  },
-  {
-    num: '05',
-    icon: '/asstes/images/icon/deliver-icon-img.png',
-    title: 'Deliver',
-    desc: 'We synthesize findings into clear, executive-ready presentations, data visualizations, and strategic frameworks that enable your leadership team to make confident, informed business decisions.',
-  },
-  {
-    num: '06',
-    icon: '/asstes/images/icon/ouality-check-icon-img.png',
-    title: 'Empower',
-    desc: 'We support your team throughout implementation, providing continued market monitoring, competitive benchmarking, and tailored recommendations that ensure long-term commercial growth.',
+    icon: '/uploads/industries_icon_process_chart_9e15f700a8.svg',
+    description:
+      'We analyze the research to identify meaningful patterns, key drivers, emerging trends and untapped opportunities. By connecting data points across audiences, markets and industries, we uncover what influences decisions, where gaps exist and which opportunities can help businesses strengthen strategies and respond effectively to changing market needs.',
   },
 ];
 
 export default function ResearchProcessImpact() {
-  const sliderRef = useRef(null);
-  const paginationRef = useRef(null);
-  const swiperInstanceRef = useRef(null);
-
-  useEffect(() => {
-    if (!sliderRef.current) return;
-
-    swiperInstanceRef.current = new Swiper(sliderRef.current, {
-      modules: [Autoplay, Pagination],
-      slidesPerView: 1,
-      spaceBetween: 16,
-      grabCursor: true,
-      loop: true,
-      speed: 700,
-      autoplay: {
-        delay: 3000,
-        disableOnInteraction: false,
-        pauseOnMouseEnter: false,
-      },
-      pagination: {
-        el: paginationRef.current,
-        clickable: true,
-        renderBullet: function (index, className) {
-          return `<span class="${className}" role="button" aria-label="Go to slide ${index + 1}"></span>`;
-        },
-      },
-      breakpoints: {
-        0: {
-          slidesPerView: 1,
-          spaceBetween: 16,
-        },
-        540: {
-          slidesPerView: 1.25,
-          spaceBetween: 18,
-        },
-        720: {
-          slidesPerView: 2.5,
-          spaceBetween: 20,
-        },
-        1024: {
-          slidesPerView: 3.5,
-          spaceBetween: 22,
-        },
-      },
-    });
-
-    return () => {
-      if (swiperInstanceRef.current) {
-        swiperInstanceRef.current.destroy(true, true);
-      }
-    };
-  }, []);
-
   return (
-    <section className="research-process-section" id="research-process">
-      <div className="research-process-container">
-        <div className="research-process-header section-header-area">
-          <span className="research-process-kicker career-values-kicker">INDUSTRY RESEARCH PROCESS</span>
-          <h2 className="research-process-heading section-main-heading">Turning Research Into Impact</h2>
-          <p className="research-process-desc section-sub-text">
-           Transforming industry questions, market data and customer insights into actionable strategies that help businesses make informed decisions. Our research connects evidence with business objectives, uncovering meaningful opportunities, addressing challenges and enabling organizations to create measurable impact, strengthen strategies and support sustainable growth.
+    <section className="relative overflow-hidden bg-[#f9f9f7] py-16 lg:h-[964px] lg:pb-0 lg:pt-[80.6px]">
+      <img
+        alt=""
+        loading="lazy"
+        decoding="async"
+        className="pointer-events-none object-cover object-top opacity-[0.06] mix-blend-luminosity"
+        style={{
+          position: 'absolute',
+          height: '100%',
+          width: '100%',
+          left: 0,
+          top: 0,
+          right: 0,
+          bottom: 0,
+          color: 'transparent',
+        }}
+        src="/images/industries/process-bg.jpg"
+      />
+      <div className="relative">
+        <header className="mx-auto flex flex-col items-center text-center px-4 sm:px-6">
+          <p className="font-sans text-[13px] font-bold uppercase leading-[15.6px] tracking-[3px] text-[#cc1f1f]">
+            Industry Research Process
           </p>
-        </div>
-        <div className='common-swiper-box'>
-        <div className="swiper research-process-swiper" ref={sliderRef}>
-          <div className="swiper-wrapper">
-            {processSteps.map((step) => (
-              <div key={step.num} className="swiper-slide research-process-slide">
-                <article className="process-impact-card">
-                  <span className="process-impact-number">{step.num}</span>
-                  <div className="process-impact-icon-wrap">
-                    <img src={step.icon} alt={step.title} loading="lazy" />
-                  </div>
-                  <h3 className="process-impact-title">{step.title}</h3>
-                  <p className="process-impact-desc">{step.desc}</p>
-                </article>
-              </div>
-            ))}
+          <h2
+            className="font-sans text-[32px] font-semibold capitalize leading-[38px] tracking-[-1.5px] sm:text-[40px] sm:leading-[48px] lg:text-[50px] lg:leading-[60px] lg:tracking-[-3px] mt-[7px] text-[#02060e]"
+            style={{ maxWidth: '718px' }}
+          >
+            Turning Research Into Impact
+          </h2>
+          <div
+            className="font-sans text-[16px] font-normal leading-[30.4px] mt-[12px] opacity-80 text-[#02060e]"
+            style={{ maxWidth: '1234px' }}
+          >
+            Transforming industry questions, market data and customer insights into actionable strategies that help businesses make informed decisions. Our research connects evidence with business objectives, uncovering meaningful opportunities, addressing challenges and enabling organizations to create measurable impact, strengthen strategies and support sustainable growth.
           </div>
-          <div className="research-process-pagination" ref={paginationRef}></div>
-        </div>
+        </header>
+
+        <ul className="mt-[15.5px] flex snap-x snap-mandatory scroll-px-4 gap-[28px] sm:scroll-px-6 overflow-x-auto scroll-smooth px-4 pb-6 pt-4 [scrollbar-width:none] sm:px-6 lg:scroll-pl-[max(32px,calc(50vw-800px))] lg:pl-[max(32px,calc(50vw-800px))] lg:pr-8 [&::-webkit-scrollbar]:hidden">
+          {steps.map((item, idx) => (
+            <li
+              key={idx}
+              className="group relative w-[85vw] shrink-0 cursor-pointer snap-start rounded-[24px] border border-[#e0e0df] bg-white pb-6 pl-[47px] pr-[41px] pt-[33px] shadow-[6px_6px_54px_0px_rgba(0,0,0,0.08)] transition-all duration-300 ease-out hover:-translate-y-2 hover:scale-[1.02] hover:shadow-xl sm:w-[460px] lg:min-h-[540px]"
+            >
+              <p className="font-sans text-[66px] font-semibold capitalize leading-[79.2px] tracking-[-1px] text-[#02060e] opacity-15">
+                {item.step}
+              </p>
+              <img alt="" loading="lazy" width={70} height={70} className="mt-[41.8px] size-[70px]" src={item.icon} />
+              <h3 className="mt-[13.8px] font-sans text-[22px] font-semibold leading-[29.48px] text-[#04264e]">
+                {item.title}
+              </h3>
+              <p className="mt-[9.4px] font-sans text-[14px] font-normal leading-[26.18px] text-black opacity-70">
+                {item.description}
+              </p>
+            </li>
+          ))}
+        </ul>
+
+        <div className="mt-[2px] flex justify-center">
+          <div className="flex items-center" role="tablist" aria-label="Slide navigation">
+            <span className="block h-[15px] w-8 rounded-[40px] bg-[#b63a40]"></span>
+            <span className="ml-2 block size-[15px] rounded-full bg-[#e2e2e2]"></span>
+            <span className="ml-2 block size-[15px] rounded-full bg-[#e2e2e2]"></span>
+          </div>
         </div>
       </div>
     </section>
