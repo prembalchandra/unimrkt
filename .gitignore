@@ -48,6 +48,8 @@ backend/.env*.local
 frontend/.vercel
 
 # OS and temp files
+frontend/scripts/*.html
+frontend/scripts/*.json
 .DS_Store
 Thumbs.db
 *.pem
