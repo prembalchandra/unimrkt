@@ -1,254 +1,137 @@
 'use client';
 
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
-const allIndustries = [
-  {
-    id: 'automotives',
-    title: 'Automotives',
-    image: '/asstes/images/automotives-card-img.png',
-    link: '/automotives',
-    desc: 'Understand mobility trends, consumer preferences, vehicle ownership, EV adoption and the evolving automotive...',
-  },
-  {
-    id: 'energy-utilities',
-    title: 'Energy & Utilities',
-    image: '/asstes/images/energy-utilities-img.png',
-    link: '/services',
-    desc: 'Understand energy consumption, transition trends, infrastructure, sustainability, regulation and evolving customer...',
-  },
-  {
-    id: 'banking-finance',
-    title: 'Banking and Finance',
-    image: '/asstes/images/banking-and-finance-img.png',
-    link: '/services',
-    desc: 'Explore customer expectations, financial behavior, digital adoption, lending, payments, insurance and com...',
-  },
-  {
-    id: 'food-beverage',
-    title: 'Food & Beverage',
-    image: '/asstes/images/food-&-beverage-img.png',
-    link: '/services',
-    desc: 'Discover changing consumption habits, product preferences, category trends, brand perceptions and purchase drivers.',
-  },
-  {
-    id: 'transportation',
-    title: 'Transportation',
-    image: '/asstes/images/transportation-img.png',
-    link: '/services',
-    desc: 'Research mobility behavior, logistics, transportation preferences, infrastructure and emerging mobility models.',
-  },
-  {
-    id: 'media-entertainment',
-    title: 'Media & Entertainment',
-    image: '/asstes/images/media-&-entertainment-img.png',
-    link: '/services',
-    desc: 'Explore content consumption, audience engagement, platform preferences, subscriptions, advertising and monetization.',
-  },
-
-  // Page 2 - Additional sectors
-  {
-    id: 'healthcare-life-sciences',
-    title: 'Healthcare & Life Sciences',
-    image: '/asstes/images/case-study-healthcare.jpg',
-    link: '/services',
-    desc: 'Physician panels, patient journey mapping, medical devices, pharmaceuticals, and regulatory compliance studies.',
-  },
-  {
-    id: 'technology-saas',
-    title: 'Technology & SaaS',
-    image: '/asstes/images/market-trends-card-img2.png',
-    link: '/services',
-    desc: 'Enterprise software buying cycles, cloud adoption, cybersecurity priorities, and AI implementation benchmarking.',
-  },
-  {
-    id: 'retail-ecommerce',
-    title: 'Retail & E-commerce',
-    image: '/asstes/images/industry-retail.png',
-    link: '/services',
-    desc: 'Omnichannel consumer behavior, brand perception, price elasticity, and post-purchase customer satisfaction.',
-  },
-  {
-    id: 'consumer-goods-fmcg',
-    title: 'Consumer Goods (FMCG)',
-    image: '/asstes/images/case-study-fmcg.jpg',
-    link: '/services',
-    desc: 'Brand tracking, concept validation, packaging testing, shelf-placement analysis, and consumer lifestyle shifts.',
-  },
-  {
-    id: 'telecommunications',
-    title: 'Telecommunications',
-    image: '/asstes/images/case-study-telecom.jpg',
-    link: '/services',
-    desc: '5G network rollout sentiment, subscriber churn analysis, digital service bundling, and enterprise telecom audits.',
-  },
-  {
-    id: 'travel-hospitality',
-    title: 'Travel & Hospitality',
-    image: '/asstes/images/market-trends-card-img3.png',
-    link: '/services',
-    desc: 'Business and leisure travel trends, hotel guest satisfaction, booking platform preferences, and tourism demand forecasts.',
-  },
-
-  // Page 3 - Extended strategic research verticals
-  {
-    id: 'b2b-markets',
-    title: 'B2B Research & Enterprise',
-    image: '/asstes/images/b2b-research-img.png',
-    link: '/services',
-    desc: 'Executive decision-making, procurement dynamics, vendor evaluation, and specialized B2B market feasibility.',
-  },
-  {
-    id: 'brand-intelligence',
-    title: 'Brand & Market Intelligence',
-    image: '/asstes/images/brand-research-img.png',
-    link: '/services',
-    desc: 'Brand health diagnostics, competitive positioning, customer sentiment indexing, and brand switch drivers.',
-  },
-  {
-    id: 'product-innovation',
-    title: 'Product & Concept Testing',
-    image: '/asstes/images/product-research-img.png',
-    link: '/services',
-    desc: 'Concept validation, feature tradeoff testing, conjoint analysis, and prototype user experience feedback.',
-  },
-  {
-    id: 'customer-experience',
-    title: 'Customer Experience (CX)',
-    image: '/asstes/images/customer-experience-img.png',
-    link: '/services',
-    desc: 'End-to-end customer journey mapping, NPS tracking, touchpoint friction analysis, and retention strategies.',
-  },
-  {
-    id: 'global-expansion',
-    title: 'Global Markets & Demographics',
-    image: '/asstes/images/unimrkt-resarch-map-banner-img.png',
-    link: '/services',
-    desc: 'Cross-border consumer demographics, regional purchasing trends, and multi-country comparative market studies.',
-  },
-  {
-    id: 'digital-panels',
-    title: 'Online & Digital Panels',
-    image: '/asstes/images/online-surveys-card-img.png',
-    link: '/services',
-    desc: 'High-frequency quantitative panel collection, real-time quality validation, and global respondent reach.',
-  },
-];
+import { getStrapiMedia } from '../../../lib/strapi';
 
 const ITEMS_PER_PAGE = 6;
 
+function getIndustryImage(slug = '') {
+  const s = slug.toLowerCase();
+  if (s.includes('auto')) return '/asstes/images/automotives-card-img.png';
+  if (s.includes('energy') || s.includes('utilit')) return '/asstes/images/energy-utilities-img.png';
+  if (s.includes('bank') || s.includes('financ')) return '/asstes/images/banking-and-finance-img.png';
+  if (s.includes('food') || s.includes('beverag')) return '/asstes/images/food-&-beverage-img.png';
+  if (s.includes('transport') || s.includes('logistic')) return '/asstes/images/transportation-img.png';
+  if (s.includes('media') || s.includes('entert')) return '/asstes/images/media-&-entertainment-img.png';
+  if (s.includes('health') || s.includes('medic')) return '/asstes/images/case-study-healthcare.jpg';
+  if (s.includes('tech') || s.includes('telecom')) return '/asstes/images/market-trends-card-img2.png';
+  return '/asstes/images/banking-and-finance-img.png';
+}
+
+function formatIndustry(ind, i) {
+  if (!ind) return null;
+  const slug = ind.slug || `ind-${i}`;
+  return {
+    id: slug,
+    title: ind.title || ind.name || '',
+    image: getStrapiMedia(ind.image || ind.featuredImage || ind.heroImage, getIndustryImage(slug)),
+    link: slug === 'automotives' || slug === 'automotive-mobility' ? '/automotives' : '/services',
+    desc: ind.shortDescription || ind.description || 'Comprehensive sector intelligence and tailored research insights.',
+  };
+}
+
 export default function IndustriesGrid({ initialIndustries = [] }) {
+  const [items, setItems] = useState(() => (initialIndustries || []).map(formatIndustry).filter(Boolean));
   const [currentPage, setCurrentPage] = useState(1);
   const sectionRef = useRef(null);
 
-  const industriesList =
-    initialIndustries && initialIndustries.length > 0
-      ? initialIndustries.map((ind, i) => ({
-          id: ind.slug || `ind-${i}`,
-          title: ind.title || ind.name,
-          image: ind.image?.url || allIndustries[i % allIndustries.length].image,
-          link: ind.slug === 'automotives' ? '/automotives' : '/services',
-          desc:
-            ind.shortDescription ||
-            ind.description ||
-            allIndustries[i % allIndustries.length].desc,
-        }))
-      : allIndustries;
+  useEffect(() => {
+    if (initialIndustries && initialIndustries.length > 0) {
+      setItems(initialIndustries.map(formatIndustry).filter(Boolean));
+    } else {
+      const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL || 'http://127.0.0.1:1337';
+      fetch(`${STRAPI_URL}/api/industries?populate=*&pagination[limit]=50`)
+        .then((r) => r.json())
+        .then((d) => {
+          if (Array.isArray(d?.data)) {
+            setItems(d.data.map(formatIndustry).filter(Boolean));
+          }
+        })
+        .catch(() => {});
+    }
+  }, [initialIndustries]);
 
-  const totalPages = Math.ceil(industriesList.length / ITEMS_PER_PAGE) || 1;
-
-  // Pagination calculation
+  const totalPages = Math.ceil(items.length / ITEMS_PER_PAGE) || 1;
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-  const currentIndustries = industriesList.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+  const currentIndustries = items.slice(startIndex, startIndex + ITEMS_PER_PAGE);
 
-  // Self-contained page change JavaScript handler
   const handlePageChange = (newPage) => {
     if (newPage < 1 || newPage > totalPages || newPage === currentPage) return;
     setCurrentPage(newPage);
 
     if (sectionRef.current) {
       const topOffset = sectionRef.current.getBoundingClientRect().top + window.pageYOffset - 90;
-      window.scrollTo({ top: topOffset, behavior: 'smooth' });
-    }
-  };
-
-  const handlePrev = () => {
-    if (currentPage > 1) {
-      handlePageChange(currentPage - 1);
-    }
-  };
-
-  const handleNext = () => {
-    if (currentPage < totalPages) {
-      handlePageChange(currentPage + 1);
+      window.scrollTo({
+        top: topOffset,
+        behavior: 'smooth',
+      });
     }
   };
 
   return (
-    <section className="industries-showcase-section" ref={sectionRef} id="industries-showcase">
-
+    <section className="industries-grid-section" id="industries-grid" ref={sectionRef}>
       <div className="srcn-container">
-        <div className="industries-showcase-header section-header-area">
-          <span className="industries-showcase-kicker career-values-kicker">INDUSTRIES</span>
-          <h2 className="industries-showcase-heading section-main-heading">Deep Expertise Across Diverse Industries</h2>
-          <p className="industries-showcase-desc section-sub-text">
-            Our research expertise spans diverse industries, helping businesses understand the unique market dynamics,
-            customer behaviours and challenges shaping their sectors. From Banking &amp; Finance and Healthcare to
-            Consumer &amp; Retail, Technology, Automotive and B2B markets, we bring relevant industry understanding and
-            research capabilities to every project.
+        <div className="section-header-area">
+          <span className="career-values-kicker">Industries We Serve</span>
+          <h2 className="section-main-heading">Expertise Across Key Markets</h2>
+          <p className="section-sub-text">
+            Explore industry-specific research capabilities tailored to uncover actionable market opportunities.
           </p>
         </div>
 
-        {/* 6 Cards Grid (Responsive: 3 cols desktop, 2 cols tablet, 1 col mobile) */}
-        <div className="industries-showcase-grid" key={currentPage}>
-          {currentIndustries.map((item) => (
-            <Link key={item.id} href={item.link} className="industries-card" aria-label={`Learn more about ${item.title}`}>
+        <div className="industries-cards-grid">
+          {currentIndustries.map((ind) => (
+            <article key={ind.id} className="industries-grid-card">
               <div className="industries-card-img-wrap">
                 <img
-                  src={item.image}
-                  alt={item.title}
+                  src={ind.image}
+                  alt={ind.title}
                   loading="lazy"
                 />
               </div>
-              <div className="industries-card-body">
-                <h3 className="industries-card-title">{item.title}</h3>
-                <p className="industries-card-desc">{item.desc}</p>
+              <div className="industries-card-content">
+                <h3>{ind.title}</h3>
+                <p>{ind.desc}</p>
+                <div className="industries-card-btn-wrap">
+                  <Link href={ind.link} className="industries-card-explore-btn btn-border-sm">
+                    <span>EXPLORE INDUSTRY</span>
+                    <i className="fa fa-long-arrow-right" aria-hidden="true"></i>
+                  </Link>
+                </div>
               </div>
-            </Link>
+            </article>
           ))}
         </div>
 
-        {/* Interactive Working Pagination */}
+        {/* Dynamic Pagination */}
         {totalPages > 1 && (
-          <div className="blog-pagination-area" style={{ display: 'flex', marginTop: '48px' }} aria-label="Industries pagination">
+          <div className="industries-pagination-area blog-pagination-area" style={{ display: 'flex', marginTop: '48px', justifyContent: 'center' }}>
             <button
               type="button"
-              className="pagination-item arrow-btn"
-              onClick={handlePrev}
-              disabled={currentPage === 1}
+              className="pagination-item arrow-btn prev-btn"
+              disabled={currentPage <= 1}
+              onClick={() => handlePageChange(currentPage - 1)}
               aria-label="Previous page"
             >
               <i className="fa-solid fa-chevron-left" aria-hidden="true"></i>
             </button>
-
-            {Array.from({ length: totalPages }, (_, idx) => idx + 1).map((pageNum) => (
+            {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
               <button
-                key={pageNum}
+                key={page}
                 type="button"
-                className={`pagination-item ${pageNum === currentPage ? 'active' : ''}`}
-                onClick={() => handlePageChange(pageNum)}
-                aria-current={pageNum === currentPage ? 'page' : undefined}
-                aria-label={`Page ${pageNum}`}
+                className={`pagination-item page-btn ${page === currentPage ? 'active' : ''}`}
+                onClick={() => handlePageChange(page)}
+                aria-current={page === currentPage ? 'page' : 'false'}
               >
-                {pageNum}
+                {page}
               </button>
             ))}
-
             <button
               type="button"
-              className="pagination-item arrow-btn"
-              onClick={handleNext}
-              disabled={currentPage === totalPages}
+              className="pagination-item arrow-btn next-btn"
+              disabled={currentPage >= totalPages}
+              onClick={() => handlePageChange(currentPage + 1)}
               aria-label="Next page"
             >
               <i className="fa-solid fa-chevron-right" aria-hidden="true"></i>

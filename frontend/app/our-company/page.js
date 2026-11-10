@@ -9,7 +9,7 @@ import CompnayOurValues from './sections/CompnayOurValues';
 import CommonBlogSection from '../../components/CommonBlogSection';
 import CompnayOurFqa from './sections/CompnayOurFqa';
 import ResearchCta from './sections/ResearchCta';
-import { getPageBySlug, findSection } from '../../lib/strapi';
+import { getPageBySlug, findSection, getFaqs, getIndustries } from '../../lib/strapi';
 
 export const metadata = {
   title: 'About Our Company | Unimrkt Research',
@@ -52,23 +52,63 @@ export const metadata = {
 };
 
 export default async function OurCompanyPage() {
-  const pageData = await getPageBySlug('our-company').catch(() => null);
+  const [pageData, faqs, industries] = await Promise.all([
+    getPageBySlug('our-company').catch(() => null),
+    getFaqs().catch(() => []),
+    getIndustries(12).catch(() => []),
+  ]);
+
+  const sections = Array.isArray(pageData?.sections) ? pageData.sections : [];
 
   const heroSection = findSection(pageData, 'sections.hero-common');
   const richTextSection = findSection(pageData, 'sections.rich-text-block');
   const ctaSection = findSection(pageData, 'sections.question-cta');
 
+  const metricsSection = sections.find(
+    (s) => s.__component === 'sections.metrics-grid' && (s.heading?.includes('Borders') || s.kicker?.includes('BORDERS'))
+  ) || findSection(pageData, 'sections.metrics-grid');
+
+  const pillarsSection = sections.find(
+    (s) => s.__component === 'sections.values-grid' && s.heading?.includes('Insights That Move')
+  ) || findSection(pageData, 'sections.values-grid');
+
+  const ecosystemSection = sections.find(
+    (s) => s.__component === 'sections.accordion-solutions'
+  );
+
+  const valuesSection = sections.find(
+    (s) => s.__component === 'sections.research-reach' && (s.heading?.includes('Principles') || s.kicker?.includes('VALUES'))
+  );
+
   return (
     <main>
       <CompanyHero dynamicHero={heroSection} />
-      <OurcompanyResearchImpact />
+      <OurcompanyResearchImpact
+        stats={metricsSection?.metrics || []}
+        heading={metricsSection?.heading}
+      />
       <CompanyAboutSection dynamicRichText={richTextSection} />
-      <CompanyOverview />
-      <CompnayIndustriesUnderstand />
-      <CompanyOurResearchEcosystem />
-      <CompnayOurValues />
+      <CompanyOverview
+        pillars={pillarsSection?.values || []}
+        kicker={pillarsSection?.kicker}
+        heading={pillarsSection?.heading}
+        description={pillarsSection?.description}
+      />
+      <CompnayIndustriesUnderstand industries={industries} />
+      <CompanyOurResearchEcosystem
+        processSteps={ecosystemSection?.cards || []}
+        kicker={ecosystemSection?.kicker}
+        heading={ecosystemSection?.heading}
+        description={ecosystemSection?.description}
+      />
+      <CompnayOurValues
+        values={valuesSection?.cards || []}
+        kicker={valuesSection?.kicker}
+        heading={valuesSection?.heading}
+        description={valuesSection?.description}
+      />
       <CommonBlogSection />
-      <CompnayOurFqa />
+      <CompnayOurFqa faqs={faqs.slice(0, 5)} />
       <ResearchCta dynamicCta={ctaSection} />
     </main>
   );

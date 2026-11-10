@@ -1,30 +1,28 @@
 import React from 'react';
 
-const defaultValues = [
-  { icon: '/asstes/images/icon/communication-icon-img.png', title: 'Clear Communication' },
-  { icon: '/asstes/images/icon/communication-icon-img.png', title: 'Innovation' },
-  { icon: '/asstes/images/icon/communication-icon-img.png', title: 'Wisdom' },
-  { icon: '/asstes/images/icon/communication-icon-img.png', title: 'Integrity' },
-  { icon: '/asstes/images/icon/team-work-icon-img.png', title: 'Team Work' },
-  { icon: '/asstes/images/icon/business-icon-img.png', title: 'Business Ethics' },
-  { icon: '/asstes/images/icon/diversity-icon-img.png', title: 'Diversity' },
-  { icon: '/asstes/images/icon/transparency-icon-img.png', title: 'Transparency' },
-];
+function getValueIcon(title = '') {
+  const t = title.toLowerCase();
+  if (t.includes('team')) return '/asstes/images/icon/team-work-icon-img.png';
+  if (t.includes('ethic') || t.includes('integrity') || t.includes('business')) return '/asstes/images/icon/business-icon-img.png';
+  if (t.includes('diver')) return '/asstes/images/icon/diversity-icon-img.png';
+  if (t.includes('transpar')) return '/asstes/images/icon/transparency-icon-img.png';
+  return '/asstes/images/icon/communication-icon-img.png';
+}
 
 export default function CareerValues({ dynamicValues = null }) {
   const kicker = dynamicValues?.kicker || 'Core Values of Unimrkt';
-  const heading = dynamicValues?.heading || 'What Drives Us';
+  const heading = dynamicValues?.heading || dynamicValues?.title || 'What Drives Us';
   const description =
     dynamicValues?.description ||
+    dynamicValues?.subtitle ||
     'Our values shape the way we work, collaborate, and create impact every day.';
 
-  const valList =
-    dynamicValues?.values && dynamicValues.values.length > 0
-      ? dynamicValues.values.map((v, i) => ({
-          icon: defaultValues[i % defaultValues.length].icon,
-          title: v.title,
-        }))
-      : defaultValues;
+  const valList = (dynamicValues?.values || []).map((v) => ({
+    icon: getValueIcon(v.title),
+    title: v.title,
+  }));
+
+  if (valList.length === 0) return null;
 
   return (
     <section className="career-values-section">

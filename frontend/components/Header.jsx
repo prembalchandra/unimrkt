@@ -3,13 +3,26 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { getStrapiMedia } from '@/lib/strapi';
 
-export default function Header() {
+export default function Header({ globalData: initialGlobalData = null }) {
+  const [globalData, setGlobalData] = useState(initialGlobalData);
   const [isSticky, setIsSticky] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isAboutSubmenuOpen, setIsAboutSubmenuOpen] = useState(false);
   const [isSubmenuOpen, setIsSubmenuOpen] = useState(false);
   const pathname = usePathname();
+
+  useEffect(() => {
+    if (!initialGlobalData) {
+      fetch('http://127.0.0.1:1337/api/global?populate=*')
+        .then((res) => res.json())
+        .then((json) => {
+          if (json?.data) setGlobalData(json.data);
+        })
+        .catch(() => {});
+    }
+  }, [initialGlobalData]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -67,6 +80,10 @@ export default function Header() {
     }
   };
 
+  const logoSrc = getStrapiMedia(globalData?.headerLogo, '/asstes/images/unimrkt-resarch-logo.webp');
+  const siteName = globalData?.siteName || 'Unimrkt Research';
+  const cta = globalData?.headerCta || { label: 'Talk to Experts', url: '/contact' };
+
   return (
     <header className={`unimrkt-resarch-header-area ${isSticky ? 'header-sticky' : ''}`}>
       <div className="srcn-container">
@@ -76,7 +93,7 @@ export default function Header() {
             <div className="header-col-lift-area">
               <div className="header-logo-area">
                 <Link href="/" className="logo">
-                  <img src="/asstes/images/unimrkt-resarch-logo.webp" alt="Unimrkt Research" />
+                  <img src={logoSrc} alt={siteName} />
                 </Link>
               </div>
             </div>
@@ -85,13 +102,13 @@ export default function Header() {
             <div className="header-col-conter-area">
               <div className="header-drawer-logo-area">
                 <Link href="/" className="logo" onClick={() => setIsMobileMenuOpen(false)}>
-                  <img src="/asstes/images/unimrkt-resarch-logo.webp" alt="Unimrkt Research" />
+                  <img src={logoSrc} alt={siteName} />
                 </Link>
               </div>
               <div className="header-menu-area">
                 <nav className="header-menu-navber">
                   <ul className="header-listing-area">
-                    {/* ABOUT UNIMRKT Dropdown (Matches User Screenshot) */}
+                    {/* ABOUT UNIMRKT Dropdown */}
                     <li
                       className={`header-itme-area header-itme-submenu-toggle header-about-dropdown-toggle ${
                         isAboutSubmenuOpen ? 'submenu-open' : ''
@@ -243,8 +260,8 @@ export default function Header() {
             {/* Right Header Action Area */}
             <div className="header-right-action-area">
               <div className="header-btn-area">
-                <Link href="/contact" className="btn-sm" onClick={() => setIsMobileMenuOpen(false)}>
-                  <span>Talk to Experts</span>
+                <Link href={cta.url || '/contact'} className="btn-sm" onClick={() => setIsMobileMenuOpen(false)}>
+                  <span>{cta.label || 'Talk to Experts'}</span>
                   <img src="/asstes/images/icon/arrow-right-icon-img.png" alt="Arrow Right" />
                 </Link>
               </div>

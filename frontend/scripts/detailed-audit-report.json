@@ -1,0 +1,2139 @@
+{
+  "pages": [
+    {
+      "name": "Home",
+      "route": "/",
+      "dir": "homesections",
+      "pageFile": "page.js",
+      "pageAnalysis": {
+        "imports": [
+          "react",
+          "./homesections/HeroSection",
+          "./homesections/GlobalResearchSection",
+          "./homesections/SolutionsSection",
+          "./homesections/CapabilitiesSection",
+          "./homesections/AdvancedAreaSection",
+          "./homesections/IndustriesSection",
+          "./homesections/MarketplacesSection",
+          "./homesections/MomentsSection",
+          "./homesections/HomeFaq",
+          "./homesections/HomeInsightsEditorial",
+          "./homesections/HomeresearchCta",
+          "../lib/strapi"
+        ],
+        "arrays": [],
+        "media": [],
+        "hasForm": false,
+        "hasApi": true
+      },
+      "sections": [
+        {
+          "fileName": "AdvancedAreaSection.jsx",
+          "imports": [
+            "next/link"
+          ],
+          "arrays": [],
+          "media": [
+            "/asstes/images/advanced-banner-video2.mp4",
+            "/asstes/images/advanced-banner-img.png"
+          ],
+          "hasForm": false,
+          "hasApi": false
+        },
+        {
+          "fileName": "CapabilitiesSection.jsx",
+          "imports": [
+            "next/link"
+          ],
+          "arrays": [
+            {
+              "name": "targets",
+              "count": 3
+            }
+          ],
+          "media": [
+            "/asstes/images/video-banner2.mp4"
+          ],
+          "hasForm": false,
+          "hasApi": false
+        },
+        {
+          "fileName": "GlobalResearchSection.jsx",
+          "imports": [
+            "next/link"
+          ],
+          "arrays": [],
+          "media": [
+            "/asstes/images/homeaboutvideo-banner-img.mp4"
+          ],
+          "hasForm": false,
+          "hasApi": false
+        },
+        {
+          "fileName": "HeroSection.jsx",
+          "imports": [],
+          "arrays": [
+            {
+              "name": "heroServicesData",
+              "count": 7
+            },
+            {
+              "name": "canonicalServices",
+              "count": 7
+            }
+          ],
+          "media": [
+            "/asstes/images/home-banner-video.mp4",
+            "/img/home-banner-video.mp4",
+            "/asstes/images/icon/arrow-right-icon-img.png"
+          ],
+          "hasForm": false,
+          "hasApi": false
+        },
+        {
+          "fileName": "HomeFaq.jsx",
+          "imports": [],
+          "arrays": [
+            {
+              "name": "homeFaqs",
+              "count": 5
+            }
+          ],
+          "media": [
+            "/asstes/images/unimrkt-resarch-map-banner-img.png"
+          ],
+          "hasForm": false,
+          "hasApi": false
+        },
+        {
+          "fileName": "HomeInsightsEditorial.jsx",
+          "imports": [
+            "react"
+          ],
+          "arrays": [],
+          "media": [],
+          "hasForm": false,
+          "hasApi": false
+        },
+        {
+          "fileName": "HomeresearchCta.jsx",
+          "imports": [
+            "react",
+            "next/link"
+          ],
+          "arrays": [],
+          "media": [
+            "/asstes/images/commonvideo-banner.mp4"
+          ],
+          "hasForm": false,
+          "hasApi": false
+        },
+        {
+          "fileName": "IndustriesSection.jsx",
+          "imports": [
+            "next/link",
+            "swiper",
+            "swiper/modules"
+          ],
+          "arrays": [
+            {
+              "name": "industriesData",
+              "count": 6
+            }
+          ],
+          "media": [
+            "/asstes/images/indutries-banner-video.mp4"
+          ],
+          "hasForm": false,
+          "hasApi": false
+        },
+        {
+          "fileName": "MarketplacesSection.jsx",
+          "imports": [
+            "react"
+          ],
+          "arrays": [],
+          "media": [
+            "/asstes/images/office-india.png",
+            "/asstes/images/office-usa.png",
+            "/asstes/images/office-uk.png"
+          ],
+          "hasForm": false,
+          "hasApi": false
+        },
+        {
+          "fileName": "MomentsSection.jsx",
+          "imports": [
+            "swiper",
+            "swiper/modules"
+          ],
+          "arrays": [
+            {
+              "name": "galleryItems",
+              "count": 6
+            }
+          ],
+          "media": [
+            "/asstes/images/icon/arrow-right-icon-img.png"
+          ],
+          "hasForm": false,
+          "hasApi": false
+        },
+        {
+          "fileName": "QuestionCtaSection.jsx",
+          "imports": [
+            "react",
+            "next/link"
+          ],
+          "arrays": [],
+          "media": [],
+          "hasForm": false,
+          "hasApi": false
+        },
+        {
+          "fileName": "SolutionsSection.jsx",
+          "imports": [
+            "next/link"
+          ],
+          "arrays": [],
+          "media": [
+            "/asstes/images/research-solutions-video-banner.mp4",
+            "/img/research-solutions-video-banner.mp4"
+          ],
+          "hasForm": false,
+          "hasApi": false
+        }
+      ]
+    },
+    {
+      "name": "About",
+      "route": "/about",
+      "dir": "about",
+      "pageFile": "about/page.jsx",
+      "pageAnalysis": null,
+      "sections": [
+        {
+          "fileName": "AboutHero.jsx",
+          "imports": [
+            "react",
+            "next/link"
+          ],
+          "arrays": [],
+          "media": [
+            "/asstes/images/unimrkt-resarch-our-team-banner.png",
+            "/asstes/images/icon/arrow-right-icon-img.png"
+          ],
+          "hasForm": false,
+          "hasApi": false
+        },
+        {
+          "fileName": "AboutOverview.jsx",
+          "imports": [
+            "react",
+            "next/link"
+          ],
+          "arrays": [
+            {
+              "name": "defaultStats",
+              "count": 4
+            },
+            {
+              "name": "defaultPillars",
+              "count": 4
+            }
+          ],
+          "media": [],
+          "hasForm": false,
+          "hasApi": false
+        },
+        {
+          "fileName": "ResearchCta.jsx",
+          "imports": [
+            "react",
+            "next/link"
+          ],
+          "arrays": [],
+          "media": [
+            "/asstes/images/video-banner-img.mp4"
+          ],
+          "hasForm": false,
+          "hasApi": false
+        }
+      ]
+    },
+    {
+      "name": "Our Company",
+      "route": "/our-company",
+      "dir": "our-company",
+      "pageFile": "our-company/page.jsx",
+      "pageAnalysis": null,
+      "sections": [
+        {
+          "fileName": "CompanyAboutSection.jsx",
+          "imports": [
+            "react"
+          ],
+          "arrays": [],
+          "media": [
+            "/asstes/images/company-about-img.png"
+          ],
+          "hasForm": false,
+          "hasApi": false
+        },
+        {
+          "fileName": "CompanyHero.jsx",
+          "imports": [
+            "react",
+            "next/link"
+          ],
+          "arrays": [],
+          "media": [
+            "/asstes/images/our-company-banner-img.png",
+            "/asstes/images/icon/arrow-right-icon-img.png"
+          ],
+          "hasForm": false,
+          "hasApi": false
+        },
+        {
+          "fileName": "CompanyOurResearchEcosystem.jsx",
+          "imports": [
+            "swiper",
+            "swiper/modules"
+          ],
+          "arrays": [
+            {
+              "name": "processSteps",
+              "count": 5
+            }
+          ],
+          "media": [],
+          "hasForm": false,
+          "hasApi": false
+        },
+        {
+          "fileName": "CompanyOverview.jsx",
+          "imports": [
+            "react",
+            "next/link"
+          ],
+          "arrays": [
+            {
+              "name": "companyPillars",
+              "count": 4
+            }
+          ],
+          "media": [],
+          "hasForm": false,
+          "hasApi": false
+        },
+        {
+          "fileName": "CompnayIndustriesUnderstand.jsx",
+          "imports": [
+            "react",
+            "next/link"
+          ],
+          "arrays": [
+            {
+              "name": "services",
+              "count": 8
+            }
+          ],
+          "media": [],
+          "hasForm": false,
+          "hasApi": false
+        },
+        {
+          "fileName": "CompnayOurFqa.jsx",
+          "imports": [],
+          "arrays": [
+            {
+              "name": "blogFaqs",
+              "count": 5
+            }
+          ],
+          "media": [
+            "/asstes/images/unimrkt-resarch-map-banner-img.png"
+          ],
+          "hasForm": false,
+          "hasApi": false
+        },
+        {
+          "fileName": "CompnayOurValues.jsx",
+          "imports": [
+            "react"
+          ],
+          "arrays": [
+            {
+              "name": "metrics",
+              "count": 8
+            }
+          ],
+          "media": [],
+          "hasForm": false,
+          "hasApi": false
+        },
+        {
+          "fileName": "OurcompanyResearchImpact.jsx",
+          "imports": [
+            "react"
+          ],
+          "arrays": [
+            {
+              "name": "stats",
+              "count": 4
+            }
+          ],
+          "media": [],
+          "hasForm": false,
+          "hasApi": false
+        },
+        {
+          "fileName": "ResearchCta.jsx",
+          "imports": [
+            "react",
+            "next/link"
+          ],
+          "arrays": [],
+          "media": [
+            "/asstes/images/video-banner-img.mp4"
+          ],
+          "hasForm": false,
+          "hasApi": false
+        }
+      ]
+    },
+    {
+      "name": "Services",
+      "route": "/services",
+      "dir": "services",
+      "pageFile": "services/page.jsx",
+      "pageAnalysis": null,
+      "sections": [
+        {
+          "fileName": "CaseStudiesImpactCta.jsx",
+          "imports": [
+            "react",
+            "next/link"
+          ],
+          "arrays": [],
+          "media": [
+            "/asstes/images/case-study-man-img.png"
+          ],
+          "hasForm": false,
+          "hasApi": false
+        },
+        {
+          "fileName": "EndToEndSolutions.jsx",
+          "imports": [
+            "next/link"
+          ],
+          "arrays": [
+            {
+              "name": "solutionsData",
+              "count": 5
+            }
+          ],
+          "media": [
+            "/asstes/images/icon/arrow-right-icon-img.png"
+          ],
+          "hasForm": false,
+          "hasApi": false
+        },
+        {
+          "fileName": "InsightsEditorial.jsx",
+          "imports": [
+            "react"
+          ],
+          "arrays": [],
+          "media": [],
+          "hasForm": false,
+          "hasApi": false
+        },
+        {
+          "fileName": "ResearchCta.jsx",
+          "imports": [
+            "react",
+            "next/link"
+          ],
+          "arrays": [],
+          "media": [
+            "/asstes/images/video-banner-img.mp4"
+          ],
+          "hasForm": false,
+          "hasApi": false
+        },
+        {
+          "fileName": "ResearchReachSection.jsx",
+          "imports": [
+            "react"
+          ],
+          "arrays": [
+            {
+              "name": "defaultCards",
+              "count": 4
+            }
+          ],
+          "media": [],
+          "hasForm": false,
+          "hasApi": false
+        },
+        {
+          "fileName": "ServicesAboutOverview.jsx",
+          "imports": [
+            "react"
+          ],
+          "arrays": [],
+          "media": [
+            "/asstes/images/unimrkt-resarch-services-about-img.png"
+          ],
+          "hasForm": false,
+          "hasApi": false
+        },
+        {
+          "fileName": "ServicesFaq.jsx",
+          "imports": [],
+          "arrays": [
+            {
+              "name": "defaultFaqs",
+              "count": 7
+            }
+          ],
+          "media": [
+            "/asstes/images/unimrkt-resarch-map-banner-img.png"
+          ],
+          "hasForm": false,
+          "hasApi": false
+        },
+        {
+          "fileName": "ServicesHero.jsx",
+          "imports": [
+            "react",
+            "next/link"
+          ],
+          "arrays": [],
+          "media": [
+            "/asstes/images/services-banner-img.png",
+            "/asstes/images/icon/arrow-right-icon-img.png"
+          ],
+          "hasForm": false,
+          "hasApi": false
+        },
+        {
+          "fileName": "ServicesQuestionCTA.jsx",
+          "imports": [
+            "react"
+          ],
+          "arrays": [],
+          "media": [
+            "/asstes/images/icon/arrow-right-icon-img.png",
+            "/asstes/images/question-img.png"
+          ],
+          "hasForm": false,
+          "hasApi": false
+        },
+        {
+          "fileName": "ServicesWorkflow.jsx",
+          "imports": [
+            "swiper",
+            "swiper/modules"
+          ],
+          "arrays": [
+            {
+              "name": "processSteps",
+              "count": 5
+            }
+          ],
+          "media": [],
+          "hasForm": false,
+          "hasApi": false
+        },
+        {
+          "fileName": "WhyChooseUs.jsx",
+          "imports": [
+            "react",
+            "next/image"
+          ],
+          "arrays": [
+            {
+              "name": "whyChooseItems",
+              "count": 6
+            }
+          ],
+          "media": [],
+          "hasForm": false,
+          "hasApi": false
+        }
+      ]
+    },
+    {
+      "name": "Primary Research",
+      "route": "/primary-research",
+      "dir": "primary-research",
+      "pageFile": "primary-research/page.jsx",
+      "pageAnalysis": null,
+      "sections": [
+        {
+          "fileName": "AbouPrimaryOverview.jsx",
+          "imports": [
+            "react"
+          ],
+          "arrays": [],
+          "media": [
+            "/asstes/images/icon/customized-icon-img.png",
+            "/asstes/images/icon/diverse-audiences-icon-img.png",
+            "/asstes/images/icon/reliable-insights-icon-img.png",
+            "/asstes/images/primary-research-about-img.png"
+          ],
+          "hasForm": false,
+          "hasApi": false
+        },
+        {
+          "fileName": "ContactFormSection.jsx",
+          "imports": [],
+          "arrays": [],
+          "media": [
+            "/asstes/images/icon/arrow-right-icon-img.png"
+          ],
+          "hasForm": true,
+          "hasApi": false
+        },
+        {
+          "fileName": "FqaPrimaryresearch.jsx",
+          "imports": [],
+          "arrays": [
+            {
+              "name": "blogFaqs",
+              "count": 5
+            }
+          ],
+          "media": [
+            "/asstes/images/unimrkt-resarch-map-banner-img.png"
+          ],
+          "hasForm": false,
+          "hasApi": false
+        },
+        {
+          "fileName": "IndustriesArea.jsx",
+          "imports": [
+            "react",
+            "next/link"
+          ],
+          "arrays": [
+            {
+              "name": "industriesList",
+              "count": 10
+            }
+          ],
+          "media": [],
+          "hasForm": false,
+          "hasApi": false
+        },
+        {
+          "fileName": "PrimaryHero.jsx",
+          "imports": [
+            "react",
+            "next/link"
+          ],
+          "arrays": [],
+          "media": [
+            "/asstes/images/unimrkt-reseach-primary-research-banner-img.png",
+            "/asstes/images/icon/arrow-right-icon-img.png"
+          ],
+          "hasForm": false,
+          "hasApi": false
+        },
+        {
+          "fileName": "PrimaryresearchResearchCta.jsx",
+          "imports": [
+            "react",
+            "next/link"
+          ],
+          "arrays": [],
+          "media": [
+            "/asstes/images/commonvideo-banner.mp4"
+          ],
+          "hasForm": false,
+          "hasApi": false
+        },
+        {
+          "fileName": "PrimaryresEditorialAbout.jsx",
+          "imports": [
+            "react"
+          ],
+          "arrays": [],
+          "media": [],
+          "hasForm": false,
+          "hasApi": false
+        },
+        {
+          "fileName": "PrimaryServices.jsx",
+          "imports": [
+            "react",
+            "next/link"
+          ],
+          "arrays": [
+            {
+              "name": "services",
+              "count": 4
+            }
+          ],
+          "media": [
+            "/asstes/images/icon/arrow-right-icon-img.png"
+          ],
+          "hasForm": false,
+          "hasApi": false
+        },
+        {
+          "fileName": "ResearchMethodologies.jsx",
+          "imports": [
+            "swiper",
+            "swiper/modules"
+          ],
+          "arrays": [
+            {
+              "name": "steps",
+              "count": 8
+            }
+          ],
+          "media": [],
+          "hasForm": false,
+          "hasApi": false
+        },
+        {
+          "fileName": "TrustedClients.jsx",
+          "imports": [
+            "react"
+          ],
+          "arrays": [],
+          "media": [
+            "/asstes/logo/suzki-logo-img.png",
+            "/asstes/logo/cocacola-logo-img.png",
+            "/asstes/logo/hdfc-bank-logo-img.png",
+            "/asstes/logo/amazom-logo-img.png",
+            "/asstes/logo/airtel-logo-img.png"
+          ],
+          "hasForm": false,
+          "hasApi": false
+        },
+        {
+          "fileName": "UnimrktResearchArea.jsx",
+          "imports": [
+            "react"
+          ],
+          "arrays": [
+            {
+              "name": "metrics",
+              "count": 15
+            }
+          ],
+          "media": [],
+          "hasForm": false,
+          "hasApi": false
+        }
+      ]
+    },
+    {
+      "name": "Telephonic Surveys",
+      "route": "/telephonic-surveys",
+      "dir": "telephonic-surveys",
+      "pageFile": "telephonic-surveys/page.jsx",
+      "pageAnalysis": null,
+      "sections": [
+        {
+          "fileName": "InsightsEditorial.jsx",
+          "imports": [
+            "react"
+          ],
+          "arrays": [],
+          "media": [],
+          "hasForm": false,
+          "hasApi": false
+        },
+        {
+          "fileName": "MeasureSection.jsx",
+          "imports": [],
+          "arrays": [
+            {
+              "name": "accordionPanels",
+              "count": 5
+            }
+          ],
+          "media": [],
+          "hasForm": false,
+          "hasApi": false
+        },
+        {
+          "fileName": "QualityFirst.jsx",
+          "imports": [
+            "react"
+          ],
+          "arrays": [
+            {
+              "name": "qualityPoints",
+              "count": 6
+            }
+          ],
+          "media": [],
+          "hasForm": false,
+          "hasApi": false
+        },
+        {
+          "fileName": "ResearchCta.jsx",
+          "imports": [
+            "react",
+            "next/link"
+          ],
+          "arrays": [],
+          "media": [
+            "/asstes/images/video-banner-img.mp4"
+          ],
+          "hasForm": false,
+          "hasApi": false
+        },
+        {
+          "fileName": "ResearchImpact.jsx",
+          "imports": [
+            "react"
+          ],
+          "arrays": [],
+          "media": [
+            "/asstes/images/icon/group-cati-interviws-icon-img.png",
+            "/asstes/images/icon/research-markets-icon-img.png",
+            "/asstes/images/icon/interview-capabilities-icon-img.png",
+            "/asstes/images/icon/every-stage-icon-img.png"
+          ],
+          "hasForm": false,
+          "hasApi": false
+        },
+        {
+          "fileName": "TelephonicCanMeasure.jsx",
+          "imports": [
+            "react",
+            "next/link"
+          ],
+          "arrays": [
+            {
+              "name": "telephonicCanMeasure",
+              "count": 6
+            }
+          ],
+          "media": [
+            "/asstes/images/icon/arrow-right-icon-img.png"
+          ],
+          "hasForm": false,
+          "hasApi": false
+        },
+        {
+          "fileName": "TelephonicFaq.jsx",
+          "imports": [],
+          "arrays": [
+            {
+              "name": "faqs",
+              "count": 6
+            }
+          ],
+          "media": [
+            "/asstes/images/unimrkt-resarch-map-banner-img.png"
+          ],
+          "hasForm": false,
+          "hasApi": false
+        },
+        {
+          "fileName": "TelephonicHero.jsx",
+          "imports": [
+            "react",
+            "next/link"
+          ],
+          "arrays": [],
+          "media": [
+            "/asstes/images/unimrkt-research-telephonic-surveys-banner.png",
+            "/asstes/images/icon/arrow-right-icon-img.png"
+          ],
+          "hasForm": false,
+          "hasApi": false
+        },
+        {
+          "fileName": "TelephonicOverview.jsx",
+          "imports": [
+            "react"
+          ],
+          "arrays": [],
+          "media": [
+            "/asstes/images/unimrkt-research-voices-img.png"
+          ],
+          "hasForm": false,
+          "hasApi": false
+        },
+        {
+          "fileName": "TelephonicProcess.jsx",
+          "imports": [
+            "swiper",
+            "swiper/modules"
+          ],
+          "arrays": [
+            {
+              "name": "processSteps",
+              "count": 6
+            }
+          ],
+          "media": [],
+          "hasForm": false,
+          "hasApi": false
+        },
+        {
+          "fileName": "WhyTelephonic.jsx",
+          "imports": [
+            "react"
+          ],
+          "arrays": [
+            {
+              "name": "reasons",
+              "count": 6
+            }
+          ],
+          "media": [],
+          "hasForm": false,
+          "hasApi": false
+        }
+      ]
+    },
+    {
+      "name": "Industries",
+      "route": "/industries",
+      "dir": "industries",
+      "pageFile": "industries/page.jsx",
+      "pageAnalysis": null,
+      "sections": [
+        {
+          "fileName": "BusinessOutcomesSection.jsx",
+          "imports": [
+            "swiper",
+            "swiper/modules"
+          ],
+          "arrays": [
+            {
+              "name": "outcomeCards",
+              "count": 5
+            }
+          ],
+          "media": [],
+          "hasForm": false,
+          "hasApi": false
+        },
+        {
+          "fileName": "IndustriesAbout.jsx",
+          "imports": [
+            "react"
+          ],
+          "arrays": [],
+          "media": [
+            "/asstes/images/unimrkt-resarch-services-about-img.png"
+          ],
+          "hasForm": false,
+          "hasApi": false
+        },
+        {
+          "fileName": "IndustriesFaq.jsx",
+          "imports": [],
+          "arrays": [
+            {
+              "name": "industryFaqs",
+              "count": 6
+            }
+          ],
+          "media": [
+            "/asstes/images/unimrkt-resarch-map-banner-img.png"
+          ],
+          "hasForm": false,
+          "hasApi": false
+        },
+        {
+          "fileName": "IndustriesGrid.jsx",
+          "imports": [
+            "next/link"
+          ],
+          "arrays": [
+            {
+              "name": "allIndustries",
+              "count": 18
+            }
+          ],
+          "media": [],
+          "hasForm": false,
+          "hasApi": false
+        },
+        {
+          "fileName": "IndustriesHero.jsx",
+          "imports": [
+            "react",
+            "next/link"
+          ],
+          "arrays": [],
+          "media": [
+            "/asstes/images/industries-banner-img.png",
+            "/asstes/images/icon/arrow-right-icon-img.png"
+          ],
+          "hasForm": false,
+          "hasApi": false
+        },
+        {
+          "fileName": "LocalInsightGlobalReach.jsx",
+          "imports": [
+            "react"
+          ],
+          "arrays": [
+            {
+              "name": "statsData",
+              "count": 4
+            }
+          ],
+          "media": [],
+          "hasForm": false,
+          "hasApi": false
+        },
+        {
+          "fileName": "PartnerIndustriesSection.jsx",
+          "imports": [
+            "react"
+          ],
+          "arrays": [
+            {
+              "name": "partnerFeatures",
+              "count": 6
+            }
+          ],
+          "media": [],
+          "hasForm": false,
+          "hasApi": false
+        },
+        {
+          "fileName": "QuestionCTA.jsx",
+          "imports": [
+            "react"
+          ],
+          "arrays": [],
+          "media": [
+            "/asstes/images/icon/arrow-right-icon-img.png",
+            "/asstes/images/question-img2.png"
+          ],
+          "hasForm": false,
+          "hasApi": false
+        },
+        {
+          "fileName": "QuestionsToInsightsSection.jsx",
+          "imports": [],
+          "arrays": [
+            {
+              "name": "accordionItems",
+              "count": 6
+            }
+          ],
+          "media": [
+            "/asstes/images/questions-to-insights-img.png"
+          ],
+          "hasForm": false,
+          "hasApi": false
+        },
+        {
+          "fileName": "ResearchCta.jsx",
+          "imports": [
+            "react",
+            "next/link"
+          ],
+          "arrays": [],
+          "media": [
+            "/asstes/images/video-banner-img.mp4"
+          ],
+          "hasForm": false,
+          "hasApi": false
+        },
+        {
+          "fileName": "ResearchProcessImpact.jsx",
+          "imports": [
+            "swiper",
+            "swiper/modules"
+          ],
+          "arrays": [
+            {
+              "name": "processSteps",
+              "count": 6
+            }
+          ],
+          "media": [],
+          "hasForm": false,
+          "hasApi": false
+        }
+      ]
+    },
+    {
+      "name": "Automotives",
+      "route": "/automotives",
+      "dir": "automotives",
+      "pageFile": "automotives/page.jsx",
+      "pageAnalysis": null,
+      "sections": [
+        {
+          "fileName": "AutomotiveAboutOverview.jsx",
+          "imports": [
+            "react"
+          ],
+          "arrays": [],
+          "media": [
+            "/asstes/images/automotives-about-img.png"
+          ],
+          "hasForm": false,
+          "hasApi": false
+        },
+        {
+          "fileName": "AutomotiveChallengesDark.jsx",
+          "imports": [
+            "react"
+          ],
+          "arrays": [
+            {
+              "name": "challengesData",
+              "count": 4
+            }
+          ],
+          "media": [],
+          "hasForm": false,
+          "hasApi": false
+        },
+        {
+          "fileName": "AutomotiveEcosystemSlider.jsx",
+          "imports": [
+            "swiper",
+            "swiper/modules"
+          ],
+          "arrays": [
+            {
+              "name": "ecosystemSlides",
+              "count": 7
+            }
+          ],
+          "media": [],
+          "hasForm": false,
+          "hasApi": false
+        },
+        {
+          "fileName": "AutomotiveEditorialabout.jsx",
+          "imports": [
+            "react"
+          ],
+          "arrays": [],
+          "media": [],
+          "hasForm": false,
+          "hasApi": false
+        },
+        {
+          "fileName": "AutomotiveEmpowerCta.jsx",
+          "imports": [
+            "react"
+          ],
+          "arrays": [],
+          "media": [
+            "/asstes/images/automotive-research-img.png"
+          ],
+          "hasForm": false,
+          "hasApi": false
+        },
+        {
+          "fileName": "AutomotiveFaq.jsx",
+          "imports": [],
+          "arrays": [
+            {
+              "name": "blogFaqs",
+              "count": 6
+            }
+          ],
+          "media": [
+            "/asstes/images/unimrkt-resarch-map-banner-img.png"
+          ],
+          "hasForm": false,
+          "hasApi": false
+        },
+        {
+          "fileName": "AutomotiveHero.jsx",
+          "imports": [
+            "react",
+            "next/link"
+          ],
+          "arrays": [],
+          "media": [
+            "/asstes/images/automation-connected-automobile-banner-img.png",
+            "/asstes/images/icon/arrow-right-icon-img.png"
+          ],
+          "hasForm": false,
+          "hasApi": false
+        },
+        {
+          "fileName": "AutomotiveIntelligenceCards.jsx",
+          "imports": [
+            "react"
+          ],
+          "arrays": [
+            {
+              "name": "intelligenceCards",
+              "count": 3
+            }
+          ],
+          "media": [],
+          "hasForm": false,
+          "hasApi": false
+        },
+        {
+          "fileName": "AutomotiveMethodologiesSlider.jsx",
+          "imports": [
+            "swiper",
+            "swiper/modules"
+          ],
+          "arrays": [
+            {
+              "name": "methodologies",
+              "count": 6
+            }
+          ],
+          "media": [],
+          "hasForm": false,
+          "hasApi": false
+        },
+        {
+          "fileName": "AutomotiveOverview.jsx",
+          "imports": [
+            "react",
+            "next/link"
+          ],
+          "arrays": [
+            {
+              "name": "caseStudies",
+              "count": 2
+            }
+          ],
+          "media": [],
+          "hasForm": false,
+          "hasApi": false
+        },
+        {
+          "fileName": "AutomotiveSegmentsSlider.jsx",
+          "imports": [
+            "swiper",
+            "swiper/modules"
+          ],
+          "arrays": [
+            {
+              "name": "segmentSlides",
+              "count": 4
+            }
+          ],
+          "media": [],
+          "hasForm": false,
+          "hasApi": false
+        },
+        {
+          "fileName": "ResearchCta.jsx",
+          "imports": [
+            "react",
+            "next/link"
+          ],
+          "arrays": [],
+          "media": [
+            "/asstes/images/video-banner-img.mp4"
+          ],
+          "hasForm": false,
+          "hasApi": false
+        }
+      ]
+    },
+    {
+      "name": "Case Study Listing",
+      "route": "/case-study",
+      "dir": "case-study",
+      "pageFile": "case-study/page.jsx",
+      "pageAnalysis": null,
+      "sections": [
+        {
+          "fileName": "CaseStudyExplorer.jsx",
+          "imports": [
+            "next/link"
+          ],
+          "arrays": [
+            {
+              "name": "caseStudiesData",
+              "count": 18
+            },
+            {
+              "name": "industryOptions",
+              "count": 7
+            },
+            {
+              "name": "researchOptions",
+              "count": 6
+            }
+          ],
+          "media": [],
+          "hasForm": false,
+          "hasApi": false
+        },
+        {
+          "fileName": "CaseStudyFaq.jsx",
+          "imports": [],
+          "arrays": [
+            {
+              "name": "faqs",
+              "count": 7
+            }
+          ],
+          "media": [
+            "/asstes/images/unimrkt-resarch-map-banner-img.png"
+          ],
+          "hasForm": false,
+          "hasApi": false
+        },
+        {
+          "fileName": "CaseStudyHero.jsx",
+          "imports": [
+            "react",
+            "next/link"
+          ],
+          "arrays": [],
+          "media": [
+            "/asstes/images/case-study-banner-img.png",
+            "/asstes/images/icon/arrow-right-icon-img.png"
+          ],
+          "hasForm": false,
+          "hasApi": false
+        },
+        {
+          "fileName": "ContactProcess.jsx",
+          "imports": [
+            "swiper",
+            "swiper/modules"
+          ],
+          "arrays": [
+            {
+              "name": "testimonialsData",
+              "count": 6
+            }
+          ],
+          "media": [
+            "/asstes/images/icon/testimonial-icon-img.png"
+          ],
+          "hasForm": false,
+          "hasApi": false
+        },
+        {
+          "fileName": "InsightsEditorial.jsx",
+          "imports": [
+            "react"
+          ],
+          "arrays": [],
+          "media": [],
+          "hasForm": false,
+          "hasApi": false
+        },
+        {
+          "fileName": "ResearchCta.jsx",
+          "imports": [
+            "react",
+            "next/link"
+          ],
+          "arrays": [],
+          "media": [
+            "/asstes/images/video-banner-img.mp4"
+          ],
+          "hasForm": false,
+          "hasApi": false
+        },
+        {
+          "fileName": "ResearchValue.jsx",
+          "imports": [
+            "react"
+          ],
+          "arrays": [],
+          "media": [
+            "/asstes/images/icon/connection-icon-img.png",
+            "/asstes/images/icon/analysis-research-icon-img.png",
+            "/asstes/images/icon/insight-icon-img.png",
+            "/asstes/images/icon/growth-impact-icon-img.png"
+          ],
+          "hasForm": false,
+          "hasApi": false
+        }
+      ]
+    },
+    {
+      "name": "Case Study Details",
+      "route": "/case-study-details",
+      "dir": "case-study-details",
+      "pageFile": "case-study-details/page.jsx",
+      "pageAnalysis": null,
+      "sections": [
+        {
+          "fileName": "CaseDetailApproach.jsx",
+          "imports": [
+            "react"
+          ],
+          "arrays": [
+            {
+              "name": "approachSteps",
+              "count": 6
+            }
+          ],
+          "media": [],
+          "hasForm": false,
+          "hasApi": false
+        },
+        {
+          "fileName": "CaseDetailChallenge.jsx",
+          "imports": [
+            "react"
+          ],
+          "arrays": [],
+          "media": [
+            "/asstes/images/challenge-portrait.png"
+          ],
+          "hasForm": false,
+          "hasApi": false
+        },
+        {
+          "fileName": "CaseDetailFaq.jsx",
+          "imports": [],
+          "arrays": [
+            {
+              "name": "faqs",
+              "count": 7
+            }
+          ],
+          "media": [
+            "/asstes/images/unimrkt-resarch-map-banner-img.png"
+          ],
+          "hasForm": false,
+          "hasApi": false
+        },
+        {
+          "fileName": "CaseDetailHero.jsx",
+          "imports": [
+            "react",
+            "next/link"
+          ],
+          "arrays": [],
+          "media": [
+            "/asstes/images/case-study-banking.jpg"
+          ],
+          "hasForm": false,
+          "hasApi": false
+        },
+        {
+          "fileName": "CaseDetailImpact.jsx",
+          "imports": [
+            "react"
+          ],
+          "arrays": [
+            {
+              "name": "impacts",
+              "count": 7
+            }
+          ],
+          "media": [
+            "/asstes/images/icon/identified-icon-img.png"
+          ],
+          "hasForm": false,
+          "hasApi": false
+        },
+        {
+          "fileName": "CaseDetailResearchQuestion.jsx",
+          "imports": [
+            "react"
+          ],
+          "arrays": [],
+          "media": [
+            "/asstes/images/icon/trust-shield-tick-icon-img.png",
+            "/asstes/images/icon/convenience-iocn-img.png",
+            "/asstes/images/icon/review-icon-img.png",
+            "/asstes/images/icon/increase-icon-img.png",
+            "/asstes/images/icon/relationship-icon-img.png"
+          ],
+          "hasForm": false,
+          "hasApi": false
+        },
+        {
+          "fileName": "InsightsEditorial.jsx",
+          "imports": [
+            "react"
+          ],
+          "arrays": [],
+          "media": [],
+          "hasForm": false,
+          "hasApi": false
+        },
+        {
+          "fileName": "ResearchCta.jsx",
+          "imports": [
+            "react",
+            "next/link"
+          ],
+          "arrays": [],
+          "media": [
+            "/asstes/images/video-banner-img.mp4"
+          ],
+          "hasForm": false,
+          "hasApi": false
+        }
+      ]
+    },
+    {
+      "name": "Blog Listing",
+      "route": "/blog",
+      "dir": "blog",
+      "pageFile": "blog/page.jsx",
+      "pageAnalysis": null,
+      "sections": [
+        {
+          "fileName": "BlogFaq.jsx",
+          "imports": [],
+          "arrays": [
+            {
+              "name": "blogFaqs",
+              "count": 5
+            }
+          ],
+          "media": [
+            "/asstes/images/unimrkt-resarch-map-banner-img.png"
+          ],
+          "hasForm": false,
+          "hasApi": false
+        },
+        {
+          "fileName": "BlogGrid.jsx",
+          "imports": [
+            "next/link"
+          ],
+          "arrays": [
+            {
+              "name": "blogCardsData",
+              "count": 9
+            },
+            {
+              "name": "categories",
+              "count": 6
+            }
+          ],
+          "media": [],
+          "hasForm": false,
+          "hasApi": false
+        },
+        {
+          "fileName": "BlogHero.jsx",
+          "imports": [
+            "react",
+            "next/link"
+          ],
+          "arrays": [],
+          "media": [
+            "/asstes/images/blog-hero-banner-img.webp",
+            "/asstes/images/icon/arrow-right-icon-img.png"
+          ],
+          "hasForm": false,
+          "hasApi": false
+        },
+        {
+          "fileName": "InsightsEditorial.jsx",
+          "imports": [
+            "react"
+          ],
+          "arrays": [],
+          "media": [],
+          "hasForm": false,
+          "hasApi": false
+        },
+        {
+          "fileName": "ResearchCta.jsx",
+          "imports": [
+            "react",
+            "next/link"
+          ],
+          "arrays": [],
+          "media": [
+            "/asstes/images/video-banner-img.mp4"
+          ],
+          "hasForm": false,
+          "hasApi": false
+        }
+      ]
+    },
+    {
+      "name": "Blog Details",
+      "route": "/blog-details",
+      "dir": "blog-details",
+      "pageFile": "blog-details/page.jsx",
+      "pageAnalysis": null,
+      "sections": [
+        {
+          "fileName": "BlogDetailBreadcrumb.jsx",
+          "imports": [
+            "react",
+            "next/link"
+          ],
+          "arrays": [],
+          "media": [],
+          "hasForm": false,
+          "hasApi": false
+        },
+        {
+          "fileName": "BlogDetailContent.jsx",
+          "imports": [
+            "next/link"
+          ],
+          "arrays": [],
+          "media": [
+            "/asstes/images/market-trends-card-img1.png"
+          ],
+          "hasForm": true,
+          "hasApi": false
+        }
+      ]
+    },
+    {
+      "name": "Team",
+      "route": "/team",
+      "dir": "team",
+      "pageFile": "team/page.jsx",
+      "pageAnalysis": null,
+      "sections": [
+        {
+          "fileName": "ResearchCta.jsx",
+          "imports": [
+            "react",
+            "next/link"
+          ],
+          "arrays": [],
+          "media": [
+            "/asstes/images/video-banner-img.mp4"
+          ],
+          "hasForm": false,
+          "hasApi": false
+        },
+        {
+          "fileName": "TeamDirectory.jsx",
+          "imports": [],
+          "arrays": [
+            {
+              "name": "teamMembers",
+              "count": 19
+            }
+          ],
+          "media": [],
+          "hasForm": false,
+          "hasApi": false
+        },
+        {
+          "fileName": "TeamHero.jsx",
+          "imports": [
+            "react",
+            "next/link"
+          ],
+          "arrays": [],
+          "media": [
+            "/asstes/images/unimrkt-resarch-our-team-banner.png",
+            "/asstes/images/icon/arrow-right-icon-img.png"
+          ],
+          "hasForm": false,
+          "hasApi": false
+        }
+      ]
+    },
+    {
+      "name": "Gallery",
+      "route": "/gallery",
+      "dir": "gallery",
+      "pageFile": "gallery/page.jsx",
+      "pageAnalysis": null,
+      "sections": [
+        {
+          "fileName": "GalleryGrid.jsx",
+          "imports": [
+            "swiper",
+            "swiper/modules"
+          ],
+          "arrays": [
+            {
+              "name": "categories",
+              "count": 6
+            },
+            {
+              "name": "galleryItemsData",
+              "count": 9
+            }
+          ],
+          "media": [],
+          "hasForm": false,
+          "hasApi": false
+        },
+        {
+          "fileName": "GalleryHero.jsx",
+          "imports": [
+            "react",
+            "next/link"
+          ],
+          "arrays": [],
+          "media": [
+            "/asstes/images/gallery-banner-img.png",
+            "/asstes/images/icon/arrow-right-icon-img.png"
+          ],
+          "hasForm": false,
+          "hasApi": false
+        },
+        {
+          "fileName": "ResearchCta.jsx",
+          "imports": [
+            "react",
+            "next/link"
+          ],
+          "arrays": [],
+          "media": [
+            "/asstes/images/video-banner-img.mp4"
+          ],
+          "hasForm": false,
+          "hasApi": false
+        }
+      ]
+    },
+    {
+      "name": "FAQ",
+      "route": "/faq",
+      "dir": "faq",
+      "pageFile": "faq/page.jsx",
+      "pageAnalysis": null,
+      "sections": [
+        {
+          "fileName": "FaqContent.jsx",
+          "imports": [],
+          "arrays": [
+            {
+              "name": "faqDatabase",
+              "count": 14
+            },
+            {
+              "name": "categories",
+              "count": 7
+            }
+          ],
+          "media": [
+            "/asstes/images/unimrkt-resarch-map-banner-img.png"
+          ],
+          "hasForm": false,
+          "hasApi": false
+        },
+        {
+          "fileName": "FaqHero.jsx",
+          "imports": [
+            "react",
+            "next/link"
+          ],
+          "arrays": [],
+          "media": [
+            "/asstes/images/the-impact-banner-img.png",
+            "/asstes/images/icon/arrow-right-icon-img.png"
+          ],
+          "hasForm": false,
+          "hasApi": false
+        },
+        {
+          "fileName": "ResearchCta.jsx",
+          "imports": [
+            "react",
+            "next/link"
+          ],
+          "arrays": [],
+          "media": [
+            "/asstes/images/video-banner-img.mp4"
+          ],
+          "hasForm": false,
+          "hasApi": false
+        }
+      ]
+    },
+    {
+      "name": "Work / Careers",
+      "route": "/work",
+      "dir": "work",
+      "pageFile": "work/page.jsx",
+      "pageAnalysis": null,
+      "sections": [
+        {
+          "fileName": "CareerBenefits.jsx",
+          "imports": [
+            "react"
+          ],
+          "arrays": [
+            {
+              "name": "benefits",
+              "count": 8
+            }
+          ],
+          "media": [
+            "/asstes/images/jab-about-img.png"
+          ],
+          "hasForm": false,
+          "hasApi": false
+        },
+        {
+          "fileName": "CareerJoin.jsx",
+          "imports": [
+            "react"
+          ],
+          "arrays": [],
+          "media": [],
+          "hasForm": false,
+          "hasApi": false
+        },
+        {
+          "fileName": "CareerJourney.jsx",
+          "imports": [
+            "react"
+          ],
+          "arrays": [
+            {
+              "name": "steps",
+              "count": 4
+            }
+          ],
+          "media": [],
+          "hasForm": false,
+          "hasApi": false
+        },
+        {
+          "fileName": "CareerOpenings.jsx",
+          "imports": [],
+          "arrays": [
+            {
+              "name": "jobCardsData",
+              "count": 6
+            }
+          ],
+          "media": [
+            "/asstes/images/icon/job-icon-img.png",
+            "/asstes/images/icon/location-icon-img.png",
+            "/asstes/images/icon/briefcase-icon-img.png",
+            "/asstes/images/icon/profile-user-icon-img.png",
+            "/asstes/images/icon/calendar-icon-img.png"
+          ],
+          "hasForm": true,
+          "hasApi": false
+        },
+        {
+          "fileName": "CareerValues.jsx",
+          "imports": [
+            "react"
+          ],
+          "arrays": [
+            {
+              "name": "defaultValues",
+              "count": 8
+            }
+          ],
+          "media": [],
+          "hasForm": false,
+          "hasApi": false
+        },
+        {
+          "fileName": "InsightsEditorial.jsx",
+          "imports": [
+            "react"
+          ],
+          "arrays": [],
+          "media": [],
+          "hasForm": false,
+          "hasApi": false
+        },
+        {
+          "fileName": "ResearchCta.jsx",
+          "imports": [
+            "react",
+            "next/link"
+          ],
+          "arrays": [],
+          "media": [
+            "/asstes/images/video-banner-img.mp4"
+          ],
+          "hasForm": false,
+          "hasApi": false
+        },
+        {
+          "fileName": "WorkFaq.jsx",
+          "imports": [],
+          "arrays": [
+            {
+              "name": "faqs",
+              "count": 5
+            }
+          ],
+          "media": [
+            "/asstes/images/unimrkt-resarch-map-banner-img.png"
+          ],
+          "hasForm": false,
+          "hasApi": false
+        },
+        {
+          "fileName": "WorkHero.jsx",
+          "imports": [
+            "react",
+            "next/link"
+          ],
+          "arrays": [],
+          "media": [
+            "/asstes/images/unimrkt-reseach-work-banner-img.png",
+            "/asstes/images/icon/arrow-right-icon-img.png"
+          ],
+          "hasForm": false,
+          "hasApi": false
+        }
+      ]
+    },
+    {
+      "name": "Contact",
+      "route": "/contact",
+      "dir": "contact",
+      "pageFile": "contact/page.jsx",
+      "pageAnalysis": null,
+      "sections": [
+        {
+          "fileName": "ContactFaq.jsx",
+          "imports": [],
+          "arrays": [
+            {
+              "name": "contactFaqs",
+              "count": 5
+            }
+          ],
+          "media": [
+            "/asstes/images/unimrkt-resarch-map-banner-img.png"
+          ],
+          "hasForm": false,
+          "hasApi": false
+        },
+        {
+          "fileName": "ContactForm.jsx",
+          "imports": [
+            "../../../lib/strapi"
+          ],
+          "arrays": [],
+          "media": [],
+          "hasForm": true,
+          "hasApi": false
+        },
+        {
+          "fileName": "ContactHero.jsx",
+          "imports": [
+            "react",
+            "next/link"
+          ],
+          "arrays": [],
+          "media": [
+            "/asstes/images/contac-banner-img.png",
+            "/asstes/images/icon/arrow-right-icon-img.png"
+          ],
+          "hasForm": false,
+          "hasApi": false
+        },
+        {
+          "fileName": "ContactProcess.jsx",
+          "imports": [
+            "swiper",
+            "swiper/modules"
+          ],
+          "arrays": [
+            {
+              "name": "steps",
+              "count": 6
+            }
+          ],
+          "media": [],
+          "hasForm": false,
+          "hasApi": false
+        },
+        {
+          "fileName": "InsightsEditorial.jsx",
+          "imports": [
+            "react"
+          ],
+          "arrays": [],
+          "media": [],
+          "hasForm": false,
+          "hasApi": false
+        },
+        {
+          "fileName": "OfficePresence.jsx",
+          "imports": [],
+          "arrays": [
+            {
+              "name": "offices",
+              "count": 3
+            }
+          ],
+          "media": [],
+          "hasForm": false,
+          "hasApi": false
+        },
+        {
+          "fileName": "ResearchCta.jsx",
+          "imports": [
+            "react",
+            "next/link"
+          ],
+          "arrays": [],
+          "media": [
+            "/asstes/images/video-banner-img.mp4"
+          ],
+          "hasForm": false,
+          "hasApi": false
+        },
+        {
+          "fileName": "ResearchImpact.jsx",
+          "imports": [
+            "react"
+          ],
+          "arrays": [
+            {
+              "name": "stats",
+              "count": 4
+            }
+          ],
+          "media": [],
+          "hasForm": false,
+          "hasApi": false
+        },
+        {
+          "fileName": "ResearchValue.jsx",
+          "imports": [
+            "react"
+          ],
+          "arrays": [
+            {
+              "name": "values",
+              "count": 4
+            }
+          ],
+          "media": [],
+          "hasForm": false,
+          "hasApi": false
+        }
+      ]
+    },
+    {
+      "name": "Privacy Policy",
+      "route": "/privacy-policy",
+      "dir": "privacy-policy",
+      "pageFile": "privacy-policy/page.jsx",
+      "pageAnalysis": null,
+      "sections": [
+        {
+          "fileName": "PrivacyContent.jsx",
+          "imports": [
+            "react",
+            "next/link"
+          ],
+          "arrays": [],
+          "media": [],
+          "hasForm": false,
+          "hasApi": false
+        },
+        {
+          "fileName": "PrivacyHero.jsx",
+          "imports": [
+            "react",
+            "next/link"
+          ],
+          "arrays": [],
+          "media": [
+            "/asstes/images/unimrkt-research-privacy-policy-banner-img.png"
+          ],
+          "hasForm": false,
+          "hasApi": false
+        }
+      ]
+    }
+  ],
+  "globalComponents": [
+    {
+      "fileName": "CommonBlogSection.jsx",
+      "imports": [
+        "next/link",
+        "swiper",
+        "swiper/modules"
+      ],
+      "arrays": [
+        {
+          "name": "blogMarketTrends",
+          "count": 6
+        }
+      ],
+      "media": [],
+      "hasForm": false,
+      "hasApi": false
+    },
+    {
+      "fileName": "CommonTrustedPartnersTestimonials.jsx",
+      "imports": [
+        "swiper",
+        "swiper/modules"
+      ],
+      "arrays": [
+        {
+          "name": "testimonials",
+          "count": 6
+        }
+      ],
+      "media": [],
+      "hasForm": false,
+      "hasApi": false
+    },
+    {
+      "fileName": "Footer.jsx",
+      "imports": [
+        "react",
+        "next/link"
+      ],
+      "arrays": [],
+      "media": [
+        "/asstes/images/video-banner.mp4",
+        "/asstes/images/unimrkt-resarch-logo.webp",
+        "/asstes/images/icon/mr-footer-logo.png",
+        "/asstes/images/icon/msri-logo-img.png"
+      ],
+      "hasForm": false,
+      "hasApi": false
+    },
+    {
+      "fileName": "Header.jsx",
+      "imports": [
+        "next/link",
+        "next/navigation"
+      ],
+      "arrays": [],
+      "media": [
+        "/asstes/images/unimrkt-resarch-logo.webp",
+        "/asstes/images/icon/arrow-right-icon-img.png"
+      ],
+      "hasForm": false,
+      "hasApi": false
+    },
+    {
+      "fileName": "ServicesIndustriesExpertise.jsx",
+      "imports": [
+        "next/link",
+        "swiper",
+        "swiper/modules"
+      ],
+      "arrays": [
+        {
+          "name": "industriesData",
+          "count": 6
+        }
+      ],
+      "media": [],
+      "hasForm": false,
+      "hasApi": false
+    }
+  ]
+}

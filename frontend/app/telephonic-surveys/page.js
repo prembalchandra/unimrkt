@@ -57,21 +57,53 @@ export const metadata = {
 export default async function TelephonicSurveysPage() {
   const pageData = await getPageBySlug('telephonic-surveys').catch(() => null);
 
+  const sections = Array.isArray(pageData?.sections) ? pageData.sections : [];
+
   const heroSection = findSection(pageData, 'sections.hero-common');
+  const metricsSection = findSection(pageData, 'sections.metrics-grid');
+  const valuesSection = findSection(pageData, 'sections.values-grid');
+  const faqSection = findSection(pageData, 'sections.faq-accordion');
   const ctaSection = findSection(pageData, 'sections.question-cta');
+
+  const measureSection = sections.find(
+    (s) => s.__component === 'sections.accordion-solutions' && s.heading?.includes('Human Conversations')
+  );
+  const qualitySection = sections.find(
+    (s) => s.__component === 'sections.values-grid' && (s.heading?.includes('Quality') || s.kicker?.includes('QUALITY'))
+  );
+  const canMeasureSection = sections.find(
+    (s) => s.__component === 'sections.research-reach'
+  );
+  const processSection = sections.find(
+    (s) => s.__component === 'sections.accordion-solutions' && s.heading?.includes('Process')
+  );
 
   return (
     <>
       <TelephonicHero dynamicHero={heroSection} />
-      <ResearchImpact />
+      <ResearchImpact dynamicMetrics={metricsSection} />
       <TelephonicOverview />
-      <WhyTelephonic />
-      <TelephonicProcess />
-      <TelephonicCanMeasure />
-      <QualityFirst />
-      <MeasureSection />
+      <WhyTelephonic dynamicValues={valuesSection} />
+      <TelephonicProcess
+        processSteps={processSection?.cards || []}
+        title={processSection?.heading}
+        description={processSection?.description}
+      />
+      <TelephonicCanMeasure items={canMeasureSection?.cards || []} />
+      <QualityFirst
+        qualityPoints={qualitySection?.values || []}
+        kicker={qualitySection?.kicker}
+        title={qualitySection?.heading}
+        text={qualitySection?.description}
+      />
+      <MeasureSection
+        accordionPanels={measureSection?.cards || []}
+        kicker={measureSection?.kicker}
+        title={measureSection?.heading}
+        subtext={measureSection?.description}
+      />
       <CommonBlogSection />
-      <TelephonicFaq />
+      <TelephonicFaq dynamicFaq={faqSection} />
       <InsightsEditorial />
       <ResearchCta dynamicCta={ctaSection} />
     </>

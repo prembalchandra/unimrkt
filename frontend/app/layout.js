@@ -1,5 +1,6 @@
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import { getGlobalSettings } from '@/lib/strapi';
 
 export const metadata = {
   metadataBase: new URL('https://www.unimrkt.com'),
@@ -96,7 +97,9 @@ const jsonLdOrg = {
   ],
 };
 
-export default function RootLayout({ children }) {
+export default async function RootLayout({ children }) {
+  const globalData = await getGlobalSettings().catch(() => null);
+
   return (
     <html lang="en">
       <head>
@@ -120,9 +123,9 @@ export default function RootLayout({ children }) {
         />
       </head>
       <body>
-        <Header />
+        <Header globalData={globalData} />
         <main>{children}</main>
-        <Footer />
+        <Footer globalData={globalData} />
       </body>
     </html>
   );

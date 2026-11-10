@@ -1,0 +1,370 @@
+{
+  "routes": [
+    "/",
+    "/about",
+    "/automotives",
+    "/blog",
+    "/blog-details",
+    "/case-study",
+    "/case-study-details",
+    "/contact",
+    "/faq",
+    "/gallery",
+    "/industries",
+    "/our-company",
+    "/primary-research",
+    "/privacy-policy",
+    "/services",
+    "/team",
+    "/telephonic-surveys",
+    "/work"
+  ],
+  "pages": {},
+  "reusableComponents": [],
+  "hardcodedArrays": [
+    {
+      "file": "app\\automotives\\sections\\AutomotiveEcosystemSlider.jsx",
+      "variable": "defaultSvgs",
+      "approxItems": 7
+    },
+    {
+      "file": "app\\blog\\sections\\BlogGrid.jsx",
+      "variable": "result",
+      "approxItems": 1
+    },
+    {
+      "file": "app\\case-study\\sections\\CaseStudyExplorer.jsx",
+      "variable": "opts",
+      "approxItems": 1
+    },
+    {
+      "file": "app\\case-study\\sections\\CaseStudyExplorer.jsx",
+      "variable": "opts",
+      "approxItems": 1
+    },
+    {
+      "file": "app\\case-study-details\\sections\\CaseDetailApproach.jsx",
+      "variable": "defaultIcons",
+      "approxItems": 7
+    },
+    {
+      "file": "app\\gallery\\sections\\GalleryGrid.jsx",
+      "variable": "result",
+      "approxItems": 1
+    },
+    {
+      "file": "app\\homesections\\HeroSection.jsx",
+      "variable": "serviceIconList",
+      "approxItems": 8
+    },
+    {
+      "file": "app\\industries\\sections\\BusinessOutcomesSection.jsx",
+      "variable": "defaultIcons",
+      "approxItems": 6
+    },
+    {
+      "file": "app\\industries\\sections\\LocalInsightGlobalReach.jsx",
+      "variable": "defaultIcons",
+      "approxItems": 5
+    },
+    {
+      "file": "app\\industries\\sections\\PartnerIndustriesSection.jsx",
+      "variable": "defaultIcons",
+      "approxItems": 7
+    },
+    {
+      "file": "app\\industries\\sections\\QuestionsToInsightsSection.jsx",
+      "variable": "defaultIcons",
+      "approxItems": 7
+    },
+    {
+      "file": "app\\industries\\sections\\ResearchProcessImpact.jsx",
+      "variable": "defaultIcons",
+      "approxItems": 7
+    },
+    {
+      "file": "app\\our-company\\sections\\CompanyOurResearchEcosystem.jsx",
+      "variable": "defaultIcons",
+      "approxItems": 6
+    },
+    {
+      "file": "app\\our-company\\sections\\CompanyOverview.jsx",
+      "variable": "defaultIcons",
+      "approxItems": 5
+    },
+    {
+      "file": "app\\our-company\\sections\\CompnayOurValues.jsx",
+      "variable": "defaultIcons",
+      "approxItems": 9
+    },
+    {
+      "file": "app\\our-company\\sections\\OurcompanyResearchImpact.jsx",
+      "variable": "defaultIcons",
+      "approxItems": 5
+    },
+    {
+      "file": "app\\primary-research\\sections\\UnimrktResearchArea.jsx",
+      "variable": "defaultIcons",
+      "approxItems": 12
+    },
+    {
+      "file": "app\\services\\sections\\ServicesWorkflow.jsx",
+      "variable": "defaultIcons",
+      "approxItems": 6
+    },
+    {
+      "file": "app\\services\\sections\\WhyChooseUs.jsx",
+      "variable": "defaultIcons",
+      "approxItems": 7
+    },
+    {
+      "file": "app\\telephonic-surveys\\sections\\MeasureSection.jsx",
+      "variable": "defaultImages",
+      "approxItems": 6
+    },
+    {
+      "file": "app\\telephonic-surveys\\sections\\QualityFirst.jsx",
+      "variable": "defaultIcons",
+      "approxItems": 7
+    },
+    {
+      "file": "app\\telephonic-surveys\\sections\\TelephonicCanMeasure.jsx",
+      "variable": "defaultImages",
+      "approxItems": 7
+    },
+    {
+      "file": "app\\telephonic-surveys\\sections\\TelephonicProcess.jsx",
+      "variable": "defaultIcons",
+      "approxItems": 7
+    }
+  ],
+  "mediaReferences": [
+    "/asstes/images/404-banner.png",
+    "/asstes/images/icon/arrow-right-icon-img.png",
+    "/asstes/images/unimrkt-resarch-our-team-banner.png",
+    "/asstes/images/about-narrative-img.png",
+    "/asstes/images/video-banner-img.mp4",
+    "/asstes/images/automotives-about-img.png",
+    "/asstes/images/automotive-research-img.png",
+    "/asstes/images/unimrkt-resarch-map-banner-img.png",
+    "/asstes/images/automation-connected-automobile-banner-img.png",
+    "/asstes/images/blog-hero-banner-img.webp",
+    "/asstes/images/market-trends-card-img1.png",
+    "/asstes/images/case-study-banner-img.png",
+    "/asstes/images/icon/testimonial-icon-img.png",
+    "/asstes/images/icon/connection-icon-img.png",
+    "/asstes/images/icon/analysis-research-icon-img.png",
+    "/asstes/images/icon/insight-icon-img.png",
+    "/asstes/images/icon/growth-impact-icon-img.png",
+    "/asstes/images/challenge-portrait.png",
+    "/asstes/images/case-study-banking.jpg",
+    "/asstes/images/icon/identified-icon-img.png",
+    "/asstes/images/icon/trust-shield-tick-icon-img.png",
+    "/asstes/images/icon/convenience-iocn-img.png",
+    "/asstes/images/icon/review-icon-img.png",
+    "/asstes/images/icon/increase-icon-img.png",
+    "/asstes/images/icon/relationship-icon-img.png",
+    "/asstes/images/contac-banner-img.png",
+    "/asstes/images/the-impact-banner-img.png",
+    "/asstes/images/gallery-banner-img.png",
+    "/asstes/images/advanced-banner-video2.mp4",
+    "/asstes/images/advanced-banner-img.png",
+    "/asstes/images/video-banner2.mp4",
+    "/asstes/images/homeaboutvideo-banner-img.mp4",
+    "/asstes/images/commonvideo-banner.mp4",
+    "/asstes/images/office-india.png",
+    "/asstes/images/office-usa.png",
+    "/asstes/images/office-uk.png",
+    "/asstes/images/research-solutions-video-banner.mp4",
+    "/img/research-solutions-video-banner.mp4",
+    "/asstes/images/unimrkt-resarch-services-about-img.png",
+    "/asstes/images/industries-banner-img.png",
+    "/asstes/images/question-img2.png",
+    "/asstes/images/company-about-img.png",
+    "/asstes/images/our-company-banner-img.png",
+    "/asstes/images/icon/customized-icon-img.png",
+    "/asstes/images/icon/diverse-audiences-icon-img.png",
+    "/asstes/images/icon/reliable-insights-icon-img.png",
+    "/asstes/images/primary-research-about-img.png",
+    "/asstes/images/unimrkt-reseach-primary-research-banner-img.png",
+    "/asstes/logo/suzki-logo-img.png",
+    "/asstes/logo/cocacola-logo-img.png",
+    "/asstes/logo/hdfc-bank-logo-img.png",
+    "/asstes/logo/amazom-logo-img.png",
+    "/asstes/logo/airtel-logo-img.png",
+    "/asstes/images/unimrkt-research-privacy-policy-banner-img.png",
+    "/asstes/images/case-study-man-img.png",
+    "/asstes/images/services-banner-img.png",
+    "/asstes/images/question-img.png",
+    "/asstes/images/icon/group-cati-interviws-icon-img.png",
+    "/asstes/images/icon/research-markets-icon-img.png",
+    "/asstes/images/icon/interview-capabilities-icon-img.png",
+    "/asstes/images/icon/every-stage-icon-img.png",
+    "/asstes/images/unimrkt-research-telephonic-surveys-banner.png",
+    "/asstes/images/unimrkt-research-voices-img.png",
+    "/asstes/images/jab-about-img.png",
+    "/asstes/images/icon/job-icon-img.png",
+    "/asstes/images/icon/location-icon-img.png",
+    "/asstes/images/icon/briefcase-icon-img.png",
+    "/asstes/images/icon/profile-user-icon-img.png",
+    "/asstes/images/icon/calendar-icon-img.png",
+    "/asstes/images/unimrkt-reseach-work-banner-img.png",
+    "/asstes/images/video-banner.mp4",
+    "/asstes/images/icon/mr-footer-logo.png",
+    "/asstes/images/icon/msri-logo-img.png"
+  ],
+  "forms": [
+    {
+      "file": "app\\blog-details\\sections\\BlogDetailContent.jsx"
+    },
+    {
+      "file": "app\\contact\\sections\\ContactForm.jsx"
+    },
+    {
+      "file": "app\\primary-research\\sections\\ContactFormSection.jsx"
+    },
+    {
+      "file": "app\\work\\sections\\CareerOpenings.jsx"
+    }
+  ],
+  "apiCalls": [
+    {
+      "file": "app\\about\\page.js"
+    },
+    {
+      "file": "app\\automotives\\page.js"
+    },
+    {
+      "file": "app\\blog\\page.js"
+    },
+    {
+      "file": "app\\blog\\sections\\BlogFaq.jsx"
+    },
+    {
+      "file": "app\\blog\\sections\\BlogGrid.jsx"
+    },
+    {
+      "file": "app\\blog-details\\page.js"
+    },
+    {
+      "file": "app\\case-study\\page.js"
+    },
+    {
+      "file": "app\\case-study\\sections\\CaseStudyExplorer.jsx"
+    },
+    {
+      "file": "app\\case-study\\sections\\CaseStudyFaq.jsx"
+    },
+    {
+      "file": "app\\case-study\\sections\\ContactProcess.jsx"
+    },
+    {
+      "file": "app\\case-study-details\\page.js"
+    },
+    {
+      "file": "app\\contact\\page.js"
+    },
+    {
+      "file": "app\\contact\\sections\\ContactFaq.jsx"
+    },
+    {
+      "file": "app\\contact\\sections\\OfficePresence.jsx"
+    },
+    {
+      "file": "app\\faq\\page.js"
+    },
+    {
+      "file": "app\\faq\\sections\\FaqContent.jsx"
+    },
+    {
+      "file": "app\\gallery\\page.js"
+    },
+    {
+      "file": "app\\gallery\\sections\\GalleryGrid.jsx"
+    },
+    {
+      "file": "app\\homesections\\HomeFaq.jsx"
+    },
+    {
+      "file": "app\\homesections\\IndustriesSection.jsx"
+    },
+    {
+      "file": "app\\homesections\\MomentsSection.jsx"
+    },
+    {
+      "file": "app\\industries\\page.js"
+    },
+    {
+      "file": "app\\industries\\sections\\IndustriesGrid.jsx"
+    },
+    {
+      "file": "app\\our-company\\page.js"
+    },
+    {
+      "file": "app\\page.js"
+    },
+    {
+      "file": "app\\primary-research\\page.js"
+    },
+    {
+      "file": "app\\primary-research\\sections\\FqaPrimaryresearch.jsx"
+    },
+    {
+      "file": "app\\primary-research\\sections\\IndustriesArea.jsx"
+    },
+    {
+      "file": "app\\primary-research\\sections\\PrimaryServices.jsx"
+    },
+    {
+      "file": "app\\privacy-policy\\page.js"
+    },
+    {
+      "file": "app\\services\\page.js"
+    },
+    {
+      "file": "app\\services\\sections\\EndToEndSolutions.jsx"
+    },
+    {
+      "file": "app\\services\\sections\\ServicesFaq.jsx"
+    },
+    {
+      "file": "app\\team\\page.js"
+    },
+    {
+      "file": "app\\team\\sections\\TeamDirectory.jsx"
+    },
+    {
+      "file": "app\\telephonic-surveys\\page.js"
+    },
+    {
+      "file": "app\\telephonic-surveys\\sections\\TelephonicFaq.jsx"
+    },
+    {
+      "file": "app\\work\\page.js"
+    },
+    {
+      "file": "app\\work\\sections\\CareerOpenings.jsx"
+    },
+    {
+      "file": "app\\work\\sections\\WorkFaq.jsx"
+    },
+    {
+      "file": "app\\[slug]\\page.jsx"
+    },
+    {
+      "file": "components\\CommonBlogSection.jsx"
+    },
+    {
+      "file": "components\\CommonTrustedPartnersTestimonials.jsx"
+    },
+    {
+      "file": "components\\Footer.jsx"
+    },
+    {
+      "file": "components\\Header.jsx"
+    },
+    {
+      "file": "components\\ServicesIndustriesExpertise.jsx"
+    }
+  ]
+}

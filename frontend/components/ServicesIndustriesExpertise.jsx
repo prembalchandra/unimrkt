@@ -1,75 +1,65 @@
 'use client';
 
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import Swiper from 'swiper';
 import { Autoplay, Pagination } from 'swiper/modules';
+import { getStrapiMedia } from '../lib/strapi';
 
-const industriesData = [
-  {
-    id: 1,
-    title: 'Banking & Finance',
-    image: '/asstes/images/banking-finance-img.png',
-    fallbackImg: '/asstes/images/banking-and-finance-img.png',
-    desc: 'Understand evolving financial markets, customer needs and competitive landscape with research built for banks, fintech, and investment institutions.',
-    link: '/services',
-  },
-  {
-    id: 2,
-    title: 'Healthcare',
-    image: '/asstes/images/Healthcare-img.png',
-    fallbackImg: '/asstes/images/case-study-healthcare.jpg',
-    desc: 'Gain deeper insights into patient needs, healthcare behaviours and evolving market dynamics through compliant clinical and medical research.',
-    link: '/services',
-  },
-  {
-    id: 3,
-    title: 'Consumer & Retail',
-    image: '/asstes/images/consumer-retail-img.png',
-    fallbackImg: '/asstes/images/food-&-beverage-img.png',
-    desc: 'Understand consumer preferences, purchasing behaviour and evolving retail trends with research designed for brands, retailers, and FMCG leaders.',
-    link: '/services',
-  },
-  {
-    id: 4,
-    title: 'Automotive & Mobility',
-    image: '/asstes/images/case-study-automotive.jpg',
-    fallbackImg: '/asstes/images/automotive-aftermarket-img.png',
-    desc: 'Accelerating mobility innovation with deep insights into EV adoption, autonomous tech, connected software cockpits, and global fleet dynamics.',
-    link: '/services',
-  },
-  {
-    id: 5,
-    title: 'Technology & Telecom',
-    image: '/asstes/images/case-study-telecom.jpg',
-    fallbackImg: '/asstes/images/technology-and-telecom-img.png',
-    desc: 'Navigating rapid digital transformation with data-backed market analysis across SaaS, cloud platforms, cybersecurity, and telecommunications.',
-    link: '/services',
-  },
-  {
-    id: 6,
-    title: 'Energy & Sustainability',
-    image: '/asstes/images/case-study-energy.jpg',
-    fallbackImg: '/asstes/images/energy-and-sustainability-img.png',
-    desc: 'Powering clean energy transition strategies through renewable market data, ESG benchmarks, and evolving consumer green habits.',
-    link: '/services',
-  },
-];
+function getIndustryFallbackImage(slug = '') {
+  const s = slug.toLowerCase();
+  if (s.includes('bank') || s.includes('bfsi') || s.includes('financ')) return '/asstes/images/banking-finance-img.png';
+  if (s.includes('health') || s.includes('life')) return '/asstes/images/Healthcare-img.png';
+  if (s.includes('consumer') || s.includes('retail') || s.includes('fmcg')) return '/asstes/images/consumer-retail-img.png';
+  if (s.includes('auto') || s.includes('mobility')) return '/asstes/images/case-study-automotive.jpg';
+  if (s.includes('tech') || s.includes('telecom')) return '/asstes/images/case-study-telecom.jpg';
+  if (s.includes('energy') || s.includes('sustain')) return '/asstes/images/case-study-energy.jpg';
+  return '/asstes/images/banking-finance-img.png';
+}
 
-export default function ServicesIndustriesExpertise() {
+function formatIndustry(item) {
+  if (!item) return null;
+  const slug = item.slug || '';
+  return {
+    id: item.id || item.documentId || slug,
+    title: item.title || '',
+    desc: item.shortDescription || item.description || '',
+    image: getStrapiMedia(item.featuredImage || item.heroImage, getIndustryFallbackImage(slug)),
+    link: `/industries`,
+  };
+}
+
+export default function ServicesIndustriesExpertise({ initialIndustries = [] }) {
   const sliderRef = useRef(null);
   const paginationRef = useRef(null);
   const swiperInstanceRef = useRef(null);
+  const [industries, setIndustries] = useState(() => (initialIndustries || []).map(formatIndustry).filter(Boolean));
 
   useEffect(() => {
-    if (!sliderRef.current) return;
+    if (initialIndustries && initialIndustries.length > 0) {
+      setIndustries(initialIndustries.map(formatIndustry).filter(Boolean));
+    } else {
+      const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL || 'http://127.0.0.1:1337';
+      fetch(`${STRAPI_URL}/api/industries?populate=*&pagination[limit]=12`)
+        .then((r) => r.json())
+        .then((d) => {
+          if (Array.isArray(d?.data)) {
+            setIndustries(d.data.map(formatIndustry).filter(Boolean));
+          }
+        })
+        .catch(() => {});
+    }
+  }, [initialIndustries]);
+
+  useEffect(() => {
+    if (!sliderRef.current || industries.length === 0) return;
 
     swiperInstanceRef.current = new Swiper(sliderRef.current, {
       modules: [Autoplay, Pagination],
       slidesPerView: 1,
       spaceBetween: 20,
       grabCursor: true,
-      loop: true,
+      loop: industries.length > 3,
       speed: 700,
       autoplay: {
         delay: 3000,
@@ -112,13 +102,13 @@ export default function ServicesIndustriesExpertise() {
         swiperInstanceRef.current.destroy(true, true);
       }
     };
-  }, []);
+  }, [industries]);
 
   return (
     <section className="industries-expertise-section" id="industries-expertise">
       <div className="srcn-container">
         <div className="industries-expertise-header section-header-area ">
-          <span className="industries-expertise-kicker  career-values-kicker">INDUSTRIES WE SERVE</span>
+          <span className="industries-expertise-kicker career-values-kicker">INDUSTRIES WE SERVE</span>
           <h2 className="industries-expertise-heading section-main-heading">
             Research Expertise Across Diverse Industries
           </h2>
@@ -130,7 +120,7 @@ export default function ServicesIndustriesExpertise() {
         {/* Carousel Slider */}
         <div className="swiper industries-expertise-swiper" ref={sliderRef}>
           <div className="swiper-wrapper">
-            {industriesData.map((item) => (
+            {industries.map((item) => (
               <div key={item.id} className="swiper-slide industries-expertise-slide">
                 <article className="industry-expertise-card">
                   <div className="industry-card-visual-wrap">
@@ -138,11 +128,6 @@ export default function ServicesIndustriesExpertise() {
                       src={item.image}
                       alt={item.title}
                       loading="lazy"
-                      onError={(e) => {
-                        if (item.fallbackImg && e.currentTarget.src !== item.fallbackImg) {
-                          e.currentTarget.src = item.fallbackImg;
-                        }
-                      }}
                     />
                   </div>
                   <div className="industry-card-body">

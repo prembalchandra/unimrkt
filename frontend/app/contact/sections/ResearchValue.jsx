@@ -1,41 +1,28 @@
 import React from 'react';
 
-const values = [
-  {
+export default function ResearchValue({ dynamicValues = null }) {
+  const values = (dynamicValues?.values || []).map((v) => ({
+    title: v.title || '',
+    desc: v.description || '',
     icon: '/asstes/images/icon/Research-icon-img.png',
-    title: 'Deep Research Expertise',
-    desc: 'Experienced researchers who understand complex business problems and deliver clear, informed answers.',
-  },
-  {
-    icon: '/asstes/images/icon/Research-icon-img.png',
-    title: 'Global Reach',
-    desc: 'Research capable across markets, audiences, and geographies with localized expertise and scalable execution.',
-  },
-  {
-    icon: '/asstes/images/icon/Research-icon-img.png',
-    title: 'Quality-First Approach',
-    desc: 'Rigorous processes designed to ensure reliable data, trusted insights, and consistent reporting standards.',
-  },
-  {
-    icon: '/asstes/images/icon/Research-icon-img.png',
-    title: 'Business-Focused Insights',
-    desc: 'We turn research findings into strategic direction that supports smarter, faster business decisions.',
-  },
-];
+  }));
 
-export default function ResearchValue() {
+  if (values.length === 0) return null;
+
   return (
     <section className="research-value-section">
       <div className="srcn-container">
         <div className="research-value-wrap">
           <div className="research-value-header">
-            <span className="research-value-kicker career-values-kicker">Why work with Unimrkt</span>
+            <span className="research-value-kicker career-values-kicker">
+              {dynamicValues?.kicker || 'Why work with Unimrkt'}
+            </span>
             <h2 className="research-value-title section-main-heading">
-              More Than Research.<br />A Partner For Better Decisions.
+              {dynamicValues?.title || 'More Than Research. A Partner For Better Decisions.'}
             </h2>
             <p className="research-value-subtitle section-sub-text">
-              From defining the research question to delivering actionable insights, our team helps businesses build
-              confidence through accurate data, sharper strategy, and measurable outcomes.
+              {dynamicValues?.subtitle ||
+                'From defining the research question to delivering actionable insights, our team helps businesses build confidence through accurate data, sharper strategy, and measurable outcomes.'}
             </p>
           </div>
 

@@ -8,7 +8,7 @@ import ContactForm from './sections/ContactForm';
 import ContactFaq from './sections/ContactFaq';
 import InsightsEditorial from './sections/InsightsEditorial';
 import ResearchCta from './sections/ResearchCta';
-import { getPageBySlug, findSection } from '../../lib/strapi';
+import { getPageBySlug, findSection, getOfficeLocations } from '../../lib/strapi';
 
 export const metadata = {
   title: 'Contact Us | Global Research Offices in India, USA & UK',
@@ -53,20 +53,36 @@ export const metadata = {
 };
 
 export default async function ContactPage() {
-  const pageData = await getPageBySlug('contact').catch(() => null);
+  const [pageData, offices] = await Promise.all([
+    getPageBySlug('contact').catch(() => null),
+    getOfficeLocations().catch(() => []),
+  ]);
+
+  const sections = Array.isArray(pageData?.sections) ? pageData.sections : [];
 
   const heroSection = findSection(pageData, 'sections.hero-common');
+  const metricsSection = findSection(pageData, 'sections.metrics-grid');
+  const valuesSection = findSection(pageData, 'sections.values-grid');
+  const faqSection = findSection(pageData, 'sections.faq-accordion');
   const ctaSection = findSection(pageData, 'sections.question-cta');
+
+  const processSection = sections.find(
+    (s) => s.__component === 'sections.accordion-solutions'
+  );
 
   return (
     <main>
       <ContactHero dynamicHero={heroSection} />
-      <ResearchImpact />
-      <OfficePresence />
-      <ResearchValue />
-      <ContactProcess />
+      <ResearchImpact dynamicMetrics={metricsSection} />
+      <OfficePresence initialOffices={offices} />
+      <ResearchValue dynamicValues={valuesSection} />
+      <ContactProcess
+        steps={processSection?.cards || []}
+        title={processSection?.heading}
+        description={processSection?.description}
+      />
       <ContactForm />
-      <ContactFaq />
+      <ContactFaq dynamicFaq={faqSection} />
       <InsightsEditorial />
       <ResearchCta dynamicCta={ctaSection} />
     </main>

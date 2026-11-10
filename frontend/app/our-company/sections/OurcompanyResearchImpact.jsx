@@ -1,41 +1,27 @@
 import React from 'react';
 
-const stats = [
-  {
-    icon: '/asstes/images/icon/countries-icon-img.png',
-    number: '90+',
-    label: 'Countries',
-  },
-  {
-    icon: '/asstes/images/icon/every-stage-icon-img.png',
-    number: '22+',
-    label: 'Languages',
-  },
-  {
-    icon: '/asstes/images/icon/phone-icon-img.png',
-    number: '450+',
-    label: 'CATI Stations',
-  },
-  {
-    icon: '/asstes/images/icon/experience-icon-img.png',
-    number: '16+',
-    label: 'Years of Experience',
-  },
+const defaultIcons = [
+  '/asstes/images/icon/countries-icon-img.png',
+  '/asstes/images/icon/every-stage-icon-img.png',
+  '/asstes/images/icon/phone-icon-img.png',
+  '/asstes/images/icon/experience-icon-img.png',
 ];
 
-export default function ResearchImpact() {
+export default function ResearchImpact({ stats = [], heading }) {
+  if (!stats || stats.length === 0) return null;
+
   return (
     <section className="research-impact-section">
       <div className="srcn-container">
         <div className="section-header-area research-impact-header">
-          <h2 className="section-main-heading research-impact-title">Research Without Borders</h2>
+          <h2 className="section-main-heading research-impact-title">{heading || 'Research Without Borders'}</h2>
         </div>
         <div className="research-impact-grid">
           {stats.map((stat, idx) => (
-            <article key={idx} className="research-impact-col">
+            <article key={stat.id || idx} className="research-impact-col">
               <div className="research-impact-card">
                 <div className="research-impact-icon">
-                  <img src={stat.icon} alt={stat.label} />
+                  <img src={stat.icon || stat.iconClass || defaultIcons[idx % defaultIcons.length]} alt={stat.label} />
                 </div>
                 <div className="research-impact-content-area">
                   <h3 className="research-impact-number">{stat.number}</h3>

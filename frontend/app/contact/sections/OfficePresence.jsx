@@ -2,47 +2,61 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 
-const offices = [
-  {
-    id: 'india',
-    name: 'India Office',
-    city: 'Gurugram, India',
-    flag: '🇮🇳',
-    coordinates: [28.4946, 77.088],
-    address: '5th floor, Nirmal Tower, 412-415, Udyog Vihar, Phase IV, Gurugram, Haryana-122015',
-    email: 'sales@unimrkt.com',
-    phones: 'Sales & Business Queries: +91 124 424 5210, +91 9870 377 557',
-    banner: '/asstes/images/contact-map-banner-img.png',
-  },
-  {
-    id: 'usa',
-    name: 'United States of America',
-    city: 'Great Neck, USA',
-    flag: '🇺🇸',
-    coordinates: [40.8007, -73.7285],
-    address: '98 Cuthbert Road Suite 466, Great Neck, NY 11021, USA',
-    email: 'sales@unimrkt.com',
-    phones: '+1 646 712 9302',
-    banner: '/asstes/images/contact-banner-usa.jpg',
-  },
-  {
-    id: 'uk',
-    name: 'United Kingdom',
-    city: 'Oxford, UK',
-    flag: '🇬🇧',
-    coordinates: [51.7632, -1.2065],
-    address: 'The Old Dairy, 12 Stephen Rd, Headington, Oxford, Oxfordshire, United Kingdom OX3 9AY',
-    email: 'sales@unimrkt.com',
-    phones: '+1 646 712 9302',
-    banner: '/asstes/images/contact-banner-uk.jpg',
-  },
-];
+function formatOffice(office) {
+  if (!office) return null;
+  const country = office.country || '';
+  let id = 'india';
+  let flag = '🇮🇳';
+  let banner = '/asstes/images/contact-map-banner-img.png';
+  let city = 'Gurugram, India';
 
-export default function OfficePresence() {
+  if (country.includes('United States') || country.includes('USA')) {
+    id = 'usa';
+    flag = '🇺🇸';
+    banner = '/asstes/images/contact-banner-usa.jpg';
+    city = 'Great Neck, USA';
+  } else if (country.includes('United Kingdom') || country.includes('UK')) {
+    id = 'uk';
+    flag = '🇬🇧';
+    banner = '/asstes/images/contact-banner-uk.jpg';
+    city = 'Oxford, UK';
+  }
+
+  return {
+    id,
+    name: office.officeName || country,
+    city,
+    flag,
+    coordinates: [Number(office.latitude) || 28.4946, Number(office.longitude) || 77.088],
+    address: office.address || '',
+    email: office.email || 'sales@unimrkt.com',
+    phones: office.phoneNumbers || '',
+    banner,
+  };
+}
+
+export default function OfficePresence({ initialOffices = [] }) {
+  const [offices, setOffices] = useState(() => (initialOffices || []).map(formatOffice).filter(Boolean));
   const [activeOffice, setActiveOffice] = useState('india');
   const mapContainerRef = useRef(null);
   const mapInstanceRef = useRef(null);
   const markersRef = useRef({});
+
+  useEffect(() => {
+    if (initialOffices && initialOffices.length > 0) {
+      setOffices(initialOffices.map(formatOffice).filter(Boolean));
+    } else {
+      const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL || 'http://127.0.0.1:1337';
+      fetch(`${STRAPI_URL}/api/office-locations?sort=order:asc`)
+        .then((r) => r.json())
+        .then((d) => {
+          if (Array.isArray(d?.data)) {
+            setOffices(d.data.map(formatOffice).filter(Boolean));
+          }
+        })
+        .catch(() => {});
+    }
+  }, [initialOffices]);
 
   useEffect(() => {
     let isMounted = true;
@@ -50,6 +64,7 @@ export default function OfficePresence() {
     async function initMap() {
       if (!mapContainerRef.current) return;
       if (mapInstanceRef.current) return;
+      if (!offices || offices.length === 0) return;
 
       const L = (await import('leaflet')).default;
 
@@ -86,7 +101,9 @@ export default function OfficePresence() {
         bounds.push(office.coordinates);
       });
 
-      map.fitBounds(bounds, { padding: [32, 32], maxZoom: 4 });
+      if (bounds.length > 0) {
+        map.fitBounds(bounds, { padding: [32, 32], maxZoom: 4 });
+      }
     }
 
     initMap();
@@ -98,7 +115,7 @@ export default function OfficePresence() {
         mapInstanceRef.current = null;
       }
     };
-  }, []);
+  }, [offices]);
 
   const handleSelectOffice = (office) => {
     setActiveOffice(office.id);

@@ -51,19 +51,20 @@ export const metadata = {
 
 export default async function BlogPage() {
   const [strapiBlogs, pageData] = await Promise.all([
-    getBlogPosts(20).catch(() => []),
+    getBlogPosts(30).catch(() => []),
     getPageBySlug('blog').catch(() => null),
   ]);
 
   const heroSection = findSection(pageData, 'sections.hero-common');
+  const faqSection = findSection(pageData, 'sections.faq-accordion');
   const ctaSection = findSection(pageData, 'sections.question-cta');
 
   return (
     <main>
       <BlogHero dynamicHero={heroSection} />
       <BlogGrid initialBlogs={strapiBlogs} />
-      <CommonBlogSection />
-      <BlogFaq />
+      <CommonBlogSection initialBlogs={strapiBlogs} />
+      <BlogFaq dynamicFaq={faqSection} />
       <InsightsEditorial />
       <ResearchCta dynamicCta={ctaSection} />
     </main>

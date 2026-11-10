@@ -1,37 +1,26 @@
- 'use client';
+'use client';
 
-import React, { useState } from 'react';
-
-const homeFaqs = [
-  {
-    question: 'What market research services does Unimrkt offer?',
-    answer:
-      'Unimrkt Research offers end-to-end market research solutions, including primary research (CATI, CAWI, and face-to-face surveys), qualitative research, secondary research, global panel recruitment, data collection, and custom data analytics to help businesses make informed decisions.',
-  },
-  {
-    question: 'What industries does Unimrkt serve?',
-    answer:
-      'Unimrkt serves a wide range of industries, including healthcare and pharmaceuticals, banking and financial services, information technology, consumer goods, automotive, retail, media, telecommunications, and B2B sectors. Our research solutions are customized to meet each industry’s unique requirements.',
-  },
-  {
-    question: 'What is Unimrkt’s global research reach?',
-    answer:
-      'Unimrkt Research supports international market research projects across 90+ countries, covering North America, Europe, Asia-Pacific, Latin America, and the Middle East and Africa. Our global network helps businesses understand local markets and diverse audiences.',
-  },
-  {
-    question: 'How does Unimrkt ensure data quality and reliability?',
-    answer:
-      'Unimrkt follows a rigorous quality assurance process that includes respondent validation, duplicate response detection, data consistency checks, survey monitoring, and manual quality reviews to help deliver accurate, reliable, and actionable research insights.',
-  },
-  {
-    question: 'Why choose Unimrkt as your research partner?',
-    answer:
-      'Unimrkt combines global research capabilities, experienced research professionals, flexible methodologies, and a strong focus on data quality. We deliver customized research solutions and actionable insights to help businesses reduce uncertainty and make confident strategic decisions.',
-  },
-];
+import React, { useState, useEffect } from 'react';
 
 export default function HomeFaq({ dynamicFaq = null }) {
+  const [faqs, setFaqs] = useState(() => dynamicFaq?.items || []);
   const [openIndex, setOpenIndex] = useState(null);
+
+  useEffect(() => {
+    if (dynamicFaq?.items && dynamicFaq.items.length > 0) {
+      setFaqs(dynamicFaq.items);
+    } else {
+      const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL || 'http://127.0.0.1:1337';
+      fetch(`${STRAPI_URL}/api/faqs?pageSlug=home&pagination[limit]=5`)
+        .then((r) => r.json())
+        .then((d) => {
+          if (Array.isArray(d?.data) && d.data.length > 0) {
+            setFaqs(d.data);
+          }
+        })
+        .catch(() => {});
+    }
+  }, [dynamicFaq]);
 
   const toggleFaq = (index) => {
     setOpenIndex((currentIndex) =>
@@ -39,14 +28,12 @@ export default function HomeFaq({ dynamicFaq = null }) {
     );
   };
 
-  const activeFaqs =
-    dynamicFaq && Array.isArray(dynamicFaq.items) && dynamicFaq.items.length > 0
-      ? dynamicFaq.items
-      : homeFaqs;
-  const heading = dynamicFaq?.heading || 'Frequently Asked Questions';
+  if (faqs.length === 0) return null;
+
+  const heading = dynamicFaq?.heading || dynamicFaq?.title || 'Frequently Asked Questions';
 
   return (
-   <section className="faq-section-area">
+    <section className="faq-section-area">
       <div className="worldmap-bg">
         <img src="/asstes/images/unimrkt-resarch-map-banner-img.png" alt="fqa banner" />
       </div>
@@ -56,7 +43,7 @@ export default function HomeFaq({ dynamicFaq = null }) {
         </div>
 
         <div className="faq-accordion-container">
-          {activeFaqs.map((faq, index) => {
+          {faqs.map((faq, index) => {
             const isOpen = openIndex === index;
             return (
               <div
@@ -69,20 +56,15 @@ export default function HomeFaq({ dynamicFaq = null }) {
                   style={{ cursor: 'pointer' }}
                 >
                   <span className="faq-question-text">{faq.question}</span>
-                  <span className="faq-icon-indicator" aria-hidden="true">
+                  <span className={`faq-icon-indicator ${isOpen ? 'active' : ''}`}>
                     {isOpen ? '−' : '+'}
                   </span>
                 </div>
-                <div
-                  className="faq-accordion-body"
-                  style={{
-                    display: isOpen ? 'block' : 'none',
-                    maxHeight: isOpen ? '500px' : '0',
-                    transition: 'all 0.3s ease',
-                  }}
-                >
-                  <div className="faq-accordion-content">{faq.answer}</div>
-                </div>
+                {isOpen && (
+                  <div className="faq-accordion-body">
+                    <p className="faq-accordion-answer">{faq.answer}</p>
+                  </div>
+                )}
               </div>
             );
           })}

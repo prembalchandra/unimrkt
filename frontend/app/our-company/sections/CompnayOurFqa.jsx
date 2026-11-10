@@ -2,45 +2,19 @@
 
 import React, { useState } from 'react';
 
-const blogFaqs = [
-  {
-    question: 'What is Unimrkt Research?',
-    answer:
-      'Unimrkt Research is a global market research firm providing end-to-end qualitative and quantitative research solutions, custom data analytics, and multi-country operational support across B2B, consumer, and healthcare sectors.',
-  },
-  {
-    question: 'In how many countries does Unimrkt conduct research?',
-    answer:
-      'We operate across 90+ countries covering North America, Europe, APAC, Latin America, and the Middle East & Africa (MEA) with localized market expertise.',
-  },
-  {
-    question: 'What languages does Unimrkt support?',
-    answer:
-      'Our team supports survey programming, CATI execution, and data reporting in over 40+ global and regional languages through native-speaking researchers.',
-  },
-  {
-    question: 'What quality and security standards does Unimrkt follow?',
-    answer:
-      'We comply strictly with ISO 20252 market research quality standards and GDPR protocols, implementing digital fingerprinting, IP verification, and multi-tier manual quality checks.',
-  },
-  {
-    question: 'What industries does Unimrkt serve?',
-    answer:
-      'We cater to a broad spectrum of industries, including Healthcare & Pharmaceuticals, Technology & Telecom, Financial Services, FMCG/Retail, Automotive, and Industrial B2B domains.',
-  },
-];
-
-export default function CompnayOurFqa() {
+export default function CompnayOurFqa({ faqs = [] }) {
   const [openIndex, setOpenIndex] = useState(null);
 
   const toggleAccordion = (index) => {
     setOpenIndex(openIndex === index ? null : index);
   };
 
+  if (!faqs || faqs.length === 0) return null;
+
   return (
     <section className="faq-section-area">
       <div className="worldmap-bg">
-        <img src="/asstes/images/unimrkt-resarch-map-banner-img.png" alt="fqa banner" />
+        <img src="/asstes/images/unimrkt-resarch-map-banner-img.png" alt="faq banner" />
       </div>
       <div className="srcn-container">
         <div className="section-header-area">
@@ -48,11 +22,11 @@ export default function CompnayOurFqa() {
         </div>
 
         <div className="faq-accordion-container">
-          {blogFaqs.map((faq, index) => {
+          {faqs.map((faq, index) => {
             const isOpen = openIndex === index;
             return (
               <div
-                key={index}
+                key={faq.id || index}
                 className={`faq-accordion-item ${isOpen ? 'active' : ''}`}
               >
                 <div

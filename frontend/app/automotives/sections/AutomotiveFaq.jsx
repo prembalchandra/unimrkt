@@ -2,55 +2,19 @@
 
 import React, { useState } from 'react';
 
-const blogFaqs = [
-  {
-    question: 'What industry sectors does Unimrkt Research cover?',
-    answer:
-      'We conduct quantitative and qualitative research across 10+ major global sectors, including Automotive & Mobility, Healthcare & Life Sciences, BFSI & Fintech, Retail & E-commerce, Technology & SaaS, Consumer Goods (FMCG), Energy & Utilities, Telecommunications, and Media & Entertainment across 90+ countries.',
-  },
-  {
-    question:
-      'How do you recruit senior decision-makers and specialized respondents?',
-    answer:
-      'We leverage verified proprietary B2B panels, telephone outreach (CATI), and multi-channel screening. Every executive, physician, or technical buyer is thoroughly screened, vetted, and identity-verified to ensure authentic, qualified domain perspectives.',
-  },
-  {
-    question:
-      'Can you tailor research methodologies for regulated industries?',
-    answer:
-      'Yes. Our questionnaires, fieldwork workflows, and data handling protocols are custom-designed to comply with stringent industry standards, including HIPAA and adverse event reporting for Healthcare, and GDPR/CCPA for financial and consumer data privacy.',
-  },
-  {
-    question: 'How do you ensure high data quality and eliminate fraud?',
-    answer:
-      'We implement a multi-stage validation engine including digital fingerprinting, IP deduplication, speeder/straight-liner detection, audio audit verifications, and consistency scoring to deliver pristine, audit-ready data sets.',
-  },
-  {
-    question:
-      'In how many countries and languages can research be executed?',
-    answer:
-      'We conduct fieldwork across 90+ countries across the Americas, Europe, APAC, Middle East, and Africa, supporting over 25+ local languages with native-speaking interviewers and localized survey instruments.',
-  },
-  {
-    question:
-      'What deliverables and data formats do you provide upon project completion?',
-    answer:
-      'We deliver clean data sets (SPSS, Excel, CSV), cross-tabulations, visual PowerPoint/PDF executive reports, interactive dashboard visualizations, and strategic insight summaries tailored for board and C-suite presentations.',
-  },
-
-];
-
-export default function AutomotiveFaq() {
+export default function AutomotiveFaq({ faqs = [] }) {
   const [openIndex, setOpenIndex] = useState(null);
 
   const toggleAccordion = (index) => {
     setOpenIndex(openIndex === index ? null : index);
   };
 
+  if (!faqs || faqs.length === 0) return null;
+
   return (
     <section className="faq-section-area">
       <div className="worldmap-bg">
-        <img src="/asstes/images/unimrkt-resarch-map-banner-img.png" alt="fqa banner" />
+        <img src="/asstes/images/unimrkt-resarch-map-banner-img.png" alt="faq banner" />
       </div>
       <div className="srcn-container">
         <div className="section-header-area">
@@ -58,11 +22,11 @@ export default function AutomotiveFaq() {
         </div>
 
         <div className="faq-accordion-container">
-          {blogFaqs.map((faq, index) => {
+          {faqs.map((faq, index) => {
             const isOpen = openIndex === index;
             return (
               <div
-                key={index}
+                key={faq.id || index}
                 className={`faq-accordion-item ${isOpen ? 'active' : ''}`}
               >
                 <div

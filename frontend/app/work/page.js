@@ -7,7 +7,7 @@ import CareerJoin from './sections/CareerJoin';
 import WorkFaq from './sections/WorkFaq';
 import InsightsEditorial from './sections/InsightsEditorial';
 import ResearchCta from './sections/ResearchCta';
-import { getPageBySlug, findSection } from '../../lib/strapi';
+import { getPageBySlug, findSections, getCareerJobs } from '../../lib/strapi';
 
 export const metadata = {
   title: 'Careers & Job Openings in Market Research | Unimrkt Research',
@@ -52,21 +52,29 @@ export const metadata = {
 };
 
 export default async function WorkPage() {
-  const pageData = await getPageBySlug('work').catch(() => null);
+  const [pageData, careerJobs] = await Promise.all([
+    getPageBySlug('work').catch(() => null),
+    getCareerJobs().catch(() => []),
+  ]);
 
-  const heroSection = findSection(pageData, 'sections.hero-common');
-  const valuesSection = findSection(pageData, 'sections.values-grid');
-  const ctaSection = findSection(pageData, 'sections.question-cta');
+  const sections = pageData?.sections || [];
+  const heroSection = sections.find((s) => s.__component === 'sections.hero-common');
+  const valuesGrids = findSections(pageData, 'sections.values-grid');
+  const valuesSection = valuesGrids[0] || null;
+  const benefitsSection = valuesGrids[1] || null;
+  const journeySection = valuesGrids[2] || null;
+  const faqSection = sections.find((s) => s.__component === 'sections.faq-accordion');
+  const ctaSection = sections.find((s) => s.__component === 'sections.question-cta');
 
   return (
     <>
       <WorkHero dynamicHero={heroSection} />
       <CareerValues dynamicValues={valuesSection} />
-      <CareerBenefits />
-      <CareerOpenings />
-      <CareerJourney />
+      <CareerBenefits dynamicBenefits={benefitsSection} />
+      <CareerOpenings initialJobs={careerJobs} />
+      <CareerJourney dynamicJourney={journeySection} />
       <CareerJoin />
-      <WorkFaq />
+      <WorkFaq dynamicFaq={faqSection} />
       <InsightsEditorial />
       <ResearchCta dynamicCta={ctaSection} />
     </>

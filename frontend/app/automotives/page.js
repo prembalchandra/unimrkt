@@ -13,7 +13,7 @@ import AutomotiveEmpowerCta from './sections/AutomotiveEmpowerCta';
 import AutomotiveOverview from './sections/AutomotiveOverview';
 import AutomotiveEditorialabout from './sections/AutomotiveEditorialabout';
 import ResearchCta from './sections/ResearchCta';
-import { getPageBySlug, findSection } from '../../lib/strapi';
+import { getPageBySlug, findSection, getFaqs, getCaseStudies } from '../../lib/strapi';
 
 export const metadata = {
   title: 'Automotive & Smart Mobility Market Research | EV & Fleet Insights',
@@ -58,25 +58,81 @@ export const metadata = {
 };
 
 export default async function AutomotivesPage() {
-  const pageData = await getPageBySlug('automotives').catch(() => null);
+  const [pageData, faqs, allStudies] = await Promise.all([
+    getPageBySlug('automotives').catch(() => null),
+    getFaqs().catch(() => []),
+    getCaseStudies(10).catch(() => []),
+  ]);
+
+  const sections = Array.isArray(pageData?.sections) ? pageData.sections : [];
 
   const heroSection = findSection(pageData, 'sections.hero-common');
   const ctaSection = findSection(pageData, 'sections.question-cta');
+
+  const intelSection = sections.find(
+    (s) => s.__component === 'sections.research-reach' && s.heading?.includes('Intelligence')
+  );
+  const challengesSection = sections.find(
+    (s) => s.__component === 'sections.accordion-solutions'
+  );
+  const ecosystemSection = sections.find(
+    (s) => s.__component === 'sections.industry-slider'
+  );
+  const segmentsSection = sections.find(
+    (s) => s.__component === 'sections.values-grid' && (s.heading?.includes('Segment') || s.kicker?.includes('WHO WE SERVE'))
+  );
+  const methodsSection = sections.find(
+    (s) => s.__component === 'sections.research-reach' && s.heading?.includes('Methodologies')
+  );
+  const faqSection = sections.find(
+    (s) => s.__component === 'sections.faq-accordion'
+  );
+
+  // Filter or take automotive case studies
+  const automotiveStudies = allStudies.filter(
+    (s) => s.industry?.slug === 'automotives' || s.title?.toLowerCase().includes('vehicle') || s.title?.toLowerCase().includes('fleet')
+  );
+  const displayStudies = automotiveStudies.length > 0 ? automotiveStudies.slice(0, 2) : allStudies.slice(0, 2);
+
+  // FAQs
+  const displayFaqs = (faqSection?.items && faqSection.items.length > 0) ? faqSection.items : faqs.slice(0, 6);
 
   return (
     <>
       <AutomotiveHero dynamicHero={heroSection} />
       <AutomotiveAboutOverview />
-      <AutomotiveIntelligenceCards />
-      <AutomotiveEcosystemSlider />
-      <AutomotiveChallengesDark />
-      <AutomotiveSegmentsSlider />
-      <AutomotiveMethodologiesSlider />
+      <AutomotiveIntelligenceCards
+        cards={intelSection?.cards || []}
+        heading={intelSection?.heading}
+        kicker={intelSection?.kicker}
+      />
+      <AutomotiveEcosystemSlider
+        slides={ecosystemSection?.slides || []}
+        heading={ecosystemSection?.heading}
+        kicker={ecosystemSection?.kicker}
+      />
+      <AutomotiveChallengesDark
+        challenges={challengesSection?.cards || []}
+        heading={challengesSection?.heading}
+        kicker={challengesSection?.kicker}
+        description={challengesSection?.description}
+      />
+      <AutomotiveSegmentsSlider
+        segments={segmentsSection?.values || []}
+        heading={segmentsSection?.heading}
+        kicker={segmentsSection?.kicker}
+      />
+      <AutomotiveMethodologiesSlider
+        methodologies={methodsSection?.cards || []}
+        heading={methodsSection?.heading}
+        kicker={methodsSection?.kicker}
+        description={methodsSection?.description}
+      />
       <AutomotiveEmpowerCta />
       <ContactFormSection />
       <CommonBlogSection />
-      <AutomotiveFaq />
-      <AutomotiveOverview />
+      <AutomotiveFaq faqs={displayFaqs} />
+      <AutomotiveOverview caseStudies={displayStudies} />
       <AutomotiveEditorialabout />
       <ResearchCta dynamicCta={ctaSection} />
     </>

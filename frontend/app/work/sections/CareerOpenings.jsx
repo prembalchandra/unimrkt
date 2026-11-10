@@ -2,240 +2,138 @@
 
 import React, { useState, useMemo, useEffect } from 'react';
 
-const jobCardsData = [
-  {
-    id: 1,
-    title: 'Executive - Language & Communication',
-    department: 'communication',
-    type: 'full time',
-    location: 'gurugram',
-    locationLabel: 'Gurugram, India',
-    typeLabel: 'Full Time',
-    deptLabel: 'India Research',
-    dateLabel: '12 Aug 2026',
-    metaText: 'Gurugram, India · Full Time · India Research · 12 Aug 2026',
-    description: (
-      <>
-        <h4>Job Description</h4>
-        <p>Support language and communication quality across research projects, coordinate with internal teams, and help ensure clear, accurate participant interactions.</p>
-        <ul>
-          <li>Monitor and record operational calls and language assessments.</li>
-          <li>Identify opportunities to improve accent, pronunciation, grammar, telephonic etiquette, and voice modulation.</li>
-          <li>Provide constructive feedback and practical coaching to research associates.</li>
-          <li>Evaluate communication quality and share regular progress reports.</li>
-        </ul>
-        <h4>Skills Required</h4>
-        <ul>
-          <li>Excellent spoken English and strong written communication.</li>
-          <li>Ability to identify language and pronunciation issues.</li>
-          <li>Strong interpersonal skills and attention to detail.</li>
-        </ul>
-        <h4>Qualifications and Experience</h4>
-        <ul>
-          <li>Graduate in English, communications, linguistics, or a related field preferred.</li>
-          <li>Prior experience in communication training or quality assurance is an advantage.</li>
-        </ul>
-      </>
-    ),
-  },
-  {
-    id: 2,
-    title: 'Associate - Primary Research',
-    department: 'primary research',
-    type: 'full time',
-    location: 'gurugram',
-    locationLabel: 'Gurugram, India',
-    typeLabel: 'Full Time',
-    deptLabel: 'India Research',
-    dateLabel: '12 Aug 2026',
-    metaText: 'Gurugram, India · Full Time · India Research · 12 Aug 2026',
-    description: (
-      <>
-        <h4>Job Description</h4>
-        <p>Execute B2B and B2C primary research projects across global markets, focusing on questionnaire execution, in-depth interviews, survey data validation, and respondent quality control.</p>
-        <h4>Key Responsibilities</h4>
-        <ul>
-          <li>Conduct telephonic and in-depth qualitative and quantitative interviews with industry professionals.</li>
-          <li>Coordinate field work with project managers and ensure quota targets are achieved within deadlines.</li>
-          <li>Perform preliminary data cleaning, screening validation, and quota tracking.</li>
-          <li>Prepare daily field progression reports and flag incidence or sample anomalies.</li>
-        </ul>
-        <h4>Skills Required</h4>
-        <ul>
-          <li>Excellent oral and written communication skills in English.</li>
-          <li>Familiarity with research methodologies, CATI tools, and survey administration.</li>
-          <li>High analytical capability and strong attention to detail.</li>
-        </ul>
-        <h4>Qualifications and Experience</h4>
-        <ul>
-          <li>Bachelor's or Master's degree in Business, Economics, Statistics, or related discipline.</li>
-          <li>1-3 years of proven experience in primary market research operations.</li>
-        </ul>
-      </>
-    ),
-  },
-  {
-    id: 3,
-    title: 'Associate - Secondary Research',
-    department: 'secondary research',
-    type: 'full time',
-    location: 'gurugram',
-    locationLabel: 'Gurugram, India',
-    typeLabel: 'Full Time',
-    deptLabel: 'India Research',
-    dateLabel: '12 Aug 2026',
-    metaText: 'Gurugram, India · Full Time · India Research · 12 Aug 2026',
-    description: (
-      <>
-        <h4>Job Description</h4>
-        <p>Conduct deep secondary research and market intelligence synthesis using syndicated commercial databases, corporate financial filings, trade journals, and regulatory publications.</p>
-        <h4>Key Responsibilities</h4>
-        <ul>
-          <li>Gather and synthesize market size, share, growth driver, and competitor data across global industries.</li>
-          <li>Build structured market models, value-chain assessments, and company profiling dossiers.</li>
-          <li>Validate and triangulate secondary data points to maintain highest research accuracy.</li>
-          <li>Collaborate with primary research analysts to deliver cohesive client insight reports.</li>
-        </ul>
-        <h4>Skills Required</h4>
-        <ul>
-          <li>Strong proficiency in Excel, data modeling, and advanced secondary search operators.</li>
-          <li>Excellent analytical thinking and business report writing skills.</li>
-          <li>Ability to synthesize complex datasets into concise executive summaries.</li>
-        </ul>
-        <h4>Qualifications and Experience</h4>
-        <ul>
-          <li>Degree in Management, Finance, Economics, or Research.</li>
-          <li>1-3 years of experience in business research or competitive intelligence.</li>
-        </ul>
-      </>
-    ),
-  },
-  {
-    id: 4,
-    title: 'Assistant Manager - India Sales',
-    department: 'sales',
-    type: 'full time',
-    location: 'gurugram',
-    locationLabel: 'Gurugram, India',
-    typeLabel: 'Full Time',
-    deptLabel: 'India Research',
-    dateLabel: '12 Aug 2026',
-    metaText: 'Gurugram, India · Full Time · India Research · 12 Aug 2026',
-    description: (
-      <>
-        <h4>Job Description</h4>
-        <p>Drive new business acquisition and client engagement for Unimrkt Research's full-service portfolio across corporate enterprises, consulting firms, and agencies in India.</p>
-        <h4>Key Responsibilities</h4>
-        <ul>
-          <li>Identify and pitch prospective client accounts requiring market research, CATI, and panel data collection.</li>
-          <li>Formulate tailored commercial proposals, RFPs, and study pricing structures with delivery directors.</li>
-          <li>Foster long-term executive relationships and oversee key account management.</li>
-          <li>Achieve quarterly revenue milestones and expand customer lifetime value.</li>
-        </ul>
-        <h4>Skills Required</h4>
-        <ul>
-          <li>Demonstrated B2B solution selling track record within the research or professional services domain.</li>
-          <li>Stellar presentation, negotiation, and consultative selling abilities.</li>
-          <li>Strong commercial acumen and market understanding.</li>
-        </ul>
-        <h4>Qualifications and Experience</h4>
-        <ul>
-          <li>MBA or equivalent postgraduate qualification in Marketing or Business.</li>
-          <li>3-5 years of successful B2B corporate sales experience.</li>
-        </ul>
-      </>
-    ),
-  },
-  {
-    id: 5,
-    title: 'Research Operations Coordinator',
-    department: 'operations',
-    type: 'contract',
-    location: 'delhi',
-    locationLabel: 'Delhi, India',
-    typeLabel: 'Contract',
-    deptLabel: 'India Research',
-    dateLabel: '12 Aug 2026',
-    metaText: 'Delhi, India · Contract · India Research · 12 Aug 2026',
-    description: (
-      <>
-        <h4>Job Description</h4>
-        <p>Manage the logistical pipeline, field resource scheduling, and vendor coordination across multi-country research studies.</p>
-        <h4>Key Responsibilities</h4>
-        <ul>
-          <li>Coordinate daily shift allocations for over 450+ multilingual CATI interviewers.</li>
-          <li>Monitor real-time quota compliance, telephone dialer throughput, and interviewer efficiency metrics.</li>
-          <li>Facilitate cross-departmental communication between sales, sample providers, and research directors.</li>
-          <li>Track project milestones and flag delivery bottlenecks proactively.</li>
-        </ul>
-        <h4>Skills Required</h4>
-        <ul>
-          <li>Strong operational problem-solving and multi-tasking skills.</li>
-          <li>Familiarity with call center or market research operations software.</li>
-          <li>Effective coordination and interpersonal communication skills.</li>
-        </ul>
-        <h4>Qualifications and Experience</h4>
-        <ul>
-          <li>Bachelor's degree in any discipline.</li>
-          <li>1-3 years in operations coordination or project support.</li>
-        </ul>
-      </>
-    ),
-  },
-  {
-    id: 6,
-    title: 'Research Analyst - Market Insights',
-    department: 'primary research',
-    type: 'part time',
-    location: 'remote',
-    locationLabel: 'Remote',
-    typeLabel: 'Part Time',
-    deptLabel: 'India Research',
-    dateLabel: '12 Aug 2026',
-    metaText: 'Remote · Part Time · India Research · 12 Aug 2026',
-    description: (
-      <>
-        <h4>Job Description</h4>
-        <p>Transform complex quantitative survey datasets and qualitative verbatims into actionable strategic insights and visual presentations.</p>
-        <h4>Key Responsibilities</h4>
-        <ul>
-          <li>Analyze raw data tables, cross-tabs, and statistical distributions.</li>
-          <li>Draft executive summary decks, key takeaway narratives, and strategic recommendations for clients.</li>
-          <li>Work with interactive BI dashboard platforms and data visualization instruments.</li>
-          <li>Verify analytical rigor and statistical significance across project outputs.</li>
-        </ul>
-        <h4>Skills Required</h4>
-        <ul>
-          <li>Strong command over SPSS, Excel, PowerPoint, and statistical analysis techniques.</li>
-          <li>Proven storytelling capability translating numbers into business impact.</li>
-          <li>Familiarity with market research cross-tabulation tools.</li>
-        </ul>
-        <h4>Qualifications and Experience</h4>
-        <ul>
-          <li>Degree in Statistics, Data Science, Marketing, or Economics.</li>
-          <li>2-4 years of experience in insight analytics.</li>
-        </ul>
-      </>
-    ),
-  },
-];
+function formatJob(job, idx) {
+  if (!job) return null;
+  const deptLabel = job.department || 'Operations';
+  const typeLabel = job.job_type || job.jobType || 'Full Time';
+  const locationLabel = job.location || 'Gurugram, India';
+  const dateLabel = job.posted_date || job.postedDate
+    ? new Date(job.posted_date || job.postedDate).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })
+    : 'Recent';
 
-export default function CareerOpenings() {
+  let descContent = null;
+  if (typeof job.description === 'string' && job.description.length > 0) {
+    descContent = <p>{job.description}</p>;
+  } else if (Array.isArray(job.description) && job.description.length > 0) {
+    descContent = (
+      <div>
+        {job.description.map((block, i) => (
+          <p key={i}>{(block.children || []).map((c) => c.text).join('')}</p>
+        ))}
+      </div>
+    );
+  } else {
+    descContent = (
+      <>
+        <h4>Job Description</h4>
+        <p>Support research execution, quality audits, data processing, and client engagement workflows across multi-country studies.</p>
+        <h4>Key Responsibilities</h4>
+        <ul>
+          <li>Execute quantitative and qualitative research methodologies within designated timelines.</li>
+          <li>Ensure high accuracy and strict adherence to ISO 20252 and global compliance standards.</li>
+          <li>Coordinate cross-functional tasks with project managers and field teams.</li>
+        </ul>
+        <h4>Qualifications</h4>
+        <ul>
+          <li>Bachelor's or Master's degree in a relevant discipline.</li>
+          <li>Strong analytical, communication, and problem-solving skills.</li>
+        </ul>
+      </>
+    );
+  }
+
+  return {
+    id: job.id || job.documentId || idx + 1,
+    title: job.title || '',
+    department: deptLabel.toLowerCase(),
+    deptLabel,
+    type: typeLabel.toLowerCase(),
+    typeLabel,
+    location: locationLabel.toLowerCase(),
+    locationLabel,
+    dateLabel,
+    metaText: `${locationLabel} · ${typeLabel} · ${deptLabel} · ${dateLabel}`,
+    description: descContent,
+  };
+}
+
+export default function CareerOpenings({ initialJobs = [] }) {
+  const [jobs, setJobs] = useState(() => (initialJobs || []).map(formatJob).filter(Boolean));
   const [searchQuery, setSearchQuery] = useState('');
   const [department, setDepartment] = useState('');
   const [jobType, setJobType] = useState('');
   const [location, setLocation] = useState('');
   const [visibleCount, setVisibleCount] = useState(4);
 
-  // Modal states
   const [selectedJob, setSelectedJob] = useState(null);
   const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
   const [isApplyModalOpen, setIsApplyModalOpen] = useState(false);
   const [applyStatus, setApplyStatus] = useState('');
 
-  // Close modals on Escape key and lock body scroll
+  const [formName, setFormName] = useState('');
+  const [formEmail, setFormEmail] = useState('');
+  const [formPhone, setFormPhone] = useState('');
+  const [formExperience, setFormExperience] = useState('');
+  const [formLocation, setFormLocation] = useState('');
+  const [formMessage, setFormMessage] = useState('');
+
   useEffect(() => {
-    if (!isDetailsModalOpen && !isApplyModalOpen) return;
+    if (initialJobs && initialJobs.length > 0) {
+      setJobs(initialJobs.map(formatJob).filter(Boolean));
+    } else {
+      const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL || 'http://127.0.0.1:1337';
+      fetch(`${STRAPI_URL}/api/career-jobs?pagination[limit]=20`)
+        .then((r) => r.json())
+        .then((d) => {
+          if (Array.isArray(d?.data)) {
+            setJobs(d.data.map(formatJob).filter(Boolean));
+          }
+        })
+        .catch(() => {});
+    }
+  }, [initialJobs]);
+
+  const departmentOptions = useMemo(() => {
+    const set = new Set();
+    jobs.forEach((j) => set.add(j.deptLabel));
+    return Array.from(set);
+  }, [jobs]);
+
+  const jobTypeOptions = useMemo(() => {
+    const set = new Set();
+    jobs.forEach((j) => set.add(j.typeLabel));
+    return Array.from(set);
+  }, [jobs]);
+
+  const locationOptions = useMemo(() => {
+    const set = new Set();
+    jobs.forEach((j) => set.add(j.locationLabel));
+    return Array.from(set);
+  }, [jobs]);
+
+  const filteredJobs = useMemo(() => {
+    return jobs.filter((job) => {
+      const q = searchQuery.toLowerCase().trim();
+      const matchSearch =
+        !q ||
+        job.title.toLowerCase().includes(q) ||
+        job.department.toLowerCase().includes(q) ||
+        job.location.toLowerCase().includes(q);
+      const matchDept = !department || job.deptLabel === department;
+      const matchType = !jobType || job.typeLabel === jobType;
+      const matchLoc = !location || job.locationLabel === location;
+      return matchSearch && matchDept && matchType && matchLoc;
+    });
+  }, [jobs, searchQuery, department, jobType, location]);
+
+  const visibleJobs = filteredJobs.slice(0, visibleCount);
+
+  useEffect(() => {
+    if (isDetailsModalOpen || isApplyModalOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
 
     const handleKeyDown = (e) => {
       if (e.key === 'Escape') {
@@ -244,7 +142,6 @@ export default function CareerOpenings() {
       }
     };
 
-    document.body.style.overflow = 'hidden';
     window.addEventListener('keydown', handleKeyDown);
 
     return () => {
@@ -252,31 +149,6 @@ export default function CareerOpenings() {
       window.removeEventListener('keydown', handleKeyDown);
     };
   }, [isDetailsModalOpen, isApplyModalOpen]);
-
-  // Form states
-  const [formName, setFormName] = useState('');
-  const [formEmail, setFormEmail] = useState('');
-  const [formPhone, setFormPhone] = useState('');
-  const [formExperience, setFormExperience] = useState('');
-  const [formLocation, setFormLocation] = useState('');
-  const [formMessage, setFormMessage] = useState('');
-
-  const filteredJobs = useMemo(() => {
-    return jobCardsData.filter((job) => {
-      const q = searchQuery.toLowerCase().trim();
-      const matchSearch =
-        !q ||
-        job.title.toLowerCase().includes(q) ||
-        job.department.toLowerCase().includes(q) ||
-        job.location.toLowerCase().includes(q);
-      const matchDept = !department || job.department === department;
-      const matchType = !jobType || job.type === jobType;
-      const matchLoc = !location || job.location === location;
-      return matchSearch && matchDept && matchType && matchLoc;
-    });
-  }, [searchQuery, department, jobType, location]);
-
-  const visibleJobs = filteredJobs.slice(0, visibleCount);
 
   const handleOpenDetails = (job) => {
     setSelectedJob(job);
@@ -355,11 +227,11 @@ export default function CareerOpenings() {
               }}
             >
               <option value="">All Departments</option>
-              <option value="communication">Communication</option>
-              <option value="primary research">Primary Research</option>
-              <option value="secondary research">Secondary Research</option>
-              <option value="sales">Sales</option>
-              <option value="operations">Operations</option>
+              {departmentOptions.map((d) => (
+                <option key={d} value={d}>
+                  {d}
+                </option>
+              ))}
             </select>
           </label>
           <label className="career-job-filter">
@@ -374,9 +246,11 @@ export default function CareerOpenings() {
               }}
             >
               <option value="">All Types</option>
-              <option value="full time">Full Time</option>
-              <option value="part time">Part Time</option>
-              <option value="contract">Contract</option>
+              {jobTypeOptions.map((t) => (
+                <option key={t} value={t}>
+                  {t}
+                </option>
+              ))}
             </select>
           </label>
           <label className="career-job-filter">
@@ -391,9 +265,11 @@ export default function CareerOpenings() {
               }}
             >
               <option value="">All Locations</option>
-              <option value="gurugram">Gurugram, India</option>
-              <option value="delhi">Delhi, India</option>
-              <option value="remote">Remote</option>
+              {locationOptions.map((l) => (
+                <option key={l} value={l}>
+                  {l}
+                </option>
+              ))}
             </select>
           </label>
           <button className="career-job-search-submit" type="submit">
@@ -490,12 +366,8 @@ export default function CareerOpenings() {
                   <img src="/asstes/images/icon/job-icon-img.png" alt="Job Position" />
                 </span>
                 <div>
-                  <h2 id="careerDetailsTitle">
-                    {selectedJob.title}
-                  </h2>
-                  <p id="careerDetailsMeta">
-                    {selectedJob.metaText}
-                  </p>
+                  <h2 id="careerDetailsTitle">{selectedJob.title}</h2>
+                  <p id="careerDetailsMeta">{selectedJob.metaText}</p>
                 </div>
               </div>
               <button
@@ -507,9 +379,7 @@ export default function CareerOpenings() {
                 <i className="fa-solid fa-xmark" aria-hidden="true"></i>
               </button>
             </div>
-            <div className="career-details-content">
-              {selectedJob.description}
-            </div>
+            <div className="career-details-content">{selectedJob.description}</div>
             <div className="career-modal-footer">
               <button
                 className="career-job-apply career-modal-apply"
@@ -539,12 +409,8 @@ export default function CareerOpenings() {
           >
             <div className="career-modal-header">
               <div className="career-modal-title-wrap">
-                <h2 id="careerApplicationTitle">
-                  Apply for {selectedJob.title}
-                </h2>
-                <p>
-                  Fill in your details below to apply for this position.
-                </p>
+                <h2 id="careerApplicationTitle">Apply for {selectedJob.title}</h2>
+                <p>Fill in your details below to apply for this position.</p>
               </div>
               <button
                 className="career-modal-close"

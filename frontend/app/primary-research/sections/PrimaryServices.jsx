@@ -1,42 +1,68 @@
-import React from "react";
-import Link from "next/link";
+'use client';
 
-const services = [
-  {
-    title: "Telephonic Surveys",
-    description:
-      "Efficient phone-based surveys capturing valuable respondent insights.",
-    image: "/asstes/images/telephonic-surveys-card-img.png",
-    alt: "Telephonic Surveys",
-    href: "/telephonic-surveys",
-  },
-  {
-    title: "Online Surveys",
-    description:
-      "Scalable digital questionnaires connecting you with verified global respondents.",
-    image: "/asstes/images/online-surveys-card-img.png",
-    alt: "Online Surveys",
-    href: "/services",
-  },
-  {
-    title: "In-Depth Interviews",
-    description:
-      "One-on-one expert conversations uncovering profound qualitative market perspectives.",
-    image: "/asstes/images/interview-controls-card-img.png",
-    alt: "In-Depth Interviews",
-    href: "/services",
-  },
-  {
-    title: "CATI Surveys",
-    description:
-      "Structured computer-assisted interviewing ensuring speed, compliance, and accuracy.",
-    image: "/asstes/images/smart-survey-management-card-img.png",
-    alt: "CATI Surveys",
-    href: "/telephonic-surveys",
-  },
-];
+import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
 
-export default function PrimaryServices() {
+function getServiceVisuals(title = '', idx = 0) {
+  const t = title.toLowerCase();
+  if (t.includes('telephonic') || t.includes('phone')) {
+    return {
+      image: '/asstes/images/telephonic-surveys-card-img.png',
+      href: '/telephonic-surveys',
+    };
+  }
+  if (t.includes('online') || t.includes('panel')) {
+    return {
+      image: '/asstes/images/online-surveys-card-img.png',
+      href: '/services',
+    };
+  }
+  if (t.includes('in-depth') || t.includes('interview')) {
+    return {
+      image: '/asstes/images/interview-controls-card-img.png',
+      href: '/services',
+    };
+  }
+  return {
+    image: '/asstes/images/smart-survey-management-card-img.png',
+    href: '/telephonic-surveys',
+  };
+}
+
+function formatService(s, idx) {
+  if (!s) return null;
+  const title = s.title || '';
+  const visuals = getServiceVisuals(title, idx);
+  return {
+    title,
+    description: s.shortDescription || s.description || 'Efficient research methodologies capturing valuable respondent insights.',
+    image: visuals.image,
+    alt: title,
+    href: visuals.href,
+  };
+}
+
+export default function PrimaryServices({ initialServices = [] }) {
+  const [servicesList, setServicesList] = useState(() => (initialServices || []).map(formatService).filter(Boolean));
+
+  useEffect(() => {
+    if (initialServices && initialServices.length > 0) {
+      setServicesList(initialServices.map(formatService).filter(Boolean));
+    } else {
+      const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL || 'http://127.0.0.1:1337';
+      fetch(`${STRAPI_URL}/api/services?populate=*&pagination[limit]=4`)
+        .then((r) => r.json())
+        .then((d) => {
+          if (Array.isArray(d?.data)) {
+            setServicesList(d.data.map(formatService).filter(Boolean));
+          }
+        })
+        .catch(() => {});
+    }
+  }, [initialServices]);
+
+  if (servicesList.length === 0) return null;
+
   return (
     <section className="primary-services-section">
       <div className="srcn-container">
@@ -48,13 +74,11 @@ export default function PrimaryServices() {
             Our Primary Research Services
           </h2>
           <p className="primary-services-desc">
-            Delivering actionable data through custom research
-            methodologies designed to help you understand your market,
-            your competitors, and your customers.
+            Delivering actionable data through custom research methodologies designed to help you understand your market, your competitors, and your customers.
           </p>
         </div>
         <div className="primary-services-grid">
-          {services.map((service) => (
+          {servicesList.slice(0, 4).map((service) => (
             <Link
               href={service.href}
               className="primary-service-card"
@@ -86,7 +110,7 @@ export default function PrimaryServices() {
                     className="primary-service-card-btn"
                     aria-hidden="true"
                   >
-                    <img src="/asstes/images/icon/arrow-right-icon-img.png" alt="Arrow Right"/>
+                    <img src="/asstes/images/icon/arrow-right-icon-img.png" alt="Arrow Right" />
                   </span>
                 </div>
               </div>

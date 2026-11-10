@@ -3,91 +3,30 @@
 import React, { useState, useMemo, useEffect, useRef, useCallback } from 'react';
 import Swiper from 'swiper';
 import { Navigation, Pagination, Keyboard, Autoplay } from 'swiper/modules';
+import { getStrapiMedia } from '../../../lib/strapi';
 
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 
-const categories = [
-  { key: 'all', label: 'ALL' },
-  { key: 'team-culture', label: 'TEAM & CULTURE' },
-  { key: 'research-process', label: 'RESEARCH PROCESS' },
-  { key: 'field-work', label: 'FIELD WORK' },
-  { key: 'client-interactions', label: 'CLIENT INTERACTIONS' },
-  { key: 'events-conferences', label: 'EVENTS & CONFERENCES' },
-];
+function formatGalleryItem(item, idx) {
+  if (!item) return null;
+  const cat = item.category || 'team-culture';
+  const categoriesList = Array.isArray(item.categories)
+    ? item.categories
+    : [cat];
 
-const galleryItemsData = [
-  {
-    id: 1,
-    categories: ['team-culture', 'client-interactions'],
-    src: '/asstes/images/gallery/gallery_item_01.webp',
-    title: 'Cross-functional Team Strategy Session',
-    alt: 'Team meeting in modern conference room',
-  },
-  {
-    id: 2,
-    categories: ['team-culture', 'events-conferences'],
-    src: '/asstes/images/gallery/gallery_item_02.webp',
-    title: 'Team Building & Creative Problem Solving',
-    alt: 'Colleagues playing strategic wooden blocks game',
-  },
-  {
-    id: 3,
-    categories: ['research-process', 'field-work'],
-    src: '/asstes/images/gallery/gallery_item_03.webp',
-    title: 'Quantitative Data Analysis & Reporting',
-    alt: 'Researcher reviewing charts and data visualizations',
-  },
-  {
-    id: 4,
-    categories: ['research-process', 'field-work'],
-    src: '/asstes/images/gallery/gallery_item_04.webp',
-    title: 'Questionnaire Architecture & Methodology Planning',
-    alt: 'Hands drafting research methodology framework',
-  },
-  {
-    id: 5,
-    categories: ['client-interactions', 'field-work'],
-    src: '/asstes/images/gallery/gallery_item_05.webp',
-    title: 'Executive Client Briefing & Synthesis',
-    alt: 'Consultants presenting insights on laptop to partner',
-  },
-  {
-    id: 6,
-    categories: ['client-interactions', 'team-culture'],
-    src: '/asstes/images/gallery/gallery_item_06.webp',
-    title: 'Interactive Insight Discovery Review',
-    alt: 'Colleagues sharing and evaluating survey findings',
-  },
-  {
-    id: 7,
-    categories: ['team-culture', 'events-conferences'],
-    src: '/asstes/images/gallery/gallery_item_07.webp',
-    title: 'Project Milestone Success & High Five',
-    alt: 'Team celebrating research delivery milestone',
-  },
-  {
-    id: 8,
-    categories: ['events-conferences', 'team-culture'],
-    src: '/asstes/images/gallery/gallery_item_08.webp',
-    title: 'Annual Corporate Sports & Recreation',
-    alt: 'Team celebrating together during recreation outing',
-  },
-  {
-    id: 9,
-    categories: [
-      'research-process',
-      'field-work',
-      'client-interactions',
-    ],
-    src: '/asstes/images/gallery/gallery_item_09.webp',
-    title: 'Strategic Synthesis & Growth Workshop',
-    alt: 'Collaborative multidisciplinary strategy session with notes',
-  },
-];
+  return {
+    id: item.documentId || item.id || idx + 1,
+    categories: categoriesList,
+    src: getStrapiMedia(item.image, `/asstes/images/gallery/gallery_item_0${(idx % 9) + 1}.webp`),
+    title: item.title || '',
+    alt: item.caption || item.alt || item.title || 'Unimrkt Research Gallery',
+  };
+}
 
-export default function GalleryGrid() {
+export default function GalleryGrid({ initialItems = [] }) {
+  const [items, setItems] = useState(() => (initialItems || []).map(formatGalleryItem).filter(Boolean));
   const [activeCategory, setActiveCategory] = useState('all');
   const [visibleCount, setVisibleCount] = useState(6);
   const [isOpen, setIsOpen] = useState(false);
@@ -101,13 +40,42 @@ export default function GalleryGrid() {
   const swiperInstanceRef = useRef(null);
   const modalRef = useRef(null);
 
-  const filteredItems = useMemo(() => {
-    if (activeCategory === 'all') return galleryItemsData;
+  useEffect(() => {
+    if (initialItems && initialItems.length > 0) {
+      setItems(initialItems.map(formatGalleryItem).filter(Boolean));
+    } else {
+      const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL || 'http://127.0.0.1:1337';
+      fetch(`${STRAPI_URL}/api/gallery-items?populate=*&sort=order:asc`)
+        .then((r) => r.json())
+        .then((d) => {
+          if (Array.isArray(d?.data)) {
+            setItems(d.data.map(formatGalleryItem).filter(Boolean));
+          }
+        })
+        .catch(() => {});
+    }
+  }, [initialItems]);
 
-    return galleryItemsData.filter((item) =>
-      item.categories.includes(activeCategory)
-    );
-  }, [activeCategory]);
+  const categories = useMemo(() => {
+    const set = new Set();
+    items.forEach((item) => {
+      (item.categories || []).forEach((c) => set.add(c));
+    });
+    const result = [{ key: 'all', label: 'ALL' }];
+    set.forEach((k) => {
+      const label = k
+        .split('-')
+        .map((w) => w.toUpperCase())
+        .join(' ');
+      result.push({ key: k, label });
+    });
+    return result;
+  }, [items]);
+
+  const filteredItems = useMemo(() => {
+    if (activeCategory === 'all') return items;
+    return items.filter((item) => item.categories.includes(activeCategory));
+  }, [items, activeCategory]);
 
   const displayedItems = filteredItems.slice(0, visibleCount);
   const hasMore = visibleCount < filteredItems.length;
@@ -135,16 +103,13 @@ export default function GalleryGrid() {
 
   const handleLoadMore = () => {
     if (isLoadingMore || !hasMore) return;
-
     setIsLoadingMore(true);
-
     setTimeout(() => {
       setVisibleCount((prev) => prev + 6);
       setIsLoadingMore(false);
     }, 250);
   };
 
-  // Initialize Swiper when lightbox opens
   useEffect(() => {
     if (!isOpen || !swiperContainerRef.current) return;
 
@@ -183,7 +148,6 @@ export default function GalleryGrid() {
 
     swiperInstanceRef.current = swiper;
 
-    // Ensure layout dimensions update after popup visibility transition
     const timer = setTimeout(() => {
       if (swiperInstanceRef.current) {
         swiperInstanceRef.current.update();
@@ -208,7 +172,6 @@ export default function GalleryGrid() {
     };
   }, [isOpen, initialSlide, displayedItems.length, closeLightbox]);
 
-  // Clean up body overflow on unmount
   useEffect(() => {
     return () => {
       document.body.style.overflow = '';
@@ -222,7 +185,6 @@ export default function GalleryGrid() {
   return (
     <section className="our-gallery-section">
       <div className="srcn-container">
-
         <div className="our-gallery-header">
           <h2 className="our-gallery-title">Our Gallery</h2>
         </div>
@@ -381,7 +343,6 @@ export default function GalleryGrid() {
             )}
           </div>
         </div>
-
       </div>
     </section>
   );

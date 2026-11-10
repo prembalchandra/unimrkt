@@ -6,7 +6,7 @@ import CaseDetailImpact from './sections/CaseDetailImpact';
 import CaseDetailFaq from './sections/CaseDetailFaq';
 import InsightsEditorial from './sections/InsightsEditorial';
 import ResearchCta from './sections/ResearchCta';
-import { getPageBySlug, findSection } from '../../lib/strapi';
+import { getPageBySlug, findSection, getFaqs, getCaseStudies } from '../../lib/strapi';
 
 export const metadata = {
   title: 'Financial Services Customer Intelligence Case Study | Unimrkt Research',
@@ -48,20 +48,46 @@ export const metadata = {
   },
 };
 
-export default async function CaseStudyDetailPage() {
-  const pageData = await getPageBySlug('case-study-details').catch(() => null);
+export default async function CaseStudyDetailPage({ searchParams }) {
+  const [pageData, faqs] = await Promise.all([
+    getPageBySlug('case-study-details').catch(() => null),
+    getFaqs().catch(() => []),
+  ]);
+
+  const sections = Array.isArray(pageData?.sections) ? pageData.sections : [];
 
   const heroSection = findSection(pageData, 'sections.hero-common');
   const ctaSection = findSection(pageData, 'sections.question-cta');
+
+  const approachSection = sections.find(
+    (s) => s.__component === 'sections.accordion-solutions'
+  );
+  const impactSection = sections.find(
+    (s) => s.__component === 'sections.values-grid'
+  );
+  const faqSection = sections.find(
+    (s) => s.__component === 'sections.faq-accordion'
+  );
+
+  const displayFaqs = (faqSection?.items && faqSection.items.length > 0) ? faqSection.items : faqs.slice(0, 7);
 
   return (
     <>
       <CaseDetailHero dynamicHero={heroSection} />
       <CaseDetailChallenge />
       <CaseDetailResearchQuestion />
-      <CaseDetailApproach />
-      <CaseDetailImpact />
-      <CaseDetailFaq />
+      <CaseDetailApproach
+        approachSteps={approachSection?.cards || []}
+        heading={approachSection?.heading}
+        description={approachSection?.description}
+      />
+      <CaseDetailImpact
+        impacts={impactSection?.values || []}
+        kicker={impactSection?.kicker}
+        heading={impactSection?.heading}
+        description={impactSection?.description}
+      />
+      <CaseDetailFaq faqs={displayFaqs} />
       <InsightsEditorial />
       <ResearchCta dynamicCta={ctaSection} />
     </>

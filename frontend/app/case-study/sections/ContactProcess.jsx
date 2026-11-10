@@ -1,60 +1,43 @@
 'use client';
 
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Swiper from 'swiper';
 import { Autoplay, Pagination } from 'swiper/modules';
 
-const testimonialsData = [
-  {
-    id: 1,
-    title: 'Expertise That Drives Better Decisions',
-    quote: '“Unimrkt brought strong research expertise and a clear understanding of our business challenge. The insights helped us make more confident, data-driven decisions.”',
-    role: 'Marketing Director',
-    company: 'Consumer Brand',
-  },
-  {
-    id: 2,
-    title: 'Insights That Strengthen Strategy',
-    quote: '“The team was responsive, thorough and highly focused on data quality. Their research approach gave us actionable insights that directly supported our strategy.”',
-    role: 'Director of Insights',
-    company: 'Global Retail Group',
-  },
-  {
-    id: 3,
-    title: 'Turning Research Into Impact',
-    quote: '“What stood out was Unimrkt’s ability to turn complex research findings into clear, practical insights. It was a valuable partnership from start to finish.”',
-    role: 'VP Marketing & Strategy',
-    company: 'Financial Services',
-  },
-  {
-    id: 4,
-    title: 'Exceptional Fieldwork Quality',
-    quote: '“Their ability to reach niche decision-makers and C-suite leaders within tight timelines while keeping data pristine made all the difference in our market launch.”',
-    role: 'Head of Market Research',
-    company: 'Healthcare Innovations',
-  },
-  {
-    id: 5,
-    title: 'Global Scale, Local Nuance',
-    quote: '“Deploying multi-country quantitative studies across multiple languages was completely seamless. Unimrkt is our go-to intelligence partner.”',
-    role: 'Chief Strategy Officer',
-    company: 'Mobility Systems',
-  },
-  {
-    id: 6,
-    title: 'Dependable Strategic Partner',
-    quote: '“From rigorous validation to clear executive reporting, their team ensures we can make multi-million dollar investments with absolute data confidence.”',
-    role: 'Vice President',
-    company: 'Technology Solutions',
-  },
-];
+function formatTestimonial(t) {
+  if (!t) return null;
+  return {
+    id: t.id || t.documentId || Math.random(),
+    title: t.title || 'Client Partnership',
+    quote: t.quote || t.content || '',
+    role: t.clientRole || t.authorTitle || t.role || '',
+    company: t.companyName || t.clientCompany || t.company || '',
+  };
+}
 
-export default function ContactProcess() {
+export default function ContactProcess({ initialTestimonials = [] }) {
   const sliderRef = useRef(null);
   const paginationRef = useRef(null);
+  const [items, setItems] = useState(() => (initialTestimonials || []).map(formatTestimonial).filter(Boolean));
 
   useEffect(() => {
-    if (!sliderRef.current) return;
+    if (initialTestimonials && initialTestimonials.length > 0) {
+      setItems(initialTestimonials.map(formatTestimonial).filter(Boolean));
+    } else {
+      const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL || 'http://127.0.0.1:1337';
+      fetch(`${STRAPI_URL}/api/testimonials?sort=order:asc`)
+        .then((r) => r.json())
+        .then((d) => {
+          if (Array.isArray(d?.data)) {
+            setItems(d.data.map(formatTestimonial).filter(Boolean));
+          }
+        })
+        .catch(() => {});
+    }
+  }, [initialTestimonials]);
+
+  useEffect(() => {
+    if (!sliderRef.current || items.length === 0) return;
 
     const swiperInstance = new Swiper(sliderRef.current, {
       modules: [Autoplay, Pagination],
@@ -62,7 +45,7 @@ export default function ContactProcess() {
       spaceBetween: 18,
       watchOverflow: true,
       slidesPerGroup: 1,
-      loop: true,
+      loop: items.length > 2,
       speed: 700,
       autoplay: {
         delay: 3000,
@@ -88,7 +71,7 @@ export default function ContactProcess() {
     return () => {
       swiperInstance.destroy(true, true);
     };
-  }, []);
+  }, [items]);
 
   return (
     <section className="contact-process-section">
@@ -102,7 +85,7 @@ export default function ContactProcess() {
         </div>
         <div className="swiper testimonial-process-slider" ref={sliderRef}>
           <div className="swiper-wrapper">
-            {testimonialsData.map((item) => (
+            {items.map((item) => (
               <article key={item.id} className="swiper-slide contact-process-card">
                 <div className="testimonial-process-card-box">
                   <div className="contact-process-icon">

@@ -12,7 +12,7 @@ import CommonBlogSection from '../../components/CommonBlogSection';
 import ServicesFaq from './sections/ServicesFaq';
 import InsightsEditorial from './sections/InsightsEditorial';
 import ResearchCta from './sections/ResearchCta';
-import { getPageBySlug, findSection } from '../../lib/strapi';
+import { getPageBySlug, findSection, getServices, getTestimonials, getBlogPosts } from '../../lib/strapi';
 
 export const metadata = {
   title: 'End-to-End Market Research Services | Unimrkt Research',
@@ -58,20 +58,42 @@ export const metadata = {
 };
 
 export default async function ServicesPage() {
-  const pageData = await getPageBySlug('services').catch(() => null);
+  const [pageData, servicesList, testimonials, blogs] = await Promise.all([
+    getPageBySlug('services').catch(() => null),
+    getServices(20).catch(() => []),
+    getTestimonials(10).catch(() => []),
+    getBlogPosts(6).catch(() => []),
+  ]);
+
+  const sections = Array.isArray(pageData?.sections) ? pageData.sections : [];
 
   const heroSection = findSection(pageData, 'sections.hero-common');
   const metricsSection = findSection(pageData, 'sections.metrics-grid');
   const faqSection = findSection(pageData, 'sections.faq-accordion');
   const ctaSection = findSection(pageData, 'sections.question-cta');
 
+  const srvWorkflowSection = sections.find(
+    (s) => s.__component === 'sections.accordion-solutions' && s.heading?.includes('Workflow')
+  ) || sections.find((s) => s.__component === 'sections.accordion-solutions');
+  const whyChooseSection = sections.find(
+    (s) => s.__component === 'sections.metrics-grid' && (s.heading?.includes('Why Choose') || s.kicker?.includes('WHY CHOOSE'))
+  );
+
   return (
     <>
       <ServicesHero dynamicHero={heroSection} />
       <ServicesAboutOverview />
-      <EndToEndSolutions />
-      <WhyChooseUs />
-      <ServicesWorkflow />
+      <EndToEndSolutions initialServices={servicesList} />
+      <WhyChooseUs
+        items={whyChooseSection?.metrics || []}
+        title={whyChooseSection?.heading}
+        description={whyChooseSection?.description}
+      />
+      <ServicesWorkflow
+        processSteps={srvWorkflowSection?.cards || []}
+        heading={srvWorkflowSection?.heading}
+        description={srvWorkflowSection?.description}
+      />
       <ServicesQuestionCTA dynamicCta={ctaSection} />
       <ResearchReachSection
         kicker={metricsSection?.kicker || 'Our Coverage'}
@@ -80,8 +102,8 @@ export default async function ServicesPage() {
       />
       <ServicesIndustriesExpertise />
       <CaseStudiesImpactCta />
-      <CommonTrustedPartnersTestimonials />
-      <CommonBlogSection />
+      <CommonTrustedPartnersTestimonials initialTestimonials={testimonials} />
+      <CommonBlogSection initialBlogs={blogs} />
       <ServicesFaq dynamicFaq={faqSection} />
       <InsightsEditorial />
       <ResearchCta dynamicCta={ctaSection} />

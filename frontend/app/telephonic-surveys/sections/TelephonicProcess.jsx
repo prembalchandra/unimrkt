@@ -4,59 +4,29 @@ import React, { useEffect, useRef } from 'react';
 import Swiper from 'swiper';
 import { Autoplay, Pagination } from 'swiper/modules';
 
-const processSteps = [
-  {
-    num: '01',
-    icon: '/asstes/images/icon/understanding-icon-img.png',
-    title: 'Understand',
-    desc: 'We begin by understanding your research goals, target audience, sample needs and key questions.',
-  },
-  {
-    num: '02',
-    icon: '/asstes/images/icon/front-end-programming-icon-img.png',
-    title: 'Design',
-    desc: 'Our research team structures the questionnaire and interview flow around the study objectives.',
-  },
-  {
-    num: '03',
-    icon: '/asstes/images/icon/recruit-icon-img.png',
-    title: 'Recruit',
-    desc: 'We identify and reach relevant respondents based on the agreed sample criteria.',
-  },
-  {
-    num: '04',
-    icon: '/asstes/images/icon/Interview-icon-img.png',
-    title: 'Interview',
-    desc: 'Trained interviewers conduct structured interviews using CATI-enabled workflows.',
-  },
-  {
-    num: '05',
-    icon: '/asstes/images/icon/ouality-check-icon-img.png',
-    title: 'Quality Check',
-    desc: 'Interviews and collected data undergo systematic quality checks to maintain consistency and reliability.',
-  },
-  {
-    num: '06',
-    icon: '/asstes/images/icon/deliver-icon-img.png',
-    title: 'Deliver',
-    desc: 'Validated datasets and research outputs are prepared for analysis and decision-making.',
-  },
+const defaultIcons = [
+  '/asstes/images/icon/understanding-icon-img.png',
+  '/asstes/images/icon/front-end-programming-icon-img.png',
+  '/asstes/images/icon/recruit-icon-img.png',
+  '/asstes/images/icon/Interview-icon-img.png',
+  '/asstes/images/icon/ouality-check-icon-img.png',
+  '/asstes/images/icon/deliver-icon-img.png',
 ];
 
-export default function TelephonicProcess() {
+export default function TelephonicProcess({ processSteps = [], title, description }) {
   const sliderRef = useRef(null);
   const paginationRef = useRef(null);
   const swiperInstanceRef = useRef(null);
 
   useEffect(() => {
-    if (!sliderRef.current) return;
+    if (!sliderRef.current || processSteps.length === 0) return;
 
     swiperInstanceRef.current = new Swiper(sliderRef.current, {
       modules: [Autoplay, Pagination],
       slidesPerView: 1,
       spaceBetween: 16,
       grabCursor: true,
-      loop: true,
+      loop: processSteps.length > 3,
       speed: 700,
       autoplay: {
         delay: 3000,
@@ -99,50 +69,48 @@ export default function TelephonicProcess() {
         swiperInstanceRef.current.destroy(true, true);
       }
     };
-  }, []);
+  }, [processSteps]);
+
+  if (!processSteps || processSteps.length === 0) return null;
 
   return (
     <section className="telephonic-process-area" id="telephonic-process">
       <div className="telephonic-process-container">
         <div className="telephonic-process-header">
-          <span className="telephonic-process-eyebrow">
-            OUR TELEPHONIC SURVEY PROCESS
-          </span>
-          <h2 className="telephonic-process-main-heading">
-            From Research Brief To Reliable Insights
-          </h2>
+          <span className="telephonic-process-eyebrow">RESEARCH FIELDWORK</span>
+          <h2 className="telephonic-process-main-heading">{title || 'Our Telephonic Research Process'}</h2>
+          <p className="telephonic-process-sub-heading">
+            {description || 'A structured approach ensures that every interview is conducted professionally, accurately, and in alignment with research objectives.'}
+          </p>
         </div>
-<div className='common-swiper-box'>
-        <div className="swiper telephonic-process-slider" ref={sliderRef}>
-          <div className="swiper-wrapper">
-            {processSteps.map((step) => (
-              <div key={step.num} className="swiper-slide telephonic-process-slide">
-                <article className="telephonic-process-card">
-                  <span className="telephonic-process-number">
-                    {step.num}
-                  </span>
-                  <div className="telephonic-process-icon">
-                    <img src={step.icon} alt={step.title} loading="lazy" />
-                  </div>
-                  <div className="telephonic-process-content">
-                    <h3 className="telephonic-process-card-heading">
-                      {step.title}
-                    </h3>
-                    <p className="telephonic-process-desc">
-                      {step.desc}
-                    </p>
-                  </div>
-                </article>
-              </div>
-            ))}
-          </div>
 
-          <div
-            className="telephonic-process-pagination telephonic-process-dots"
-            ref={paginationRef}
-            aria-label="Telephonic survey process pagination"
-          />
-        </div>
+        <div className="common-swiper-box">
+          <div className="swiper telephonic-process-slider" ref={sliderRef}>
+            <div className="swiper-wrapper">
+              {processSteps.map((step, index) => (
+                <div key={step.id || index} className="swiper-slide telephonic-process-slide">
+                  <article className="telephonic-process-card">
+                    <span className="telephonic-process-number">
+                      {step.num || (index < 9 ? `0${index + 1}` : index + 1)}
+                    </span>
+                    <div className="telephonic-process-icon">
+                      <img src={step.icon || step.iconClass || defaultIcons[index % defaultIcons.length]} alt={step.title} loading="lazy" />
+                    </div>
+                    <div className="telephonic-process-content">
+                      <h3 className="telephonic-process-card-heading">{step.title}</h3>
+                      <p className="telephonic-process-desc">{step.desc || step.description}</p>
+                    </div>
+                  </article>
+                </div>
+              ))}
+            </div>
+
+            <div
+              className="telephonic-process-pagination telephonic-process-dots"
+              ref={paginationRef}
+              aria-label="Process pagination"
+            />
+          </div>
         </div>
       </div>
     </section>

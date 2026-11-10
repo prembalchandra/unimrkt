@@ -2,7 +2,7 @@ import React from 'react';
 import GalleryHero from './sections/GalleryHero';
 import GalleryGrid from './sections/GalleryGrid';
 import ResearchCta from './sections/ResearchCta';
-import { getPageBySlug, findSection } from '../../lib/strapi';
+import { getPageBySlug, findSection, getGalleryItems } from '../../lib/strapi';
 
 export const metadata = {
   title: 'Our Moments & Culture Gallery | Unimrkt Research',
@@ -45,7 +45,10 @@ export const metadata = {
 };
 
 export default async function GalleryPage() {
-  const pageData = await getPageBySlug('gallery').catch(() => null);
+  const [pageData, galleryItems] = await Promise.all([
+    getPageBySlug('gallery').catch(() => null),
+    getGalleryItems(50).catch(() => []),
+  ]);
 
   const heroSection = findSection(pageData, 'sections.hero-common');
   const ctaSection = findSection(pageData, 'sections.question-cta');
@@ -53,7 +56,7 @@ export default async function GalleryPage() {
   return (
     <main>
       <GalleryHero dynamicHero={heroSection} />
-      <GalleryGrid />
+      <GalleryGrid initialItems={galleryItems} />
       <ResearchCta dynamicCta={ctaSection} />
     </main>
   );

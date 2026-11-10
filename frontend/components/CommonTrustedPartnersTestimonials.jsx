@@ -1,77 +1,40 @@
 'use client';
 
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Swiper from 'swiper';
 import { Autoplay, Pagination } from 'swiper/modules';
 
-const testimonials = [
-  {
-    id: 1,
-    title: 'Exceptional Research. Actionable Results.',
-    quote:
-      'Unimrkt Research delivered comprehensive market intelligence that gave us a clear understanding of customer behavior and competitive trends. Their insights played a key role in shaping our strategic decisions.',
-    author: 'David Anderson',
-    role: 'Head of Market Strategy',
-  },
-  {
-    id: 2,
-    title: 'A Trusted Extension of Our Team',
-    quote:
-      'From research design to final reporting, the Unimrkt team demonstrated professionalism, accuracy, and deep industry expertise. Their commitment to quality made them a trusted research partner for our organization.',
-    author: 'Jennifer Collins',
-    role: 'Director – Customer Insights',
-  },
-  {
-    id: 3,
-    title: 'Insights That Drive Better Decisions',
-    quote:
-      'The team provided high-quality data, meaningful analysis, and actionable recommendations that helped us confidently enter new markets. Their research exceeded our expectations at every stage.',
-    author: 'Rajesh Mehta',
-    role: 'Vice President – Business Intelligence',
-  },
-  {
-    id: 4,
-    title: 'Seamless Global Reach & Localization',
-    quote:
-      'Reaching specialized commercial fleet operators across 6 European hubs seemed daunting until Unimrkt mobilized native-language interviewers within days.',
-    author: 'Elena Rostova',
-    role: 'Chief Strategy Officer, Mobility Systems',
-  },
-  {
-    id: 5,
-    title: 'High Precision Data Quality',
-    quote:
-      'The audit trail, speeder checks, and call monitoring controls set Unimrkt apart from standard survey vendors. Every dataset is pristine and ready for decision-makers.',
-    author: 'Michael Chen',
-    role: 'VP Analytics, Global Fintech Solutions',
-  },
-  {
-    id: 6,
-    title: 'Unrivaled Respondent Engagement',
-    quote:
-      'Even when recruiting C-level executives for strategic technology audits, Unimrkt exceeded our quota targets with exceptional respondent engagement and depth.',
-    author: 'Emily Watson',
-    role: 'Partner, Global Strategy Consultancy',
-  },
-];
-
-export default function CommonTrustedPartnersTestimonials() {
+export default function CommonTrustedPartnersTestimonials({ dynamicTestimonials = null }) {
+  const [items, setItems] = useState(dynamicTestimonials || []);
   const sliderRef = useRef(null);
   const paginationRef = useRef(null);
   const swiperInstanceRef = useRef(null);
 
   useEffect(() => {
-    if (!sliderRef.current) return;
+    if (!dynamicTestimonials || dynamicTestimonials.length === 0) {
+      fetch('http://127.0.0.1:1337/api/testimonials?populate=*&sort=order:asc')
+        .then((res) => res.json())
+        .then((json) => {
+          if (Array.isArray(json?.data) && json.data.length > 0) {
+            setItems(json.data);
+          }
+        })
+        .catch(() => {});
+    }
+  }, [dynamicTestimonials]);
+
+  useEffect(() => {
+    if (!sliderRef.current || items.length === 0) return;
 
     swiperInstanceRef.current = new Swiper(sliderRef.current, {
       modules: [Autoplay, Pagination],
       slidesPerView: 1,
       spaceBetween: 16,
       grabCursor: true,
-      loop: true,
+      loop: items.length > 1,
       speed: 700,
       autoplay: {
-        delay: 3000,
+        delay: 3500,
         disableOnInteraction: false,
         pauseOnMouseEnter: false,
       },
@@ -111,7 +74,7 @@ export default function CommonTrustedPartnersTestimonials() {
         swiperInstanceRef.current.destroy(true, true);
       }
     };
-  }, []);
+  }, [items]);
 
   return (
     <section className="testimonials-showcase-section" id="testimonials">
@@ -120,22 +83,32 @@ export default function CommonTrustedPartnersTestimonials() {
           <span className="testimonials-kicker">CLIENT SUCCESS STORIES</span>
           <h2 className="testimonials-heading">Trusted Research Partner For Businesses Worldwide</h2>
         </div>
-        <div className='common-swiper-box'>
+        <div className="common-swiper-box">
           <div className="swiper testimonials-swiper" ref={sliderRef}>
             <div className="swiper-wrapper">
-              {testimonials.map((item) => (
-                <div key={item.id} className="swiper-slide testimonials-slide">
-                  <article className="testimonial-showcase-card">
-                    <div className="testimonial-quote-icon" aria-hidden="true">“</div>
-                    <h3 className="testimonial-title">{item.title}</h3>
-                    <p className="testimonial-quote-body">{item.quote}</p>
-                    <div className="testimonial-author-wrap">
-                      <h4 className="testimonial-author-name">{item.author}</h4>
-                      <p className="testimonial-author-role">{item.role}</p>
-                    </div>
-                  </article>
-                </div>
-              ))}
+              {items.map((item, idx) => {
+                const title = item.title || item.attributes?.title;
+                const quote = item.quote || item.attributes?.quote;
+                const author = item.authorName || item.author || item.attributes?.authorName;
+                const role = item.authorRole || item.role || item.attributes?.authorRole;
+                const company = item.companyName || item.company || item.attributes?.companyName;
+
+                return (
+                  <div key={item.id || idx} className="swiper-slide testimonials-slide">
+                    <article className="testimonial-showcase-card">
+                      <div className="testimonial-quote-icon" aria-hidden="true">“</div>
+                      <h3 className="testimonial-title">{title}</h3>
+                      <p className="testimonial-quote-body">{quote}</p>
+                      <div className="testimonial-author-wrap">
+                        <h4 className="testimonial-author-name">{author}</h4>
+                        <p className="testimonial-author-role">
+                          {role}{company ? ` – ${company}` : ''}
+                        </p>
+                      </div>
+                    </article>
+                  </div>
+                );
+              })}
             </div>
             <div className="testimonials-pagination" ref={paginationRef}></div>
           </div>

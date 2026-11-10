@@ -6,23 +6,12 @@ import { Pagination, Autoplay } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/pagination';
 
-const steps = [
-  { num: '01', title: 'Understand Objectives', desc: 'Helping manufacturers understand market trends, customer expectations, and product opportunities.' },
-  { num: '02', title: 'Research Design', desc: 'Helping manufacturers understand market trends, customer expectations, and product opportunities.' },
-  { num: '03', title: 'Questionnaire Development', desc: 'Helping manufacturers understand market trends, customer expectations, and product opportunities.' },
-  { num: '04', title: 'Respondent Recruitment', desc: 'Helping manufacturers understand market trends, customer expectations, and product opportunities.' },
-  { num: '05', title: 'Data Collection', desc: 'Gathering first-hand feedback through carefully managed interviews and surveys.' },
-  { num: '06', title: 'Quality Control', desc: 'Reviewing responses and validating data to maintain accuracy and consistency.' },
-  { num: '07', title: 'Data Analysis', desc: 'Finding meaningful patterns in the data to reveal customer needs and market trends.' },
-  { num: '08', title: 'Strategic Recommendations', desc: 'Applying research findings to inform next steps and support business growth.' },
-];
-
-export default function ResearchMethodologies() {
+export default function ResearchMethodologies({ steps = [], kicker, heading, description }) {
   const sliderRef = useRef(null);
   const paginationRef = useRef(null);
 
   useEffect(() => {
-    if (!sliderRef.current) return;
+    if (!sliderRef.current || steps.length === 0) return;
 
     const swiperInstance = new Swiper(sliderRef.current, {
       modules: [Pagination, Autoplay],
@@ -31,7 +20,7 @@ export default function ResearchMethodologies() {
       slidesPerView: 1,
       slidesPerGroup: 1,
       spaceBetween: 16,
-      loop: true,
+      loop: steps.length > 3,
       speed: 650,
       grabCursor: true,
       observer: true,
@@ -59,22 +48,17 @@ export default function ResearchMethodologies() {
         },
         768: {
           slidesPerView: 2.3,
-          slidesPerGroup: 2,
+          slidesPerGroup: 1,
           spaceBetween: 20,
         },
         992: {
-          slidesPerView: 3.4,
-          slidesPerGroup: 3,
+          slidesPerView: 3,
+          slidesPerGroup: 1,
           spaceBetween: 24,
         },
         1200: {
-          slidesPerView: 3.4,
-          slidesPerGroup: 3,
-          spaceBetween: 24,
-        },
-        1400: {
-          slidesPerView: 3.4,
-          slidesPerGroup: 3,
+          slidesPerView: 3.5,
+          slidesPerGroup: 1,
           spaceBetween: 24,
         },
       },
@@ -83,43 +67,49 @@ export default function ResearchMethodologies() {
     return () => {
       swiperInstance.destroy(true, true);
     };
-  }, []);
+  }, [steps]);
+
+  if (!steps || steps.length === 0) return null;
 
   return (
-    <section className="research-methodologies-area">
-      <div className="research-methodologies-container">
-        <div className="research-methodologies-wapper">
-          <div className="research-methodologies-conten-top primary-services-header">
-            <div className="research-methodologies-content">
-              <span className="sub-title-red" style={{ display: 'inline-block', marginBottom: '8px' }}>
-                PROCESS
-              </span>
-              <h2 className="research-methodologies-heading">Research Methodologies</h2>
-              <p className="research-methodologies-tilte">
-                We leverage proven qualitative and quantitative research methodologies to collect accurate, reliable data, delivering actionable insights that support smarter decisions, innovation, and sustainable business growth.
-              </p>
-            </div>
-          </div>
-          <div className="research-methodologies-slider swiper" ref={sliderRef} id="research-methodologies-slider">
-            <div className="research-methodologies-grid swiper-wrapper">
-              {steps.map((step, index) => (
-                <div key={index} className="research-methodologies-col swiper-slide">
+    <section className="research-methodologies-section">
+      <div className="srcn-container">
+        <div className="research-methodologies-header">
+          <span className="research-methodologies-sub-title">
+            {kicker || 'RESEARCH METHODOLOGY'}
+          </span>
+          <h2 className="research-methodologies-main-heading">
+            {heading || 'Step-by-Step Research Methodology'}
+          </h2>
+          <p className="research-methodologies-title">
+            {description || 'Structured research journey from discovery to strategic impact.'}
+          </p>
+        </div>
+
+        <div className="common-swiper-box">
+          <div className="swiper research-methodologies-slider" ref={sliderRef}>
+            <div className="research-methodologies-grid">
+              {steps.map((item, index) => (
+                <article className="research-methodologies-col" key={item.id || index}>
                   <div className="research-methodologies-card">
-                    <div className="research-methodologies-number">
-                      <span className="number-area">{step.num}</span>
-                    </div>
-                    <div className="research-methodologies-content-area">
-                      <div className="research-methodologies-content">
-                        <h3 className="research-methodologies-heading research-methodologies-card-title">{step.title}</h3>
-                        <p className="research-methodologies-title research-methodologies-card-desc">{step.desc}</p>
-                      </div>
+                    <span className="methodology-step-number">
+                      {item.num || item.iconClass || (index < 9 ? `0${index + 1}` : `${index + 1}`)}
+                    </span>
+                    <div className="research-methodologies-content">
+                      <h3 className="methodology-step-title">{item.title}</h3>
+                      <p className="methodology-step-description">{item.desc || item.description}</p>
                     </div>
                   </div>
-                </div>
+                </article>
               ))}
             </div>
+
+            <div
+              className="research-methodologies-pagination"
+              ref={paginationRef}
+              aria-label="Methodologies pagination"
+            />
           </div>
-          <div className="research-methodologies-pagination" ref={paginationRef} aria-label="Research methodology slides"></div>
         </div>
       </div>
     </section>

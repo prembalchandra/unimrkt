@@ -12,7 +12,7 @@ import CommonTrustedPartnersTestimonials from '../../components/CommonTrustedPar
 import CommonBlogSection from '../../components/CommonBlogSection';
 import IndustriesFaq from './sections/IndustriesFaq';
 import ResearchCta from './sections/ResearchCta';
-import { getPageBySlug, getIndustries, findSection } from '../../lib/strapi';
+import { getPageBySlug, getIndustries, getFaqs, findSection } from '../../lib/strapi';
 
 export const metadata = {
   title: 'Industries We Serve | Healthcare, BFSI, Retail, Auto, Tech',
@@ -56,28 +56,72 @@ export const metadata = {
 };
 
 export default async function IndustriesPage() {
-  const [pageData, strapiIndustries] = await Promise.all([
+  const [pageData, strapiIndustries, faqs] = await Promise.all([
     getPageBySlug('industries').catch(() => null),
     getIndustries(24).catch(() => []),
+    getFaqs().catch(() => []),
   ]);
+
+  const sections = Array.isArray(pageData?.sections) ? pageData.sections : [];
 
   const heroSection = findSection(pageData, 'sections.hero-common');
   const ctaSection = findSection(pageData, 'sections.question-cta');
+
+  const reachSection = sections.find(
+    (s) => s.__component === 'sections.metrics-grid' && (s.heading?.includes('Local Insight') || s.kicker?.includes('Beyond'))
+  );
+  const outcomesSection = sections.find(
+    (s) => s.__component === 'sections.values-grid' && (s.heading?.includes('Business Forward') || s.kicker?.includes('OUTCOMES'))
+  );
+  const partnerSection = sections.find(
+    (s) => s.__component === 'sections.accordion-solutions' && s.heading?.includes('Partner')
+  );
+  const questionsSection = sections.find(
+    (s) => s.__component === 'sections.accordion-solutions' && s.heading?.includes('Questions')
+  );
+  const processSection = sections.find(
+    (s) => s.__component === 'sections.accordion-solutions' && (s.heading?.includes('Structured Research') || s.heading?.includes('Process'))
+  );
+  const faqSection = findSection(pageData, 'sections.faq-accordion');
+
+  const displayFaqs = (faqSection?.items && faqSection.items.length > 0) ? faqSection.items : faqs.slice(0, 6);
 
   return (
     <main>
       <IndustriesHero dynamicHero={heroSection} />
       <IndustriesAbout />
       <IndustriesGrid initialIndustries={strapiIndustries} />
-      <PartnerIndustriesSection />
+      <PartnerIndustriesSection
+        features={partnerSection?.cards || []}
+        kicker={partnerSection?.kicker}
+        heading={partnerSection?.heading}
+        description={partnerSection?.description}
+      />
       <QuestionCTA dynamicCta={ctaSection} />
-      <QuestionsToInsightsSection />
-      <BusinessOutcomesSection />
-      <LocalInsightGlobalReach />
-      <ResearchProcessImpact />
+      <QuestionsToInsightsSection
+        items={questionsSection?.cards || partnerSection?.cards || []}
+      />
+      <BusinessOutcomesSection
+        outcomes={outcomesSection?.values || []}
+        kicker={outcomesSection?.kicker}
+        heading={outcomesSection?.heading}
+        description={outcomesSection?.description}
+      />
+      <LocalInsightGlobalReach
+        stats={reachSection?.metrics || []}
+        kicker={reachSection?.kicker}
+        heading={reachSection?.heading}
+        description={reachSection?.description}
+      />
+      <ResearchProcessImpact
+        steps={processSection?.cards || []}
+        kicker={processSection?.kicker}
+        heading={processSection?.heading}
+        description={processSection?.description}
+      />
       <CommonTrustedPartnersTestimonials />
       <CommonBlogSection />
-      <IndustriesFaq />
+      <IndustriesFaq faqs={displayFaqs} />
       <ResearchCta dynamicCta={ctaSection} />
     </main>
   );

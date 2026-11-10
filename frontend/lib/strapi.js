@@ -1,14 +1,24 @@
 /**
- * Strapi 5 Client Helper for Unimrkt Research Next.js Frontend
+ * Strapi 5 Centralized API Service Layer for Unimrkt Research Next.js Frontend
+ * Handles all dynamic database communication with MySQL through Strapi 5 REST APIs.
  */
 
 const STRAPI_URL = process.env.STRAPI_API_URL || process.env.NEXT_PUBLIC_STRAPI_URL || 'http://127.0.0.1:1337';
 
 /**
- * Fetch data from Strapi REST API
- * @param {string} endpoint - API path (e.g. '/api/pages' or '/api/global')
- * @param {object} query - Query parameters (e.g. { populate: '*' })
- * @param {object} options - Next.js fetch options (revalidate, cache)
+ * Helper to build absolute Strapi Media URL
+ */
+export function getStrapiMedia(media, fallback = '') {
+  if (!media) return fallback;
+  const url = media.url || media.attributes?.url || (typeof media === 'string' ? media : null);
+  if (!url) return fallback;
+  if (url.startsWith('http://') || url.startsWith('https://')) return url;
+  return `${STRAPI_URL}${url.startsWith('/') ? url : `/${url}`}`;
+}
+
+/**
+ * Core fetch utility for Strapi REST API
+ * Supports ISR revalidation, error resilience, and query parameter serialization.
  */
 export async function fetchStrapi(endpoint, query = {}, options = {}) {
   try {
@@ -27,7 +37,7 @@ export async function fetchStrapi(endpoint, query = {}, options = {}) {
       headers: {
         'Content-Type': 'application/json',
       },
-      signal: AbortSignal.timeout(5000),
+      signal: AbortSignal.timeout(8000),
       next: { revalidate: options.revalidate ?? 60 }, // 60s ISR default
       ...options,
     });
@@ -46,7 +56,7 @@ export async function fetchStrapi(endpoint, query = {}, options = {}) {
 }
 
 /**
- * Fetch Global site settings (logos, navbar, footer, SEO)
+ * Fetch Global site settings (logos, navbar, footer columns, contact details, social links, SEO)
  */
 export async function getGlobalSettings() {
   const data = await fetchStrapi('/api/global', {
@@ -56,8 +66,7 @@ export async function getGlobalSettings() {
 }
 
 /**
- * Fetch a Page by its slug with populated dynamic zone sections
- * @param {string} slug - Page slug (e.g. 'home', 'about', 'automotives')
+ * Fetch a Page by its slug with populated dynamic zone sections and SEO
  */
 export async function getPageBySlug(slug) {
   const data = await fetchStrapi('/api/pages', {
@@ -70,8 +79,6 @@ export async function getPageBySlug(slug) {
 
 /**
  * Find a specific section inside page dynamic zone sections
- * @param {object} pageData - Strapi page object
- * @param {string} componentName - e.g. 'sections.home-hero', 'sections.hero-common'
  */
 export function findSection(pageData, componentName) {
   if (!pageData || !Array.isArray(pageData.sections)) return null;
@@ -87,9 +94,51 @@ export function findSections(pageData, componentName) {
 }
 
 /**
+ * Fetch Testimonials from MySQL via Strapi
+ */
+export async function getTestimonials(limit = 20) {
+  const data = await fetchStrapi('/api/testimonials', {
+    populate: '*',
+    'pagination[limit]': limit,
+    sort: 'order:asc',
+  });
+  return data?.data || [];
+}
+
+/**
+ * Fetch FAQs from MySQL via Strapi
+ */
+export async function getFaqs({ category = null, pageSlug = null, limit = 50 } = {}) {
+  const query = {
+    'pagination[limit]': limit,
+    sort: 'order:asc',
+  };
+  if (category && category !== 'All') {
+    query['filters[category][$eq]'] = category;
+  }
+  if (pageSlug) {
+    query['filters[pageSlug][$eq]'] = pageSlug;
+  }
+
+  const data = await fetchStrapi('/api/faqs', query);
+  return data?.data || [];
+}
+
+/**
+ * Fetch Office Locations
+ */
+export async function getOfficeLocations(limit = 10) {
+  const data = await fetchStrapi('/api/office-locations', {
+    'pagination[limit]': limit,
+    sort: 'order:asc',
+  });
+  return data?.data || [];
+}
+
+/**
  * Fetch all Case Studies
  */
-export async function getCaseStudies(limit = 10) {
+export async function getCaseStudies(limit = 50) {
   const data = await fetchStrapi('/api/case-studies', {
     populate: '*',
     'pagination[limit]': limit,
@@ -100,7 +149,7 @@ export async function getCaseStudies(limit = 10) {
 /**
  * Fetch all Blogs
  */
-export async function getBlogPosts(limit = 10) {
+export async function getBlogPosts(limit = 50) {
   const data = await fetchStrapi('/api/blogs', {
     populate: '*',
     'pagination[limit]': limit,
@@ -112,7 +161,7 @@ export async function getBlogPosts(limit = 10) {
 /**
  * Fetch all Team Members
  */
-export async function getTeamMembers(limit = 20) {
+export async function getTeamMembers(limit = 50) {
   const data = await fetchStrapi('/api/team-members', {
     populate: '*',
     'pagination[limit]': limit,
@@ -124,7 +173,7 @@ export async function getTeamMembers(limit = 20) {
 /**
  * Fetch all Industries
  */
-export async function getIndustries(limit = 20) {
+export async function getIndustries(limit = 50) {
   const data = await fetchStrapi('/api/industries', {
     populate: '*',
     'pagination[limit]': limit,
@@ -135,10 +184,33 @@ export async function getIndustries(limit = 20) {
 /**
  * Fetch all Services
  */
-export async function getServices(limit = 20) {
+export async function getServices(limit = 50) {
   const data = await fetchStrapi('/api/services', {
     populate: '*',
     'pagination[limit]': limit,
+  });
+  return data?.data || [];
+}
+
+/**
+ * Fetch Career Jobs
+ */
+export async function getCareerJobs(limit = 20) {
+  const data = await fetchStrapi('/api/career-jobs', {
+    populate: '*',
+    'pagination[limit]': limit,
+  });
+  return data?.data || [];
+}
+
+/**
+ * Fetch Gallery Items
+ */
+export async function getGalleryItems(limit = 50) {
+  const data = await fetchStrapi('/api/gallery-items', {
+    populate: '*',
+    'pagination[limit]': limit,
+    sort: 'order:asc',
   });
   return data?.data || [];
 }

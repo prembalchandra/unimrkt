@@ -2,168 +2,124 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 
-const heroServicesData = [
-  {
-    badge: 'DIGITAL PLATFORMS',
-    heading: 'Online Bulletin Board For Longitudinal Insights',
-    desc: 'Connect with verified consumers in interactive, multi-day digital discussion rooms to capture evolving habits, perceptions, and rich multimedia feedback.',
-    cta: 'EXPLORE BULLETIN BOARDS',
-  },
-  {
-    badge: 'ON-SITE FIELDWORK',
-    heading: 'Intercept Interviews Real-Time In-The-Moment',
-    desc: 'Gather authentic, unprompted buyer reactions and retail customer feedback directly at physical storefronts, venues, transit hubs, and events globally.',
-    cta: 'EXPLORE INTERCEPT RESEARCH',
-  },
-  {
-    badge: 'GLOBAL EXPANSION',
-    heading: 'In-Depth Country Research Local Market Landscapes',
-    desc: 'De-risk foreign market entry with end-to-end intelligence on local regulatory frameworks, consumer habits, pricing dynamics, and competitor strengths.',
-    cta: 'EXPLORE COUNTRY RESEARCH',
-  },
-  {
-    badge: 'MARKET INTELLIGENCE',
-    heading: 'Structured Market Data For Unprecedented Clarity',
-    desc: 'Delivering structured market data enabling organizations to gain complete clarity into market dynamics, minimize risks, and uncover new opportunities.',
-    cta: 'DISCOVER THE UNIMRKT',
-  },
-  {
-    badge: 'DATA ENGINE',
-    heading: 'Survey Programming Flawless Complex Logic',
-    desc: 'Robust scripting of complex multi-branching questionnaires, mobile-optimized UI, data validation safeguards, and real-time analytical dashboards.',
-    cta: 'EXPLORE SURVEY LOGIC',
-  },
-  {
-    badge: 'EXECUTIVE QUALITATIVE',
-    heading: 'In-Depth Interviews Executive & B2B Depth',
-    desc: 'Conduct high-caliber one-on-one qualitative dialogues with C-suite decision-makers, Key Opinion Leaders (KOLs), and niche industry experts worldwide.',
-    cta: 'EXPLORE IN-DEPTH INTERVIEWS',
-  },
-  {
-    badge: 'CATI WORKSTATIONS',
-    heading: 'Telephonic Interviews Nationwide CATI Power',
-    desc: 'Powered by 500+ advanced CATI telephone interviewing workstations delivering high-volume, verified, and quality-audited quantitative reach nationwide.',
-    cta: 'EXPLORE TELEPHONIC SURVEYS',
-  },
+function getServiceBadge(title = '') {
+  const t = title.toLowerCase();
+  if (t.includes('bulletin')) return 'DIGITAL PLATFORMS';
+  if (t.includes('intercept')) return 'ON-SITE FIELDWORK';
+  if (t.includes('country')) return 'GLOBAL EXPANSION';
+  if (t.includes('structured') || t.includes('clarity')) return 'MARKET INTELLIGENCE';
+  if (t.includes('programming') || t.includes('survey')) return 'DATA ENGINE';
+  if (t.includes('in-depth') || t.includes('depth')) return 'EXECUTIVE QUALITATIVE';
+  if (t.includes('telephonic') || t.includes('cati')) return 'CATI WORKSTATIONS';
+  return 'MARKET INTELLIGENCE';
+}
+
+function getServiceCta(title = '') {
+  const t = title.toLowerCase();
+  if (t.includes('bulletin')) return 'EXPLORE BULLETIN BOARDS';
+  if (t.includes('intercept')) return 'EXPLORE INTERCEPT RESEARCH';
+  if (t.includes('country')) return 'EXPLORE COUNTRY RESEARCH';
+  if (t.includes('structured')) return 'DISCOVER THE UNIMRKT';
+  if (t.includes('programming')) return 'EXPLORE SURVEY LOGIC';
+  if (t.includes('in-depth')) return 'EXPLORE IN-DEPTH INTERVIEWS';
+  if (t.includes('telephonic')) return 'EXPLORE TELEPHONIC SURVEYS';
+  return 'EXPLORE OUR SOLUTIONS';
+}
+
+const serviceIconList = [
+  (
+    <svg viewBox="0 0 24 24" className="service-svg-icon" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <rect x="2.5" y="3.5" width="19" height="13" rx="2.5"></rect>
+      <circle cx="7" cy="8.5" r="1.8"></circle>
+      <path d="M4.5 14c0-1.5 1.2-2.2 2.5-2.2s2.5.7 2.5 2.2"></path>
+      <rect x="13" y="6.5" width="6" height="4.5" rx="1"></rect>
+      <path d="M14.5 11l-1 2h2"></path>
+      <path d="M9 20.5h6"></path>
+      <path d="M12 16.5v4"></path>
+    </svg>
+  ),
+  (
+    <svg viewBox="0 0 24 24" className="service-svg-icon" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+      <circle cx="9" cy="7" r="4"></circle>
+      <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+      <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+    </svg>
+  ),
+  (
+    <svg viewBox="0 0 24 24" className="service-svg-icon" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="12" cy="12" r="9.5"></circle>
+      <path d="M2.5 12h19"></path>
+      <path d="M12 2.5a14.5 14.5 0 0 1 4.5 9.5 14.5 14.5 0 0 1-4.5 9.5 14.5 14.5 0 0 1-4.5-9.5 14.5 14.5 0 0 1 4.5-9.5z"></path>
+    </svg>
+  ),
+  (
+    <svg viewBox="0 0 24 24" className="service-svg-icon" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <ellipse cx="12" cy="5" rx="8" ry="3"></ellipse>
+      <path d="M4 5v14c0 1.66 3.58 3 8 3s8-1.34 8-3V5"></path>
+      <path d="M4 12c0 1.66 3.58 3 8 3s8-1.34 8-3"></path>
+    </svg>
+  ),
+  (
+    <svg viewBox="0 0 24 24" className="service-svg-icon" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+      <polyline points="14 2 14 8 20 8"></polyline>
+      <line x1="16" y1="13" x2="8" y2="13"></line>
+      <line x1="16" y1="17" x2="8" y2="17"></line>
+      <polyline points="10 9 9 9 8 9"></polyline>
+    </svg>
+  ),
+  (
+    <svg viewBox="0 0 24 24" className="service-svg-icon" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M20 14V6a2 2 0 0 0-2-2H6"></path>
+      <path d="M17 8H4a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h2v3l3.5-3H17a2 2 0 0 0 2-2v-7a2 2 0 0 0-2-2z"></path>
+      <circle cx="10.5" cy="12.5" r="1.6"></circle>
+      <path d="M7.5 16.5c0-1.4 1.3-2.1 3-2.1s3 .7 3 2.1"></path>
+    </svg>
+  ),
+  (
+    <svg viewBox="0 0 24 24" className="service-svg-icon" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+    </svg>
+  ),
 ];
 
-const canonicalServices = [
-  {
-    key: 'bulletin',
-    title: 'Online Bulletin Board',
-    icon: (
-      <svg viewBox="0 0 24 24" className="service-svg-icon" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-        <rect x="2.5" y="3.5" width="19" height="13" rx="2.5"></rect>
-        <circle cx="7" cy="8.5" r="1.8"></circle>
-        <path d="M4.5 14c0-1.5 1.2-2.2 2.5-2.2s2.5.7 2.5 2.2"></path>
-        <rect x="13" y="6.5" width="6" height="4.5" rx="1"></rect>
-        <path d="M14.5 11l-1 2h2"></path>
-        <path d="M9 20.5h6"></path>
-        <path d="M12 16.5v4"></path>
-      </svg>
-    ),
-  },
-  {
-    key: 'intercept',
-    title: 'Intercept Interview',
-    icon: (
-      <svg viewBox="0 0 24 24" className="service-svg-icon" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M17 9V5a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h1v3.5l3.5-3.5H9"></path>
-        <path d="M7 6.8a1.2 1.2 0 0 1 2 1c0 .7-.8.9-1 1.4"></path>
-        <circle cx="8" cy="10.8" r="0.5" fill="currentColor"></circle>
-        <path d="M13 11h6a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-1v3l-3-3h-2a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2z"></path>
-      </svg>
-    ),
-  },
-  {
-    key: 'country',
-    title: 'Country Research',
-    icon: (
-      <svg viewBox="0 0 24 24" className="service-svg-icon" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-        <circle cx="12" cy="12" r="9.5"></circle>
-        <ellipse cx="12" cy="12" rx="4.5" ry="9.5"></ellipse>
-        <line x1="2.5" y1="12" x2="21.5" y2="12"></line>
-        <circle cx="7.5" cy="8.5" r="1" fill="currentColor"></circle>
-        <circle cx="16.5" cy="15.5" r="1" fill="currentColor"></circle>
-        <circle cx="12" cy="6" r="1" fill="currentColor"></circle>
-      </svg>
-    ),
-  },
-  {
-    key: 'competitive',
-    title: 'Competitive Intelligence',
-    icon: (
-      <svg viewBox="0 0 32 32" className="service-svg-icon brain-icon" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M16 4.5c-2.8 0-5 1.8-5 4 0 .6.1 1.2.4 1.7C9.3 10.6 7.5 12.2 7.5 14.5c0 1 .4 1.9 1 2.6-1.5 1-2.5 2.7-2.5 4.7 0 2.6 1.8 4.7 4.2 5.3.4 2.1 2.2 3.8 4.6 4.1.4.5 1 .8 1.8.8"></path>
-        <path d="M11 9.5c0 1.8-1 3-2.2 3.6"></path>
-        <path d="M12 16c-1.8.6-3 1.8-3 3.6"></path>
-        <path d="M12.5 22.5c-.6 1.2-1.8 2.2-3 2.5"></path>
-        <line x1="16" y1="4.5" x2="16" y2="28.5"></line>
-        <path d="M16 8h5.5a2 2 0 0 1 2 2v1"></path>
-        <circle cx="23.5" cy="11" r="1.5" fill="currentColor"></circle>
-        <path d="M16 13.5h7.5"></path>
-        <circle cx="25" cy="13.5" r="1.5" fill="currentColor"></circle>
-        <path d="M16 19h5l2.5 2.5h3.5"></path>
-        <circle cx="28.5" cy="21.5" r="1.5" fill="currentColor"></circle>
-        <path d="M16 24.5h4a2 2 0 0 0 2-2v-1"></path>
-        <circle cx="22" cy="21.5" r="1.5" fill="currentColor"></circle>
-        <path d="M16 27.5h5"></path>
-        <circle cx="22.5" cy="27.5" r="1.5" fill="currentColor"></circle>
-      </svg>
-    ),
-  },
-  {
-    key: 'programming',
-    title: 'Survey Programming',
-    icon: (
-      <svg viewBox="0 0 24 24" className="service-svg-icon" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
-        <polygon points="7.5,11.5 8.2,13 9.8,13.2 8.6,14.3 9,15.9 7.5,15.1 6,15.9 6.4,14.3 5.2,13.2 6.8,13" fill="currentColor"></polygon>
-        <polygon points="12,11.5 12.7,13 14.3,13.2 13.1,14.3 13.5,15.9 12,15.1 10.5,15.9 10.9,14.3 9.7,13.2 11.3,13" fill="currentColor"></polygon>
-        <polygon points="16.5,11.5 17.2,13 18.8,13.2 17.6,14.3 18,15.9 16.5,15.1 15,15.9 15.4,14.3 14.2,13.2 15.8,13" fill="currentColor"></polygon>
-      </svg>
-    ),
-  },
-  {
-    key: 'indepth',
-    title: 'In-Depth Interview',
-    icon: (
-      <svg viewBox="0 0 24 24" className="service-svg-icon" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M20 14V6a2 2 0 0 0-2-2H6"></path>
-        <path d="M17 8H4a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h2v3l3.5-3H17a2 2 0 0 0 2-2v-7a2 2 0 0 0-2-2z"></path>
-        <circle cx="10.5" cy="12.5" r="1.6"></circle>
-        <path d="M7.5 16.5c0-1.4 1.3-2.1 3-2.1s3 .7 3 2.1"></path>
-      </svg>
-    ),
-  },
-  {
-    key: 'telephonic',
-    title: 'Telephonic Interview',
-    icon: (
-      <svg viewBox="0 0 24 24" className="service-svg-icon" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
-      </svg>
-    ),
-  },
-];
-
-export default function HeroSection() {
-  const [activeServiceIdx, setActiveServiceIdx] = useState(3);
+export default function HeroSection({ dynamicData = null, initialServices = [] }) {
+  const [activeServiceIdx, setActiveServiceIdx] = useState(0);
   const [isFading, setIsFading] = useState(false);
 
   const heroWheelViewportRef = useRef(null);
   const heroWheelTrackRef = useRef(null);
   const heroVideoRef = useRef(null);
-  const currentSlotRef = useRef(10); // Start at Item 3 in Set 1 (7 + 3 = 10)
+  const currentSlotRef = useRef(10);
   const autoSlideTimerRef = useRef(null);
   const resumeTimerRef = useRef(null);
   const fadeTimeoutRef = useRef(null);
-  const numServices = canonicalServices.length; // 7
 
-  // Triple set (21 items) for seamless looping
+  const rawList = (initialServices && initialServices.length > 0)
+    ? initialServices
+    : (dynamicData?.servicePills || []);
+
+  const activeServices = rawList.slice(0, 7).map((s, idx) => ({
+    key: `service-${s.id || idx}`,
+    title: s.title || '',
+    desc: s.description || s.shortDescription || 'Delivering structured market data enabling organizations to gain complete clarity into market dynamics.',
+    badge: getServiceBadge(s.title),
+    cta: getServiceCta(s.title),
+    icon: serviceIconList[idx % serviceIconList.length]
+  }));
+
+  const numServices = activeServices.length > 0 ? activeServices.length : 1;
+  const heroServices = activeServices.map((p) => ({
+    badge: p.badge,
+    heading: p.title,
+    desc: p.desc,
+    cta: p.cta,
+  }));
+
   const items = [];
   for (let s = 0; s < 3; s++) {
-    canonicalServices.forEach((service, i) => {
+    activeServices.forEach((service, i) => {
       items.push({
         ...service,
         globalIndex: s * numServices + i,
@@ -262,11 +218,11 @@ export default function HeroSection() {
       if (currentSlotRef.current >= 14) {
         const resetSlot = currentSlotRef.current - numServices;
         scrollToSlot(resetSlot, false);
-        void track.offsetHeight; // Force reflow to commit instant jump
+        void track.offsetHeight;
       } else if (currentSlotRef.current < 7) {
         const resetSlot = currentSlotRef.current + numServices;
         scrollToSlot(resetSlot, false);
-        void track.offsetHeight; // Force reflow to commit instant jump
+        void track.offsetHeight;
       }
     };
 
@@ -305,104 +261,72 @@ export default function HeroSection() {
       item.addEventListener('click', () => handleItemClick(idx));
     });
 
-    let hoverResumeTimer = null;
-    const handleMouseEnter = () => {
-      clearTimeout(hoverResumeTimer);
-      hoverResumeTimer = setTimeout(() => {
-        startAutoSlide();
-      }, 3500);
-    };
-    const handleMouseLeave = () => {
-      clearTimeout(hoverResumeTimer);
-      startAutoSlide();
-    };
-    viewport.addEventListener('mouseenter', handleMouseEnter);
-    viewport.addEventListener('mouseleave', handleMouseLeave);
-
-    let wheelCooldown = false;
+    let wheelDebounceTimer = null;
     const handleWheel = (e) => {
       e.preventDefault();
-      if (wheelCooldown) return;
-      wheelCooldown = true;
-      setTimeout(() => {
-        wheelCooldown = false;
-      }, 350);
-
-      if (e.deltaY > 0) {
-        triggerUserScroll(currentSlotRef.current + 1);
-      } else if (e.deltaY < 0) {
-        triggerUserScroll(currentSlotRef.current - 1);
-      }
+      clearTimeout(wheelDebounceTimer);
+      wheelDebounceTimer = setTimeout(() => {
+        if (e.deltaY > 20) {
+          triggerUserScroll(currentSlotRef.current + 1);
+        } else if (e.deltaY < -20) {
+          triggerUserScroll(currentSlotRef.current - 1);
+        }
+      }, 40);
     };
-    viewport.addEventListener('wheel', handleWheel, { passive: false });
 
     let touchStartY = 0;
     const handleTouchStart = (e) => {
       touchStartY = e.touches[0].clientY;
-      stopAutoSlide();
     };
     const handleTouchEnd = (e) => {
-      const touchEndY = e.changedTouches[0].clientY;
-      const diffY = touchStartY - touchEndY;
-      if (Math.abs(diffY) > 30) {
-        if (diffY > 0) {
+      const deltaY = touchStartY - e.changedTouches[0].clientY;
+      if (Math.abs(deltaY) > 30) {
+        if (deltaY > 0) {
           triggerUserScroll(currentSlotRef.current + 1);
         } else {
           triggerUserScroll(currentSlotRef.current - 1);
         }
-      } else {
-        startAutoSlide();
       }
     };
+
+    viewport.addEventListener('wheel', handleWheel, { passive: false });
     viewport.addEventListener('touchstart', handleTouchStart, { passive: true });
     viewport.addEventListener('touchend', handleTouchEnd, { passive: true });
+
+    viewport.addEventListener('mouseenter', stopAutoSlide);
+    viewport.addEventListener('mouseleave', startAutoSlide);
+
+    scrollToSlot(10, false);
+    startAutoSlide();
 
     const handleResize = () => {
       scrollToSlot(currentSlotRef.current, false);
     };
     window.addEventListener('resize', handleResize);
 
-    // Background video autoplay assurance
-    const heroVid = heroVideoRef.current;
-    if (heroVid) {
-      heroVid.muted = true;
-      heroVid.defaultMuted = true;
-      const playPromise = heroVid.play();
-      if (playPromise !== undefined) {
-        playPromise.catch(() => {
-          const unlock = () => {
-            heroVid.play().catch(() => { });
-            ['click', 'touchstart', 'scroll'].forEach((evt) => {
-              window.removeEventListener(evt, unlock);
-            });
-          };
-          ['click', 'touchstart', 'scroll'].forEach((evt) => {
-            window.addEventListener(evt, unlock, { once: true, passive: true });
-          });
-        });
-      }
-    }
-
-    // Initial render setup: center on slot 10 (Competitive Intelligence)
-    scrollToSlot(10, false);
-    startAutoSlide();
-
     return () => {
       stopAutoSlide();
-      clearTimeout(hoverResumeTimer);
       clearTimeout(resumeTimerRef.current);
       clearTimeout(fadeTimeoutRef.current);
+      clearTimeout(wheelDebounceTimer);
       track.removeEventListener('transitionend', handleTransitionEnd);
-      viewport.removeEventListener('mouseenter', handleMouseEnter);
-      viewport.removeEventListener('mouseleave', handleMouseLeave);
       viewport.removeEventListener('wheel', handleWheel);
+      viewport.removeEventListener('mouseenter', stopAutoSlide);
+      viewport.removeEventListener('mouseleave', startAutoSlide);
       viewport.removeEventListener('touchstart', handleTouchStart);
       viewport.removeEventListener('touchend', handleTouchEnd);
       window.removeEventListener('resize', handleResize);
     };
   }, [numServices]);
 
-  const currentContent = heroServicesData[activeServiceIdx] || heroServicesData[3];
+  const currentContent = heroServices[activeServiceIdx] || heroServices[3] || {
+    badge: 'MARKET INTELLIGENCE',
+    heading: 'Structured Market Data For Unprecedented Clarity',
+    desc: 'Delivering structured market data enabling organizations to gain complete clarity into market dynamics, minimize risks, and uncover new opportunities.',
+    cta: 'DISCOVER THE UNIMRKT',
+  };
+
+  const videoSource = dynamicData?.videoUrl || '/asstes/images/home-banner-video.mp4';
 
   return (
     <section className="hero-section" id="about">
@@ -416,8 +340,7 @@ export default function HeroSection() {
           playsInline
           preload="auto"
         >
-          <source src="/asstes/images/home-banner-video.mp4" type="video/mp4" />
-          <source src="/img/home-banner-video.mp4" type="video/mp4" />
+          <source src={videoSource} type="video/mp4" />
         </video>
         <div className="hero-vignette-overlay mi-hero__shade"></div>
       </div>
@@ -442,9 +365,11 @@ export default function HeroSection() {
               <p className="hero-sub-paragraph hero-common-title" id="heroSubParagraph">
                 {currentContent.desc}
               </p>
-              <div className="hero-btn-area hero-actions-wrap"><a className="hero-common-btn-area btn-sm btn-discover-unimrkt" href="#cta"> <span id="heroCtaText">{currentContent.cta}</span>
-              <img src="/asstes/images/icon/arrow-right-icon-img.png" alt="Arrow Right"/></a>
-             
+              <div className="hero-btn-area hero-actions-wrap">
+                <a className="hero-common-btn-area btn-sm btn-discover-unimrkt" href="#cta">
+                  <span id="heroCtaText">{currentContent.cta}</span>
+                  <img src="/asstes/images/icon/arrow-right-icon-img.png" alt="Arrow Right" />
+                </a>
               </div>
             </div>
 

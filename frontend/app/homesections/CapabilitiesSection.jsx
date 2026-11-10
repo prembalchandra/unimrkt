@@ -3,7 +3,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 
-export default function CapabilitiesSection() {
+export default function CapabilitiesSection({ dynamicMetrics = null }) {
   const sectionRef = useRef(null);
   const videoRefs = useRef([]);
   const playTimersRef = useRef({});
@@ -21,32 +21,28 @@ export default function CapabilitiesSection() {
     const statsSection = sectionRef.current;
     if (!statsSection) return;
 
+    const targetSurveys = dynamicMetrics?.surveys || 250000;
+    const targetStations = dynamicMetrics?.stations || 450;
+    const targetExp = dynamicMetrics?.experience || 16;
+
     const animateCounters = () => {
       const duration = 2000;
       const startTime = performance.now();
-
-      const targets = [
-        { key: 'surveys', target: 250000, suffix: '' },
-        { key: 'workstations', target: 450, suffix: '' },
-        { key: 'experience', target: 16, suffix: ' YEARS' },
-      ];
 
       const step = (currentTime) => {
         const elapsed = currentTime - startTime;
         const progress = Math.min(elapsed / duration, 1);
         const easeOut = 1 - Math.pow(1 - progress, 3);
 
-        const newCounts = {};
-        targets.forEach(({ key, target, suffix }) => {
-          const currentVal = Math.floor(easeOut * target);
-          if (progress < 1) {
-            newCounts[key] = `${currentVal.toLocaleString()}+${suffix}`;
-          } else {
-            newCounts[key] = `${target.toLocaleString()}+${suffix}`;
-          }
-        });
+        const curSurveys = progress < 1 ? Math.floor(easeOut * targetSurveys) : targetSurveys;
+        const curStations = progress < 1 ? Math.floor(easeOut * targetStations) : targetStations;
+        const curExp = progress < 1 ? Math.floor(easeOut * targetExp) : targetExp;
 
-        setCounts(newCounts);
+        setCounts({
+          surveys: `${curSurveys.toLocaleString()}+`,
+          workstations: `${curStations.toLocaleString()}+`,
+          experience: `${curExp.toLocaleString()}+ YEARS`,
+        });
 
         if (progress < 1) {
           requestAnimationFrame(step);
@@ -91,7 +87,7 @@ export default function CapabilitiesSection() {
       observer.disconnect();
       document.removeEventListener('click', handleDocClick);
     };
-  }, []);
+  }, [dynamicMetrics]);
 
   const handleRowMouseEnter = (index) => {
     setHoveredRow(index);

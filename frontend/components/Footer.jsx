@@ -1,7 +1,29 @@
-import React from 'react';
-import Link from 'next/link';
+'use client';
 
-export default function Footer() {
+import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
+import { getStrapiMedia } from '@/lib/strapi';
+
+export default function Footer({ globalData: initialGlobalData = null }) {
+  const [globalData, setGlobalData] = useState(initialGlobalData);
+
+  useEffect(() => {
+    if (!initialGlobalData) {
+      fetch('http://127.0.0.1:1337/api/global?populate=*')
+        .then((res) => res.json())
+        .then((json) => {
+          if (json?.data) setGlobalData(json.data);
+        })
+        .catch(() => {});
+    }
+  }, [initialGlobalData]);
+
+  const logoSrc = getStrapiMedia(globalData?.footerLogo, '/asstes/images/unimrkt-resarch-logo.webp');
+  const footerDesc = globalData?.footerDescription || 'Delivering global market research, data collection, and actionable insights that drive smarter business decisions.';
+  const copyright = globalData?.copyrightText || '© 2026 Unimrkt Research. All rights reserved.';
+  const socialLinks = globalData?.socialLinks || [];
+  const legalLinks = globalData?.legalLinks || [];
+
   return (
     <footer className="unimrkt-resarch-footer-area">
       <video className="footer-banner-video" autoPlay muted loop playsInline preload="auto" aria-hidden="true">
@@ -14,11 +36,11 @@ export default function Footer() {
             <div className="footer-wapper-lift-col">
               <div className="footer-wapper-logo-area">
                 <Link href="/" className="footer-logo-box">
-                  <img src="/asstes/images/unimrkt-resarch-logo.webp" alt="Unimrkt Research" />
+                  <img src={logoSrc} alt="Unimrkt Research" />
                 </Link>
               </div>
               <p className="footer-wapper-title-area">
-                Delivering global market research, data collection, and actionable insights that drive smarter business decisions.
+                {footerDesc}
               </p>
               <div className="footer-certifications-row">
                 <img className="footer-certification-logo" src="/asstes/images/icon/mr-footer-logo.png" alt="ISO 27001 certification" />
@@ -67,18 +89,28 @@ export default function Footer() {
             <div className="footer-nav-col">
               <h3>Connect with us</h3>
               <div className="footer-social-links">
-                <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="footer-social-icon" aria-label="LinkedIn">
-                  <i className="fa-brands fa-linkedin-in"></i>
-                </a>
-                <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="footer-social-icon" aria-label="Twitter / X">
-                  <i className="fa-brands fa-x-twitter"></i>
-                </a>
-                <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="footer-social-icon" aria-label="Facebook">
-                  <i className="fa-brands fa-facebook-f"></i>
-                </a>
-                <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" className="footer-social-icon" aria-label="YouTube">
-                  <i className="fa-brands fa-youtube"></i>
-                </a>
+                {socialLinks.length > 0 ? (
+                  socialLinks.map((s, idx) => (
+                    <a key={idx} href={s.url} target="_blank" rel="noopener noreferrer" className="footer-social-icon" aria-label={s.platform}>
+                      <i className={`fa-brands fa-${s.platform === 'twitter' ? 'x-twitter' : s.platform === 'linkedin' ? 'linkedin-in' : s.platform === 'facebook' ? 'facebook-f' : s.platform}`}></i>
+                    </a>
+                  ))
+                ) : (
+                  <>
+                    <a href="https://linkedin.com/company/unimrkt-research" target="_blank" rel="noopener noreferrer" className="footer-social-icon" aria-label="LinkedIn">
+                      <i className="fa-brands fa-linkedin-in"></i>
+                    </a>
+                    <a href="https://twitter.com/unimrktresearch" target="_blank" rel="noopener noreferrer" className="footer-social-icon" aria-label="Twitter / X">
+                      <i className="fa-brands fa-x-twitter"></i>
+                    </a>
+                    <a href="https://facebook.com/unimrktresearch" target="_blank" rel="noopener noreferrer" className="footer-social-icon" aria-label="Facebook">
+                      <i className="fa-brands fa-facebook-f"></i>
+                    </a>
+                    <a href="https://youtube.com/@unimrktresearch" target="_blank" rel="noopener noreferrer" className="footer-social-icon" aria-label="YouTube">
+                      <i className="fa-brands fa-youtube"></i>
+                    </a>
+                  </>
+                )}
               </div>
             </div>
           </div>
@@ -88,12 +120,20 @@ export default function Footer() {
         <div className="srcn-container">
           <div className="footer-bottom-bar">
             <p className="footer-wapper-title-area" style={{ marginBottom: 0 }}>
-              &copy; 2025 Unimrkt Research. All rights reserved.
+              {copyright}
             </p>
             <div className="footer-bottom-links">
-              <Link href="/privacy-policy">Privacy Policy</Link>
-              <Link href="/privacy-policy">Terms &amp; Conditions</Link>
-              <Link href="/privacy-policy">Security</Link>
+              {legalLinks.length > 0 ? (
+                legalLinks.map((l, i) => (
+                  <Link key={i} href={l.url || '/privacy-policy'}>{l.label}</Link>
+                ))
+              ) : (
+                <>
+                  <Link href="/privacy-policy">Privacy Policy</Link>
+                  <Link href="/privacy-policy">Terms &amp; Conditions</Link>
+                  <Link href="/privacy-policy">Security</Link>
+                </>
+              )}
             </div>
           </div>
         </div>

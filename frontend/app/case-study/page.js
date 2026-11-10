@@ -6,7 +6,7 @@ import CaseStudyFaq from './sections/CaseStudyFaq';
 import InsightsEditorial from './sections/InsightsEditorial';
 import ResearchCta from './sections/ResearchCta';
 
-import { getCaseStudies, getPageBySlug, findSection } from '../../lib/strapi';
+import { getCaseStudies, getPageBySlug, findSection, getTestimonials, getFaqs } from '../../lib/strapi';
 
 export const metadata = {
   title: 'Client Case Studies & Proven Results | Unimrkt Research',
@@ -50,12 +50,15 @@ export const metadata = {
 };
 
 export default async function CaseStudyPage() {
-  const [strapiStudies, pageData] = await Promise.all([
-    getCaseStudies(24).catch(() => []),
+  const [strapiStudies, pageData, testimonials, faqs] = await Promise.all([
+    getCaseStudies(30).catch(() => []),
     getPageBySlug('case-study').catch(() => null),
+    getTestimonials(10).catch(() => []),
+    getFaqs({ limit: 10 }).catch(() => []),
   ]);
 
   const heroSection = findSection(pageData, 'sections.hero-common');
+  const faqSection = findSection(pageData, 'sections.faq-accordion');
   const ctaSection = findSection(pageData, 'sections.question-cta');
 
   return (
@@ -63,8 +66,8 @@ export default async function CaseStudyPage() {
       <CaseStudyHero dynamicHero={heroSection} />
       <CaseStudyExplorer initialCaseStudies={strapiStudies} />
       <ResearchValue />
-      <ContactProcess />
-      <CaseStudyFaq />
+      <ContactProcess initialTestimonials={testimonials} />
+      <CaseStudyFaq dynamicFaq={faqSection} initialFaqs={faqs} />
       <InsightsEditorial />
       <ResearchCta dynamicCta={ctaSection} />
     </>

@@ -1,68 +1,9 @@
+import React from 'react';
+import Link from 'next/link';
 
-import React from "react";
-import Link from "next/link";
+export default function CompnayIndustriesUnderstand({ industries = [] }) {
+  if (!industries || industries.length === 0) return null;
 
-
-const services = [
-  {
-    title: "Automotive",
-    description: "Driving mobility insights and automotive market growth.",
-    image: "/asstes/images/automotive-card-img.png",
-    alt: "Automotive industry",
-    href: "/services",
-  },
-  {
-    title: "Healthcare",
-    description: "Healthcare research insights for better patient experiences and informed decisions.",
-    image: "/asstes/images/healthcare-card-img.png",
-    alt: "Healthcare industry",
-    href: "/services",
-  },
-  {
-    title: "Consumer",
-    description: "Understanding consumer preferences, purchasing habits, and changing market trends.",
-    image: "/asstes/images/consumer-card-img.png",
-    alt: "Consumer industry",
-    href: "/services",
-  },
-  {
-    title: "Technology",
-    description: "Exploring technology trends, digital innovation, and emerging market opportunities.",
-    image: "/asstes/images/technology-card-img.png",
-    alt: "Technology industry",
-    href: "/services",
-  },
-  {
-    title: "Financial Services",
-    description: "Actionable financial insights that support smarter business and investment decisions.",
-    image: "/asstes/images/financial-services-card-img.png",
-    alt: "Financial services industry",
-    href: "/services",
-  },
-  {
-    title: "B2B & Industrial",
-    description: "Industry intelligence that strengthens B2B relationships and business growth.",
-    image: "/asstes/images/b2b-industrial-card-img.png",
-    alt: "B2B and industrial industry",
-    href: "/services",
-  },
-  {
-    title: "Retail & E-commerce",
-    description: "Retail research uncovering shopper behavior and e-commerce opportunities.",
-    image: "/asstes/images/retail-ecommerce-card-img.png",
-    alt: "Retail and e-commerce industry",
-    href: "/services",
-  },
-  {
-    title: "Media & Entertainment",
-    description: "Audience insights that reveal content preferences and evolving entertainment trends.",
-    image: "/asstes/images/media-entertainment-card-img.png",
-    alt: "Media and entertainment industry",
-    href: "/services",
-  },
-];
-
-export default function CompnayIndustriesUnderstand() {
   return (
     <section className="primary-services-section">
       <div className="srcn-container">
@@ -82,16 +23,16 @@ export default function CompnayIndustriesUnderstand() {
         </div>
 
         <div className="primary-services-grid">
-          {services.map((service) => (
+          {industries.map((item, idx) => (
             <Link
-              href={service.href}
+              href={item.slug ? `/industries` : '/services'}
               className="primary-service-card"
-              key={service.title}
-              aria-label={`${service.title}: ${service.description}`}
+              key={item.id || item.title || idx}
+              aria-label={`${item.title}: ${item.description || item.shortDescription}`}
             >
               <img
-                src={service.image}
-                alt={service.alt}
+                src={item.thumbnail?.url || item.image || item.iconClass || '/asstes/images/automotive-card-img.png'}
+                alt={item.title}
                 className="primary-service-card-img"
                 loading="lazy"
               />
@@ -103,11 +44,11 @@ export default function CompnayIndustriesUnderstand() {
 
               <div className="primary-service-card-body">
                 <h3 className="primary-service-card-title">
-                  {service.title}
+                  {item.title}
                 </h3>
 
                 <p className="primary-service-card-desc">
-                  {service.description}
+                  {item.description || item.shortDescription}
                 </p>
               </div>
             </Link>

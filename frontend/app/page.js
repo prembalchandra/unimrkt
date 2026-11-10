@@ -10,7 +10,7 @@ import MomentsSection from './homesections/MomentsSection';
 import HomeFaq from './homesections/HomeFaq';
 import HomeInsightsEditorial from './homesections/HomeInsightsEditorial';
 import HomeresearchCta from './homesections/HomeresearchCta';
-import { getBlogPosts, getPageBySlug, findSection, getIndustries, getServices } from '../lib/strapi';
+import { getBlogPosts, getPageBySlug, findSection, getIndustries, getServices, getGalleryItems } from '../lib/strapi';
 
 export const metadata = {
   title: 'Unimrkt Research | Structured Market Intelligence & Global Solutions',
@@ -57,11 +57,12 @@ export const metadata = {
 };
 
 export default async function HomePage() {
-  const [pageData, latestBlogs, industries, services] = await Promise.all([
+  const [pageData, latestBlogs, industries, services, galleryItems] = await Promise.all([
     getPageBySlug('home').catch(() => null),
     getBlogPosts(6).catch(() => []),
     getIndustries(12).catch(() => []),
     getServices(12).catch(() => []),
+    getGalleryItems(8).catch(() => []),
   ]);
 
   const homeHero = findSection(pageData, 'sections.home-hero');
@@ -71,14 +72,14 @@ export default async function HomePage() {
 
   return (
     <>
-      <HeroSection dynamicData={homeHero} />
+      <HeroSection dynamicData={homeHero} initialServices={services} />
       <GlobalResearchSection dynamicData={metricsSection} />
       <SolutionsSection dynamicServices={services} />
       <CapabilitiesSection />
       <AdvancedAreaSection />
       <IndustriesSection dynamicIndustries={industries} />
       <MarketplacesSection />
-      <MomentsSection />
+      <MomentsSection initialGalleryItems={galleryItems} />
       <HomeFaq dynamicFaq={faqSection} />
       <HomeInsightsEditorial />
       <HomeresearchCta dynamicCta={ctaSection} />

@@ -3,34 +3,21 @@
 import React from 'react';
 import Link from 'next/link';
 
-const caseStudies = [
-  {
-    id: 1,
-    title: 'Vehicle Product Acceptance Study Through Car Clinics',
-    image: '/asstes/images/automotive-success-story-1.png',
-    link: '/case-study-details',
-  },
-  {
-    id: 2,
-    title: 'Future Mobility & Car Design Preference Research',
-    image: '/asstes/images/automotive-success-story-2.png',
-    link: '/case-study-details',
-  },
-];
+export default function AutomotiveOverview({ caseStudies = [], kicker, title, description }) {
+  if (!caseStudies || caseStudies.length === 0) return null;
 
-export default function AutomotiveOverview() {
   return (
     <section className="auto-success-section">
       <div className="srcn-container">
         <div className="auto-success-grid">
           {/* Left Column: Heading & CTA */}
           <div className="auto-success-info">
-            <span className="auto-success-eyebrow">CASE STUDIES</span>
+            <span className="auto-success-eyebrow">{kicker || 'CASE STUDIES'}</span>
             <h2 className="auto-success-title">
-              Automotive<br />Success Stories
+              {title || <>Automotive<br />Success Stories</>}
             </h2>
             <p className="auto-success-desc">
-              Discover how our research empowers automotive brands with actionable insights, smarter decisions, and measurable business growth.
+              {description || 'Discover how our research empowers automotive brands with actionable insights, smarter decisions, and measurable business growth.'}
             </p>
             <Link href="/contact" className="auto-success-btn">
               <span>TALK TO OUR EXPERTS</span>
@@ -51,17 +38,17 @@ export default function AutomotiveOverview() {
             </Link>
           </div>
 
-          {/* Right Column: 2 Case Study Cards */}
+          {/* Right Column: Case Study Cards */}
           <div className="auto-success-cards">
-            {caseStudies.map((study) => (
+            {caseStudies.map((study, idx) => (
               <Link
-                key={study.id}
-                href={study.link}
+                key={study.id || idx}
+                href={study.slug ? `/case-study-details?slug=${study.slug}` : (study.link || '/case-study')}
                 className="auto-success-card"
               >
                 <div className="auto-success-card-img-wrap">
                   <img
-                    src={study.image}
+                    src={study.thumbnail?.url || study.image || '/asstes/images/automotive-success-story-1.png'}
                     alt={study.title}
                     className="auto-success-card-img"
                   />

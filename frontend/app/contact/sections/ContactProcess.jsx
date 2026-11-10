@@ -1,4 +1,3 @@
-
 'use client';
 
 import React, { useEffect, useRef } from 'react';
@@ -8,134 +7,100 @@ import { Autoplay, Pagination } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/pagination';
 
-const steps = [
-  {
-    number: '01',
-    title: 'Share Your Requirement',
-    desc: 'Tell us about your business question, target audience, and research objective so we can align the right approach.',
-  },
-  {
-    number: '02',
-    title: 'Discuss Your Objectives',
-    desc: 'Our team connects with you to understand the context, challenges, and expected outcomes before recommending a path.',
-  },
-  {
-    number: '03',
-    title: 'Define The Approach',
-    desc: 'We recommend the appropriate methodology, timeline, and execution plan tailored to your decision-making needs.',
-  },
-  {
-    number: '04',
-    title: 'Execution & Fieldwork',
-    desc: 'We deploy robust multi-market methodology and targeted screening to capture high-integrity data.',
-  },
-  {
-    number: '05',
-    title: 'Insight Delivery',
-    desc: 'We deliver comprehensive reports, dashboards, and executive insights ready for strategic decision-making.',
-  },
-  {
-    number: '06',
-    title: 'Strategic Impact',
-    desc: 'We partner with your team to integrate data findings, guide strategic implementation, and track market evolution.',
-  },
-];
-
-export default function ContactProcess() {
+export default function ContactProcess({ steps = [], title, description }) {
   const sliderRef = useRef(null);
+  const swiperInstanceRef = useRef(null);
 
   useEffect(() => {
-    if (!sliderRef.current) return;
+    if (!sliderRef.current || steps.length === 0) return;
 
-    const paginationEl = sliderRef.current.querySelector(
-      '.contact-process-pagination'
-    );
-
-    const swiperInstance = new Swiper(sliderRef.current, {
+    const swiper = new Swiper(sliderRef.current, {
       modules: [Autoplay, Pagination],
-
       slidesPerView: 1,
-      slidesPerGroup: 1,
-      spaceBetween: 18,
-      loop: true,
-
-      speed: 700,
-      watchOverflow: true,
+      spaceBetween: 16,
       grabCursor: true,
-
+      loop: steps.length > 3,
+      speed: 700,
       autoplay: {
         delay: 3000,
         disableOnInteraction: false,
         pauseOnMouseEnter: false,
       },
-
       pagination: {
-        el: paginationEl,
+        el: sliderRef.current.querySelector('.contact-process-pagination'),
         clickable: true,
       },
-
       breakpoints: {
-        640: {
-          slidesPerView: 2,
+        0: {
+          slidesPerView: 1,
+          spaceBetween: 16,
+        },
+        540: {
+          slidesPerView: 1.15,
           spaceBetween: 18,
         },
-        992: {
+        720: {
+          slidesPerView: 2,
+          spaceBetween: 20,
+        },
+        1024: {
+          slidesPerView: 3,
+          spaceBetween: 22,
+        },
+        1240: {
           slidesPerView: 3.5,
           spaceBetween: 22,
         },
       },
     });
 
+    swiperInstanceRef.current = swiper;
+
     return () => {
-      swiperInstance.destroy(true, true);
+      swiper.destroy(true, true);
+      swiperInstanceRef.current = null;
     };
-  }, []);
+  }, [steps]);
+
+  if (!steps || steps.length === 0) return null;
 
   return (
-    <section className="contact-process-section">
+    <section className="contact-process-section" id="contact-process">
       <div className="contact-process-container">
-
         <div className="contact-process-header">
-          <span className="contact-process-kicker career-values-kicker">
-            How it works
+          <span className="contact-process-kicker">
+            HOW WE ENGAGE
           </span>
-
-          <h2 className="contact-process-title section-main-heading">
-            What Happens After You Contact Us?
+          <h2 className="contact-process-heading">
+            {title || 'From First Conversation to Actionable Results'}
           </h2>
-
-          <p className="contact-process-subtitle section-sub-text">
-            A simple process designed to understand your requirement and
-            connect you with the right research expert.
+          <p className="contact-process-description">
+            {description || 'A structured, transparent research journey designed around your business decisions.'}
           </p>
         </div>
 
         <div className="common-swiper-box">
-          <div
-            className="swiper contact-process-slider"
-            ref={sliderRef}
-          >
+          <div className="swiper contact-process-swiper" ref={sliderRef}>
             <div className="swiper-wrapper">
-              {steps.map((step) => (
-                <article
-                  key={step.number}
-                  className="swiper-slide contact-process-card"
-                >
-                  <div className="contact-process-number">
-                    {step.number}
-                  </div>
-
-                  <h3>{step.title}</h3>
-
-                  <p>{step.desc}</p>
-                </article>
+              {steps.map((slide, index) => (
+                <div key={slide.id || index} className="swiper-slide contact-process-slide">
+                  <article className="contact-process-card">
+                    <span className="contact-process-number">
+                      {slide.number || slide.num || (index < 9 ? `0${index + 1}` : index + 1)}
+                    </span>
+                    <h3 className="contact-process-title">
+                      {slide.title}
+                    </h3>
+                    <p className="contact-process-desc">
+                      {slide.desc || slide.description}
+                    </p>
+                  </article>
+                </div>
               ))}
             </div>
-
-            <div className="contact-process-pagination"></div>
+            <div className="contact-process-pagination" />
           </div>
         </div>
-
       </div>
     </section>
   );

@@ -1,130 +1,67 @@
 'use client';
 
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import Link from 'next/link';
-
-const blogCardsData = [
-  {
-    id: 1,
-    category: 'market-research',
-    tag: 'Market Research',
-    img: '/asstes/images/customer-experience-img.png',
-    title: 'From Data to Decision: How Modern Market Research Drives Growth',
-    desc: 'Discover actionable strategies to translate raw data into decisive market intelligence that accelerates business scaling.',
-    link: '/blog-details',
-  },
-  {
-    id: 2,
-    category: 'market-research',
-    tag: 'Primary Research',
-    img: '/asstes/images/unimrkt-reseach-primary-research-banner-img.png',
-    title: 'Key Market Research Methodologies Every Business Needs to Know',
-    desc: 'A comprehensive breakdown of qualitative vs. quantitative research approaches and when to deploy each for maximum ROI.',
-    link: '/blog-details',
-  },
-  {
-    id: 3,
-    category: 'b2b-research',
-    tag: 'B2B Research',
-    img: '/asstes/images/centralized-data-card-img.png',
-    title: 'Why Consumer Behaviour Research is Critical for Product Success',
-    desc: 'Understanding buyer psychology, purchasing barriers, and preference shifts across diverse and competitive global markets.',
-    link: '/blog-details',
-  },
-  {
-    id: 4,
-    category: 'market-research',
-    tag: 'Automotive',
-    img: '/asstes/images/real-time-monitoring-card-img.png',
-    title: 'Key Trends Shaping the Future of the Automotive Industry',
-    desc: 'Explore how electrification, connected technologies and changing customer expectations are reshaping the future of mobility.',
-    link: '/blog-details',
-  },
-  {
-    id: 5,
-    category: 'data-analytics',
-    tag: 'AI & Technology',
-    img: '/asstes/images/interview-controls-card-img.png',
-    title: 'The Growing Role of AI in Primary Research & Qualitative Analysis',
-    desc: 'Examining how generative AI models and natural language processing augment human intuition in complex studies.',
-    link: '/blog-details',
-  },
-  {
-    id: 6,
-    category: 'b2b-research',
-    tag: 'Brand Tracking',
-    img: '/asstes/images/data-validation-card-img.png',
-    title: 'Brand Tracking: Measuring What Matters in an Evolving Market',
-    desc: 'Reliable techniques for monitoring brand health, respondent sentiment, and perceptual shifts over continuous cycles.',
-    link: '/blog-details',
-  },
-  {
-    id: 7,
-    category: 'consumer-insights',
-    tag: 'Consumer Insights',
-    img: '/asstes/images/product-research-img.png',
-    title: 'Customer Satisfaction vs Experience: What B2B Companies Need to Know',
-    desc: 'Why CSAT metrics alone are insufficient and how modern CX frameworks foster long-term retention and loyalty.',
-    link: '/blog-details',
-  },
-  {
-    id: 8,
-    category: 'healthcare',
-    tag: 'Healthcare',
-    img: '/asstes/images/smart-survey-management-card-img.png',
-    title: 'Healthcare Market Research: Overcoming Regulatory & Sample Challenges',
-    desc: 'Navigating strict compliance, physician panels, and patient sentiment in clinical and healthcare-centric studies.',
-    link: '/blog-details',
-  },
-  {
-    id: 9,
-    category: 'market-research',
-    tag: 'Global Panels',
-    img: '/asstes/images/online-surveys-card-img.png',
-    title: 'Global Panel Solutions: Best Practices for Quality Data Collection',
-    desc: 'How multi-tier respondent screening and digital fraud detection ensure uncompromised integrity in survey research.',
-    link: '/blog-details',
-  },
-];
-
-const categories = [
-  { value: 'all', label: 'All' },
-  { value: 'market-research', label: 'Market Research' },
-  { value: 'b2b-research', label: 'B2B Research' },
-  { value: 'healthcare', label: 'Healthcare' },
-  { value: 'consumer-insights', label: 'Consumer Insights' },
-  { value: 'data-analytics', label: 'Data Analytics & Tech' },
-];
+import { getStrapiMedia } from '../../../lib/strapi';
 
 const CARDS_PER_PAGE = 6;
 
+function formatBlogCard(b, idx) {
+  if (!b) return null;
+  const categorySlug = b.category?.slug || 'market-research';
+  const tag = b.category?.name || b.tag || 'Market Research';
+
+  return {
+    id: b.id || b.documentId || idx + 1,
+    category: categorySlug,
+    tag,
+    img: getStrapiMedia(b.featuredImage || b.coverImage, '/asstes/images/customer-experience-img.png'),
+    title: b.title || '',
+    desc: b.excerpt || b.description || '',
+    link: b.slug ? `/blog-details?slug=${b.slug}` : '/blog-details',
+  };
+}
+
 export default function BlogGrid({ initialBlogs = [] }) {
+  const [blogs, setBlogs] = useState(() => (initialBlogs || []).map(formatBlogCard).filter(Boolean));
   const [activeCategory, setActiveCategory] = useState('all');
   const [currentPage, setCurrentPage] = useState(1);
 
-  const activeBlogsList = useMemo(() => {
+  useEffect(() => {
     if (initialBlogs && initialBlogs.length > 0) {
-      const strapiUrl = process.env.NEXT_PUBLIC_STRAPI_URL || 'http://127.0.0.1:1337';
-      return initialBlogs.map((b, idx) => ({
-        id: b.id || b.documentId || idx,
-        category: b.category?.slug || 'market-research',
-        tag: b.category?.name || b.tag || 'Market Research',
-        img: b.coverImage?.url
-          ? (b.coverImage.url.startsWith('http') ? b.coverImage.url : `${strapiUrl}${b.coverImage.url}`)
-          : '/asstes/images/customer-experience-img.png',
-        title: b.title,
-        desc: b.excerpt || b.description || '',
-        link: b.slug ? `/blog/${b.slug}` : '/blog-details',
-      }));
+      setBlogs(initialBlogs.map(formatBlogCard).filter(Boolean));
+    } else {
+      const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL || 'http://127.0.0.1:1337';
+      fetch(`${STRAPI_URL}/api/blogs?populate=*&pagination[limit]=50&sort=publishedAt:desc`)
+        .then((r) => r.json())
+        .then((d) => {
+          if (Array.isArray(d?.data)) {
+            setBlogs(d.data.map(formatBlogCard).filter(Boolean));
+          }
+        })
+        .catch(() => {});
     }
-    return blogCardsData;
   }, [initialBlogs]);
 
+  const categories = useMemo(() => {
+    const map = new Map();
+    blogs.forEach((b) => {
+      if (b.category && !map.has(b.category)) {
+        map.set(b.category, b.tag || b.category);
+      }
+    });
+    const result = [{ value: 'all', label: 'All' }];
+    map.forEach((lbl, val) => {
+      result.push({ value: val, label: lbl });
+    });
+    return result;
+  }, [blogs]);
+
   const filteredCards = useMemo(() => {
-    return activeBlogsList.filter((card) => {
+    return blogs.filter((card) => {
       return activeCategory === 'all' || card.category === activeCategory;
     });
-  }, [activeCategory, activeBlogsList]);
+  }, [activeCategory, blogs]);
 
   const totalPages = Math.max(1, Math.ceil(filteredCards.length / CARDS_PER_PAGE));
   const startIndex = (currentPage - 1) * CARDS_PER_PAGE;
@@ -149,16 +86,19 @@ export default function BlogGrid({ initialBlogs = [] }) {
         <div className="section-header-area">
           <h2 className="section-main-heading">Insights &amp; Stories</h2>
           <p className="section-sub-text">
-            Stay ahead with the latest industry insights, expert perspectives, and actionable intelligence to fuel your business growth and decision-making.
+            Explore in-depth articles, industry breakdowns, and forward-looking research perspectives.
           </p>
         </div>
 
-        {/* Category Filter Pills */}
-        <div className="blog-filter-wrapper">
-          <div className="blog-filter-tabs">
+        {/* Filter Tabs */}
+        {categories.length > 1 && (
+          <div className="blog-filter-tabs" role="tablist">
             {categories.map((cat) => (
               <button
                 key={cat.value}
+                type="button"
+                role="tab"
+                aria-selected={activeCategory === cat.value}
                 className={`blog-filter-btn ${activeCategory === cat.value ? 'active' : ''}`}
                 onClick={() => handleCategoryChange(cat.value)}
               >
@@ -166,35 +106,33 @@ export default function BlogGrid({ initialBlogs = [] }) {
               </button>
             ))}
           </div>
-        </div>
+        )}
 
-        {/* Blog Grid */}
+        {/* Blog Cards Grid */}
         <div className="blog-sction-wapper">
-          <div className="blog-grid-area">
+          <div className="blog-col-grid">
             {visibleCards.map((card) => (
-              <div key={card.id} className="blog-col">
-                <Link href={card.link} className="blog-col-box">
-                  <div className="blog-wapper">
-                    <div className="blog-img-area">
-                      <img src={card.img} alt={card.title} />
+              <Link key={card.id} href={card.link} className="blog-col-box">
+                <div className="blog-wapper">
+                  <div className="blog-img-area">
+                    <img src={card.img} alt={card.title} />
+                  </div>
+                  <div className="blog-contnet">
+                    <div className="blog-category-tag-box">
+                      <span className="badge-tag">{card.tag}</span>
                     </div>
-                    <div className="blog-contnet">
-                      <div className="blog-category-tag-box">
-                        <span className="badge-tag">{card.tag}</span>
-                      </div>
-                      <div className="blog-contnt-row-area">
-                        <h3>{card.title}</h3>
-                        <p>{card.desc}</p>
-                      </div>
-                      <div className="blog-card-bottom-action">
-                        <span className="blog-read-arrow-circle">
-                          <i className="fa-solid fa-arrow-up-right-from-square"></i>
-                        </span>
-                      </div>
+                    <div className="blog-contnt-row-area">
+                      <h3>{card.title}</h3>
+                      <p>{card.desc}</p>
+                    </div>
+                    <div className="blog-card-bottom-action">
+                      <span className="blog-read-arrow-circle">
+                        <i className="fa-solid fa-arrow-up-right-from-square"></i>
+                      </span>
                     </div>
                   </div>
-                </Link>
-              </div>
+                </div>
+              </Link>
             ))}
           </div>
 
@@ -208,9 +146,10 @@ export default function BlogGrid({ initialBlogs = [] }) {
           {totalPages > 1 && (
             <div className="blog-pagination-area" style={{ display: 'flex' }}>
               <button
-                className="pagination-item arrow-btn"
+                type="button"
+                className="pagination-item arrow-btn prev-btn"
                 disabled={currentPage <= 1}
-                onClick={() => handlePageChange(currentPage - 1)}
+                onClick={() => handlePageChange(Math.max(1, currentPage - 1))}
                 aria-label="Previous page"
               >
                 <i className="fa-solid fa-chevron-left"></i>
@@ -218,7 +157,8 @@ export default function BlogGrid({ initialBlogs = [] }) {
               {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
                 <button
                   key={page}
-                  className={`pagination-item ${page === currentPage ? 'active' : ''}`}
+                  type="button"
+                  className={`pagination-item page-btn ${page === currentPage ? 'active' : ''}`}
                   onClick={() => handlePageChange(page)}
                   aria-current={page === currentPage ? 'page' : 'false'}
                 >
@@ -226,9 +166,10 @@ export default function BlogGrid({ initialBlogs = [] }) {
                 </button>
               ))}
               <button
-                className="pagination-item arrow-btn"
+                type="button"
+                className="pagination-item arrow-btn next-btn"
                 disabled={currentPage >= totalPages}
-                onClick={() => handlePageChange(currentPage + 1)}
+                onClick={() => handlePageChange(Math.min(totalPages, currentPage + 1))}
                 aria-label="Next page"
               >
                 <i className="fa-solid fa-chevron-right"></i>

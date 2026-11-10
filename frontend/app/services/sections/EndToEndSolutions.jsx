@@ -1,53 +1,78 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { getStrapiMedia } from '../../../lib/strapi';
 
-const solutionsData = [
-  {
-    id: 1,
-    title: 'Primary Research',
-    desc: 'Gather first-hand insights from target audiences through qualitative and quantitative research. Understand customer needs, behaviours, attitudes and experiences to uncover meaningful insights and support confident business decisions.',
-    image: '/asstes/images/unimrkt-resarch-our-services-img1.png',
-    icon: '/asstes/images/icon/primary-research-icon-img.png',
-    link: '/primary-research',
-  },
-  {
-    id: 2,
-    title: 'Qualitative Research',
-    desc: 'Uncover deep consumer motivations, perceptions, and emotional drivers through focused group discussions, in-depth interviews, and ethnographic studies that reveal the underlying reasons behind market decisions.',
-    image: '/asstes/images/unimrkt-resarch-our-services-img2.png',
-    icon: '/asstes/images/icon/qualitative-research-icon-img.png',
-    link: '/telephonic-surveys',
-  },
-  {
-    id: 3,
-    title: 'Quantitative Research',
-    desc: 'Measure market trends, customer behaviours and opinions at scale through structured surveys and data-driven research, delivering reliable insights that support strategic decisions and business growth.',
-    image: '/asstes/images/unimrkt-resarch-our-services-img3.png.png',
-    icon: '/asstes/images/icon/quantitative-research-icon-img.png',
-    link: '/telephonic-surveys',
-  },
-  {
-    id: 4,
-    title: 'Business Research',
-    desc: 'Gain strategic competitive intelligence, market sizing, industry benchmarking, and supply-chain evaluations to inform high-stakes corporate decisions and capitalize on new market opportunities.',
-    image: '/asstes/images/unimrkt-resarch-our-services-img4.png',
-    icon: '/asstes/images/icon/business-research-icon-img.png',
-    link: '/blog',
-  },
-  {
-    id: 5,
-    title: 'Research Support Functions',
-    desc: 'Empower your research operations with specialized survey programming, data processing, statistical modeling, advanced translation, and reporting services delivered by experienced specialists.',
-    image: '/asstes/images/unimrkt-resarch-our-services-img5.png',
-    icon: '/asstes/images/icon/research-support-functions-img.png',
-    link: '/blog',
-  },
-];
+function getServiceVisuals(title = '', idx = 0) {
+  const t = title.toLowerCase();
+  let imgNum = (idx % 5) + 1;
+  let iconName = 'primary-research-icon-img.png';
 
-export default function EndToEndSolutions() {
+  if (t.includes('primary')) {
+    imgNum = 1;
+    iconName = 'primary-research-icon-img.png';
+  } else if (t.includes('qualitative') || t.includes('telephonic') || t.includes('cati')) {
+    imgNum = 2;
+    iconName = 'qualitative-research-icon-img.png';
+  } else if (t.includes('quantitative') || t.includes('survey')) {
+    imgNum = 3;
+    iconName = 'quantitative-research-icon-img.png';
+  } else if (t.includes('business') || t.includes('desk') || t.includes('secondary')) {
+    imgNum = 4;
+    iconName = 'business-research-icon-img.png';
+  } else {
+    imgNum = 5;
+    iconName = 'research-support-functions-img.png';
+  }
+
+  return {
+    image: `/asstes/images/unimrkt-resarch-our-services-img${imgNum}${imgNum === 3 ? '.png.png' : '.png'}`,
+    icon: `/asstes/images/icon/${iconName}`,
+  };
+}
+
+function formatService(s, idx) {
+  if (!s) return null;
+  const title = s.title || '';
+  const visuals = getServiceVisuals(title, idx);
+  const slug = s.slug || '';
+  let link = '/services';
+  if (slug === 'primary-research') link = '/primary-research';
+  else if (slug === 'telephonic-surveys') link = '/telephonic-surveys';
+  else if (slug) link = `/services`;
+
+  return {
+    id: s.id || s.documentId || idx + 1,
+    title,
+    desc: s.shortDescription || s.description || 'Comprehensive data collection, analysis, and strategic intelligence tailored for global organizations.',
+    image: visuals.image,
+    icon: visuals.icon,
+    link,
+  };
+}
+
+export default function EndToEndSolutions({ initialServices = [] }) {
+  const [solutions, setSolutions] = useState(() => (initialServices || []).map(formatService).filter(Boolean));
   const [hoveredIndex, setHoveredIndex] = useState(null);
+
+  useEffect(() => {
+    if (initialServices && initialServices.length > 0) {
+      setSolutions(initialServices.map(formatService).filter(Boolean));
+    } else {
+      const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL || 'http://127.0.0.1:1337';
+      fetch(`${STRAPI_URL}/api/services?populate=*&pagination[limit]=6`)
+        .then((r) => r.json())
+        .then((d) => {
+          if (Array.isArray(d?.data)) {
+            setSolutions(d.data.map(formatService).filter(Boolean));
+          }
+        })
+        .catch(() => {});
+    }
+  }, [initialServices]);
+
+  if (solutions.length === 0) return null;
 
   return (
     <section className="end-to-end-solutions-section">
@@ -64,7 +89,7 @@ export default function EndToEndSolutions() {
           className="end-to-end-accordion"
           onMouseLeave={() => setHoveredIndex(null)}
         >
-          {solutionsData.map((item, index) => {
+          {solutions.slice(0, 5).map((item, index) => {
             const isHovered = hoveredIndex === index;
             const isCollapsed = hoveredIndex !== null && !isHovered;
 
@@ -107,7 +132,7 @@ export default function EndToEndSolutions() {
                     onClick={(e) => e.stopPropagation()}
                   >
                     <span>EXPLORE RESEARCH</span>
-                    <img src="/asstes/images/icon/arrow-right-icon-img.png" alt="Arrow Right"/>
+                    <img src="/asstes/images/icon/arrow-right-icon-img.png" alt="Arrow Right" />
                   </Link>
                 </div>
               </div>

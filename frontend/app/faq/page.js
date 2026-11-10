@@ -2,7 +2,7 @@ import React from 'react';
 import FaqHero from './sections/FaqHero';
 import FaqContent from './sections/FaqContent';
 import ResearchCta from './sections/ResearchCta';
-import { getPageBySlug, findSection } from '../../lib/strapi';
+import { getPageBySlug, findSection, getFaqs } from '../../lib/strapi';
 
 export const metadata = {
   title: 'Frequently Asked Questions (FAQ) | Unimrkt Research',
@@ -46,7 +46,10 @@ export const metadata = {
 };
 
 export default async function FaqPage() {
-  const pageData = await getPageBySlug('faq').catch(() => null);
+  const [pageData, faqs] = await Promise.all([
+    getPageBySlug('faq').catch(() => null),
+    getFaqs().catch(() => []),
+  ]);
 
   const heroSection = findSection(pageData, 'sections.hero-common');
   const faqSection = findSection(pageData, 'sections.faq-accordion');
@@ -55,7 +58,7 @@ export default async function FaqPage() {
   return (
     <main>
       <FaqHero dynamicHero={heroSection} />
-      <FaqContent dynamicFaq={faqSection} />
+      <FaqContent dynamicFaq={faqSection} initialFaqs={faqs} />
       <ResearchCta dynamicCta={ctaSection} />
     </main>
   );

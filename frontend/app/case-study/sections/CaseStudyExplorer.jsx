@@ -1,213 +1,31 @@
 'use client';
 
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import Link from 'next/link';
-
-const caseStudiesData = [
-  {
-    id: 1,
-    category: 'banking-finance',
-    research: 'consumer-insights',
-    badge: 'BANKING & FINANCE',
-    img: '/asstes/images/case-study-banking.jpg',
-    title: 'Understanding Customer Expectations in a Changing Financial Market',
-    snippet: 'How qualitative research helped a leading bank uncover evolving consumer preferences and redesign digital services.',
-    link: '/case-study-details',
-  },
-  {
-    id: 2,
-    category: 'healthcare',
-    research: 'primary-research',
-    badge: 'HEALTHCARE',
-    img: '/asstes/images/industry-healthcare.png',
-    title: 'Physician Insights for Next-Gen MedTech Product Launch',
-    snippet: 'Specialized healthcare fieldwork across 12 countries to gauge surgeon interest in innovative robotic devices.',
-    link: '/case-study-details',
-  },
-  {
-    id: 3,
-    category: 'automotive',
-    research: 'b2b-research',
-    badge: 'AUTOMOTIVE',
-    img: '/asstes/images/industry-retail.png',
-    title: 'Electric Vehicle Adoption & Commercial Fleet Readiness',
-    snippet: 'Evaluating supplier hurdles and infrastructure readiness among tier-1 automotive suppliers in Europe.',
-    link: '/case-study-details',
-  },
-  {
-    id: 4,
-    category: 'fmcg',
-    research: 'consumer-insights',
-    badge: 'FMCG',
-    img: '/asstes/images/market-trends-card-img1.png',
-    title: 'Consumer Brand Loyalty Shift in Fast-Moving Packaged Goods',
-    snippet: 'Uncovering brand-switching triggers among Gen Z and millennial grocery shoppers across metropolitan areas.',
-    link: '/case-study-details',
-  },
-  {
-    id: 5,
-    category: 'it-telecom',
-    research: 'data-analytics',
-    badge: 'IT & TELECOM',
-    img: '/asstes/images/market-trends-card-img2.png',
-    title: 'Enterprise Cloud Transition Benchmarks & Security Needs',
-    snippet: 'Synthesizing survey data from 400+ IT decision makers to inform a global telco’s cloud product portfolio.',
-    link: '/case-study-details',
-  },
-  {
-    id: 6,
-    category: 'energy-utilities',
-    research: 'market-research',
-    badge: 'ENERGY & UTILITIES',
-    img: '/asstes/images/market-trends-card-img3.png',
-    title: 'Renewable Transition Readiness Among Commercial Facilities',
-    snippet: 'Assessing energy storage and commercial solar adoption barriers among corporate facility directors.',
-    link: '/case-study-details',
-  },
-  {
-    id: 7,
-    category: 'banking-finance',
-    research: 'b2b-research',
-    badge: 'BANKING & FINANCE',
-    img: '/asstes/images/case-study-banking.jpg',
-    title: 'SME Lending Dynamics & Digital Onboarding Optimization',
-    snippet: 'Interviewing small business owners to identify financing gaps and friction in current lending workflows.',
-    link: '/case-study-details',
-  },
-  {
-    id: 8,
-    category: 'healthcare',
-    research: 'consumer-insights',
-    badge: 'HEALTHCARE',
-    img: '/asstes/images/industry-healthcare.png',
-    title: 'Telemedicine Satisfaction & Retention in Post-Pandemic Care',
-    snippet: 'Tracking patient satisfaction across remote consults and identifying the digital features patients demand.',
-    link: '/case-study-details',
-  },
-  {
-    id: 9,
-    category: 'automotive',
-    research: 'market-research',
-    badge: 'AUTOMOTIVE',
-    img: '/asstes/images/industry-retail.png',
-    title: 'Connected Vehicle Telematics & Consumer Privacy Priorities',
-    snippet: 'Mapping consumer willingness to share real-time automotive data in exchange for customized vehicle services.',
-    link: '/case-study-details',
-  },
-  {
-    id: 10,
-    category: 'fmcg',
-    research: 'primary-research',
-    badge: 'FMCG',
-    img: '/asstes/images/market-trends-card-img1.png',
-    title: 'Sustainable Packaging Preferences Across Global Supermarkets',
-    snippet: 'Quantifying purchase intent shifts when consumer goods switch to 100% biodegradable packaging alternatives.',
-    link: '/case-study-details',
-  },
-  {
-    id: 11,
-    category: 'it-telecom',
-    research: 'b2b-research',
-    badge: 'IT & TELECOM',
-    img: '/asstes/images/market-trends-card-img2.png',
-    title: '5G Enterprise Private Network Demand Analysis',
-    snippet: 'Surveying industrial plants on 5G private wireless network investment timelines and operational requirements.',
-    link: '/case-study-details',
-  },
-  {
-    id: 12,
-    category: 'energy-utilities',
-    research: 'data-analytics',
-    badge: 'ENERGY & UTILITIES',
-    img: '/asstes/images/market-trends-card-img3.png',
-    title: 'Smart Meter Data Analytics for Peak Grid Load Forecasting',
-    snippet: 'Analyzing residential smart-meter trial data to assist an electricity provider in pricing and distribution.',
-    link: '/case-study-details',
-  },
-  {
-    id: 13,
-    category: 'banking-finance',
-    research: 'primary-research',
-    badge: 'BANKING & FINANCE',
-    img: '/asstes/images/case-study-banking.jpg',
-    title: 'Cross-Border B2B Payments & Forex Hedging Survey',
-    snippet: 'CATI interviews across 250 corporate treasurers evaluating international payment bottlenecks and costs.',
-    link: '/case-study-details',
-  },
-  {
-    id: 14,
-    category: 'healthcare',
-    research: 'data-analytics',
-    badge: 'HEALTHCARE',
-    img: '/asstes/images/industry-healthcare.png',
-    title: 'Pharmaceutical Market Access & Payer Reimbursement Trends',
-    snippet: 'In-depth interviews with insurance actuaries and health authorities determining pricing thresholds.',
-    link: '/case-study-details',
-  },
-  {
-    id: 15,
-    category: 'automotive',
-    research: 'consumer-insights',
-    badge: 'AUTOMOTIVE',
-    img: '/asstes/images/industry-retail.png',
-    title: 'Car Subscription Models vs. Traditional Dealership Leasing',
-    snippet: 'Analyzing buyer sentiment across urban commuters regarding vehicle subscription flexibility.',
-    link: '/case-study-details',
-  },
-  {
-    id: 16,
-    category: 'fmcg',
-    research: 'market-research',
-    badge: 'FMCG',
-    img: '/asstes/images/market-trends-card-img1.png',
-    title: 'Direct-to-Consumer Disruption in Premium Skincare',
-    snippet: 'Examining omnichannel consumer touchpoints and digital discovery funnels for independent cosmetics brands.',
-    link: '/case-study-details',
-  },
-  {
-    id: 17,
-    category: 'it-telecom',
-    research: 'primary-research',
-    badge: 'IT & TELECOM',
-    img: '/asstes/images/market-trends-card-img2.png',
-    title: 'AI Development Tool Stack Adoption in Enterprise Engineering',
-    snippet: 'Assessing developer velocity and software licensing models through targeted developer community panels.',
-    link: '/case-study-details',
-  },
-  {
-    id: 18,
-    category: 'energy-utilities',
-    research: 'b2b-research',
-    badge: 'ENERGY & UTILITIES',
-    img: '/asstes/images/market-trends-card-img3.png',
-    title: 'Hydrogen Infrastructure Viability & Industrial Fuel Switching',
-    snippet: 'Gathering strategic viewpoints from chemical and manufacturing leaders on hydrogen energy feasibility.',
-    link: '/case-study-details',
-  },
-];
-
-const industryOptions = [
-  { value: 'all', label: 'All Industries' },
-  { value: 'banking-finance', label: 'Banking & Finance' },
-  { value: 'healthcare', label: 'Healthcare' },
-  { value: 'automotive', label: 'Automotive' },
-  { value: 'fmcg', label: 'FMCG' },
-  { value: 'it-telecom', label: 'IT & Telecom' },
-  { value: 'energy-utilities', label: 'Energy & Utilities' },
-];
-
-const researchOptions = [
-  { value: 'all', label: 'All Research Types' },
-  { value: 'market-research', label: 'Market Research' },
-  { value: 'primary-research', label: 'Primary Research' },
-  { value: 'b2b-research', label: 'B2B Research' },
-  { value: 'consumer-insights', label: 'Consumer Insights' },
-  { value: 'data-analytics', label: 'Data Analytics' },
-];
+import { getStrapiMedia } from '../../../lib/strapi';
 
 const CARDS_PER_PAGE = 6;
 
+function formatStudy(item, idx) {
+  if (!item) return null;
+  const indSlug = item.industry?.slug || 'banking-finance';
+  const indName = item.industry?.title || item.industry?.name || 'BANKING & FINANCE';
+  const resSlug = item.researchType?.slug || 'consumer-insights';
+
+  return {
+    id: item.documentId || item.id || idx + 1,
+    category: indSlug,
+    research: resSlug,
+    badge: indName.toUpperCase(),
+    img: getStrapiMedia(item.heroImage, '/asstes/images/case-study-banking.jpg'),
+    title: item.title || '',
+    snippet: item.excerpt || '',
+    link: item.slug ? `/case-study-details?slug=${item.slug}` : '/case-study-details',
+  };
+}
+
 export default function CaseStudyExplorer({ initialCaseStudies = [] }) {
+  const [studies, setStudies] = useState(() => (initialCaseStudies || []).map(formatStudy).filter(Boolean));
   const [activeIndustry, setActiveIndustry] = useState('all');
   const [activeResearch, setActiveResearch] = useState('all');
   const [industryDropdownOpen, setIndustryDropdownOpen] = useState(false);
@@ -216,39 +34,59 @@ export default function CaseStudyExplorer({ initialCaseStudies = [] }) {
   const [researchSearch, setResearchSearch] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
 
-  const allStudies = useMemo(() => {
+  useEffect(() => {
     if (initialCaseStudies && initialCaseStudies.length > 0) {
-      const strapiUrl = process.env.NEXT_PUBLIC_STRAPI_URL || 'http://127.0.0.1:1337';
-      return initialCaseStudies.map((item, idx) => {
-        const heroUrl = item.heroImage?.url
-          ? (item.heroImage.url.startsWith('http') ? item.heroImage.url : `${strapiUrl}${item.heroImage.url}`)
-          : '/asstes/images/case-study-banking.jpg';
-        const indSlug = item.industry?.slug || 'banking-finance';
-        const indName = item.industry?.name || 'BANKING & FINANCE';
-        const resSlug = item.researchType?.slug || 'consumer-insights';
-
-        return {
-          id: item.documentId || item.id || idx + 1,
-          category: indSlug,
-          research: resSlug,
-          badge: indName.toUpperCase(),
-          img: heroUrl,
-          title: item.title,
-          snippet: item.excerpt || '',
-          link: item.slug ? `/case-study/${item.slug}` : '/case-study-details',
-        };
-      });
+      setStudies(initialCaseStudies.map(formatStudy).filter(Boolean));
+    } else {
+      const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL || 'http://127.0.0.1:1337';
+      fetch(`${STRAPI_URL}/api/case-studies?populate=*&pagination[limit]=50`)
+        .then((r) => r.json())
+        .then((d) => {
+          if (Array.isArray(d?.data)) {
+            setStudies(d.data.map(formatStudy).filter(Boolean));
+          }
+        })
+        .catch(() => {});
     }
-    return caseStudiesData;
   }, [initialCaseStudies]);
 
+  const industryOptions = useMemo(() => {
+    const map = new Map();
+    studies.forEach((s) => {
+      if (s.category && !map.has(s.category)) {
+        map.set(s.category, s.badge || s.category);
+      }
+    });
+    const opts = [{ value: 'all', label: 'All Industries' }];
+    map.forEach((lbl, val) => {
+      opts.push({ value: val, label: lbl });
+    });
+    return opts;
+  }, [studies]);
+
+  const researchOptions = useMemo(() => {
+    const set = new Set();
+    studies.forEach((s) => {
+      if (s.research) set.add(s.research);
+    });
+    const opts = [{ value: 'all', label: 'All Research Types' }];
+    set.forEach((r) => {
+      const label = r
+        .split('-')
+        .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+        .join(' ');
+      opts.push({ value: r, label });
+    });
+    return opts;
+  }, [studies]);
+
   const filteredStudies = useMemo(() => {
-    return allStudies.filter((card) => {
+    return studies.filter((card) => {
       const matchInd = activeIndustry === 'all' || card.category === activeIndustry;
       const matchRes = activeResearch === 'all' || card.research === activeResearch;
       return matchInd && matchRes;
     });
-  }, [allStudies, activeIndustry, activeResearch]);
+  }, [studies, activeIndustry, activeResearch]);
 
   const totalPages = Math.max(1, Math.ceil(filteredStudies.length / CARDS_PER_PAGE));
   const startIndex = (currentPage - 1) * CARDS_PER_PAGE;
@@ -421,7 +259,7 @@ export default function CaseStudyExplorer({ initialCaseStudies = [] }) {
         <div className="blog-sction-wapper">
           <div className="case-study-grid">
             {visibleCards.map((card) => (
-              <Link href={card.link} className="blog-col-box">
+              <Link key={card.id} href={card.link} className="blog-col-box">
                 <div className="blog-wapper">
                   <div className="blog-img-area">
                     <img src={card.img} alt={card.title} />
@@ -496,6 +334,6 @@ export default function CaseStudyExplorer({ initialCaseStudies = [] }) {
           )}
         </div>
       </div>
-    </section >
+    </section>
   );
 }

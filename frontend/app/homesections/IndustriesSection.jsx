@@ -4,41 +4,30 @@ import React, { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import Swiper from 'swiper';
 import { Autoplay, Navigation, Pagination } from 'swiper/modules';
+import { getStrapiMedia } from '../../lib/strapi';
 
-const industriesData = [
-  {
-    title: 'Healthcare & Life Sciences',
-    image: '/asstes/images/case-study-healthcare.jpg',
-    desc: 'Delivering research-driven insights that support innovation, patient outcomes, and healthcare advancement.',
-  },
-  {
-    title: 'Banking & Financial Services',
-    image: '/asstes/images/case-study-banking.jpg',
-    desc: 'Empowering financial institutions with actionable intelligence across retail banking, fintech, and risk management.',
-  },
-  {
-    title: 'Retail & Consumer Goods',
-    image: '/asstes/images/case-study-fmcg.jpg',
-    desc: 'Uncovering evolving consumer preferences, omnichannel purchasing behavior, and market trends to drive brand growth.',
-  },
-  {
-    title: 'Automotive & Mobility',
-    image: '/asstes/images/case-study-automotive.jpg',
-    desc: 'Accelerating mobility innovation with deep insights into EV adoption, autonomous tech, and connected fleets.',
-  },
-  {
-    title: 'Technology & Telecom',
-    image: '/asstes/images/case-study-telecom.jpg',
-    desc: 'Navigating rapid digital transformation with data-backed market analysis across SaaS, cloud, and telecommunications.',
-  },
-  {
-    title: 'Energy & Sustainability',
-    image: '/asstes/images/case-study-energy.jpg',
-    desc: 'Powering clean transition strategies through renewable market data, ESG benchmarks, and consumer green habits.',
-  },
-];
+function getIndustryFallbackImage(title = '') {
+  const t = title.toLowerCase();
+  if (t.includes('health') || t.includes('life')) return '/asstes/images/case-study-healthcare.jpg';
+  if (t.includes('bank') || t.includes('financ')) return '/asstes/images/case-study-banking.jpg';
+  if (t.includes('retail') || t.includes('fmcg') || t.includes('consumer')) return '/asstes/images/case-study-fmcg.jpg';
+  if (t.includes('auto') || t.includes('mobility')) return '/asstes/images/case-study-automotive.jpg';
+  if (t.includes('tech') || t.includes('telecom')) return '/asstes/images/case-study-telecom.jpg';
+  if (t.includes('energy') || t.includes('sustain')) return '/asstes/images/case-study-energy.jpg';
+  return '/asstes/images/case-study-banking.jpg';
+}
 
-export default function IndustriesSection() {
+function formatIndustry(item) {
+  if (!item) return null;
+  const title = item.title || item.name || '';
+  return {
+    title,
+    image: getStrapiMedia(item.featuredImage || item.heroImage, getIndustryFallbackImage(title)),
+    desc: item.shortDescription || item.description || '',
+  };
+}
+
+export default function IndustriesSection({ dynamicIndustries = [] }) {
   const videoRef = useRef(null);
   const swiperContainerRef = useRef(null);
   const prevBtnRef = useRef(null);
@@ -46,209 +35,182 @@ export default function IndustriesSection() {
   const paginationRef = useRef(null);
   const swiperInstanceRef = useRef(null);
   const [activeMobileCard, setActiveMobileCard] = useState(null);
+  const [industries, setIndustries] = useState(() => (dynamicIndustries || []).map(formatIndustry).filter(Boolean));
 
   useEffect(() => {
-    const vid = videoRef.current;
-    if (vid) {
-      vid.muted = true;
-      vid.defaultMuted = true;
-      vid.playbackRate = 0.75;
-
-      const handlePlay = () => {
-        vid.playbackRate = 0.75;
-      };
-      vid.addEventListener('play', handlePlay);
-      vid.addEventListener('loadedmetadata', handlePlay);
-
-      const p = vid.play();
-      if (p !== undefined) p.catch(() => {});
+    if (dynamicIndustries && dynamicIndustries.length > 0) {
+      setIndustries(dynamicIndustries.map(formatIndustry).filter(Boolean));
+    } else {
+      const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL || 'http://127.0.0.1:1337';
+      fetch(`${STRAPI_URL}/api/industries?populate=*&pagination[limit]=8`)
+        .then((r) => r.json())
+        .then((d) => {
+          if (Array.isArray(d?.data)) {
+            setIndustries(d.data.map(formatIndustry).filter(Boolean));
+          }
+        })
+        .catch(() => {});
     }
-    if (swiperContainerRef.current) {
-      swiperInstanceRef.current = new Swiper(swiperContainerRef.current, {
-        modules: [Autoplay, Navigation, Pagination],
-        slidesPerView: 1,
-        spaceBetween: 16,
-        loop: true,
-        speed: 600,
-        grabCursor: true,
-        autoplay: {
-          delay: 3000,
-          disableOnInteraction: false,
-          pauseOnMouseEnter: false,
-        },
-        navigation: {
-          nextEl: nextBtnRef.current,
-          prevEl: prevBtnRef.current,
-        },
-        pagination: {
-          el: paginationRef.current,
-          clickable: true,
-        },
-        breakpoints: {
-          640: {
-            slidesPerView: 2,
-            spaceBetween: 18,
-          },
-          900: {
-            slidesPerView: 3,
-            spaceBetween: 20,
-          },
-          1200: {
-            slidesPerView: 3,
-            spaceBetween: 20,
-          },
-           1480: {
-            slidesPerView: 4,
-            spaceBetween: 20,
-          },
-        },
-      });
-    }
+  }, [dynamicIndustries]);
 
-    const handleDocClick = (e) => {
-      if (window.innerWidth <= 1024 && !e.target.closest('.industry-card')) {
-        setActiveMobileCard(null);
-      }
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    const playVideo = () => {
+      video.play().catch(() => {});
     };
-    document.addEventListener('click', handleDocClick);
+
+    if (video.readyState >= 2) {
+      playVideo();
+    } else {
+      video.addEventListener('loadeddata', playVideo, { once: true });
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!swiperContainerRef.current || industries.length === 0) return;
+
+    if (swiperInstanceRef.current) {
+      swiperInstanceRef.current.destroy(true, true);
+      swiperInstanceRef.current = null;
+    }
+
+    const swiper = new Swiper(swiperContainerRef.current, {
+      modules: [Autoplay, Navigation, Pagination],
+      slidesPerView: 1,
+      spaceBetween: 20,
+      loop: industries.length > 2,
+      speed: 600,
+      autoplay: {
+        delay: 3500,
+        disableOnInteraction: false,
+        pauseOnMouseEnter: false,
+      },
+      navigation: {
+        nextEl: nextBtnRef.current,
+        prevEl: prevBtnRef.current,
+      },
+      pagination: {
+        el: paginationRef.current,
+        clickable: true,
+        renderBullet: (index, className) => {
+          return `<span class="${className}" aria-label="Go to slide ${index + 1}"></span>`;
+        },
+      },
+      breakpoints: {
+        640: {
+          slidesPerView: 2,
+          spaceBetween: 20,
+        },
+        1024: {
+          slidesPerView: 3,
+          spaceBetween: 24,
+        },
+      },
+    });
+
+    swiperInstanceRef.current = swiper;
 
     return () => {
       if (swiperInstanceRef.current) {
         swiperInstanceRef.current.destroy(true, true);
+        swiperInstanceRef.current = null;
       }
-      document.removeEventListener('click', handleDocClick);
     };
-  }, []);
+  }, [industries]);
 
-  const handleCardClick = (idx) => {
-    if (window.innerWidth <= 1024) {
-      setActiveMobileCard((prev) => (prev === idx ? null : idx));
+  const handleMobileCardClick = (index) => {
+    if (typeof window !== 'undefined' && window.innerWidth <= 768) {
+      setActiveMobileCard(activeMobileCard === index ? null : index);
     }
   };
 
   return (
     <section className="industries-section" id="industries">
+      <div className="industries-video-layer">
+        <video
+          ref={videoRef}
+          className="industries-bg-video"
+          autoPlay
+          loop
+          muted
+          playsInline
+          preload="auto"
+          poster="/asstes/images/the-impact-banner-img.png"
+        >
+          <source src="/asstes/images/video-banner2.mp4" type="video/mp4" />
+        </video>
+        <div className="industries-video-overlay"></div>
+      </div>
+
       <div className="srcn-container">
-        <div className="industries-banner-wapper-banner">
-          <div className="industries-banner-box">
-            <div className="industries-backdrop-wrap">
-              <video
-                ref={videoRef}
-                className="industries-video-bg"
-                id="industriesBannerVideo"
-                autoPlay
-                loop
-                muted
-                playsInline
-                preload="auto"
+        <div className="industries-header">
+          <div className="industries-header-left">
+            <span className="industries-kicker sub-title-red">WHERE WE EXCEL</span>
+            <h2 className="industries-title section-main-heading">
+              Industries We Understand &amp; Elevate
+            </h2>
+            <p className="industries-subtitle section-sub-text">
+              Transforming complex sector challenges into actionable growth through customized intelligence.
+            </p>
+          </div>
+
+          <div className="industries-header-right">
+            <div className="industries-nav-buttons">
+              <button
+                ref={prevBtnRef}
+                className="industries-nav-btn industries-prev"
+                type="button"
+                aria-label="Previous industry slide"
               >
-                <source src="/asstes/images/indutries-banner-video.mp4" type="video/mp4" />
-              </video>
-              <div className="industries-city-backdrop"></div>
+                <i className="fa-solid fa-arrow-left"></i>
+              </button>
+              <button
+                ref={nextBtnRef}
+                className="industries-nav-btn industries-next"
+                type="button"
+                aria-label="Next industry slide"
+              >
+                <i className="fa-solid fa-arrow-right"></i>
+              </button>
             </div>
-            <div className="industries-banner-content">
-              <h2 className="industries-title">Industries We Serve</h2>
-              <p className="industries-subtitle">
-                Helping organizations make smarter decisions through global research expertise and industry insights.
-              </p>
-              <Link href="/contact" className="btn-talk-experts">
-                <span>TALK TO OUR EXPERTS</span>
-                <i className="fa-solid fa-arrow-up-right-from-square"></i>
-              </Link>
-            </div>
+            <Link href="/industries" className="industries-view-all-btn btn-sm">
+              <span>EXPLORE ALL INDUSTRIES</span>
+              <i className="fa fa-long-arrow-right" aria-hidden="true"></i>
+            </Link>
           </div>
+        </div>
 
-          {/* Overlapping Swiper Slider Container */}
-          <div className="carousel-wrapper industries-cards-overlap">
-            {/* Desktop Prev Button */}
-            <button
-              ref={prevBtnRef}
-              className="slider-btn prev-btn"
-              id="sliderPrev"
-              aria-label="Previous Slide"
-            >
-              <i className="fa-solid fa-arrow-left"></i>
-            </button>
-
-            {/* Swiper Container */}
-            <div
-              ref={swiperContainerRef}
-              className="swiper industries-swiper"
-              id="industriesSwiper"
-            >
-              <div className="swiper-wrapper">
-                {industriesData.map((item, index) => (
-                  <div
-                    key={item.title}
-                    className={`swiper-slide industry-card ${activeMobileCard === index ? 'is-active' : ''}`}
-                    onClick={() => handleCardClick(index)}
-                  >
-                    <div className="card-media-box">
-                      <div className="card-front-media">
-                        <img src={item.image} alt={item.title} />
-                      </div>
-                      <div className="card-back-info">
-                        <div className="watermark-bg">
-                          <svg viewBox="0 0 200 120" className="watermark-svg">
-                            <ellipse
-                              cx="100"
-                              cy="55"
-                              rx="80"
-                              ry="36"
-                              fill="none"
-                              stroke="rgba(128, 57, 87, 0.16)"
-                              strokeWidth="2.5"
-                              transform="rotate(-8 100 55)"
-                            />
-                            <text
-                              x="100"
-                              y="58"
-                              fontFamily="'Plus Jakarta Sans', sans-serif"
-                              fontSize="20"
-                              fontWeight="700"
-                              fill="rgba(128, 57, 87, 0.16)"
-                              textAnchor="middle"
-                            >
-                              Unimrkt
-                            </text>
-                            <text
-                              x="100"
-                              y="73"
-                              fontFamily="'Plus Jakarta Sans', sans-serif"
-                              fontSize="9"
-                              fontWeight="600"
-                              letterSpacing="3"
-                              fill="rgba(128, 57, 87, 0.14)"
-                              textAnchor="middle"
-                            >
-                              RESEARCH
-                            </text>
-                          </svg>
-                        </div>
-                        <p className="card-hover-text">{item.desc}</p>
-                      </div>
-                    </div>
-                    <div className="card-title-footer">
-                      <h4>{item.title}</h4>
-                    </div>
+        <div className="swiper industries-carousel" ref={swiperContainerRef}>
+          <div className="swiper-wrapper">
+            {industries.map((ind, index) => (
+              <div key={index} className="swiper-slide industries-slide">
+                <article
+                  className={`industry-showcase-card ${activeMobileCard === index ? 'is-active-mobile' : ''}`}
+                  onClick={() => handleMobileCardClick(index)}
+                >
+                  <div className="industry-showcase-image-wrap">
+                    <img
+                      src={ind.image}
+                      alt={ind.title}
+                      loading="lazy"
+                    />
+                    <div className="industry-showcase-overlay"></div>
                   </div>
-                ))}
+                  <div className="industry-showcase-content">
+                    <h3 className="industry-showcase-title">{ind.title}</h3>
+                    <p className="industry-showcase-desc">{ind.desc}</p>
+                    <Link href="/industries" className="industry-showcase-link">
+                      <span>LEARN MORE</span>
+                      <i className="fa fa-long-arrow-right" aria-hidden="true"></i>
+                    </Link>
+                  </div>
+                </article>
               </div>
-
-              {/* Swiper Pagination Dots (Visible on Phone/Mobile) */}
-              <div ref={paginationRef} className="swiper-pagination"></div>
-            </div>
-
-            {/* Desktop Next Button */}
-            <button
-              ref={nextBtnRef}
-              className="slider-btn next-btn"
-              id="sliderNext"
-              aria-label="Next Slide"
-            >
-              <i className="fa-solid fa-arrow-right"></i>
-            </button>
+            ))}
           </div>
+          <div ref={paginationRef} className="industries-pagination"></div>
         </div>
       </div>
     </section>

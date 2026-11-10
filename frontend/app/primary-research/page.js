@@ -10,7 +10,7 @@ import CommonBlogSection from '../../components/CommonBlogSection';
 import FqaPrimaryresearch from './sections/FqaPrimaryresearch';
 import PrimaryresEditorialAbout from './sections/PrimaryresEditorialAbout';
 import PrimaryresearchResearchCta from './sections/PrimaryresearchResearchCta';
-import { getPageBySlug, findSection } from '../../lib/strapi';
+import { getPageBySlug, findSection, getServices, getIndustries, getBlogPosts } from '../../lib/strapi';
 
 export const metadata = {
   title: 'Primary Research Services | Qualitative & Quantitative Fieldwork',
@@ -56,23 +56,48 @@ export const metadata = {
 };
 
 export default async function PrimaryResearchPage() {
-  const pageData = await getPageBySlug('primary-research').catch(() => null);
+  const [pageData, services, industries, blogs] = await Promise.all([
+    getPageBySlug('primary-research').catch(() => null),
+    getServices(10).catch(() => []),
+    getIndustries(12).catch(() => []),
+    getBlogPosts(6).catch(() => []),
+  ]);
+
+  const sections = Array.isArray(pageData?.sections) ? pageData.sections : [];
 
   const heroSection = findSection(pageData, 'sections.hero-common');
+  const metricsSection = findSection(pageData, 'sections.metrics-grid');
+  const valuesSection = findSection(pageData, 'sections.values-grid');
+  const faqSection = findSection(pageData, 'sections.faq-accordion');
   const ctaSection = findSection(pageData, 'sections.question-cta');
+
+  const methodSection = sections.find((s) => s.__component === 'sections.accordion-solutions');
+  const reachSection = sections.find((s) => s.__component === 'sections.research-reach');
+
+  const displaySteps = methodSection?.cards || valuesSection?.values || [];
+  const displayMetrics = reachSection?.cards || metricsSection?.metrics || [];
 
   return (
     <>
       <PrimaryHero dynamicHero={heroSection} />
       <TrustedClients />
       <AbouPrimaryOverview />
-      <PrimaryServices />
-      <UnimrktResearchArea />
-      <ResearchMethodologies />
-      <IndustriesArea />
+      <PrimaryServices initialServices={services} />
+      <UnimrktResearchArea
+        metrics={displayMetrics}
+        kicker={reachSection?.kicker}
+        heading={reachSection?.heading}
+        description={reachSection?.description}
+      />
+      <ResearchMethodologies
+        steps={displaySteps}
+        heading={methodSection?.heading}
+        description={methodSection?.description}
+      />
+      <IndustriesArea initialIndustries={industries} />
       <ContactFormSection />
-      <CommonBlogSection />
-      <FqaPrimaryresearch />
+      <CommonBlogSection initialBlogs={blogs} />
+      <FqaPrimaryresearch dynamicFaq={faqSection} />
       <PrimaryresEditorialAbout />
       <PrimaryresearchResearchCta dynamicCta={ctaSection} />
     </>

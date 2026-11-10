@@ -1,67 +1,51 @@
 'use client';
 
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import Swiper from 'swiper';
 import { Navigation, Autoplay } from 'swiper/modules';
+import { getStrapiMedia } from '../lib/strapi';
 
-const blogMarketTrends = [
-  {
-    id: 1,
-    img: '/asstes/images/market-trends-card-img1.png',
-    title: 'All You Need to Know About Online Market Research"',
-    snippet: 'In a world where consumer behavior evolves faster than a trending...',
-    link: '/blog',
-  },
-  {
-    id: 2,
-    img: '/asstes/images/market-trends-card-img2.png',
-    title: 'Why Field-Based Quantitative Market Research Remains Critical in 2026"',
-    snippet: 'Over the past few years, the research landscape has shifted rapidly...',
-    link: '/blog',
-  },
-  {
-    id: 3,
-    img: '/asstes/images/market-trends-card-img3.png',
-    title: 'AI and the Workforce in Transformation, Disrupti...',
-    snippet: 'In 2026, artificial intelligence is no longer just an emerging tool...',
-    link: '/blog',
-  },
-  {
-    id: 4,
-    img: '/asstes/images/customer-experience-img.png',
-    title: 'From Data to Decision: How Modern Market Research Drives Growth',
-    snippet: 'Discover actionable strategies to translate raw data into decisive market intelligence...',
-    link: '/blog',
-  },
-  {
-    id: 5,
-    img: '/asstes/images/unimrkt-reseach-primary-research-banner-img.png',
-    title: 'Key Market Research Methodologies Every Business Needs to Know',
-    snippet: 'A comprehensive breakdown of qualitative vs. quantitative research approaches...',
-    link: '/blog',
-  },
-  {
-    id: 6,
-    img: '/asstes/images/centralized-data-card-img.png',
-    title: 'Why Consumer Behaviour Research is Critical for Product Success',
-    snippet: 'Understanding buyer psychology, purchasing barriers, and preference shifts across markets...',
-    link: '/blog',
-  },
-];
+function formatBlog(b) {
+  if (!b) return null;
+  return {
+    id: b.id || b.documentId || b.slug,
+    title: b.title || '',
+    snippet: b.excerpt || b.snippet || '',
+    link: b.slug ? `/blog-details?slug=${b.slug}` : '/blog',
+    img: getStrapiMedia(b.featuredImage, '/asstes/images/market-trends-card-img1.png'),
+  };
+}
 
-export default function CommonBlogSection() {
+export default function CommonBlogSection({ initialBlogs = [] }) {
   const swiperRef = useRef(null);
+  const [blogs, setBlogs] = useState(() => (initialBlogs || []).map(formatBlog).filter(Boolean));
+
+  useEffect(() => {
+    if (initialBlogs && initialBlogs.length > 0) {
+      setBlogs(initialBlogs.map(formatBlog).filter(Boolean));
+    } else {
+      const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL || 'http://127.0.0.1:1337';
+      fetch(`${STRAPI_URL}/api/blogs?populate=*&pagination[limit]=10`)
+        .then((r) => r.json())
+        .then((d) => {
+          if (Array.isArray(d?.data)) {
+            setBlogs(d.data.map(formatBlog).filter(Boolean));
+          }
+        })
+        .catch(() => {});
+    }
+  }, [initialBlogs]);
 
   useEffect(() => {
     let swiperInstance = null;
 
-    if (swiperRef.current) {
+    if (swiperRef.current && blogs.length > 0) {
       swiperInstance = new Swiper(swiperRef.current, {
         modules: [Navigation, Autoplay],
         slidesPerView: 1,
         spaceBetween: 20,
-        loop: true,
+        loop: blogs.length > 2,
         autoplay: {
           delay: 3000,
           disableOnInteraction: false,
@@ -88,7 +72,7 @@ export default function CommonBlogSection() {
             slidesPerView: 2.5,
             spaceBetween: 20,
           },
-           1680: {
+          1680: {
             slidesPerView: 3.5,
             spaceBetween: 25,
           },
@@ -101,7 +85,7 @@ export default function CommonBlogSection() {
         swiperInstance.destroy(true, true);
       }
     };
-  }, []);
+  }, [blogs]);
 
   return (
     <section className="market-trends-section market-trends-blog-section">
@@ -109,7 +93,7 @@ export default function CommonBlogSection() {
       <div className="market-trends-container">
         <div className="market-trends-layout">
           <div className="market-trends-left-col">
-            <span className="market-trends-kicker  sub-title-red">LATEST BLOGS</span>
+            <span className="market-trends-kicker sub-title-red">LATEST BLOGS</span>
             <h2 className="market-trends-title section-main-heading">
               Exploring<br />Market Trends
             </h2>
@@ -130,7 +114,7 @@ export default function CommonBlogSection() {
           <div className="market-trends-slider-col">
             <div className="swiper market-trends-swiper" ref={swiperRef}>
               <div className="swiper-wrapper">
-                {blogMarketTrends.map((card) => (
+                {blogs.map((card) => (
                   <div key={card.id} className="swiper-slide market-trends-slide">
                     <Link href={card.link} className="market-trends-card">
                       <div className="market-trends-card-img-wrap">
@@ -153,7 +137,7 @@ export default function CommonBlogSection() {
       <div className="market-trends-btn-wrap">
         <Link href="/blog" className="market-trends-browse-btn btn-sm">
           <span>BROWSE BLOGS</span>
-          <i class="fa fa-long-arrow-right" aria-hidden="true"></i>
+          <i className="fa fa-long-arrow-right" aria-hidden="true"></i>
         </Link>
       </div>
     </section>

@@ -4,46 +4,7 @@ import React, { useEffect, useRef } from 'react';
 import Swiper from 'swiper';
 import { Autoplay, Pagination, Navigation } from 'swiper/modules';
 
-const methodologies = [
-  {
-    id: 1,
-    image: '/asstes/images/online-surveys-card-img.png',
-    title: 'CAWI Surveys',
-    desc: 'Deploying responsive quantitative surveys to verified EV owners, intenders, and passenger car drivers worldwide.',
-  },
-  {
-    id: 2,
-    image: '/asstes/images/smart-survey-management-card-img.png',
-    title: 'In-Facility Surveys',
-    desc: 'Conducting structured executive interviews with fleet directors, dealership principals, and automotive engineers.',
-  },
-  {
-    id: 3,
-    image: '/asstes/images/interview-controls-card-img.png',
-    title: 'In-Depth Executive Interviews',
-    desc: 'One-on-one qualitative discovery with Tier-1 procurement leads and mobility innovators on strategic roadmaps.',
-  },
-  {
-    id: 4,
-    image: '/asstes/images/real-time-monitoring-card-img.png',
-    title: 'Focus Group Discussions (FGDs)',
-    desc: 'Physical and virtual vehicle clinics evaluating cockpit ergonomics, digital infotainment, and styling appeal.',
-  },
-  {
-    id: 5,
-    image: '/asstes/images/telephonic-surveys-card-img.png',
-    title: 'Mystery Shopping & Audits',
-    desc: 'Assessing dealer network sales etiquette, EV customer handover protocols, and test drive quality standards.',
-  },
-  {
-    id: 6,
-    image: '/asstes/images/data-validation-card-img.png',
-    title: 'Brand Health Tracking',
-    desc: 'Continuous multi-market monitoring of OEM brand equity, consideration funnel, and net promoter score (NPS).',
-  },
-];
-
-export default function AutomotiveMethodologiesSlider() {
+export default function AutomotiveMethodologiesSlider({ methodologies = [], heading, kicker, description }) {
   const sliderRef = useRef(null);
   const paginationRef = useRef(null);
   const prevBtnRef = useRef(null);
@@ -51,14 +12,14 @@ export default function AutomotiveMethodologiesSlider() {
   const swiperInstanceRef = useRef(null);
 
   useEffect(() => {
-    if (!sliderRef.current) return;
+    if (!sliderRef.current || methodologies.length === 0) return;
 
     swiperInstanceRef.current = new Swiper(sliderRef.current, {
       modules: [Autoplay, Pagination, Navigation],
       slidesPerView: 1,
       spaceBetween: 16,
       grabCursor: true,
-      loop: true,
+      loop: methodologies.length > 4,
       speed: 700,
       autoplay: {
         delay: 3000,
@@ -105,7 +66,9 @@ export default function AutomotiveMethodologiesSlider() {
         swiperInstanceRef.current.destroy(true, true);
       }
     };
-  }, []);
+  }, [methodologies]);
+
+  if (!methodologies || methodologies.length === 0) return null;
 
   return (
     <section className="auto-methods-dark-section" id="auto-methods">
@@ -113,10 +76,10 @@ export default function AutomotiveMethodologiesSlider() {
         {/* Dark Curved Hero Banner */}
         <div className="auto-methods-dark-banner">
           <div className="auto-methods-header">
-            <span className="auto-methods-kicker">PROVEN METHODOLOGIES</span>
-            <h2 className="auto-methods-heading">Proven Research Methodologies</h2>
+            <span className="auto-methods-kicker">{kicker || 'PROVEN METHODOLOGIES'}</span>
+            <h2 className="auto-methods-heading">{heading || 'Proven Research Methodologies'}</h2>
             <p className="auto-methods-desc">
-              From cockpit usability clinics to enterprise supply chain audits, our multi-modal research suites deliver dependable, defensible intelligence for high-stakes mobility decisions.
+              {description || 'From cockpit usability clinics to enterprise supply chain audits, our multi-modal research suites deliver dependable, defensible intelligence for high-stakes mobility decisions.'}
             </p>
           </div>
         </div>
@@ -137,11 +100,11 @@ export default function AutomotiveMethodologiesSlider() {
           {/* Swiper Slider */}
           <div className="swiper auto-methods-swiper" ref={sliderRef}>
             <div className="swiper-wrapper">
-              {methodologies.map((item) => (
-                <div key={item.id} className="swiper-slide auto-methods-slide">
+              {methodologies.map((item, idx) => (
+                <div key={item.id || idx} className="swiper-slide auto-methods-slide">
                   <article className="auto-method-card">
                     <div className="auto-method-img-wrap">
-                      <img src={item.image} alt={item.title} loading="lazy" />
+                      <img src={item.image || item.iconClass || '/asstes/images/online-surveys-card-img.png'} alt={item.title} loading="lazy" />
                     </div>
                     <div className="auto-method-body">
                       <h3 className="auto-method-title">{item.title}</h3>

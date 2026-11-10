@@ -2,110 +2,75 @@
 
 import React, { useState } from 'react';
 
-const accordionItems = [
-  {
-    id: 'market-opportunities',
-    title: 'Market Opportunities',
-    icon: '/asstes/images/icon/market-opportunity-icon-img.png',
-    desc: 'Pinpointing untapped market segments, evaluating entry barriers, assessing addressable market size, and identifying whitespace opportunities for high-growth ventures.',
-  },
-  {
-    id: 'customer-sentiment',
-    title: 'Customer Sentiment',
-    icon: '/asstes/images/icon/consumer-behavior-icon-img.png',
-    desc: 'Uncovering purchase drivers, brand perceptions, evolving customer expectations, and emotional triggers shaping consumer brand affinity and loyalty.',
-  },
-  {
-    id: 'competitive-landscape',
-    title: 'Competitive Landscape',
-    icon: '/asstes/images/icon/competitive-landscape-img.png',
-    desc: 'Benchmarking market share, monitoring competitor maneuvers, analyzing pricing strategies, and mapping perceptual positioning across industry leaders.',
-  },
-  {
-    id: 'product-innovation',
-    title: 'Product Innovation',
-    icon: '/asstes/images/icon/product-innovation-icon-img.png',
-    desc: 'Concept validation, feature prioritization, UX/UI feedback, pricing sensitivity analysis, and post-launch performance monitoring across buyer segments.',
-  },
-  {
-    id: 'customer-experience',
-    title: 'Customer Experience',
-    icon: '/asstes/images/icon/customer-experience-icon.png',
-    desc: 'Measuring CSAT, Net Promoter Score (NPS), customer lifetime value drivers, and touchpoint friction across omni-channel customer journeys.',
-  },
-  {
-    id: 'brand-equity',
-    title: 'Brand Equity',
-    icon: '/asstes/images/icon/stronger-growth-icon-img.png',
-    desc: 'Tracking brand awareness, associations, perceived quality, and resonance to build resilient, long-term sustainable brand value.',
-  },
+const defaultIcons = [
+  '/asstes/images/icon/market-opportunity-icon-img.png',
+  '/asstes/images/icon/consumer-behavior-icon-img.png',
+  '/asstes/images/icon/competitive-landscape-img.png',
+  '/asstes/images/icon/product-innovation-icon-img.png',
+  '/asstes/images/icon/customer-experience-icon.png',
+  '/asstes/images/icon/stronger-growth-icon-img.png',
 ];
 
-export default function QuestionsToInsightsSection() {
+export default function QuestionsToInsightsSection({ items = [] }) {
   const [openIndex, setOpenIndex] = useState(0); 
   const toggleItem = (idx) => {
     setOpenIndex((prev) => (prev === idx ? -1 : idx));
   };
 
-  return (
-    <section className="questions-insights-section" id="questions-insights">
+  if (!items || items.length === 0) return null;
 
+  return (
+    <section className="questions-to-insights-section" id="questions-to-insights">
       <div className="srcn-container">
-        <div className="industries-showcase-header section-header-area">
-          <span className="industries-showcase-kicker career-values-kicker">SOLUTIONS &amp; METHODOLOGIES</span>
-          <h2 className="industries-showcase-heading section-main-heading">From Questions To Insights</h2>
-          <p className="industries-showcase-desc section-sub-text">
-            Every business question requires a distinct analytical lens. Explore how our specialized research modules
-            translate inquiries into strategic clarity.
+        <div className="questions-insights-header section-header-area">
+          <span className="questions-insights-kicker career-values-kicker">QUESTIONS WE HELP ANSWER</span>
+          <h2 className="questions-insights-heading section-main-heading">From Key Questions to Strategic Insights</h2>
+          <p className="questions-insights-desc industries-expertise-desc">
+            Navigating business uncertainty requires answers to critical questions. We help organizations across industries uncover the insights needed to make informed, forward-looking decisions.
           </p>
         </div>
 
-        <div className="questions-insights-layout">
-          <div className="questions-insights-visual">
-            <img
-              src="/asstes/images/questions-to-insights-img.png"
-              alt="Unimrkt Research Specialist Analysing Insights"
-              loading="lazy"
-            />
-          </div>
-          <div className="questions-accordion" role="region" aria-label="Research insight topics">
-            {accordionItems.map((item, idx) => {
-              const isOpen = openIndex === idx;
-              return (
-                <div
-                  key={item.id}
-                  className={`questions-accordion-item ${isOpen ? 'active' : ''}`}
+        <div className="qti-accordion-wrapper">
+          {items.map((item, idx) => {
+            const isOpen = openIndex === idx;
+            return (
+              <div 
+                key={item.id || idx} 
+                className={`qti-accordion-item ${isOpen ? 'active' : ''}`}
+              >
+                <button
+                  type="button"
+                  className="qti-accordion-header"
+                  onClick={() => toggleItem(idx)}
+                  aria-expanded={isOpen}
                 >
-                  <button
-                    type="button"
-                    className="questions-accordion-btn"
-                    onClick={() => toggleItem(idx)}
-                    aria-expanded={isOpen}
-                    aria-controls={`accordion-body-${item.id}`}
-                  >
-                    <div className="questions-accordion-title-wrap">
-                      <div className="questions-accordion-icon">
-                        <img src={item.icon} alt={item.title} />
-                      </div>
-                      <h3 className="questions-accordion-title">{item.title}</h3>
-                    </div>
-                    <span className="questions-accordion-toggle" aria-hidden="true">
-                      {isOpen ? '−' : '+'}
+                  <div className="qti-header-left">
+                    <span className="qti-item-icon">
+                      <img src={item.icon || item.iconClass || defaultIcons[idx % defaultIcons.length]} alt={item.title} />
                     </span>
-                  </button>
+                    <h3 className="qti-item-title">{item.title}</h3>
+                  </div>
+                  <span className="qti-accordion-indicator" aria-hidden="true">
+                    {isOpen ? '−' : '+'}
+                  </span>
+                </button>
 
-                  <div
-                    id={`accordion-body-${item.id}`}
-                    className={`questions-accordion-collapse ${isOpen ? 'show' : ''}`}
-                  >
-                    <div className="questions-accordion-inner">
-                      <p className="questions-accordion-content">{item.desc}</p>
-                    </div>
+                <div 
+                  className="qti-accordion-body"
+                  style={{
+                    maxHeight: isOpen ? '400px' : '0',
+                    opacity: isOpen ? 1 : 0,
+                    overflow: 'hidden',
+                    transition: 'max-height 0.35s ease, opacity 0.3s ease',
+                  }}
+                >
+                  <div className="qti-body-inner">
+                    <p>{item.desc || item.description}</p>
                   </div>
                 </div>
-              );
-            })}
-          </div>
+              </div>
+            );
+          })}
         </div>
       </div>
     </section>
