@@ -33,7 +33,7 @@ export const metadata = {
     type: 'website',
     images: [
       {
-        url: '/asstes/images/blog-banner-img.png',
+        url: '/uploads/blog-banner-img.png',
         width: 1200,
         height: 630,
         alt: 'Unimrkt Research Blog',
@@ -45,7 +45,7 @@ export const metadata = {
     title: 'Market Research Insights, Trends & Analysis | Unimrkt Blog',
     description:
       'Explore the latest market research insights, B2B intelligence, consumer behaviour trends, and industry analysis from Unimrkt Research.',
-    images: ['/asstes/images/blog-banner-img.png'],
+    images: ['/uploads/blog-banner-img.png'],
   },
 };
 
@@ -70,8 +70,8 @@ export default async function BlogPage() {
       <CommonBlogSection initialBlogs={strapiBlogs} />
       <BlogFaq dynamicFaq={faqSection} />
       <InsightsEditorial
-        kicker={editorialSection?.kicker || 'WHAT WE BELIEVE'}
-        title={editorialSection?.heading || editorialSection?.title || 'Insights That Drive Smarter Business Decisions'}
+        kicker={editorialSection?.kicker}
+        title={editorialSection?.heading || editorialSection?.title}
         paragraph1={editorialSection?.description}
       />
       <ResearchCta dynamicCta={ctaSection} />

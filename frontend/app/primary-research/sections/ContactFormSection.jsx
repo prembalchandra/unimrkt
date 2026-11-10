@@ -1,22 +1,22 @@
 'use client';
 
 import React, { useState } from 'react';
-import { submitContactInquiry } from '../../../lib/strapi';
+import { submitContactInquiry, getStrapiMedia } from '../../../lib/strapi';
 
 export default function ContactFormSection({ dynamicForm = null }) {
   const displayKicker = dynamicForm?.kicker || '';
   const displayHeading = dynamicForm?.heading || '';
   const displayDesc = dynamicForm?.description || '';
 
-  const namePlaceholder = dynamicForm?.namePlaceholder || 'Name';
-  const emailPlaceholder = dynamicForm?.emailPlaceholder || 'Email';
-  const phonePlaceholder = dynamicForm?.phonePlaceholder || 'Phone number';
-  const companyPlaceholder = dynamicForm?.companyPlaceholder || 'Company / Research Requirements';
+  const namePlaceholder = dynamicForm?.namePlaceholder || dynamicForm?.name_placeholder || '';
+  const emailPlaceholder = dynamicForm?.emailPlaceholder || dynamicForm?.email_placeholder || '';
+  const phonePlaceholder = dynamicForm?.phonePlaceholder || dynamicForm?.phone_placeholder || '';
+  const companyPlaceholder = dynamicForm?.companyPlaceholder || dynamicForm?.company_placeholder || '';
   const consentText = dynamicForm?.consentText || '';
   const submitButtonText = dynamicForm?.submitButtonText || 'Submit';
   const submittingButtonText = dynamicForm?.submittingButtonText || 'Submitting...';
-  const successMessage = dynamicForm?.successMessage || 'Thank You! Your inquiry has been received. Our research team will reach out to you shortly.';
-  const errorMessageText = dynamicForm?.errorMessage || 'An error occurred while submitting. Please try again.';
+  const successMessage = dynamicForm?.successMessage || dynamicForm?.success_message || '';
+  const errorMessageText = dynamicForm?.errorMessage || dynamicForm?.error_message || '';
 
   const countryOptions = dynamicForm?.countryCodeOptions
     ? dynamicForm.countryCodeOptions.split(',').map((item) => {
@@ -180,7 +180,7 @@ export default function ContactFormSection({ dynamicForm = null }) {
                   disabled={isSubmitting}
                 >
                   {isSubmitting ? submittingButtonText : submitButtonText}{' '}
-                  <img src="/asstes/images/icon/arrow-right-icon-img.png" alt="Arrow Right" />
+                  <img src={getStrapiMedia("/uploads/arrow-right-icon-img.png")} alt="Arrow Right" />
                 </button>
               </form>
             )}

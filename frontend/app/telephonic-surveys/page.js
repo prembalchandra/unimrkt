@@ -38,7 +38,7 @@ export const metadata = {
     type: 'website',
     images: [
       {
-        url: '/asstes/images/telephonic-hero-banner-img.png',
+        url: '/uploads/telephonic-hero-banner-img.png',
         width: 1200,
         height: 630,
         alt: 'CATI Telephonic Surveys - Unimrkt Research',
@@ -50,7 +50,7 @@ export const metadata = {
     title: 'CATI Telephonic Surveys | Unimrkt Research',
     description:
       '500+ CATI workstations delivering verified, quality-audited quantitative reach across 90+ global markets.',
-    images: ['/asstes/images/telephonic-hero-banner-img.png'],
+    images: ['/uploads/telephonic-hero-banner-img.png'],
   },
 };
 

@@ -1,38 +1,62 @@
 import React from 'react';
+import { getStrapiMedia } from '@/lib/strapi';
 
-const defaultIcons = [
-  '/asstes/images/icon/deep-industry-understanding-icon-img.png',
-  '/asstes/images/icon/cross-Industry-perspective-icon-img.png',
-  '/asstes/images/icon/scalable-research-icon-img.png',
-  '/asstes/images/icon/wider-respondent-reach-icon-img.png',
-  '/asstes/images/icon/actionable-business-intelligence-icon-img.png',
-  '/asstes/images/icon/stronger-growth-icon-img.png',
-];
+export default function PartnerIndustriesSection({
+  features = [],
+  kicker = null,
+  heading = null,
+  description = null,
+  dynamicSection = null,
+}) {
+  const displayKicker = dynamicSection?.kicker || kicker;
+  const displayHeading = dynamicSection?.heading || dynamicSection?.title || heading;
+  const displayDesc = dynamicSection?.description || description;
+  const list = dynamicSection?.values || dynamicSection?.cards || (features && features.length > 0 ? features : []);
 
-export default function PartnerIndustriesSection({ features = [], kicker, heading, description }) {
-  if (!features || features.length === 0) return null;
+  if (!displayHeading && !displayDesc && list.length === 0) return null;
 
   return (
     <section className="partner-industries-section" id="partner-industries">
       <div className="srcn-container">
-        <div className="industries-showcase-header section-header-area">
-          <span className="industries-showcase-kicker career-values-kicker">{kicker || 'WHY UNIMRKT RESEARCH'}</span>
-          <h2 className="industries-showcase-heading section-main-heading">{heading || 'One Research Partner. Multiple Industries.'}</h2>
-          <p className="industries-showcase-desc industries-expertise-desc">
-            {description || 'Industry-specific expertise across key sectors, delivering reliable market insights and strategic direction to help businesses understand diverse markets.'}
-          </p>
-        </div>
-        <div className="partner-industries-grid">
-          {features.map((item, index) => (
-            <article key={item.id || index} className="partner-industry-card">
-              <div className="partner-industry-icon-wrap">
-                <img src={item.icon || item.iconClass || defaultIcons[index % defaultIcons.length]} alt={item.title} loading="lazy" />
-              </div>
-              <h3 className="partner-industry-title">{item.title}</h3>
-              <p className="partner-industry-desc">{item.desc || item.description}</p>
-            </article>
-          ))}
-        </div>
+        {(displayKicker || displayHeading || displayDesc) && (
+          <div className="industries-showcase-header section-header-area">
+            {displayKicker && (
+              <span className="industries-showcase-kicker career-values-kicker">
+                {displayKicker}
+              </span>
+            )}
+            {displayHeading && (
+              <h2 className="industries-showcase-heading section-main-heading">
+                {displayHeading}
+              </h2>
+            )}
+            {displayDesc && (
+              <p className="industries-showcase-desc industries-expertise-desc">
+                {displayDesc}
+              </p>
+            )}
+          </div>
+        )}
+        {list.length > 0 && (
+          <div className="partner-industries-grid">
+            {list.map((item, index) => {
+              const iconSrc = getStrapiMedia(item.icon || item.image);
+              return (
+                <article key={item.id || index} className="partner-industry-card">
+                  {iconSrc && (
+                    <div className="partner-industry-icon-wrap">
+                      <img src={iconSrc} alt={item.title || ''} loading="lazy" />
+                    </div>
+                  )}
+                  {item.title && <h3 className="partner-industry-title">{item.title}</h3>}
+                  {(item.desc || item.description) && (
+                    <p className="partner-industry-desc">{item.desc || item.description}</p>
+                  )}
+                </article>
+              );
+            })}
+          </div>
+        )}
       </div>
     </section>
   );

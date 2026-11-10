@@ -17,12 +17,9 @@ export default function ContactProcess({
   const sliderRef = useRef(null);
   const swiperInstanceRef = useRef(null);
 
-  const displayKicker = dynamicSection?.kicker || kicker || 'HOW WE ENGAGE';
-  const displayTitle = dynamicSection?.heading || dynamicSection?.title || title || 'From First Conversation to Actionable Results';
-  const displayDesc =
-    dynamicSection?.description ||
-    description ||
-    'A structured, transparent research journey designed around your business decisions.';
+  const displayKicker = dynamicSection?.kicker || kicker;
+  const displayTitle = dynamicSection?.heading || dynamicSection?.title || title;
+  const displayDesc = dynamicSection?.description || description;
 
   useEffect(() => {
     if (!sliderRef.current || steps.length === 0) return;

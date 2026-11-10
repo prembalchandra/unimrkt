@@ -1,80 +1,85 @@
 'use client';
 
 import React, { useState } from 'react';
-
-const defaultIcons = [
-  '/asstes/images/icon/market-opportunity-icon-img.png',
-  '/asstes/images/icon/consumer-behavior-icon-img.png',
-  '/asstes/images/icon/competitive-landscape-img.png',
-  '/asstes/images/icon/product-innovation-icon-img.png',
-  '/asstes/images/icon/customer-experience-icon.png',
-  '/asstes/images/icon/stronger-growth-icon-img.png',
-];
+import { getStrapiMedia } from '@/lib/strapi';
 
 export default function QuestionsToInsightsSection({ items = [], dynamicSection = null }) {
-  const [openIndex, setOpenIndex] = useState(0); 
+  const [openIndex, setOpenIndex] = useState(0);
   const toggleItem = (idx) => {
     setOpenIndex((prev) => (prev === idx ? -1 : idx));
   };
 
-  const displayKicker = dynamicSection?.kicker || 'QUESTIONS WE HELP ANSWER';
-  const displayHeading = dynamicSection?.heading || dynamicSection?.title || 'From Key Questions to Strategic Insights';
-  const displayDesc = dynamicSection?.description || 'Navigating business uncertainty requires answers to critical questions. We help organizations across industries uncover the insights needed to make informed, forward-looking decisions.';
+  const displayKicker = dynamicSection?.kicker;
+  const displayHeading = dynamicSection?.heading || dynamicSection?.title;
+  const displayDesc = dynamicSection?.description;
+  const list = (items && items.length > 0) ? items : (dynamicSection?.cards || dynamicSection?.values || []);
 
-  if (!items || items.length === 0) return null;
+  if (!displayHeading && !displayDesc && list.length === 0) return null;
 
   return (
     <section className="questions-to-insights-section" id="questions-to-insights">
       <div className="srcn-container">
-        <div className="questions-insights-header section-header-area">
-          <span className="questions-insights-kicker career-values-kicker">{displayKicker}</span>
-          <h2 className="questions-insights-heading section-main-heading">{displayHeading}</h2>
-          <p className="questions-insights-desc industries-expertise-desc">
-            {displayDesc}
-          </p>
-        </div>
+        {(displayKicker || displayHeading || displayDesc) && (
+          <div className="questions-insights-header section-header-area">
+            {displayKicker && (
+              <span className="questions-insights-kicker career-values-kicker">
+                {displayKicker}
+              </span>
+            )}
+            {displayHeading && (
+              <h2 className="questions-insights-heading section-main-heading">
+                {displayHeading}
+              </h2>
+            )}
+            {displayDesc && (
+              <p className="questions-insights-desc industries-expertise-desc">
+                {displayDesc}
+              </p>
+            )}
+          </div>
+        )}
 
-        <div className="qti-accordion-wrapper">
-          {items.map((item, idx) => {
-            const isOpen = openIndex === idx;
-            return (
-              <div 
-                key={item.id || idx} 
-                className={`qti-accordion-item ${isOpen ? 'active' : ''}`}
-              >
-                <button
-                  type="button"
-                  className="qti-accordion-header"
-                  onClick={() => toggleItem(idx)}
-                  aria-expanded={isOpen}
+        {list.length > 0 && (
+          <div className="qti-accordion-wrapper">
+            {list.map((item, idx) => {
+              const isOpen = openIndex === idx;
+              const iconSrc = getStrapiMedia(item.icon || item.image);
+              return (
+                <div
+                  key={item.id || idx}
+                  className={`qti-accordion-item ${isOpen ? 'active' : ''}`}
                 >
-                  <div className="qti-header-left">
-                    <span className="qti-item-icon">
-                      <img src={item.icon || item.iconClass || defaultIcons[idx % defaultIcons.length]} alt={item.title} />
+                  <button
+                    type="button"
+                    className="qti-accordion-header"
+                    onClick={() => toggleItem(idx)}
+                    aria-expanded={isOpen}
+                  >
+                    <div className="qti-header-left">
+                      {iconSrc && (
+                        <div className="qti-icon-wrap">
+                          <img src={iconSrc} alt={item.title || ''} />
+                        </div>
+                      )}
+                      {item.title && <h3 className="qti-question-title">{item.title}</h3>}
+                    </div>
+                    <span className="qti-toggle-icon" aria-hidden="true">
+                      {isOpen ? '−' : '+'}
                     </span>
-                    <h3 className="qti-item-title">{item.title}</h3>
-                  </div>
-                  <span className="qti-accordion-indicator" aria-hidden="true">
-                    {isOpen ? '−' : '+'}
-                  </span>
-                </button>
+                  </button>
 
-                <div 
-                  className="qti-accordion-body"
-                  style={{
-                    maxHeight: isOpen ? '400px' : '0px',
-                    opacity: isOpen ? 1 : 0,
-                    overflow: 'hidden',
-                    transition: 'all 0.35s ease-in-out',
-                    padding: isOpen ? '16px 20px 24px' : '0 20px',
-                  }}
-                >
-                  <p>{item.description || item.desc}</p>
+                  {isOpen && (
+                    <div className="qti-accordion-body">
+                      {(item.desc || item.description) && (
+                        <p className="qti-answer-text">{item.desc || item.description}</p>
+                      )}
+                    </div>
+                  )}
                 </div>
-              </div>
-            );
-          })}
-        </div>
+              );
+            })}
+          </div>
+        )}
       </div>
     </section>
   );

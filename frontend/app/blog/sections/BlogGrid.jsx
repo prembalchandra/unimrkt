@@ -15,7 +15,7 @@ function formatBlogCard(b, idx) {
     id: b.id || b.documentId || idx + 1,
     category: categorySlug,
     tag,
-    img: getStrapiMedia(b.featuredImage || b.coverImage, '/asstes/images/customer-experience-img.png'),
+    img: getStrapiMedia(b.featuredImage || b.coverImage, getStrapiMedia('/uploads/customer-experience-img.png')),
     title: b.title || '',
     desc: b.excerpt || b.description || '',
     link: b.slug ? `/blog/${b.slug}` : '/blog',
@@ -28,8 +28,8 @@ export default function BlogGrid({ initialBlogs = [], dynamicSection = null }) {
   const [currentPage, setCurrentPage] = useState(1);
 
   const displayKicker = dynamicSection?.kicker || '';
-  const displayHeading = dynamicSection?.heading || dynamicSection?.title || 'Insights & Stories';
-  const displayDesc = dynamicSection?.description || 'Explore in-depth articles, industry breakdowns, and forward-looking research perspectives.';
+  const displayHeading = dynamicSection?.heading || dynamicSection?.title;
+  const displayDesc = dynamicSection?.description;
 
   useEffect(() => {
     if (initialBlogs && initialBlogs.length > 0) {

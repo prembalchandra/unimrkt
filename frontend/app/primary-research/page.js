@@ -39,7 +39,7 @@ export const metadata = {
     type: 'website',
     images: [
       {
-        url: '/asstes/images/unimrkt-reseach-primary-research-banner-img.png',
+        url: '/uploads/unimrkt-reseach-primary-research-banner-img.png',
         width: 1200,
         height: 630,
         alt: 'Primary Research Services - Unimrkt Research',
@@ -51,7 +51,7 @@ export const metadata = {
     title: 'Primary Research Services | Unimrkt Research',
     description:
       'Customized primary research solutions that uncover customer opinions, validate business decisions, and fuel strategic growth across 90+ countries.',
-    images: ['/asstes/images/unimrkt-reseach-primary-research-banner-img.png'],
+    images: ['/uploads/unimrkt-reseach-primary-research-banner-img.png'],
   },
 };
 

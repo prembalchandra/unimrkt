@@ -1,4 +1,5 @@
 import React from 'react';
+import { getStrapiMedia } from '@/lib/strapi';
 import Link from 'next/link';
 
 export default function CompnayIndustriesUnderstand({
@@ -8,12 +9,9 @@ export default function CompnayIndustriesUnderstand({
   title,
   description,
 }) {
-  const displayKicker = dynamicSection?.kicker || kicker || 'INDUSTRIES WE UNDERSTAND';
-  const displayTitle = dynamicSection?.heading || dynamicSection?.title || title || 'Deep Knowledge Across Diverse Industries';
-  const displayDesc =
-    dynamicSection?.description ||
-    description ||
-    'Industry-specific expertise that helps us understand complex markets and deliver insights that drive informed business decisions.';
+  const displayKicker = dynamicSection?.kicker || kicker;
+  const displayTitle = dynamicSection?.heading || dynamicSection?.title || title;
+  const displayDesc = dynamicSection?.description || description;
 
   if (!industries || industries.length === 0) return null;
 
@@ -43,7 +41,7 @@ export default function CompnayIndustriesUnderstand({
               aria-label={`${item.title}: ${item.description || item.shortDescription}`}
             >
               <img
-                src={item.thumbnail?.url || item.image || item.iconClass || '/asstes/images/automotive-card-img.png'}
+                src={item.thumbnail?.url || item.image || item.iconClass || getStrapiMedia('/uploads/automotive-card-img.png')}
                 alt={item.title}
                 className="primary-service-card-img"
                 loading="lazy"

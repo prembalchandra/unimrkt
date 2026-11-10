@@ -1,10 +1,11 @@
+import { getStrapiMedia } from '@/lib/strapi';
 import React from 'react';
 
 const defaultIcons = [
-  '/asstes/images/icon/countries-icon-img.png',
-  '/asstes/images/icon/every-stage-icon-img.png',
-  '/asstes/images/icon/phone-icon-img.png',
-  '/asstes/images/icon/experience-icon-img.png',
+  getStrapiMedia('/uploads/countries-icon-img.png'),
+  getStrapiMedia('/uploads/every-stage-icon-img.png'),
+  getStrapiMedia('/uploads/phone-icon-img.png'),
+  getStrapiMedia('/uploads/experience-icon-img.png'),
 ];
 
 export default function ResearchImpact({ stats = [], heading }) {
@@ -14,7 +15,7 @@ export default function ResearchImpact({ stats = [], heading }) {
     <section className="research-impact-section">
       <div className="srcn-container">
         <div className="section-header-area research-impact-header">
-          <h2 className="section-main-heading research-impact-title">{heading || 'Research Without Borders'}</h2>
+          <h2 className="section-main-heading research-impact-title">{heading}</h2>
         </div>
         <div className="research-impact-grid">
           {stats.map((stat, idx) => (

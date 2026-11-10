@@ -1,5 +1,7 @@
 'use client';
 
+import { getStrapiMedia } from '@/lib/strapi';
+
 import React, { useState } from 'react';
 import Link from 'next/link';
 
@@ -13,8 +15,8 @@ export default function BlogDetailContent({ dynamicHero = null }) {
   });
   const [formSubmitted, setFormSubmitted] = useState(false);
 
-  const title = dynamicHero?.title || 'Key Trends Shaping the Future of the Automotive Industry';
-  const kicker = dynamicHero?.kicker || 'Market Research';
+  const title = dynamicHero?.title || '';
+  const kicker = dynamicHero?.kicker || '';
   const deck =
     dynamicHero?.description ||
     'From electrification and software-defined vehicles to new mobility expectations, the automotive landscape is changing at unprecedented speed.';
@@ -93,7 +95,7 @@ export default function BlogDetailContent({ dynamicHero = null }) {
 
             <figure className="blog-detail-hero-image">
               <img
-                src="/asstes/images/market-trends-card-img1.png"
+                src={getStrapiMedia("/uploads/market-trends-card-img1.png")}
                 alt="Market research professionals reviewing industry data and trends"
               />
               <figcaption>

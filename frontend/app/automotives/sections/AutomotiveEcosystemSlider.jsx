@@ -126,8 +126,8 @@ export default function AutomotiveEcosystemSlider({ slides = [], heading, kicker
     <section className="auto-ecosystem-section" id="auto-ecosystem">
       <div className="auto-ecosystem-container">
         <div className="auto-ecosystem-header">
-          <span className="auto-ecosystem-kicker">{kicker || 'OUR EXPERTISE'}</span>
-          <h2 className="auto-ecosystem-heading">{heading || 'Expertise Across The Automotive Ecosystem'}</h2>
+          <span className="auto-ecosystem-kicker">{kicker}</span>
+          <h2 className="auto-ecosystem-heading">{heading}</h2>
         </div>
         <div className="common-swiper-box">
           <div className="swiper auto-ecosystem-swiper" ref={sliderRef}>

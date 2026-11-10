@@ -10,17 +10,10 @@ export default function CaseDetailHero({
   heroImage = null,
   clientName = null,
 }) {
-  const displayKicker = kicker || dynamicHero?.kicker || dynamicHero?.industry?.title || 'BANKING & FINANCE';
-  const displayTitle =
-    title ||
-    dynamicHero?.title ||
-    'Understanding Customer Expectations In A Changing Financial Market';
-  const displayDesc =
-    description ||
-    dynamicHero?.description ||
-    dynamicHero?.excerpt ||
-    'How research uncovered evolving customer needs, digital expectations, and decision-making drivers to help a financial services organization strengthen its customer strategy.';
-  const imgSrc = getStrapiMedia(heroImage || dynamicHero?.heroImage, '/asstes/images/case-study-banking.jpg');
+  const displayKicker = kicker || dynamicHero?.kicker || dynamicHero?.industry?.title;
+  const displayTitle = title || dynamicHero?.title;
+  const displayDesc = description || dynamicHero?.description || dynamicHero?.excerpt;
+  const imgSrc = getStrapiMedia(heroImage || dynamicHero?.heroImage, getStrapiMedia('/uploads/case-study-banking.jpg'));
   const displayClient = clientName || dynamicHero?.clientName;
 
   return (

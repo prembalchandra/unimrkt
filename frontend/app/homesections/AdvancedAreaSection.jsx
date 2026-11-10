@@ -2,8 +2,9 @@
 
 import React, { useEffect, useRef } from 'react';
 import Link from 'next/link';
+import { getStrapiMedia } from '@/lib/strapi';
 
-export default function AdvancedAreaSection() {
+export default function AdvancedAreaSection({ dynamicCallout = null }) {
   const videoRef = useRef(null);
 
   useEffect(() => {
@@ -53,6 +54,10 @@ export default function AdvancedAreaSection() {
     };
   }, []);
 
+  const heading = dynamicCallout?.heading || dynamicCallout?.title;
+  const desc = dynamicCallout?.description;
+  const image = dynamicCallout?.image ? getStrapiMedia(dynamicCallout.image) : getStrapiMedia('/uploads/advanced-banner-img.png');
+
   return (
     <section className="advanced-area">
       <div className="cati-showcase-box-area">
@@ -72,23 +77,20 @@ export default function AdvancedAreaSection() {
         </div>
         <div className="srcn-container">
           <div className="cati-showcase-row">
-            <div className="cati-image-col">
-              <div className="cati-cutout-wrap">
-                <img
-                  src="/asstes/images/advanced-banner-img.png"
-                  alt="500+ Advanced CATI Workstations"
-                  className="cati-cutout-img"
-                />
+            {image && (
+              <div className="cati-image-col">
+                <div className="cati-cutout-wrap">
+                  <img
+                    src={image}
+                    alt={heading || 'CATI Workstations'}
+                    className="cati-cutout-img"
+                  />
+                </div>
               </div>
-            </div>
+            )}
             <div className="cati-text-col">
-              <h2 className="cati-heading">
-                500+ Advanced<br />CATI Workstations
-              </h2>
-              <p className="cati-desc">
-                Equipped to deliver high-volume, accurate, and efficient telephone research nationwide, supported by
-                advanced technology, skilled interviewers, and robust quality control processes.
-              </p>
+              {heading && <h2 className="cati-heading">{heading}</h2>}
+              {desc && <p className="cati-desc">{desc}</p>}
               <Link href="/contact" className="btn-burgundy">
                 <span>GET STARTED TODAY</span>
                 <i className="fa-solid fa-arrow-up-right-from-square"></i>

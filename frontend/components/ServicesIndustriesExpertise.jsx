@@ -8,13 +8,13 @@ import { getStrapiMedia } from '../lib/strapi';
 
 function getIndustryFallbackImage(slug = '') {
   const s = slug.toLowerCase();
-  if (s.includes('bank') || s.includes('bfsi') || s.includes('financ')) return '/asstes/images/banking-finance-img.png';
-  if (s.includes('health') || s.includes('life')) return '/asstes/images/Healthcare-img.png';
-  if (s.includes('consumer') || s.includes('retail') || s.includes('fmcg')) return '/asstes/images/consumer-retail-img.png';
-  if (s.includes('auto') || s.includes('mobility')) return '/asstes/images/case-study-automotive.jpg';
-  if (s.includes('tech') || s.includes('telecom')) return '/asstes/images/case-study-telecom.jpg';
-  if (s.includes('energy') || s.includes('sustain')) return '/asstes/images/case-study-energy.jpg';
-  return '/asstes/images/banking-finance-img.png';
+  if (s.includes('bank') || s.includes('bfsi') || s.includes('financ')) return getStrapiMedia('/uploads/banking-finance-img.png');
+  if (s.includes('health') || s.includes('life')) return getStrapiMedia('/uploads/Healthcare-img.png');
+  if (s.includes('consumer') || s.includes('retail') || s.includes('fmcg')) return getStrapiMedia('/uploads/consumer-retail-img.png');
+  if (s.includes('auto') || s.includes('mobility')) return getStrapiMedia('/uploads/case-study-automotive.jpg');
+  if (s.includes('tech') || s.includes('telecom')) return getStrapiMedia('/uploads/case-study-telecom.jpg');
+  if (s.includes('energy') || s.includes('sustain')) return getStrapiMedia('/uploads/case-study-energy.jpg');
+  return getStrapiMedia('/uploads/banking-finance-img.png');
 }
 
 function formatIndustry(item) {
@@ -35,9 +35,9 @@ export default function ServicesIndustriesExpertise({ initialIndustries = [], dy
   const swiperInstanceRef = useRef(null);
   const [industries, setIndustries] = useState(() => (initialIndustries || []).map(formatIndustry).filter(Boolean));
 
-  const displayKicker = dynamicSection?.kicker || 'INDUSTRIES WE SERVE';
-  const displayHeading = dynamicSection?.heading || dynamicSection?.title || 'Research Expertise Across Diverse Industries';
-  const displayDesc = dynamicSection?.description || 'From financial services and healthcare to technology, retail and industrial markets, our research capabilities help organizations understand their customers, markets and business opportunities. We work across diverse sectors, tailoring research approaches to each industry\'s unique challenges, audiences and decision-making needs. By combining the right methodologies, market expertise and quality-focused execution, we help businesses uncover meaningful insights and make more informed strategic decisions.';
+  const displayKicker = dynamicSection?.kicker;
+  const displayHeading = dynamicSection?.heading || dynamicSection?.title;
+  const displayDesc = dynamicSection?.description;
 
   useEffect(() => {
     if (initialIndustries && initialIndustries.length > 0) {

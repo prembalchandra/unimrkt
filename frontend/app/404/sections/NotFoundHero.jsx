@@ -1,18 +1,20 @@
 'use client';
 
+import { getStrapiMedia } from '@/lib/strapi';
+
 import React from 'react';
 import Link from 'next/link';
 
 export default function NotFoundHero({ dynamicHero = null }) {
-  const kicker = dynamicHero?.kicker || 'PAGE NOT FOUND';
-  const heading = dynamicHero?.heading || dynamicHero?.title || 'Wrong turn. Right mindset.';
-  const desc = dynamicHero?.description || "The page you are looking for doesn't exist or has been moved. But don't worry, you can always head back to our homepage or get in touch with us.";
+  const kicker = dynamicHero?.kicker || '404';
+  const heading = dynamicHero?.heading || dynamicHero?.title || 'Page Not Found';
+  const desc = dynamicHero?.description || '';
 
   return (
     <section className="notfound-page-wrapper">
       <div className="hero-common-banner">
         <img
-          src="/asstes/images/404-banner.png"
+          src={getStrapiMedia('/uploads/404-banner.png')}
           alt="404 Page Not Found Background"
           className="notfound-banner-bg hero-common-banner-area"
         />
@@ -38,7 +40,7 @@ export default function NotFoundHero({ dynamicHero = null }) {
             <div className="hero-btn-area notfound-actions">
               <Link href="/" className="btn-sm">
                 <span>Go to Homepage</span>
-                <img src="/asstes/images/icon/arrow-right-icon-img.png" alt="Arrow Right" />
+                <img src={getStrapiMedia('/uploads/arrow-right-icon-img.png')} alt="Arrow Right" />
               </Link>
               <Link href="/contact" className="btn-white">
                 Contact Us <i className="fa fa-long-arrow-up" aria-hidden="true"></i>

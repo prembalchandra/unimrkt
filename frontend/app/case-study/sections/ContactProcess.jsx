@@ -3,12 +3,13 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Swiper from 'swiper';
 import { Autoplay, Pagination } from 'swiper/modules';
+import { getStrapiMedia } from '@/lib/strapi';
 
 function formatTestimonial(t) {
   if (!t) return null;
   return {
     id: t.id || t.documentId || Math.random(),
-    title: t.title || 'Client Partnership',
+    title: t.title || '',
     quote: t.quote || t.content || '',
     role: t.clientRole || t.authorTitle || t.role || '',
     company: t.companyName || t.clientCompany || t.company || '',
@@ -26,12 +27,9 @@ export default function ContactProcess({
   const paginationRef = useRef(null);
   const [items, setItems] = useState(() => (initialTestimonials || []).map(formatTestimonial).filter(Boolean));
 
-  const displayKicker = dynamicSection?.kicker || kicker || 'How it works';
-  const displayTitle = dynamicSection?.heading || dynamicSection?.title || title || 'What Happens After You Contact Us?';
-  const displayDesc =
-    dynamicSection?.description ||
-    description ||
-    'A simple process designed to understand your requirement and connect you with the right research expert.';
+  const displayKicker = dynamicSection?.kicker || kicker;
+  const displayTitle = dynamicSection?.heading || dynamicSection?.title || title;
+  const displayDesc = dynamicSection?.description || description;
 
   useEffect(() => {
     if (initialTestimonials && initialTestimonials.length > 0) {
@@ -100,7 +98,7 @@ export default function ContactProcess({
               <article key={item.id} className="swiper-slide contact-process-card">
                 <div className="testimonial-process-card-box">
                   <div className="contact-process-icon">
-                    <img src="/asstes/images/icon/testimonial-icon-img.png" alt="Testimonial quote icon" />
+                    <img src={getStrapiMedia("/uploads/testimonial-icon-img.png")} alt="Testimonial quote icon" />
                   </div>
                   <h3>{item.title}</h3>
                   <p>{item.quote}</p>

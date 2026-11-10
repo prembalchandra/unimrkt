@@ -15,7 +15,10 @@ export default function Header({ globalData: initialGlobalData = null }) {
 
   useEffect(() => {
     if (!initialGlobalData) {
-      fetch('http://127.0.0.1:1337/api/global?populate[navigation][populate]=*&populate[headerCta][populate]=*&populate[headerLogo][populate]=*')
+      const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL || 'http://127.0.0.1:1337';
+      fetch(
+        `${STRAPI_URL}/api/global?populate[navigation][populate]=*&populate[headerCta][populate]=*&populate[headerLogo][populate]=*`
+      )
         .then((res) => res.json())
         .then((json) => {
           if (json?.data) setGlobalData(json.data);
@@ -80,9 +83,9 @@ export default function Header({ globalData: initialGlobalData = null }) {
     }
   };
 
-  const logoSrc = getStrapiMedia(globalData?.headerLogo, '/asstes/images/unimrkt-resarch-logo.webp');
-  const siteName = globalData?.siteName || 'Unimrkt Research';
-  const cta = globalData?.headerCta || { label: 'Talk to Experts', url: '/contact' };
+  const logoSrc = getStrapiMedia(globalData?.headerLogo);
+  const siteName = globalData?.siteName || '';
+  const cta = globalData?.headerCta;
 
   return (
     <header className={`unimrkt-resarch-header-area ${isSticky ? 'header-sticky' : ''}`}>
@@ -93,7 +96,7 @@ export default function Header({ globalData: initialGlobalData = null }) {
             <div className="header-col-lift-area">
               <div className="header-logo-area">
                 <Link href="/" className="logo">
-                  <img src={logoSrc} alt={siteName} />
+                  {logoSrc && <img src={logoSrc} alt={siteName} />}
                 </Link>
               </div>
             </div>
@@ -102,7 +105,7 @@ export default function Header({ globalData: initialGlobalData = null }) {
             <div className="header-col-conter-area">
               <div className="header-drawer-logo-area">
                 <Link href="/" className="logo" onClick={() => setIsMobileMenuOpen(false)}>
-                  <img src={logoSrc} alt={siteName} />
+                  {logoSrc && <img src={logoSrc} alt={siteName} />}
                 </Link>
               </div>
               <div className="header-menu-area">
@@ -183,93 +186,134 @@ export default function Header({ globalData: initialGlobalData = null }) {
                     </li>
 
                     {/* Services Dropdown */}
-                    <li className={`header-itme-area header-itme-submenu-toggle ${isSubmenuOpen ? 'submenu-open' : ''}`}>
+                    <li
+                      className={`header-itme-area header-itme-submenu-toggle ${
+                        isSubmenuOpen ? 'submenu-open' : ''
+                      }`}
+                    >
                       <a
                         href="/services"
                         className="header-link-area"
                         aria-expanded={isSubmenuOpen}
                         onClick={toggleSubmenu}
                       >
-                        Services <i className="fa-solid fa-angle-down" style={{ fontSize: '0.75rem' }}></i>
+                        Services{' '}
+                        <i className="fa-solid fa-angle-down" style={{ fontSize: '0.75rem' }}></i>
                       </a>
                       <div className="header-sub-menu-area-wrapper">
                         <ul>
                           <li className="header-submenu-time-area">
-                            <Link href="/primary-research" className="header-sub-menu-link" onClick={() => setIsMobileMenuOpen(false)}>
+                            <Link
+                              href="/primary-research"
+                              className="header-sub-menu-link"
+                              onClick={() => setIsMobileMenuOpen(false)}
+                            >
                               Primary Research
                             </Link>
                           </li>
                           <li className="header-submenu-time-area">
-                            <Link href="/services" className="header-sub-menu-link" onClick={() => setIsMobileMenuOpen(false)}>
+                            <Link
+                              href="/services"
+                              className="header-sub-menu-link"
+                              onClick={() => setIsMobileMenuOpen(false)}
+                            >
                               Secondary Research
                             </Link>
                           </li>
                           <li className="header-submenu-time-area">
-                            <Link href="/telephonic-surveys" className="header-sub-menu-link" onClick={() => setIsMobileMenuOpen(false)}>
-                              CATI / Telephonic Surveys
+                            <Link
+                              href="/telephonic-surveys"
+                              className="header-sub-menu-link"
+                              onClick={() => setIsMobileMenuOpen(false)}
+                            >
+                              Telephonic Surveys
                             </Link>
                           </li>
                           <li className="header-submenu-time-area">
-                            <Link href="/services" className="header-sub-menu-link" onClick={() => setIsMobileMenuOpen(false)}>
-                              Online Survey &amp; Panels
+                            <Link
+                              href="/services"
+                              className="header-sub-menu-link"
+                              onClick={() => setIsMobileMenuOpen(false)}
+                            >
+                              Online Panel & Surveys
                             </Link>
                           </li>
                           <li className="header-submenu-time-area">
-                            <Link href="/services" className="header-sub-menu-link" onClick={() => setIsMobileMenuOpen(false)}>
-                              B2B Market Research
-                            </Link>
-                          </li>
-                          <li className="header-submenu-time-area">
-                            <Link href="/services" className="header-sub-menu-link" onClick={() => setIsMobileMenuOpen(false)}>
-                              Healthcare Research
-                            </Link>
-                          </li>
-                          <li className="header-submenu-time-area">
-                            <Link href="/services" className="header-sub-menu-link" onClick={() => setIsMobileMenuOpen(false)}>
-                              Data Analytics &amp; Tech
+                            <Link
+                              href="/services"
+                              className="header-sub-menu-link"
+                              onClick={() => setIsMobileMenuOpen(false)}
+                            >
+                              Data Analytics & Reporting
                             </Link>
                           </li>
                         </ul>
                       </div>
                     </li>
-                    <li className="header-itme-area">
-                      <Link href="/industries" className="header-link-area" onClick={() => setIsMobileMenuOpen(false)}>
-                        Industries
-                      </Link>
-                    </li>
-                    <li className="header-itme-area">
-                      <Link href="/blog" className="header-link-area" onClick={() => setIsMobileMenuOpen(false)}>
-                        Blogs
-                      </Link>
-                    </li>
-                    <li className="header-itme-area">
-                      <Link href="/gallery" className="header-link-area" onClick={() => setIsMobileMenuOpen(false)}>
-                        Gallery
-                      </Link>
-                    </li>
-                    <li className="header-itme-area">
-                      <Link href="/contact" className="header-link-area" onClick={() => setIsMobileMenuOpen(false)}>
-                        Contact
-                      </Link>
-                    </li>
+
+                    {/* Dynamic navigation links from Strapi */}
+                    {globalData?.navigation && globalData.navigation.length > 0 ? (
+                      globalData.navigation
+                        .filter((item) => item.label !== 'ABOUT UNIMRKT' && item.label !== 'Services')
+                        .map((item, idx) => (
+                          <li key={item.id || idx} className="header-itme-area">
+                            <Link
+                              href={item.url || '/'}
+                              className="header-link-area"
+                              onClick={() => setIsMobileMenuOpen(false)}
+                            >
+                              {item.label}
+                            </Link>
+                          </li>
+                        ))
+                    ) : (
+                      <>
+                        <li className="header-itme-area">
+                          <Link href="/industries" className="header-link-area" onClick={() => setIsMobileMenuOpen(false)}>
+                            Industries
+                          </Link>
+                        </li>
+                        <li className="header-itme-area">
+                          <Link href="/blog" className="header-link-area" onClick={() => setIsMobileMenuOpen(false)}>
+                            Blogs
+                          </Link>
+                        </li>
+                        <li className="header-itme-area">
+                          <Link href="/gallery" className="header-link-area" onClick={() => setIsMobileMenuOpen(false)}>
+                            Gallery
+                          </Link>
+                        </li>
+                        <li className="header-itme-area">
+                          <Link href="/contact" className="header-link-area" onClick={() => setIsMobileMenuOpen(false)}>
+                            Contact
+                          </Link>
+                        </li>
+                      </>
+                    )}
                   </ul>
                 </nav>
               </div>
             </div>
 
-            {/* Right Header Action Area */}
-            <div className="header-right-action-area">
-              <div className="header-btn-area">
-                <Link href={cta.url || '/contact'} className="btn-sm" onClick={() => setIsMobileMenuOpen(false)}>
-                  <span>{cta.label || 'Talk to Experts'}</span>
-                  <img src="/asstes/images/icon/arrow-right-icon-img.png" alt="Arrow Right" />
-                </Link>
-              </div>
-              <div className="header-toggle-navigation-area">
+            {/* Right Column: CTA Button & Mobile Hamburger Toggle */}
+            <div className="header-col-righ-area">
+              <div className="header-righ-area">
+                {cta && cta.label && (
+                  <div className="header-btn-area">
+                    <Link
+                      href={cta.url || '/contact'}
+                      className="header-btn btn-sm"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                    >
+                      {cta.label}
+                    </Link>
+                  </div>
+                )}
                 <button
-                  className={`toggle-navigation hamburgerBtn ${isMobileMenuOpen ? 'active' : ''}`}
-                  aria-label="Toggle navigation"
-                  aria-controls="header-mobile-menu"
+                  type="button"
+                  className={`menu-toggle-btn ${isMobileMenuOpen ? 'is-active' : ''}`}
+                  id="menuToggleBtn"
+                  aria-label="Toggle navigation menu"
                   aria-expanded={isMobileMenuOpen}
                   onClick={() => setIsMobileMenuOpen((prev) => !prev)}
                 >

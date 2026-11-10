@@ -16,8 +16,8 @@ export default function CommonTrustedPartnersTestimonials({
   const paginationRef = useRef(null);
   const swiperInstanceRef = useRef(null);
 
-  const displayKicker = kicker || dynamicSection?.kicker || 'CLIENT SUCCESS STORIES';
-  const displayHeading = heading || dynamicSection?.heading || dynamicSection?.title || 'Trusted Research Partner For Businesses Worldwide';
+  const displayKicker = kicker || dynamicSection?.kicker;
+  const displayHeading = heading || dynamicSection?.heading || dynamicSection?.title;
 
   useEffect(() => {
     if (!dynamicTestimonials || dynamicTestimonials.length === 0) {

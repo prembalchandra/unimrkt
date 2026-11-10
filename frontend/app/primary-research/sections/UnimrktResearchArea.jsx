@@ -1,63 +1,72 @@
 'use client';
 
 import React from 'react';
+import { getStrapiMedia } from '@/lib/strapi';
 
-const defaultIcons = [
-  '/asstes/images/icon/team-members-icon-img.png',
-  '/asstes/images/icon/on-time-icon-img.png',
-  '/asstes/images/icon/repeat-business-icon-img.png',
-  '/asstes/images/icon/surveys-complet-year-icon-img.png',
-  '/asstes/images/icon/State-of-the-art-icon-img.png',
-  '/asstes/images/icon/average-cost-savings-icon-img.png',
-  '/asstes/images/icon/moderators-icon-img.png',
-  '/asstes/images/icon/certified-icon-img.png',
-  '/asstes/images/icon/projects-of-combined-icon-img.png',
-  '/asstes/images/icon/scalability-icon-img.png',
-  '/asstes/images/icon/support-icon-img.png',
-];
+export default function UnimrktResearchArea({ metrics = [], kicker = null, heading = null, description = null, dynamicSection = null }) {
+  const displayKicker = dynamicSection?.kicker || kicker;
+  const displayHeading = dynamicSection?.heading || dynamicSection?.title || heading;
+  const displayDesc = dynamicSection?.description || description;
+  const list = dynamicSection?.values || dynamicSection?.metrics || (metrics && metrics.length > 0 ? metrics : []);
 
-export default function UnimrktResearchArea({ metrics = [], kicker, heading, description }) {
-  if (!metrics || metrics.length === 0) return null;
+  if (!displayHeading && !displayDesc && list.length === 0) return null;
 
   return (
     <section className="our-unimrkt-research-area">
       <div className="our-unimrkt-research-banner" aria-hidden="true" />
       <div className="srcn-container">
         <div className="our-unimrkt-research-wrapper-inner">
-          <div className="our-unimrkt-research-top-content primary-services-header">
-            <span className="our-unimrkt-research-sub-title">
-              {kicker || 'OUR CAPABILITIES'}
-            </span>
-            <h2 className="our-unimrkt-research-main-heading section-main-heading">
-              {heading || 'The Unimrkt Edge'}
-            </h2>
-            <p className="our-unimrkt-research-title">
-              {description || 'We combine robust research infrastructure with skilled interviewers, strict quality control, and international reach.'}
-            </p>
-          </div>
-          <div className="our-unimrkt-research-grid">
-            {metrics.map((item, index) => (
-              <div
-                className="our-unimrkt-research-card-col"
-                key={item.id || `${item.title}-${index}`}
-              >
-                <div className="our-unimrkt-research-card">
-                  <div className="our-unimrkt-research-icon-box">
-                    <img
-                      src={item.icon || item.iconClass || defaultIcons[index % defaultIcons.length]}
-                      alt={item.title}
-                      loading="lazy"
-                    />
-                  </div>
+          {(displayKicker || displayHeading || displayDesc) && (
+            <div className="our-unimrkt-research-top-content primary-services-header">
+              {displayKicker && (
+                <span className="our-unimrkt-research-sub-title">
+                  {displayKicker}
+                </span>
+              )}
+              {displayHeading && (
+                <h2 className="our-unimrkt-research-main-heading section-main-heading">
+                  {displayHeading}
+                </h2>
+              )}
+              {displayDesc && (
+                <p className="our-unimrkt-research-title">
+                  {displayDesc}
+                </p>
+              )}
+            </div>
+          )}
+          {list.length > 0 && (
+            <div className="our-unimrkt-research-grid">
+              {list.map((item, index) => {
+                const iconSrc = getStrapiMedia(item.icon || item.image);
+                return (
+                  <div
+                    className="our-unimrkt-research-card-col"
+                    key={item.id || `${item.title}-${index}`}
+                  >
+                    <div className="our-unimrkt-research-card">
+                      {iconSrc && (
+                        <div className="our-unimrkt-research-icon-box">
+                          <img
+                            src={iconSrc}
+                            alt={item.title || ''}
+                            loading="lazy"
+                          />
+                        </div>
+                      )}
 
-                  <div className="our-unimrkt-research-content">
-                    <h3>{item.title}</h3>
-                    <p>{item.desc || item.description}</p>
+                      <div className="our-unimrkt-research-content">
+                        {item.title && <h3>{item.title}</h3>}
+                        {(item.desc || item.description) && (
+                          <p>{item.desc || item.description}</p>
+                        )}
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </div>
-            ))}
-          </div>
+                );
+              })}
+            </div>
+          )}
         </div>
       </div>
     </section>

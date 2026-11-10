@@ -1,18 +1,19 @@
 import React from 'react';
+import { getStrapiMedia } from '@/lib/strapi';
 
 function getReachIcon(title = '') {
   const t = title.toLowerCase();
-  if (t.includes('global') || t.includes('market') || t.includes('hub') || t.includes('india')) return '/asstes/images/icon/global-regional-markets-icon-img.png';
-  if (t.includes('audienc') || t.includes('uk')) return '/asstes/images/icon/diverse-audiences-icon-img.png';
-  if (t.includes('industr') || t.includes('usa')) return '/asstes/images/icon/multiple-industries-icon-img.png';
-  return '/asstes/images/icon/multiple-research-methods-icon.png';
+  if (t.includes('global') || t.includes('market') || t.includes('hub') || t.includes('india')) return getStrapiMedia('/uploads/global-regional-markets-icon-img.png');
+  if (t.includes('audienc') || t.includes('uk')) return getStrapiMedia('/uploads/diverse-audiences-icon-img.png');
+  if (t.includes('industr') || t.includes('usa')) return getStrapiMedia('/uploads/multiple-industries-icon-img.png');
+  return getStrapiMedia('/uploads/multiple-research-methods-icon.png');
 }
 
 export default function ResearchReachSection({
   dynamicReach = null,
-  kicker = 'Our Coverage',
-  title = 'Research Reach That Goes Beyond Markets',
-  description = 'Our research capabilities span markets, industries, audiences and geographies, helping businesses build a deeper understanding of the people, trends and opportunities that matter most.',
+  kicker = null,
+  title = null,
+  description = null,
   cards = [],
 } = {}) {
   const activeKicker = dynamicReach?.kicker || kicker;

@@ -1,6 +1,8 @@
 
 'use client';
 
+import { getStrapiMedia } from '@/lib/strapi';
+
 import React from 'react';
 import Link from 'next/link';
 
@@ -110,7 +112,7 @@ export default function CaseStudiesImpactCta({
                 <div className="case-man-image-layer">
                   <div className="case-man-image-wrapper">
                     <img
-                      src="/asstes/images/case-study-man-img.png"
+                      src={getStrapiMedia('/uploads/case-study-man-img.png')}
                       alt="Unimrkt Research Analyst"
                       className="case-man-img"
                       loading="lazy"

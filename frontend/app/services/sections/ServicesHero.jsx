@@ -1,51 +1,76 @@
+'use client';
+
 import React from 'react';
 import Link from 'next/link';
+import { getStrapiMedia } from '@/lib/strapi';
 
 export default function ServicesHero({ dynamicHero = null }) {
-  const kicker = dynamicHero?.kicker || 'OUR SERVICES';
-  const title =
-    dynamicHero?.title || 'Empowering Business Decisions with Market Intelligence';
-  const description =
-    dynamicHero?.description ||
-    'Comprehensive qualitative and quantitative research services tailored to uncover opportunities and drive sustainable growth.';
-  const primaryBtnLabel = dynamicHero?.primaryButton?.label || 'Get a Free Quote';
-  const primaryBtnUrl = dynamicHero?.primaryButton?.url || '#cta';
-  const secondaryBtnLabel = dynamicHero?.secondaryButton?.label || 'Talk to Our Experts';
-  const secondaryBtnUrl = dynamicHero?.secondaryButton?.url || '/contact';
+  if (!dynamicHero) return null;
+
+  const kicker = dynamicHero.kicker;
+  const title = dynamicHero.title || dynamicHero.heading;
+  const description = dynamicHero.description;
+  const primaryBtnLabel = dynamicHero.primaryButton?.label || dynamicHero.button?.label;
+  const primaryBtnUrl = dynamicHero.primaryButton?.url || dynamicHero.button?.url || '/contact';
+  const secondaryBtnLabel = dynamicHero.secondaryButton?.label;
+  const secondaryBtnUrl = dynamicHero.secondaryButton?.url || '/contact';
+  const bannerSrc = getStrapiMedia(dynamicHero.bannerImage);
+
+  if (!title && !description && !bannerSrc) return null;
 
   return (
-    <section className="hero-common-area">
-      <div className="hero-common-banner">
-        <img
-          src="/asstes/images/services-banner-img.png"
-          className="hero-common-banner-area"
-          alt={title}
-        />
-      </div>
-      <div className="srcn-container">
-        <div className="hero-common-row">
-          <div className="hero-common-content">
-            <div className="hero-common-content-area">
-              <span className="hero-common-sub-title-area">
-                <i className="fa-solid fa-bolt" style={{ fontSize: '0.75rem', color: '#ff526b' }}></i>
-                {kicker}
-              </span>
-              <h1 className="hero-commmon-heading-area">{title}</h1>
-              <p className="hero-common-title">{description}</p>
+    <>
+      <section className="hero-common-area">
+        {bannerSrc && (
+          <div className="hero-common-banner">
+            <img
+              src={bannerSrc}
+              className="hero-common-banner-area"
+              alt={title || ''}
+            />
+          </div>
+        )}
+        <div className="srcn-container">
+          <div className="hero-common-row">
+            <div className="hero-common-content">
+              <div className="hero-common-content-area">
+                {kicker && (
+                  <span className="hero-common-sub-title-area">
+                    <i className="fa-solid fa-bolt" style={{ fontSize: '0.75rem', color: '#ff526b', marginRight: '6px' }}></i>
+                    {kicker}
+                  </span>
+                )}
+                {title && <h1 className="hero-commmon-heading-area">{title}</h1>}
+                {description && <p className="hero-common-title">{description}</p>}
+              </div>
+              {(primaryBtnLabel || secondaryBtnLabel) && (
+                <div className="hero-btn-area">
+                  {primaryBtnLabel && (
+                    <Link href={primaryBtnUrl} className="hero-common-btn-area btn-sm">
+                      <span>{primaryBtnLabel}</span>
+                      <i className="fa-solid fa-arrow-right" style={{ marginLeft: '8px' }}></i>
+                    </Link>
+                  )}
+                  {secondaryBtnLabel && (
+                    <Link href={secondaryBtnUrl} className="hero-common-btn-area btn-border-sm">
+                      <span>{secondaryBtnLabel}</span>
+                      <i className="fa-solid fa-arrow-right" style={{ marginLeft: '8px' }}></i>
+                    </Link>
+                  )}
+                </div>
+              )}
             </div>
-            <div className="hero-btn-area">
-              <Link href={primaryBtnUrl} className="hero-common-btn-area btn-sm">
-                <span>{primaryBtnLabel}</span>
-                <img src="/asstes/images/icon/arrow-right-icon-img.png" alt="Arrow Right" />
-              </Link>
-              <Link href={secondaryBtnUrl} className="hero-common-btn-area btn-border-sm">
-                <span>{secondaryBtnLabel}</span>
-                <img src="/asstes/images/icon/arrow-right-icon-img.png" alt="Arrow Right" />
-              </Link>
-            </div>     
           </div>
         </div>
+      </section>
+
+      <div className="team-breadcrumb">
+        <div className="srcn-container">
+          <nav aria-label="Breadcrumb">
+            <Link href="/">Home</Link><span aria-hidden="true">›</span><span aria-current="page">Services</span>
+          </nav>
+        </div>
       </div>
-    </section>
+    </>
   );
 }

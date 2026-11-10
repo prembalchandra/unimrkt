@@ -13,7 +13,7 @@ function formatBlog(b) {
     title: b.title || '',
     snippet: b.excerpt || b.snippet || '',
     link: b.slug ? `/blog/${b.slug}` : '/blog',
-    img: getStrapiMedia(b.featuredImage, '/asstes/images/market-trends-card-img1.png'),
+    img: getStrapiMedia(b.featuredImage, getStrapiMedia('/uploads/market-trends-card-img1.png')),
   };
 }
 
@@ -21,9 +21,9 @@ export default function CommonBlogSection({ initialBlogs = [], dynamicSection = 
   const swiperRef = useRef(null);
   const [blogs, setBlogs] = useState(() => (initialBlogs || []).map(formatBlog).filter(Boolean));
 
-  const displayKicker = dynamicSection?.kicker || 'LATEST BLOGS';
-  const displayTitle = dynamicSection?.heading || dynamicSection?.title || 'Exploring Market Trends';
-  const displayDesc = dynamicSection?.description || 'Discover Emerging Market Trends That Shape Smarter Business Decisions.';
+  const displayKicker = dynamicSection?.kicker;
+  const displayTitle = dynamicSection?.heading || dynamicSection?.title;
+  const displayDesc = dynamicSection?.description;
 
   useEffect(() => {
     if (initialBlogs && initialBlogs.length > 0) {

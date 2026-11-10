@@ -2,52 +2,28 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { getStrapiMedia } from '@/lib/strapi';
 
-function getServiceVisuals(title = '', idx = 0) {
-  const t = title.toLowerCase();
-  if (t.includes('telephonic') || t.includes('phone')) {
-    return {
-      image: '/asstes/images/telephonic-surveys-card-img.png',
-      href: '/telephonic-surveys',
-    };
-  }
-  if (t.includes('online') || t.includes('panel')) {
-    return {
-      image: '/asstes/images/online-surveys-card-img.png',
-      href: '/services',
-    };
-  }
-  if (t.includes('in-depth') || t.includes('interview')) {
-    return {
-      image: '/asstes/images/interview-controls-card-img.png',
-      href: '/services',
-    };
-  }
-  return {
-    image: '/asstes/images/smart-survey-management-card-img.png',
-    href: '/telephonic-surveys',
-  };
-}
-
-function formatService(s, idx) {
+function formatService(s) {
   if (!s) return null;
   const title = s.title || '';
-  const visuals = getServiceVisuals(title, idx);
+  const imageSrc = getStrapiMedia(s.thumbnail || s.icon);
+  const href = s.slug ? (s.slug.includes('telephonic') ? '/telephonic-surveys' : `/services#${s.slug}`) : '/services';
   return {
     title,
-    description: s.shortDescription || s.description || 'Efficient research methodologies capturing valuable respondent insights.',
-    image: visuals.image,
+    description: s.shortDescription || s.description || '',
+    image: imageSrc,
     alt: title,
-    href: visuals.href,
+    href,
   };
 }
 
 export default function PrimaryServices({ initialServices = [], dynamicSection = null }) {
   const [servicesList, setServicesList] = useState(() => (initialServices || []).map(formatService).filter(Boolean));
 
-  const displayKicker = dynamicSection?.kicker || 'WHAT WE DO';
-  const displayTitle = dynamicSection?.heading || dynamicSection?.title || 'Our Primary Research Services';
-  const displayDesc = dynamicSection?.description || 'Delivering actionable data through custom research methodologies designed to help you understand your market, your competitors, and your customers.';
+  const displayKicker = dynamicSection?.kicker;
+  const displayTitle = dynamicSection?.heading || dynamicSection?.title;
+  const displayDesc = dynamicSection?.description;
 
   useEffect(() => {
     if (initialServices && initialServices.length > 0) {
@@ -70,55 +46,46 @@ export default function PrimaryServices({ initialServices = [], dynamicSection =
   return (
     <section className="primary-services-section">
       <div className="srcn-container">
-        <div className="primary-services-header">
-          <span className="primary-services-kicker">
-            {displayKicker}
-          </span>
-          <h2 className="primary-services-title">
-            {displayTitle}
-          </h2>
-          <p className="primary-services-desc">
-            {displayDesc}
-          </p>
-        </div>
+        {(displayKicker || displayTitle || displayDesc) && (
+          <div className="primary-services-header">
+            {displayKicker && (
+              <span className="primary-services-kicker">
+                {displayKicker}
+              </span>
+            )}
+            {displayTitle && (
+              <h2 className="primary-services-title">
+                {displayTitle}
+              </h2>
+            )}
+            {displayDesc && (
+              <p className="primary-services-desc">
+                {displayDesc}
+              </p>
+            )}
+          </div>
+        )}
+
         <div className="primary-services-grid">
-          {servicesList.slice(0, 4).map((service) => (
-            <Link
-              href={service.href}
-              className="primary-service-card"
-              key={service.title}
-            >
-              <img
-                src={service.image}
-                alt={service.alt}
-                className="primary-service-card-img"
-                loading="lazy"
-              />
-
-              <div
-                className="primary-service-card-overlay"
-                aria-hidden="true"
-              />
-
-              <div className="primary-service-card-body">
-                <h3 className="primary-service-card-title">
-                  {service.title}
-                </h3>
-
-                <p className="primary-service-card-desc">
-                  {service.description}
-                </p>
-
-                <div className="primary-service-card-btn-wrap btn-sm">
-                  <span
-                    className="primary-service-card-btn"
-                    aria-hidden="true"
-                  >
-                    <img src="/asstes/images/icon/arrow-right-icon-img.png" alt="Arrow Right" />
-                  </span>
+          {servicesList.map((service, index) => (
+            <div key={index} className="primary-service-col">
+              <div className="primary-service-card">
+                {service.image && (
+                  <div className="primary-service-img-wrap">
+                    <img src={service.image} alt={service.alt} />
+                  </div>
+                )}
+                <div className="primary-service-content">
+                  {service.title && <h3 className="primary-service-heading">{service.title}</h3>}
+                  {service.description && (
+                    <p className="primary-service-text">{service.description}</p>
+                  )}
+                  <Link href={service.href} className="primary-service-link">
+                    Explore Service <i className="fa-solid fa-arrow-right" aria-hidden="true"></i>
+                  </Link>
                 </div>
               </div>
-            </Link>
+            </div>
           ))}
         </div>
       </div>

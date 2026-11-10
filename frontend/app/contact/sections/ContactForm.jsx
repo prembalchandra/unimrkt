@@ -8,15 +8,15 @@ export default function ContactForm({ dynamicForm = null }) {
   const displayHeading = dynamicForm?.heading || '';
   const displayDesc = dynamicForm?.description || '';
 
-  const namePlaceholder = dynamicForm?.namePlaceholder || 'Name';
-  const emailPlaceholder = dynamicForm?.emailPlaceholder || 'Email';
-  const phonePlaceholder = dynamicForm?.phonePlaceholder || 'Phone number';
-  const companyPlaceholder = dynamicForm?.companyPlaceholder || 'Company';
+  const namePlaceholder = dynamicForm?.namePlaceholder || dynamicForm?.name_placeholder || '';
+  const emailPlaceholder = dynamicForm?.emailPlaceholder || dynamicForm?.email_placeholder || '';
+  const phonePlaceholder = dynamicForm?.phonePlaceholder || dynamicForm?.phone_placeholder || '';
+  const companyPlaceholder = dynamicForm?.companyPlaceholder || dynamicForm?.company_placeholder || '';
   const consentText = dynamicForm?.consentText || '';
   const submitButtonText = dynamicForm?.submitButtonText || 'Submit';
   const submittingButtonText = dynamicForm?.submittingButtonText || 'Submitting...';
-  const successMessage = dynamicForm?.successMessage || 'Thank you! Your inquiry has been received.';
-  const errorMessageText = dynamicForm?.errorMessage || 'An error occurred while submitting. Please try again.';
+  const successMessage = dynamicForm?.successMessage || dynamicForm?.success_message || '';
+  const errorMessageText = dynamicForm?.errorMessage || dynamicForm?.error_message || '';
 
   const countryOptions = dynamicForm?.countryCodeOptions
     ? dynamicForm.countryCodeOptions.split(',').map((item) => {

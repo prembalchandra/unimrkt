@@ -1,11 +1,12 @@
+import { getStrapiMedia } from '@/lib/strapi';
 import React from 'react';
 
 function getImpactIcon(label = '') {
   const l = (label || '').toLowerCase();
-  if (l.includes('countr')) return '/asstes/images/icon/countries-icon-img.png';
-  if (l.includes('lang')) return '/asstes/images/icon/every-stage-icon-img.png';
-  if (l.includes('cati') || l.includes('phone') || l.includes('station')) return '/asstes/images/icon/phone-icon-img.png';
-  return '/asstes/images/icon/experience-icon-img.png';
+  if (l.includes('countr')) return getStrapiMedia('/uploads/countries-icon-img.png');
+  if (l.includes('lang')) return getStrapiMedia('/uploads/every-stage-icon-img.png');
+  if (l.includes('cati') || l.includes('phone') || l.includes('station')) return getStrapiMedia('/uploads/phone-icon-img.png');
+  return getStrapiMedia('/uploads/experience-icon-img.png');
 }
 
 export default function ResearchImpact({ dynamicMetrics = null }) {
@@ -22,7 +23,7 @@ export default function ResearchImpact({ dynamicMetrics = null }) {
       <div className="srcn-container">
         <div className="section-header-area research-impact-header">
           <h2 className="section-main-heading research-impact-title">
-            {dynamicMetrics?.title || 'Research at a Global Scale'}
+            {dynamicMetrics?.title || dynamicMetrics?.heading}
           </h2>
         </div>
 

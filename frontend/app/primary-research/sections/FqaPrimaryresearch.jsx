@@ -28,17 +28,16 @@ export default function FqaPrimaryresearch({ dynamicFaq = null }) {
 
   if (faqs.length === 0) return null;
 
+  const displayHeading = dynamicFaq?.heading || dynamicFaq?.title;
+
   return (
     <section className="faq-section-area">
-      <div className="worldmap-bg">
-        <img src="/asstes/images/unimrkt-resarch-map-banner-img.png" alt="fqa banner" />
-      </div>
       <div className="srcn-container">
-        <div className="section-header-area">
-          <h2 className="section-main-heading">
-            {dynamicFaq?.heading || dynamicFaq?.title || 'Frequently Asked Questions'}
-          </h2>
-        </div>
+        {displayHeading && (
+          <div className="section-header-area">
+            <h2 className="section-main-heading">{displayHeading}</h2>
+          </div>
+        )}
 
         <div className="faq-accordion-container">
           {faqs.map((faq, index) => {
@@ -53,18 +52,14 @@ export default function FqaPrimaryresearch({ dynamicFaq = null }) {
                   onClick={() => toggleAccordion(index)}
                   style={{ cursor: 'pointer' }}
                 >
-                  <span className="faq-header-left">
-                    <span className="faq-question-text">{faq.question}</span>
-                  </span>
-                  <span className={`faq-icon-indicator ${isOpen ? 'active' : ''}`}>
+                  <span className="faq-question-text">{faq.question}</span>
+                  <span className="faq-icon-indicator" aria-hidden="true">
                     {isOpen ? '−' : '+'}
                   </span>
                 </div>
                 {isOpen && (
                   <div className="faq-accordion-body">
-                    <div className="faq-accordion-content">
-                      <p>{faq.answer}</p>
-                    </div>
+                    <p className="faq-accordion-answer">{faq.answer}</p>
                   </div>
                 )}
               </div>

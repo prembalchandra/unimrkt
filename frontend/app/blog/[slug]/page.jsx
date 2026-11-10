@@ -24,10 +24,7 @@ export async function generateMetadata({ params }) {
   }
 
   const title = blog.seo?.metaTitle || `${blog.title} | Unimrkt Blog`;
-  const description =
-    blog.seo?.metaDescription ||
-    blog.excerpt ||
-    'In-depth market research insights and perspectives from Unimrkt Research.';
+  const description = blog.seo?.metaDescription || blog.excerpt || blog.title || '';
   const keywords = blog.seo?.keywords
     ? blog.seo.keywords.split(',').map((k) => k.trim())
     : blog.tags
@@ -36,7 +33,7 @@ export async function generateMetadata({ params }) {
 
   const imageUrl = getStrapiMedia(
     blog.seo?.shareImage || blog.featuredImage,
-    '/asstes/images/blog-banner-img.png'
+    getStrapiMedia('/uploads/blog-banner-img.png')
   );
   const canonicalUrl = `https://www.unimrkt.com/blog/${slug}`;
 
@@ -56,7 +53,7 @@ export async function generateMetadata({ params }) {
       type: 'article',
       publishedTime: blog.publishedDate || blog.publishedAt,
       modifiedTime: blog.updatedAt,
-      authors: [blog.authorName || blog.author?.name || 'Unimrkt Research Team'],
+      authors: [blog.authorName || blog.author?.name || 'Unimrkt Research'],
       images: [
         {
           url: imageUrl,
@@ -87,11 +84,11 @@ export default async function DynamicBlogDetailPage({ params }) {
   }
 
   const categoryName = blog.category?.name || 'Market Research';
-  const authorName = blog.authorName || blog.author?.name || 'Unimrkt Intelligence Team';
-  const authorRole = blog.authorRole || blog.author?.role || 'Global Research Practice';
+  const authorName = blog.authorName || blog.author?.name || 'Unimrkt Research';
+  const authorRole = blog.authorRole || blog.author?.role || '';
   const authorImage = getStrapiMedia(
     blog.author?.photo,
-    '/asstes/images/team/john-doe.png'
+    getStrapiMedia('/uploads/team-john-doe.png')
   );
 
   const formattedDate = blog.publishedDate || blog.publishedAt
@@ -106,7 +103,7 @@ export default async function DynamicBlogDetailPage({ params }) {
   const viewsCount = blog.viewsCount || '3.5K views';
   const heroImageUrl = getStrapiMedia(
     blog.featuredImage,
-    '/asstes/images/market-trends-card-img1.png'
+    getStrapiMedia('/uploads/market-trends-card-img1.png')
   );
 
   const tagsList = blog.tags
@@ -136,7 +133,7 @@ export default async function DynamicBlogDetailPage({ params }) {
       url: 'https://www.unimrkt.com',
       logo: {
         '@type': 'ImageObject',
-        url: 'https://www.unimrkt.com/asstes/images/unimrkt-resarch-logo.webp',
+        url: 'https://www.unimrkt.com/uploads/unimrkt-resarch-logo.webp',
       },
     },
     mainEntityOfPage: {
@@ -280,7 +277,7 @@ export default async function DynamicBlogDetailPage({ params }) {
                         style={{ display: 'flex', gap: '14px', textDecoration: 'none', color: 'inherit' }}
                       >
                         <img
-                          src={getStrapiMedia(item.featuredImage, '/asstes/images/market-trends-card-img1.png')}
+                          src={getStrapiMedia(item.featuredImage, getStrapiMedia('/uploads/market-trends-card-img1.png'))}
                           alt={item.title}
                           style={{ width: '84px', height: '64px', borderRadius: '8px', objectFit: 'cover', flexShrink: 0 }}
                         />
@@ -316,7 +313,7 @@ export default async function DynamicBlogDetailPage({ params }) {
                   <div className="blog-wapper">
                     <div className="blog-img-area">
                       <img
-                        src={getStrapiMedia(b.featuredImage, '/asstes/images/market-trends-card-img1.png')}
+                        src={getStrapiMedia(b.featuredImage, getStrapiMedia('/uploads/market-trends-card-img1.png'))}
                         alt={b.title}
                       />
                     </div>

@@ -35,7 +35,7 @@ export const metadata = {
     type: 'website',
     images: [
       {
-        url: '/asstes/images/work-with-hero-banner-img.png',
+        url: '/uploads/work-with-hero-banner-img.png',
         width: 1200,
         height: 630,
         alt: 'Careers at Unimrkt Research',
@@ -47,7 +47,7 @@ export const metadata = {
     title: 'Careers & Job Openings in Market Research | Unimrkt Research',
     description:
       'At Unimrkt, we give our employees a space to learn, grow and innovate. Explore open career opportunities in market research.',
-    images: ['/asstes/images/work-with-hero-banner-img.png'],
+    images: ['/uploads/work-with-hero-banner-img.png'],
   },
 };
 
@@ -86,8 +86,8 @@ export default async function WorkPage() {
       <CareerJoin dynamicSection={fraudSection} />
       <WorkFaq dynamicFaq={faqSection} />
       <InsightsEditorial
-        kicker={editorialSection?.kicker || 'WHAT WE BELIEVE'}
-        title={editorialSection?.heading || editorialSection?.title || 'Insights That Drive Smarter Business Decisions'}
+        kicker={editorialSection?.kicker}
+        title={editorialSection?.heading || editorialSection?.title}
         paragraph1={editorialSection?.description}
       />
       <ResearchCta dynamicCta={ctaSection} />

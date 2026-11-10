@@ -21,9 +21,9 @@ export default function CapabilitiesSection({ dynamicMetrics = null }) {
     const statsSection = sectionRef.current;
     if (!statsSection) return;
 
-    const targetSurveys = dynamicMetrics?.surveys || 250000;
-    const targetStations = dynamicMetrics?.stations || 450;
-    const targetExp = dynamicMetrics?.experience || 16;
+    const targetSurveys = dynamicMetrics?.surveys || (dynamicMetrics?.metrics?.[0]?.number ? parseInt(dynamicMetrics.metrics[0].number.replace(/[^0-9]/g, '')) : 250000);
+    const targetStations = dynamicMetrics?.stations || (dynamicMetrics?.metrics?.[1]?.number ? parseInt(dynamicMetrics.metrics[1].number.replace(/[^0-9]/g, '')) : 450);
+    const targetExp = dynamicMetrics?.experience || (dynamicMetrics?.metrics?.[2]?.number ? parseInt(dynamicMetrics.metrics[2].number.replace(/[^0-9]/g, '')) : 16);
 
     const animateCounters = () => {
       const duration = 2000;

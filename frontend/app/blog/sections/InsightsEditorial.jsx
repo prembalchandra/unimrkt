@@ -1,43 +1,42 @@
+'use client';
+
 import React from 'react';
 
 export default function InsightsEditorial({
-  dynamicEditorial = null,
-  kicker = 'WHAT WE BELIEVE',
-  title = 'Insights That Drive Smarter Business Decisions',
-  paragraph1,
-  paragraph2,
-} = {}) {
-  const displayKicker = dynamicEditorial?.kicker || kicker;
-  const displayTitle = dynamicEditorial?.heading || dynamicEditorial?.title || title;
-  const displayP1 = dynamicEditorial?.description || paragraph1;
+  dynamicSection = null,
+  kicker = null,
+  title = null,
+  paragraph1 = null,
+  paragraph2 = null,
+  paragraph3 = null,
+}) {
+  const displayKicker = dynamicSection?.kicker || kicker;
+  const displayTitle = dynamicSection?.title || dynamicSection?.heading || title;
+  const displayDesc = dynamicSection?.description || paragraph1;
+
+  if (!displayTitle && !displayDesc) return null;
 
   return (
     <section className="insights-editorial-section">
       <div className="srcn-container">
         <div className="insights-editorial-box">
-          {displayKicker && <span className="sub-title-red">{displayKicker}</span>}
-          <h2 className="insights-editorial-heading section-main-heading">
-            {displayTitle}
-          </h2>
+          {displayKicker && (
+            <span
+              className="sub-title-red"
+              style={{ display: 'block', marginBottom: '12px' }}
+            >
+              {displayKicker}
+            </span>
+          )}
+          {displayTitle && (
+            <h2 className="insights-editorial-heading section-main-heading">
+              {displayTitle}
+            </h2>
+          )}
           <div className="insights-editorial-text-wrap">
-            {displayP1 ? (
-              <p>{displayP1}</p>
-            ) : (
-              <>
-                <p>
-                  At Unimrkt Research, we believe that data without context is just noise. High-impact research
-                  transforms numbers into actionable intelligence that empowers leaders to make strategic moves
-                  with confidence. Whether entering new markets, launching products, or benchmarking competitors,
-                  our comprehensive research methodologies deliver precision.
-                </p>
-                <p>
-                  Backed by seasoned researchers, cutting-edge technology, and a global panel across 90+ countries,
-                  we bridge the gap between curiosity and strategic execution. Every report, survey, and dataset
-                  is rigorously validated to ensure reliable, high-integrity decision support.
-                </p>
-              </>
-            )}
+            {displayDesc && <p>{displayDesc}</p>}
             {paragraph2 && <p>{paragraph2}</p>}
+            {paragraph3 && <p>{paragraph3}</p>}
           </div>
         </div>
       </div>

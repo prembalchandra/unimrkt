@@ -36,7 +36,7 @@ export const metadata = {
     type: 'website',
     images: [
       {
-        url: '/asstes/images/contact-banner-img.png',
+        url: '/uploads/contact-banner-img.png',
         width: 1200,
         height: 630,
         alt: 'Contact Unimrkt Research',
@@ -48,7 +48,7 @@ export const metadata = {
     title: 'Contact Us | Unimrkt Research Global Offices',
     description:
       'Contact Unimrkt Research to turn your business questions into clear answers. Explore our global office locations in India, USA, and UK.',
-    images: ['/asstes/images/contact-banner-img.png'],
+    images: ['/uploads/contact-banner-img.png'],
   },
 };
 

@@ -1,11 +1,13 @@
 'use client';
 
+import { getStrapiMedia } from '@/lib/strapi';
+
 import React, { useState, useMemo, useEffect } from 'react';
 
 function formatFaq(f) {
   if (!f) return null;
   return {
-    category: f.category || 'General',
+    category: f.category || '',
     question: f.question || '',
     answer: f.answer || '',
   };
@@ -35,7 +37,7 @@ export default function FaqContent({ dynamicFaq = null, initialFaqs = [] }) {
 
   const combinedFaqs = useMemo(() => {
     const fromDynamic = (dynamicFaq?.items || []).map((it) => ({
-      category: 'General',
+      category: it.category || '',
       question: it.question,
       answer: it.answer,
     }));
@@ -87,7 +89,7 @@ export default function FaqContent({ dynamicFaq = null, initialFaqs = [] }) {
   return (
     <section className="faq-section-area">
       <div className="worldmap-bg">
-        <img src="/asstes/images/unimrkt-resarch-map-banner-img.png" alt="fqa banner" />
+        <img src={getStrapiMedia("/uploads/unimrkt-resarch-map-banner-img.png")} alt="faq banner" />
       </div>
       <div className="srcn-container">
 

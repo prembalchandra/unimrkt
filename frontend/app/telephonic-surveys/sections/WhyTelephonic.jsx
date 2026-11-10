@@ -1,52 +1,56 @@
+'use client';
+
 import React from 'react';
+import { getStrapiMedia } from '@/lib/strapi';
 
-function getReasonIcon(title = '') {
-  const t = title.toLowerCase();
-  if (t.includes('reach') || t.includes('define')) return '/asstes/images/icon/Define-icon-img.png';
-  if (t.includes('fast') || t.includes('server')) return '/asstes/images/icon/hosting-server-icon-img.png';
-  if (t.includes('human') || t.includes('interaction')) return '/asstes/images/icon/Human-Interaction-icon-img.png';
-  if (t.includes('language')) return '/asstes/images/icon/multi-language-capability-icon-img.png';
-  if (t.includes('engagement') || t.includes('better')) return '/asstes/images/icon/better-respondent-engagement-icon-img.png';
-  return '/asstes/images/icon/Scalable-Research-icon-img.png';
-}
+export default function WhyTelephonic({ dynamicValues = null, reasons = [] }) {
+  const displayKicker = dynamicValues?.kicker;
+  const displayHeading = dynamicValues?.heading || dynamicValues?.title;
+  const list = dynamicValues?.values || dynamicValues?.cards || (reasons && reasons.length > 0 ? reasons : []);
 
-export default function WhyTelephonic({ dynamicValues = null }) {
-  const reasonsList = (dynamicValues?.values || []).map((v) => ({
-    icon: getReasonIcon(v.title),
-    title: v.title || '',
-    desc: v.description || '',
-  }));
-
-  if (reasonsList.length === 0) return null;
+  if (!displayHeading && list.length === 0) return null;
 
   return (
     <section className="why-telephonic-section approach-section">
       <div className="srcn-container">
         <div className="why-telephonic-container">
-          <div className="why-telephonic-header career-journey-header">
-            <span className="why-telephonic-kicker career-values-kicker career-journey-kicker">
-              {dynamicValues?.kicker || 'WHY TELEPHONIC SURVEYS?'}
-            </span>
-            <h2 className="why-telephonic-title approach-title section-main-heading">
-              {dynamicValues?.title || 'When the Right Questions Need a Real Conversation'}
-            </h2>
-          </div>
+          {(displayKicker || displayHeading) && (
+            <div className="why-telephonic-header career-journey-header">
+              {displayKicker && (
+                <span className="why-telephonic-kicker career-values-kicker career-journey-kicker">
+                  {displayKicker}
+                </span>
+              )}
+              {displayHeading && (
+                <h2 className="why-telephonic-title approach-title section-main-heading">
+                  {displayHeading}
+                </h2>
+              )}
+            </div>
+          )}
 
-          <div className="why-telephonic-grid approach-grid">
-            {reasonsList.map((r, i) => (
-              <article key={i} className="why-telephonic-card approach-card career-journey-step">
-                <div className="why-telephonic-card-area">
-                  <div className="why-telephonic-icon approach-icon career-journey-icon">
-                    <img src={r.icon} alt={r.title} />
-                  </div>
-                  <div className="why-telephonic-card-content">
-                    <h3>{r.title}</h3>
-                    <p>{r.desc}</p>
-                  </div>
-                </div>
-              </article>
-            ))}
-          </div>
+          {list.length > 0 && (
+            <div className="why-telephonic-grid approach-grid">
+              {list.map((r, i) => {
+                const iconSrc = getStrapiMedia(r.icon || r.image);
+                return (
+                  <article key={r.id || i} className="why-telephonic-card approach-card career-journey-step">
+                    <div className="why-telephonic-card-area">
+                      {iconSrc && (
+                        <div className="why-telephonic-icon approach-icon career-journey-icon">
+                          <img src={iconSrc} alt={r.title || ''} />
+                        </div>
+                      )}
+                      <div className="why-telephonic-card-content">
+                        {r.title && <h3>{r.title}</h3>}
+                        {(r.desc || r.description) && <p>{r.desc || r.description}</p>}
+                      </div>
+                    </div>
+                  </article>
+                );
+              })}
+            </div>
+          )}
         </div>
       </div>
     </section>

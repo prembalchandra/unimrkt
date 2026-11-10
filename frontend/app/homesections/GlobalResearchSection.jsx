@@ -28,7 +28,7 @@ export default function GlobalResearchSection({ dynamicData = null }) {
     }
   }, []);
 
-  const kicker = dynamicData?.kicker || 'About Us';
+  const kicker = dynamicData?.kicker;
   const heading = dynamicData?.heading || (
     <>
       Global Research,<br />Local Understanding
@@ -38,8 +38,8 @@ export default function GlobalResearchSection({ dynamicData = null }) {
     dynamicData?.description ||
     'With 16+ years of expertise delivering structured research data, empowering organizations across 90+ countries to gain complete clarity into market dynamics, minimize risks, and uncover new opportunities.';
 
-  const statNumber = dynamicData?.metrics?.[1]?.number || '16';
-  const statLabel = dynamicData?.metrics?.[1]?.label || 'YEARS OF EXCELLENCE';
+  const statNumber = dynamicData?.metrics?.[1]?.number || dynamicData?.metrics?.[0]?.number || '';
+  const statLabel = dynamicData?.metrics?.[1]?.label || dynamicData?.metrics?.[0]?.label || '';
 
   return (
     <section className="global-research-section" id="global-research">

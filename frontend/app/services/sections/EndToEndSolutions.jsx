@@ -27,8 +27,8 @@ function getServiceVisuals(title = '', idx = 0) {
   }
 
   return {
-    image: `/asstes/images/unimrkt-resarch-our-services-img${imgNum}${imgNum === 3 ? '.png.png' : '.png'}`,
-    icon: `/asstes/images/icon/${iconName}`,
+    image: getStrapiMedia(`/uploads/unimrkt-resarch-our-services-img${imgNum}${imgNum === 3 ? '.png.png' : '.png'}`),
+    icon: getStrapiMedia(`/uploads/${iconName}`),
   };
 }
 
@@ -45,7 +45,7 @@ function formatService(s, idx) {
   return {
     id: s.id || s.documentId || idx + 1,
     title,
-    desc: s.shortDescription || s.description || 'Comprehensive data collection, analysis, and strategic intelligence tailored for global organizations.',
+    desc: s.shortDescription || s.description || '',
     image: visuals.image,
     icon: visuals.icon,
     link,
@@ -56,9 +56,9 @@ export default function EndToEndSolutions({ initialServices = [], dynamicSection
   const [solutions, setSolutions] = useState(() => (initialServices || []).map(formatService).filter(Boolean));
   const [hoveredIndex, setHoveredIndex] = useState(null);
 
-  const displayKicker = dynamicSection?.kicker || 'OUR SERVICES';
-  const displayTitle = dynamicSection?.heading || dynamicSection?.title || 'End-To-End Market Research Solutions';
-  const displayDesc = dynamicSection?.description || 'From research design and respondent recruitment to data collection, analysis, and reporting, Unimrkt Research provides comprehensive market research solutions tailored to your business objectives. Our expert team delivers accurate, actionable insights that help organizations make informed decisions, uncover opportunities, and drive sustainable growth.';
+  const displayKicker = dynamicSection?.kicker;
+  const displayTitle = dynamicSection?.heading || dynamicSection?.title;
+  const displayDesc = dynamicSection?.description;
 
   useEffect(() => {
     if (initialServices && initialServices.length > 0) {
@@ -136,7 +136,7 @@ export default function EndToEndSolutions({ initialServices = [], dynamicSection
                     onClick={(e) => e.stopPropagation()}
                   >
                     <span>EXPLORE RESEARCH</span>
-                    <img src="/asstes/images/icon/arrow-right-icon-img.png" alt="Arrow Right" />
+                    <img src={getStrapiMedia("/uploads/arrow-right-icon-img.png")} alt="Arrow Right" />
                   </Link>
                 </div>
               </div>

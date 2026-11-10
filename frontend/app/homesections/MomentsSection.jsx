@@ -14,9 +14,9 @@ function formatMomentItem(item, idx) {
   const isVideo = item.mediaType === 'video' || (typeof item.src === 'string' && item.src.endsWith('.mp4'));
   return {
     type: isVideo ? 'video' : 'image',
-    src: getStrapiMedia(item.image, item.src || `/asstes/images/gallery/gallery_item_0${(idx % 8) + 1}.webp`),
-    poster: item.poster || '/asstes/images/gallery-banner-img.png',
-    alt: item.caption || item.alt || item.title || 'Unimrkt research team moments',
+    src: getStrapiMedia(item.image, item.src || getStrapiMedia(`/uploads/gallery_item_0${(idx % 8) + 1}.webp`)),
+    poster: item.poster ? getStrapiMedia(item.poster) : getStrapiMedia('/uploads/gallery-banner-img.png'),
+    alt: item.caption || item.alt || item.title || '',
     isLarge: idx === 0 || idx === 1,
   };
 }

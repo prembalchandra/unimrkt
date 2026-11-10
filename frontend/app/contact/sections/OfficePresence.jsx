@@ -1,5 +1,7 @@
 'use client';
 
+import { getStrapiMedia } from '@/lib/strapi';
+
 import React, { useEffect, useRef, useState } from 'react';
 
 function formatOffice(office) {
@@ -7,18 +9,18 @@ function formatOffice(office) {
   const country = office.country || '';
   let id = 'india';
   let flag = '🇮🇳';
-  let banner = '/asstes/images/contact-map-banner-img.png';
+  let banner = getStrapiMedia('/uploads/contact-map-banner-img.png');
   let city = 'Gurugram, India';
 
   if (country.includes('United States') || country.includes('USA')) {
     id = 'usa';
     flag = '🇺🇸';
-    banner = '/asstes/images/contact-banner-usa.jpg';
+    banner = getStrapiMedia('/uploads/contact-banner-usa.jpg');
     city = 'Great Neck, USA';
   } else if (country.includes('United Kingdom') || country.includes('UK')) {
     id = 'uk';
     flag = '🇬🇧';
-    banner = '/asstes/images/contact-banner-uk.jpg';
+    banner = getStrapiMedia('/uploads/contact-banner-uk.jpg');
     city = 'Oxford, UK';
   }
 

@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import { getStrapiMedia } from '@/lib/strapi';
 import Link from 'next/link';
 
 export default function AutomotiveOverview({ caseStudies = [], kicker, title, description }) {
@@ -12,12 +13,12 @@ export default function AutomotiveOverview({ caseStudies = [], kicker, title, de
         <div className="auto-success-grid">
           {/* Left Column: Heading & CTA */}
           <div className="auto-success-info">
-            <span className="auto-success-eyebrow">{kicker || 'CASE STUDIES'}</span>
+            <span className="auto-success-eyebrow">{kicker}</span>
             <h2 className="auto-success-title">
-              {title || <>Automotive<br />Success Stories</>}
+              {title}
             </h2>
             <p className="auto-success-desc">
-              {description || 'Discover how our research empowers automotive brands with actionable insights, smarter decisions, and measurable business growth.'}
+              {description}
             </p>
             <Link href="/contact" className="auto-success-btn">
               <span>TALK TO OUR EXPERTS</span>
@@ -48,7 +49,7 @@ export default function AutomotiveOverview({ caseStudies = [], kicker, title, de
               >
                 <div className="auto-success-card-img-wrap">
                   <img
-                    src={study.thumbnail?.url || study.image || '/asstes/images/automotive-success-story-1.png'}
+                    src={study.thumbnail?.url || study.image || getStrapiMedia('/uploads/automotive-success-story-1.png')}
                     alt={study.title}
                     className="auto-success-card-img"
                   />

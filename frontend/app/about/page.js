@@ -29,7 +29,7 @@ export const metadata = {
     type: 'website',
     images: [
       {
-        url: '/asstes/images/about-hero-banner-img.png',
+        url: '/uploads/about-hero-banner-img.png',
         width: 1200,
         height: 630,
         alt: 'About Unimrkt Research',
@@ -41,7 +41,7 @@ export const metadata = {
     title: 'About Us | Unimrkt Research',
     description:
       'Learn about Unimrkt Research, our history since 2009, global footprint across 90+ countries, and ISO-certified research standards.',
-    images: ['/asstes/images/about-hero-banner-img.png'],
+    images: ['/uploads/about-hero-banner-img.png'],
   },
 };
 

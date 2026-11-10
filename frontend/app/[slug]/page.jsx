@@ -18,7 +18,7 @@ export async function generateMetadata({ params }) {
   const metaTitle = seo.metaTitle || page.title || 'Unimrkt Research';
   const metaDescription = seo.metaDescription || 'Global market research and insights provider.';
   const canonicalUrl = seo.canonicalURL || `https://www.unimrkt.com/${slug}`;
-  const ogImageUrl = getStrapiMedia(seo.metaImage, '/asstes/images/unimrkt-resarch-map-banner-img.png');
+  const ogImageUrl = getStrapiMedia(seo.metaImage, getStrapiMedia('/uploads/unimrkt-resarch-map-banner-img.png'));
 
   return {
     title: `${metaTitle} | Unimrkt Research`,

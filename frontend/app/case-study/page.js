@@ -33,7 +33,7 @@ export const metadata = {
     type: 'website',
     images: [
       {
-        url: '/asstes/images/case-study-hero-banner-img.png',
+        url: '/uploads/case-study-hero-banner-img.png',
         width: 1200,
         height: 630,
         alt: 'Unimrkt Research Case Studies',
@@ -45,7 +45,7 @@ export const metadata = {
     title: 'Client Case Studies & Proven Results | Unimrkt Research',
     description:
       'Real-world case studies demonstrating how our structured market research solutions solve complex challenges and drive growth.',
-    images: ['/asstes/images/case-study-hero-banner-img.png'],
+    images: ['/uploads/case-study-hero-banner-img.png'],
   },
 };
 

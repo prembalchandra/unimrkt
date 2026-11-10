@@ -13,7 +13,7 @@ function formatMember(m) {
     id: m.id || m.documentId || slug,
     name: m.name || '',
     role: m.role || '',
-    image: getStrapiMedia(m.photo, `/asstes/images/team/${slug}.png`),
+    image: getStrapiMedia(m.photo, getStrapiMedia(`/uploads/team-${slug}.png`)),
     bio: m.bio || '',
     linkedin: m.linkedin_url || m.linkedinUrl || m.linkedin || '#',
   };
@@ -25,7 +25,7 @@ export default function TeamDirectory({ initialTeam = [], dynamicSection = null 
   const [selectedMember, setSelectedMember] = useState(null);
 
   const displayKicker = dynamicSection?.kicker || '';
-  const displayHeading = dynamicSection?.heading || dynamicSection?.title || 'People. Expertise. Impact.';
+  const displayHeading = dynamicSection?.heading || dynamicSection?.title;
   const displayDesc = dynamicSection?.description || '';
 
   useEffect(() => {

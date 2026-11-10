@@ -1,38 +1,23 @@
 import React from 'react';
-import { getStrapiMedia } from '../../../lib/strapi';
+import { getStrapiMedia } from '@/lib/strapi';
 
-const defaultPillars = [
-  {
-    id: 1,
-    name: '1. Trust',
-    desc: 'What makes customers feel confident about a financial provider?',
-    icon: '/asstes/images/icon/trust-shield-tick-icon-img.png',
-  },
-  {
-    id: 2,
-    name: '2. Convenience',
-    desc: 'How important are speed, accessibility, and ease of use?',
-    icon: '/asstes/images/icon/convenience-iocn-img.png',
-  },
-  {
-    id: 3,
-    name: '3. Digital Experience',
-    desc: 'What do customers expect from websites, apps, and digital services?',
-    icon: '/asstes/images/icon/review-icon-img.png',
-  },
-  {
-    id: 4,
-    name: '4. Relationship',
-    desc: 'How do human interactions and advisory support impact perceptions?',
-    icon: '/asstes/images/icon/handshake-partnership-icon-img.png',
-  },
-  {
-    id: 5,
-    name: '5. Value',
-    desc: 'What creates long-term differentiation beyond price?',
-    icon: '/asstes/images/icon/cup-research excellence-icon-img.png',
-  },
-];
+function getPillarIcon(p, idx = 0) {
+  if (p.icon) return getStrapiMedia(p.icon);
+  const name = (p.name || p.title || '').toLowerCase();
+  if (name.includes('trust')) return getStrapiMedia('/uploads/trust-shield-tick-icon-img.png');
+  if (name.includes('convenien')) return getStrapiMedia('/uploads/convenience-iocn-img.png');
+  if (name.includes('digital') || name.includes('experience')) return getStrapiMedia('/uploads/review-icon-img.png');
+  if (name.includes('relation') || name.includes('partner')) return getStrapiMedia('/uploads/handshake-partnership-icon-img.png');
+  if (name.includes('value') || name.includes('excellen')) return getStrapiMedia('/uploads/cup-research%20excellence-icon-img.png');
+  const defaults = [
+    getStrapiMedia('/uploads/trust-shield-tick-icon-img.png'),
+    getStrapiMedia('/uploads/convenience-iocn-img.png'),
+    getStrapiMedia('/uploads/review-icon-img.png'),
+    getStrapiMedia('/uploads/handshake-partnership-icon-img.png'),
+    getStrapiMedia('/uploads/cup-research%20excellence-icon-img.png'),
+  ];
+  return defaults[idx % defaults.length];
+}
 
 export default function CaseDetailResearchQuestion({
   dynamicSection = null,
@@ -41,55 +26,59 @@ export default function CaseDetailResearchQuestion({
   description = null,
   pillars = [],
 }) {
-  const displayKicker = kicker || dynamicSection?.kicker || 'THE RESEARCH QUESTION';
-  const displayHeading = heading || dynamicSection?.heading || dynamicSection?.title || 'What Do Customers Really Expect From Their Financial Providers?';
-  const displayDesc = description || dynamicSection?.description || 'We explored the complete customer perspective — from awareness and consideration to selection, usage, and ongoing engagement.';
+  const displayKicker = kicker || dynamicSection?.kicker;
+  const displayHeading = heading || dynamicSection?.heading || dynamicSection?.title;
+  const displayDesc = description || dynamicSection?.description;
 
   const displayPillars = (pillars && pillars.length > 0)
     ? pillars
     : (dynamicSection?.researchPillars && dynamicSection.researchPillars.length > 0)
       ? dynamicSection.researchPillars
-      : defaultPillars;
+      : [];
+
+  if (!displayHeading && displayPillars.length === 0) return null;
 
   return (
     <section className="cs-detail-research-question-section">
       <div className="srcn-container">
         <div className="cs-question-card">
-          <div className="cs-question-header">
-            <span className="cs-kicker-red career-values-kicker">{displayKicker}</span>
-            <h2 className="cs-question-title section-main-heading">
-              {displayHeading}
-            </h2>
-            <p className="cs-question-desc section-sub-text">
-              {displayDesc}
-            </p>
-          </div>
+          {(displayKicker || displayHeading || displayDesc) && (
+            <div className="cs-question-header">
+              {displayKicker && <span className="cs-kicker-red career-values-kicker">{displayKicker}</span>}
+              {displayHeading && <h2 className="cs-question-title section-main-heading">{displayHeading}</h2>}
+              {displayDesc && <p className="cs-question-desc section-sub-text">{displayDesc}</p>}
+            </div>
+          )}
 
-          <div className="cs-diagram-container">
-            <div className="cs-diagram-row">
-              {displayPillars.map((p, idx) => {
-                const name = p.name || p.title || `Pillar ${idx + 1}`;
-                const text = p.desc || p.description || '';
-                const icon = getStrapiMedia(p.icon, defaultPillars[idx % defaultPillars.length].icon);
-                const stepNum = (idx % 5) + 1;
+          {displayPillars.length > 0 && (
+            <div className="cs-diagram-container">
+              <div className="cs-diagram-row">
+                {displayPillars.map((p, idx) => {
+                  const name = p.name || p.title || '';
+                  const text = p.desc || p.description || '';
+                  const icon = getPillarIcon(p, idx);
+                  const stepNum = (idx % 5) + 1;
 
-                return (
-                  <div key={p.id || idx} className={`cs-diagram-item cs-step-${stepNum}`}>
-                    <div className="cs-circle-wrap">
-                      <div className="cs-diagram-circle">
-                        <img src={icon} alt={name} />
+                  return (
+                    <div key={p.id || idx} className={`cs-diagram-item cs-step-${stepNum}`}>
+                      <div className="cs-circle-wrap">
+                        {icon && (
+                          <div className="cs-diagram-circle">
+                            <img src={icon} alt={name} />
+                          </div>
+                        )}
+                      </div>
+                      <div className="cs-diagram-stem"></div>
+                      <div className="cs-diagram-info">
+                        {name && <h4 className="cs-diagram-name">{name}</h4>}
+                        {text && <p className="cs-diagram-text">{text}</p>}
                       </div>
                     </div>
-                    <div className="cs-diagram-stem"></div>
-                    <div className="cs-diagram-info">
-                      <h4 className="cs-diagram-name">{name}</h4>
-                      <p className="cs-diagram-text">{text}</p>
-                    </div>
-                  </div>
-                );
-              })}
+                  );
+                })}
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
     </section>

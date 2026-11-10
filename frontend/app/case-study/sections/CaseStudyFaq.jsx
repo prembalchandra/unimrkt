@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { getStrapiMedia } from '@/lib/strapi';
 
 function formatFaq(f) {
   if (!f) return null;
@@ -44,12 +45,12 @@ export default function CaseStudyFaq({ dynamicFaq = null, initialFaqs = [] }) {
   return (
     <section className="faq-section-area">
       <div className="worldmap-bg">
-        <img src="/asstes/images/unimrkt-resarch-map-banner-img.png" alt="fqa banner" />
+        <img src={getStrapiMedia("/uploads/unimrkt-resarch-map-banner-img.png")} alt="fqa banner" />
       </div>
       <div className="srcn-container">
         <div className="section-header-area">
           <h2 className="section-main-heading">
-            {dynamicFaq?.title || 'Frequently Asked Questions'}
+            {dynamicFaq?.title || dynamicFaq?.heading}
           </h2>
         </div>
 

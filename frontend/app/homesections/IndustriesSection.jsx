@@ -8,13 +8,13 @@ import { getStrapiMedia } from '../../lib/strapi';
 
 function getIndustryFallbackImage(title = '') {
   const t = title.toLowerCase();
-  if (t.includes('health') || t.includes('life')) return '/asstes/images/case-study-healthcare.jpg';
-  if (t.includes('bank') || t.includes('financ')) return '/asstes/images/case-study-banking.jpg';
-  if (t.includes('retail') || t.includes('fmcg') || t.includes('consumer')) return '/asstes/images/case-study-fmcg.jpg';
-  if (t.includes('auto') || t.includes('mobility')) return '/asstes/images/case-study-automotive.jpg';
-  if (t.includes('tech') || t.includes('telecom')) return '/asstes/images/case-study-telecom.jpg';
-  if (t.includes('energy') || t.includes('sustain')) return '/asstes/images/case-study-energy.jpg';
-  return '/asstes/images/case-study-banking.jpg';
+  if (t.includes('health') || t.includes('life')) return getStrapiMedia('/uploads/case-study-healthcare.jpg');
+  if (t.includes('bank') || t.includes('financ')) return getStrapiMedia('/uploads/case-study-banking.jpg');
+  if (t.includes('retail') || t.includes('fmcg') || t.includes('consumer')) return getStrapiMedia('/uploads/case-study-fmcg.jpg');
+  if (t.includes('auto') || t.includes('mobility')) return getStrapiMedia('/uploads/case-study-automotive.jpg');
+  if (t.includes('tech') || t.includes('telecom')) return getStrapiMedia('/uploads/case-study-telecom.jpg');
+  if (t.includes('energy') || t.includes('sustain')) return getStrapiMedia('/uploads/case-study-energy.jpg');
+  return getStrapiMedia('/uploads/case-study-banking.jpg');
 }
 
 function formatIndustry(item) {
@@ -137,7 +137,7 @@ export default function IndustriesSection({ dynamicIndustries = [] }) {
           muted
           playsInline
           preload="auto"
-          poster="/asstes/images/the-impact-banner-img.png"
+          poster={getStrapiMedia('/uploads/the-impact-banner-img.png')}
         >
           <source src="/asstes/images/video-banner2.mp4" type="video/mp4" />
         </video>

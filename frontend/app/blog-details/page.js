@@ -29,7 +29,7 @@ export const metadata = {
     type: 'article',
     images: [
       {
-        url: '/asstes/images/blog-banner-img.png',
+        url: '/uploads/blog-banner-img.png',
         width: 1200,
         height: 630,
         alt: 'Key Trends Shaping the Future of the Automotive Industry',
@@ -41,7 +41,7 @@ export const metadata = {
     title: 'Key Trends Shaping the Future of the Automotive Industry | Unimrkt Blog',
     description:
       'Explore the key trends reshaping the automotive industry, from electrification and software-defined vehicles to connected experiences and sustainability.',
-    images: ['/asstes/images/blog-banner-img.png'],
+    images: ['/uploads/blog-banner-img.png'],
   },
 };
 

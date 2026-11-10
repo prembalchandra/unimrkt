@@ -1,50 +1,56 @@
+'use client';
+
 import React from 'react';
+import { getStrapiMedia } from '@/lib/strapi';
 
-const defaultIcons = [
-  '/asstes/images/icon/cup-research excellence-icon-img.png',
-  '/asstes/images/icon/global-icon-img.png',
-  '/asstes/images/icon/language-square.png',
-  '/asstes/images/icon/profile-2user.png',
-  '/asstes/images/icon/3d-cube-scan.png',
-  '/asstes/images/icon/trust-shield-tick-icon-img.png',
-];
+export default function WhyChooseUs({ items = [], title = null, description = null, dynamicSection = null }) {
+  const displayHeading = dynamicSection?.heading || dynamicSection?.title || title;
+  const displayDesc = dynamicSection?.description || description;
+  const list = dynamicSection?.values || dynamicSection?.cards || (items && items.length > 0 ? items : []);
 
-export default function WhyChooseUs({ items = [], title, description }) {
-  if (!items || items.length === 0) return null;
+  if (!displayHeading && !displayDesc && list.length === 0) return null;
 
   return (
     <section className="why-choose-unimrkt-section">
       <div className="srcn-container">
-        <div className="why-choose-header">
-          <h2 className="why-choose-title">
-            {title || 'Why Choose Unimrkt?'}
-          </h2>
+        {(displayHeading || displayDesc) && (
+          <div className="why-choose-header">
+            {displayHeading && <h2 className="why-choose-title">{displayHeading}</h2>}
+            {displayDesc && <p className="why-choose-desc">{displayDesc}</p>}
+          </div>
+        )}
 
-          <p className="why-choose-desc">
-            {description || 'With 16+ years of expertise, global research capabilities, advanced methodologies, and trusted data quality, Unimrkt delivers accurate insights that empower smarter business decisions.'}
-          </p>
-        </div>
+        {list.length > 0 && (
+          <div className="why-choose-grid">
+            {list.map((item, index) => {
+              const iconSrc = getStrapiMedia(item.icon || item.image);
+              return (
+                <article className="why-choose-card" key={item.id || index}>
+                  {iconSrc && (
+                    <div className="why-choose-icon-box">
+                      <img
+                        src={iconSrc}
+                        alt={item.label || item.title || ''}
+                        width={40}
+                        height={40}
+                        className="why-choose-icon"
+                      />
+                    </div>
+                  )}
 
-        <div className="why-choose-grid">
-          {items.map((item, index) => (
-            <article className="why-choose-card" key={item.id || index}>
-              <div className="why-choose-icon-box">
-                <img
-                  src={item.icon || item.iconClass || defaultIcons[index % defaultIcons.length]}
-                  alt={item.label || item.title || 'feature icon'}
-                  width={40}
-                  height={40}
-                  className="why-choose-icon"
-                />
-              </div>
-
-              <div className="why-choose-content">
-                <span className="why-choose-stat">{item.number || item.stat || item.title}</span>
-                <span className="why-choose-label">{item.label || item.desc || item.description}</span>
-              </div>
-            </article>
-          ))}
-        </div>
+                  <div className="why-choose-content">
+                    {(item.number || item.stat || item.title) && (
+                      <span className="why-choose-stat">{item.number || item.stat || item.title}</span>
+                    )}
+                    {(item.label || item.desc || item.description) && (
+                      <span className="why-choose-label">{item.label || item.desc || item.description}</span>
+                    )}
+                  </div>
+                </article>
+              );
+            })}
+          </div>
+        )}
       </div>
     </section>
   );

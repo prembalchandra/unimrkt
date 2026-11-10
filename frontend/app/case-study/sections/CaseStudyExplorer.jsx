@@ -8,16 +8,16 @@ const CARDS_PER_PAGE = 6;
 
 function formatStudy(item, idx) {
   if (!item) return null;
-  const indSlug = item.industry?.slug || 'banking-finance';
-  const indName = item.industry?.title || item.industry?.name || 'BANKING & FINANCE';
-  const resSlug = item.researchType?.slug || 'consumer-insights';
+  const indSlug = item.industry?.slug || '';
+  const indName = item.industry?.title || item.industry?.name || '';
+  const resSlug = item.researchType?.slug || '';
 
   return {
     id: item.documentId || item.id || idx + 1,
     category: indSlug,
     research: resSlug,
     badge: indName.toUpperCase(),
-    img: getStrapiMedia(item.heroImage, '/asstes/images/case-study-banking.jpg'),
+    img: getStrapiMedia(item.heroImage, getStrapiMedia('/uploads/case-study-banking.jpg')),
     title: item.title || '',
     snippet: item.excerpt || '',
     link: item.slug ? `/case-study/${item.slug}` : '/case-study',
@@ -31,12 +31,9 @@ export default function CaseStudyExplorer({
   title,
   description,
 }) {
-  const displayKicker = dynamicSection?.kicker || kicker || 'Case Study Explorer';
-  const displayTitle = dynamicSection?.heading || dynamicSection?.title || title || 'Explore Our Research Stories';
-  const displayDesc =
-    dynamicSection?.description ||
-    description ||
-    'Discover how we solve complex research challenges across industries, markets and methodologies.';
+  const displayKicker = dynamicSection?.kicker || kicker;
+  const displayTitle = dynamicSection?.heading || dynamicSection?.title || title;
+  const displayDesc = dynamicSection?.description || description;
 
   const [studies, setStudies] = useState(() => (initialCaseStudies || []).map(formatStudy).filter(Boolean));
   const [activeIndustry, setActiveIndustry] = useState('all');

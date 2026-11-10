@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect, useRef } from 'react';
+import { getStrapiMedia } from '@/lib/strapi';
 import Swiper from 'swiper';
 import { Autoplay, Pagination } from 'swiper/modules';
 
@@ -68,8 +69,8 @@ export default function AutomotiveSegmentsSlider({ segments = [], heading, kicke
     <section className="auto-segments-section" id="auto-segments">
       <div className="auto-segments-container">
         <div className="auto-segments-header">
-          <span className="auto-segments-kicker">{kicker || 'WHO WE SERVE'}</span>
-          <h2 className="auto-segments-heading">{heading || 'Supporting Every Automotive Segment'}</h2>
+          <span className="auto-segments-kicker">{kicker}</span>
+          <h2 className="auto-segments-heading">{heading}</h2>
         </div>
         <div className="common-swiper-box">
           <div className="swiper auto-segments-swiper" ref={sliderRef}>
@@ -80,7 +81,7 @@ export default function AutomotiveSegmentsSlider({ segments = [], heading, kicke
                     <h3 className="auto-segment-title">{slide.title}</h3>
                     <p className="auto-segment-desc">{slide.desc || slide.description}</p>
                     <div className="auto-segment-bottom-icon">
-                      <img src={slide.icon || slide.iconClass || '/asstes/images/icon/automotive-icon-img.png'} alt={slide.title} loading="lazy" />
+                      <img src={slide.icon || slide.iconClass || getStrapiMedia('/uploads/automotive-icon-img.png')} alt={slide.title} loading="lazy" />
                     </div>
                   </article>
                 </div>

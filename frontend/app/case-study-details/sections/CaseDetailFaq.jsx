@@ -1,11 +1,12 @@
 'use client';
 
 import React, { useState } from 'react';
+import { getStrapiMedia } from '@/lib/strapi';
 
 export default function CaseDetailFaq({ faqs = [], dynamicFaq = null, heading = null, kicker = null }) {
   const [openIndex, setOpenIndex] = useState(0);
 
-  const displayHeading = heading || dynamicFaq?.heading || dynamicFaq?.title || 'Frequently Asked Questions';
+  const displayHeading = heading || dynamicFaq?.heading || dynamicFaq?.title;
   const displayKicker = kicker || dynamicFaq?.kicker || '';
 
   const toggleFaq = (index) => {
@@ -18,7 +19,7 @@ export default function CaseDetailFaq({ faqs = [], dynamicFaq = null, heading = 
   return (
     <section className="faq-section-area">
       <div className="worldmap-bg">
-        <img src="/asstes/images/unimrkt-resarch-map-banner-img.png" alt="faq banner" />
+        <img src={getStrapiMedia("/uploads/unimrkt-resarch-map-banner-img.png")} alt="faq banner" />
       </div>
       <div className="srcn-container">
         <div className="section-header-area">

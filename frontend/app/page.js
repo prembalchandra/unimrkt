@@ -10,7 +10,7 @@ import MomentsSection from './homesections/MomentsSection';
 import HomeFaq from './homesections/HomeFaq';
 import HomeInsightsEditorial from './homesections/HomeInsightsEditorial';
 import HomeresearchCta from './homesections/HomeresearchCta';
-import { getBlogPosts, getPageBySlug, findSection, getIndustries, getServices, getGalleryItems } from '../lib/strapi';
+import { getBlogPosts, getPageBySlug, findSection, getIndustries, getServices, getGalleryItems, getOfficeLocations } from '../lib/strapi';
 
 export const metadata = {
   title: 'Unimrkt Research | Structured Market Intelligence & Global Solutions',
@@ -40,7 +40,7 @@ export const metadata = {
     type: 'website',
     images: [
       {
-        url: '/asstes/images/unimrkt-resarch-map-banner-img.png',
+        url: '/uploads/unimrkt-resarch-map-banner-img.png',
         width: 1200,
         height: 630,
         alt: 'Unimrkt Research - Global Market Intelligence',
@@ -52,12 +52,18 @@ export const metadata = {
     title: 'Unimrkt Research | Structured Market Intelligence & Global Solutions',
     description:
       'Delivering structured market data enabling organizations to gain complete clarity into market dynamics, minimize risks, and uncover new opportunities.',
-    images: ['/asstes/images/unimrkt-resarch-map-banner-img.png'],
+    images: ['/uploads/unimrkt-resarch-map-banner-img.png'],
   },
 };
 
 export default async function HomePage() {
-  const [pageData, latestBlogs, industries, services, galleryItems] = await Promise.all([
+  const [pageData, latestBlogs, industries, services, galleryItems, offices] = await Promise.all([
+    getPageBySlug('home').catch(() => null),
+    getBlogPosts(6).catch(() => []),
+    getIndustries(12).catch(() => []),
+    getServices(12).catch(() => []),
+    getGalleryItems(8).catch(() => []),
+    getOfficeLocations().catch(() => []),
     getPageBySlug('home').catch(() => null),
     getBlogPosts(6).catch(() => []),
     getIndustries(12).catch(() => []),
@@ -74,11 +80,11 @@ export default async function HomePage() {
     <>
       <HeroSection dynamicData={homeHero} initialServices={services} />
       <GlobalResearchSection dynamicData={metricsSection} />
-      <SolutionsSection dynamicServices={services} />
-      <CapabilitiesSection />
-      <AdvancedAreaSection />
+      <SolutionsSection dynamicServices={services} dynamicSolutions={findSection(pageData, 'sections.accordion-solutions')} />
+      <CapabilitiesSection dynamicMetrics={metricsSection} />
+      <AdvancedAreaSection dynamicCallout={findSection(pageData, 'sections.callout-box')} />
       <IndustriesSection dynamicIndustries={industries} />
-      <MarketplacesSection />
+      <MarketplacesSection initialOffices={offices} dynamicSection={findSection(pageData, 'sections.research-reach')} />
       <MomentsSection initialGalleryItems={galleryItems} />
       <HomeFaq dynamicFaq={faqSection} />
       <HomeInsightsEditorial />

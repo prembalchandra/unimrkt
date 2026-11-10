@@ -39,7 +39,7 @@ export const metadata = {
     type: 'website',
     images: [
       {
-        url: '/asstes/images/industries-hero-banner-img.png',
+        url: '/uploads/industries-hero-banner-img.png',
         width: 1200,
         height: 630,
         alt: 'Industries We Serve - Unimrkt Research',
@@ -51,7 +51,7 @@ export const metadata = {
     title: 'Industries We Serve | Unimrkt Research',
     description:
       'Uncovering evolving market trends, consumer behavior, and competitive insights across major global industry sectors.',
-    images: ['/asstes/images/industries-hero-banner-img.png'],
+    images: ['/uploads/industries-hero-banner-img.png'],
   },
 };
 

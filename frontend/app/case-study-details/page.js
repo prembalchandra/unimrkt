@@ -32,7 +32,7 @@ export const metadata = {
     type: 'article',
     images: [
       {
-        url: '/asstes/images/case-study-banking.jpg',
+        url: '/uploads/case-study-banking.jpg',
         width: 1200,
         height: 630,
         alt: 'Financial Services Research Case Study',
@@ -44,7 +44,7 @@ export const metadata = {
     title: 'Financial Services Customer Intelligence Case Study | Unimrkt Research',
     description:
       'How research uncovered evolving customer needs and decision-making drivers to help financial services strengthen customer strategy.',
-    images: ['/asstes/images/case-study-banking.jpg'],
+    images: ['/uploads/case-study-banking.jpg'],
   },
 };
 
@@ -99,8 +99,8 @@ export default async function CaseStudyDetailPage({ searchParams }) {
       />
       <CaseDetailFaq faqs={displayFaqs} />
       <InsightsEditorial
-        kicker={editorialSection?.kicker || 'WHAT WE BELIEVE'}
-        title={editorialSection?.heading || editorialSection?.title || 'Insights That Drive Smarter Business Decisions'}
+        kicker={editorialSection?.kicker}
+        title={editorialSection?.heading || editorialSection?.title}
         paragraph1={editorialSection?.description}
       />
       <ResearchCta dynamicCta={ctaSection} />

@@ -1,10 +1,11 @@
+import { getStrapiMedia } from '@/lib/strapi';
 import React from 'react';
 
 export default function ResearchValue({ dynamicValues = null }) {
   const values = (dynamicValues?.values || []).map((v) => ({
     title: v.title || '',
     desc: v.description || '',
-    icon: '/asstes/images/icon/Research-icon-img.png',
+    icon: getStrapiMedia('/uploads/Research-icon-img.png'),
   }));
 
   if (values.length === 0) return null;
@@ -15,14 +16,13 @@ export default function ResearchValue({ dynamicValues = null }) {
         <div className="research-value-wrap">
           <div className="research-value-header">
             <span className="research-value-kicker career-values-kicker">
-              {dynamicValues?.kicker || 'Why work with Unimrkt'}
+              {dynamicValues?.kicker}
             </span>
             <h2 className="research-value-title section-main-heading">
-              {dynamicValues?.title || 'More Than Research. A Partner For Better Decisions.'}
+              {dynamicValues?.title || dynamicValues?.heading}
             </h2>
             <p className="research-value-subtitle section-sub-text">
-              {dynamicValues?.subtitle ||
-                'From defining the research question to delivering actionable insights, our team helps businesses build confidence through accurate data, sharper strategy, and measurable outcomes.'}
+              {dynamicValues?.subtitle || dynamicValues?.description}
             </p>
           </div>
 

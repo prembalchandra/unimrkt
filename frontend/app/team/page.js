@@ -27,7 +27,7 @@ export const metadata = {
     type: 'website',
     images: [
       {
-        url: '/asstes/images/team-banner-img.png',
+        url: '/uploads/team-banner-img.png',
         width: 1200,
         height: 630,
         alt: 'Our Team - Unimrkt Research',
@@ -39,7 +39,7 @@ export const metadata = {
     title: 'Our Leadership & Research Team | Unimrkt Research',
     description:
       'A diverse team of research experts bringing experience, insight, and strategic thinking to every project.',
-    images: ['/asstes/images/team-banner-img.png'],
+    images: ['/uploads/team-banner-img.png'],
   },
 };
 

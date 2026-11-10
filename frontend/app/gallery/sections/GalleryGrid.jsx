@@ -19,7 +19,7 @@ function formatGalleryItem(item, idx) {
   return {
     id: item.documentId || item.id || idx + 1,
     categories: categoriesList,
-    src: getStrapiMedia(item.image, `/asstes/images/gallery/gallery_item_0${(idx % 9) + 1}.webp`),
+    src: getStrapiMedia(item.image, getStrapiMedia(`/uploads/gallery_item_0${(idx % 9) + 1}.webp`)),
     title: item.title || '',
     alt: item.caption || item.alt || item.title || 'Unimrkt Research Gallery',
   };
@@ -34,7 +34,7 @@ export default function GalleryGrid({ initialItems = [], dynamicSection = null }
   const [isLoadingMore, setIsLoadingMore] = useState(false);
 
   const displayKicker = dynamicSection?.kicker || '';
-  const displayHeading = dynamicSection?.heading || dynamicSection?.title || 'Our Gallery';
+  const displayHeading = dynamicSection?.heading || dynamicSection?.title;
   const displayDesc = dynamicSection?.description || '';
 
   const swiperContainerRef = useRef(null);

@@ -1,5 +1,7 @@
 'use client';
 
+import { getStrapiMedia } from '@/lib/strapi';
+
 import React, { useState, useEffect } from 'react';
 
 export default function HomeFaq({ dynamicFaq = null }) {
@@ -30,12 +32,12 @@ export default function HomeFaq({ dynamicFaq = null }) {
 
   if (faqs.length === 0) return null;
 
-  const heading = dynamicFaq?.heading || dynamicFaq?.title || 'Frequently Asked Questions';
+  const heading = dynamicFaq?.heading || dynamicFaq?.title;
 
   return (
     <section className="faq-section-area">
       <div className="worldmap-bg">
-        <img src="/asstes/images/unimrkt-resarch-map-banner-img.png" alt="fqa banner" />
+        <img src={getStrapiMedia("/uploads/unimrkt-resarch-map-banner-img.png")} alt="fqa banner" />
       </div>
       <div className="srcn-container">
         <div className="section-header-area">

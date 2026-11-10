@@ -5,8 +5,8 @@ import React, { useState } from 'react';
 export default function IndustriesFaq({ faqs = [], dynamicFaq = null, heading = null, kicker = null }) {
   const [openIndex, setOpenIndex] = useState(null);
 
-  const displayHeading = heading || dynamicFaq?.heading || dynamicFaq?.title || 'Frequently Asked Questions';
-  const displayKicker = kicker || dynamicFaq?.kicker || '';
+  const displayHeading = heading || dynamicFaq?.heading || dynamicFaq?.title;
+  const displayKicker = kicker || dynamicFaq?.kicker;
 
   const toggleAccordion = (index) => {
     setOpenIndex(openIndex === index ? null : index);
@@ -17,14 +17,13 @@ export default function IndustriesFaq({ faqs = [], dynamicFaq = null, heading = 
 
   return (
     <section className="faq-section-area">
-      <div className="worldmap-bg">
-        <img src="/asstes/images/unimrkt-resarch-map-banner-img.png" alt="faq banner" />
-      </div>
       <div className="srcn-container">
-        <div className="section-header-area">
-          {displayKicker && <span className="career-values-kicker">{displayKicker}</span>}
-          <h2 className="section-main-heading">{displayHeading}</h2>
-        </div>
+        {(displayKicker || displayHeading) && (
+          <div className="section-header-area">
+            {displayKicker && <span className="career-values-kicker">{displayKicker}</span>}
+            {displayHeading && <h2 className="section-main-heading">{displayHeading}</h2>}
+          </div>
+        )}
 
         <div className="faq-accordion-container">
           {list.map((faq, index) => {
@@ -44,16 +43,11 @@ export default function IndustriesFaq({ faqs = [], dynamicFaq = null, heading = 
                     {isOpen ? '−' : '+'}
                   </span>
                 </div>
-                <div
-                  className="faq-accordion-body"
-                  style={{
-                    display: isOpen ? 'block' : 'none',
-                    maxHeight: isOpen ? '500px' : '0',
-                    transition: 'all 0.3s ease',
-                  }}
-                >
-                  <div className="faq-accordion-content">{faq.answer}</div>
-                </div>
+                {isOpen && (
+                  <div className="faq-accordion-body">
+                    <p className="faq-accordion-answer">{faq.answer}</p>
+                  </div>
+                )}
               </div>
             );
           })}

@@ -29,7 +29,7 @@ export const metadata = {
     type: 'website',
     images: [
       {
-        url: '/asstes/images/faq-hero-banner-img.png',
+        url: '/uploads/faq-hero-banner-img.png',
         width: 1200,
         height: 630,
         alt: 'Frequently Asked Questions - Unimrkt Research',
@@ -41,7 +41,7 @@ export const metadata = {
     title: 'Frequently Asked Questions (FAQ) | Unimrkt Research',
     description:
       'Find answers to frequently asked questions about Unimrkt Research, CATI surveys, primary and secondary research, and quality standards.',
-    images: ['/asstes/images/faq-hero-banner-img.png'],
+    images: ['/uploads/faq-hero-banner-img.png'],
   },
 };
 

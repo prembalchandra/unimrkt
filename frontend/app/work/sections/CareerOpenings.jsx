@@ -2,13 +2,13 @@
 
 import React, { useState, useMemo, useEffect } from 'react';
 import StrapiBlocksRenderer from '@/components/StrapiBlocksRenderer';
-import { submitContactInquiry } from '@/lib/strapi';
+import { submitContactInquiry, getStrapiMedia } from '@/lib/strapi';
 
 function formatJob(job, idx) {
   if (!job) return null;
-  const deptLabel = job.department || 'Operations';
-  const typeLabel = job.job_type || job.jobType || 'Full Time';
-  const locationLabel = job.location || 'Gurugram, India';
+  const deptLabel = job.department || '';
+  const typeLabel = job.job_type || job.jobType || '';
+  const locationLabel = job.location || '';
   const dateLabel = job.posted_date || job.postedDate
     ? new Date(job.posted_date || job.postedDate).toLocaleDateString('en-GB', {
         day: '2-digit',
@@ -47,12 +47,9 @@ export default function CareerOpenings({ initialJobs = [], dynamicSection = null
   const [location, setLocation] = useState('');
   const [visibleCount, setVisibleCount] = useState(4);
 
-  const displayKicker = dynamicSection?.kicker || 'Open Positions';
-  const displayHeading =
-    dynamicSection?.heading || dynamicSection?.title || 'Find Your Next Opportunity';
-  const displayDesc =
-    dynamicSection?.description ||
-    'Explore roles across different departments and take the next step in your career journey with Unimrkt.';
+  const displayKicker = dynamicSection?.kicker;
+  const displayHeading = dynamicSection?.heading || dynamicSection?.title;
+  const displayDesc = dynamicSection?.description;
 
   const [selectedJob, setSelectedJob] = useState(null);
   const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
@@ -66,6 +63,12 @@ export default function CareerOpenings({ initialJobs = [], dynamicSection = null
   const [formExperience, setFormExperience] = useState('');
   const [formLocation, setFormLocation] = useState('');
   const [formMessage, setFormMessage] = useState('');
+
+  const jobIcon = getStrapiMedia('/uploads/job-icon-img.png');
+  const locationIcon = getStrapiMedia('/uploads/location-icon-img.png');
+  const briefcaseIcon = getStrapiMedia('/uploads/briefcase-icon-img.png');
+  const userIcon = getStrapiMedia('/uploads/profile-user-icon-img.png');
+  const calendarIcon = getStrapiMedia('/uploads/calendar-icon-img.png');
 
   useEffect(() => {
     if (initialJobs && initialJobs.length > 0) {
@@ -85,19 +88,19 @@ export default function CareerOpenings({ initialJobs = [], dynamicSection = null
 
   const departmentOptions = useMemo(() => {
     const set = new Set();
-    jobs.forEach((j) => set.add(j.deptLabel));
+    jobs.forEach((j) => { if (j.deptLabel) set.add(j.deptLabel); });
     return Array.from(set);
   }, [jobs]);
 
   const jobTypeOptions = useMemo(() => {
     const set = new Set();
-    jobs.forEach((j) => set.add(j.typeLabel));
+    jobs.forEach((j) => { if (j.typeLabel) set.add(j.typeLabel); });
     return Array.from(set);
   }, [jobs]);
 
   const locationOptions = useMemo(() => {
     const set = new Set();
-    jobs.forEach((j) => set.add(j.locationLabel));
+    jobs.forEach((j) => { if (j.locationLabel) set.add(j.locationLabel); });
     return Array.from(set);
   }, [jobs]);
 
@@ -181,7 +184,6 @@ export default function CareerOpenings({ initialJobs = [], dynamicSection = null
       }, 3500);
     } catch (err) {
       console.error('Job application submission error:', err);
-      // Fallback: trigger email client
       const subject = encodeURIComponent(`Job Application: ${selectedJob ? selectedJob.title : ''}`);
       const body = encodeURIComponent(
         `Position: ${selectedJob ? selectedJob.title : ''}\nName: ${formName}\nEmail: ${formEmail}\nPhone: ${formPhone}\nExperience: ${formExperience}\nLocation: ${formLocation}\n\nMessage:\n${formMessage || 'None'}`
@@ -196,11 +198,13 @@ export default function CareerOpenings({ initialJobs = [], dynamicSection = null
   return (
     <section className="career-openings-section" id="open-positions">
       <div className="srcn-container">
-        <header className="career-openings-header section-header-area">
-          <span className="career-openings-kicker career-values-kicker">{displayKicker}</span>
-          <h2 className="section-main-heading">{displayHeading}</h2>
-          <p className="section-sub-text">{displayDesc}</p>
-        </header>
+        {(displayKicker || displayHeading || displayDesc) && (
+          <header className="career-openings-header section-header-area">
+            {displayKicker && <span className="career-openings-kicker career-values-kicker">{displayKicker}</span>}
+            {displayHeading && <h2 className="section-main-heading">{displayHeading}</h2>}
+            {displayDesc && <p className="section-sub-text">{displayDesc}</p>}
+          </header>
+        )}
 
         <form
           className="career-job-filters"
@@ -290,33 +294,47 @@ export default function CareerOpenings({ initialJobs = [], dynamicSection = null
           {visibleJobs.map((job) => (
             <article key={job.id} className="career-job-card">
               <div className="career-job-summary">
-                <span className="career-job-icon">
-                  <img src="/asstes/images/icon/job-icon-img.png" alt="job" />
-                </span>
+                {jobIcon && (
+                  <span className="career-job-icon">
+                    <img src={jobIcon} alt="job" />
+                  </span>
+                )}
                 <div className="career-job-main">
                   <h3>{job.title}</h3>
                   <ul className="career-job-meta">
-                    <li>
-                      <span>
-                        <img src="/asstes/images/icon/location-icon-img.png" alt="Location" />
-                      </span>{' '}
-                      {job.locationLabel}
-                    </li>
-                    <li>
-                      <span>
-                        <img src="/asstes/images/icon/briefcase-icon-img.png" alt="Job Type" />
-                      </span>{' '}
-                      {job.typeLabel}
-                    </li>
-                    <li>
-                      <img src="/asstes/images/icon/profile-user-icon-img.png" alt="Department" />{' '}
-                      {job.deptLabel}
-                    </li>
+                    {job.locationLabel && (
+                      <li>
+                        {locationIcon && (
+                          <span>
+                            <img src={locationIcon} alt="Location" />
+                          </span>
+                        )}{' '}
+                        {job.locationLabel}
+                      </li>
+                    )}
+                    {job.typeLabel && (
+                      <li>
+                        {briefcaseIcon && (
+                          <span>
+                            <img src={briefcaseIcon} alt="Job Type" />
+                          </span>
+                        )}{' '}
+                        {job.typeLabel}
+                      </li>
+                    )}
+                    {job.deptLabel && (
+                      <li>
+                        {userIcon && <img src={userIcon} alt="Department" />}{' '}
+                        {job.deptLabel}
+                      </li>
+                    )}
                     {job.dateLabel && (
                       <li>
-                        <span>
-                          <img src="/asstes/images/icon/calendar-icon-img.png" alt="Date" />
-                        </span>{' '}
+                        {calendarIcon && (
+                          <span>
+                            <img src={calendarIcon} alt="Date" />
+                          </span>
+                        )}{' '}
                         {job.dateLabel}
                       </li>
                     )}
@@ -374,9 +392,11 @@ export default function CareerOpenings({ initialJobs = [], dynamicSection = null
           >
             <div className="career-modal-header">
               <div className="career-modal-job-heading">
-                <span className="career-job-icon">
-                  <img src="/asstes/images/icon/job-icon-img.png" alt="Job Position" />
-                </span>
+                {jobIcon && (
+                  <span className="career-job-icon">
+                    <img src={jobIcon} alt="Job Position" />
+                  </span>
+                )}
                 <div>
                   <h2 id="careerDetailsTitle">{selectedJob.title}</h2>
                   <p id="careerDetailsMeta">{selectedJob.metaText}</p>

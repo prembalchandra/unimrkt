@@ -66,7 +66,7 @@ export default function DynamicSectionRenderer({ sections = [] }) {
                 <div className="srcn-container">
                   <div className="research-value-header">
                     {section.kicker && <span className="career-values-kicker">{section.kicker}</span>}
-                    <h2 className="section-main-heading">{section.title || section.heading || 'Core Pillars'}</h2>
+                    <h2 className="section-main-heading">{section.title || section.heading}</h2>
                     {section.subtitle && <p className="section-sub-text">{section.subtitle}</p>}
                   </div>
                   <div className="research-value-grid">
@@ -90,7 +90,7 @@ export default function DynamicSectionRenderer({ sections = [] }) {
                 <div className="srcn-container">
                   <div className="section-header-area">
                     {section.kicker && <span className="career-values-kicker">{section.kicker}</span>}
-                    <h2 className="section-main-heading">{section.title || section.heading || 'Frequently Asked Questions'}</h2>
+                    <h2 className="section-main-heading">{section.title || section.heading}</h2>
                   </div>
                   <div className="faq-accordion-container">
                     {(section.items || []).map((faq, fIdx) => (
@@ -113,11 +113,11 @@ export default function DynamicSectionRenderer({ sections = [] }) {
               <section key={key} className="research-cta-section" id="cta">
                 <div className="srcn-container">
                   <div className="cta-container-box" style={{ background: 'linear-gradient(135deg, #1f0b15 0%, #3d1424 100%)', borderRadius: '16px', padding: '60px 40px', textAlign: 'center', color: '#fff' }}>
-                    <span className="career-values-kicker" style={{ color: '#e53935' }}>{section.kicker || 'GET STARTED'}</span>
+                    <span className="career-values-kicker" style={{ color: '#e53935' }}>{section.kicker}</span>
                     <h2 className="section-main-heading" style={{ color: '#fff', margin: '16px 0' }}>{section.title}</h2>
                     <p className="section-sub-text" style={{ color: '#e0e0e0', maxWidth: '640px', margin: '0 auto 28px' }}>{section.description}</p>
                     <Link href={section.buttonUrl || '/contact'} className="hero-common-btn-area btn-sm" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: '#e53935', color: '#fff', padding: '12px 28px', borderRadius: '30px' }}>
-                      <span>{section.buttonText || 'CONNECT WITH US'}</span>
+                      <span>{section.buttonText || 'Contact Us'}</span>
                       <i className="fa fa-long-arrow-right"></i>
                     </Link>
                   </div>

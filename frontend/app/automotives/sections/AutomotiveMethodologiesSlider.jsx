@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect, useRef } from 'react';
+import { getStrapiMedia } from '@/lib/strapi';
 import Swiper from 'swiper';
 import { Autoplay, Pagination, Navigation } from 'swiper/modules';
 
@@ -76,10 +77,10 @@ export default function AutomotiveMethodologiesSlider({ methodologies = [], head
         {/* Dark Curved Hero Banner */}
         <div className="auto-methods-dark-banner">
           <div className="auto-methods-header">
-            <span className="auto-methods-kicker">{kicker || 'PROVEN METHODOLOGIES'}</span>
-            <h2 className="auto-methods-heading">{heading || 'Proven Research Methodologies'}</h2>
+            <span className="auto-methods-kicker">{kicker}</span>
+            <h2 className="auto-methods-heading">{heading}</h2>
             <p className="auto-methods-desc">
-              {description || 'From cockpit usability clinics to enterprise supply chain audits, our multi-modal research suites deliver dependable, defensible intelligence for high-stakes mobility decisions.'}
+              {description}
             </p>
           </div>
         </div>
@@ -104,7 +105,7 @@ export default function AutomotiveMethodologiesSlider({ methodologies = [], head
                 <div key={item.id || idx} className="swiper-slide auto-methods-slide">
                   <article className="auto-method-card">
                     <div className="auto-method-img-wrap">
-                      <img src={item.image || item.iconClass || '/asstes/images/online-surveys-card-img.png'} alt={item.title} loading="lazy" />
+                      <img src={item.image || item.iconClass || getStrapiMedia('/uploads/online-surveys-card-img.png')} alt={item.title} loading="lazy" />
                     </div>
                     <div className="auto-method-body">
                       <h3 className="auto-method-title">{item.title}</h3>

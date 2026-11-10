@@ -41,7 +41,7 @@ export const metadata = {
     type: 'website',
     images: [
       {
-        url: '/asstes/images/services-hero-banner-img.png',
+        url: '/uploads/services-hero-banner-img.png',
         width: 1200,
         height: 630,
         alt: 'Unimrkt Research Services',
@@ -53,7 +53,7 @@ export const metadata = {
     title: 'End-to-End Market Research Services | Unimrkt Research',
     description:
       'Comprehensive qualitative and quantitative research services, CATI telephone surveys, CAWI online panels, and market intelligence solutions.',
-    images: ['/asstes/images/services-hero-banner-img.png'],
+    images: ['/uploads/services-hero-banner-img.png'],
   },
 };
 

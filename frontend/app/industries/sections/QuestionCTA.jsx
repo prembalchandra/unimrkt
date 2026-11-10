@@ -1,40 +1,41 @@
-"use client";
+'use client';
+
 import React from 'react';
+import Link from 'next/link';
 
 export default function QuestionCTA({ dynamicCta = null }) {
-  const title = dynamicCta?.title || "Have A Question? Let's Find The Answer.";
-  const description =
-    dynamicCta?.description ||
-    'Research solutions designed around your business objectives, audience and market.';
-  const btnLabel = dynamicCta?.button?.label || 'Start A Conversation';
-  const btnUrl = dynamicCta?.button?.url || '/contact';
+  if (!dynamicCta) return null;
+
+  const title = dynamicCta.title || dynamicCta.heading;
+  const desc = dynamicCta.description;
+  const btnLabel = dynamicCta.button?.label;
+  const btnUrl = dynamicCta.button?.url || '/contact';
+
+  if (!title && !desc) return null;
 
   return (
-    <section className="question-cta-section">
+    <section className="research-cta-section" id="cta">
       <div className="srcn-container">
-        <div className="question-cta-container">
-          <div className="question-cta-banner">
-            <div className="question-cta-content">
-              <h2 className="question-cta-title section-main-heading">
-                {title}
-              </h2>
-              <p className="question-cta-description section-sub-text">
-                {description}
-              </p>
+        <div className="research-cta-banner-wrapper">
+          <video
+            className="research-cta-bg-image"
+            autoPlay
+            muted
+            loop
+            playsInline
+          >
+            <source src="/asstes/images/video-banner-img.mp4" type="video/mp4" />
+          </video>
 
-              <a href={btnUrl} className="question-cta-button btn-sm">
-                {btnLabel}
-                <img src="/asstes/images/icon/arrow-right-icon-img.png" alt="Arrow Right" />
-              </a>
-            </div>
-
-            <div className="question-cta-image">
-              <img
-                src="/asstes/images/question-img2.png"
-                alt="People thinking and asking questions"
-                loading="lazy"
-              />
-            </div>
+          <div className="research-cta-overlay"></div>
+          <div className="srcn-container research-cta-content">
+            {title && <h2 className="section-main-heading research-cta-title">{title}</h2>}
+            {desc && <p className="research-cta-desc hero-common-title">{desc}</p>}
+            {btnLabel && (
+              <Link href={btnUrl} className="btn-white">
+                {btnLabel} <i className="fa fa-long-arrow-up" aria-hidden="true"></i>
+              </Link>
+            )}
           </div>
         </div>
       </div>

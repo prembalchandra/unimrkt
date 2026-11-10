@@ -1,72 +1,45 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
+import { getStrapiMedia } from '@/lib/strapi';
 
-const defaultImages = [
-  '/asstes/images/smart-survey-management-card-img.png',
-  '/asstes/images/real-time-monitoring-card-img.png',
-  '/asstes/images/interview-controls-card-img.png',
-  '/asstes/images/data-validation-card-img.png',
-  '/asstes/images/centralized-data-card-img.png',
-];
+export default function MeasureSection({ dynamicSection = null, items = [] }) {
+  const displayKicker = dynamicSection?.kicker;
+  const displayHeading = dynamicSection?.heading || dynamicSection?.title;
+  const displayDesc = dynamicSection?.description;
+  const list = dynamicSection?.values || dynamicSection?.metrics || (items && items.length > 0 ? items : []);
 
-export default function MeasureSection({ accordionPanels = [], kicker, title, subtext }) {
-  const [hoveredIndex, setHoveredIndex] = useState(null);
-
-  if (!accordionPanels || accordionPanels.length === 0) return null;
+  if (!displayHeading && !displayDesc && list.length === 0) return null;
 
   return (
-    <section className="measure-section" id="survey-capabilities">
+    <section className="measure-section">
       <div className="srcn-container">
-        <div className="measure-header">
-          <span className="measure-kicker">{kicker || 'CATI Technology'}</span>
-          <h2 className="measure-title">{title || 'Human Conversations. Technology-Enabled Research.'}</h2>
-          <p className="measure-subtext">
-            {subtext || 'CATI combines interviewer-led conversations with technology for consistent, efficient research management.'}
-          </p>
-        </div>
+        {(displayKicker || displayHeading || displayDesc) && (
+          <div className="measure-header section-header-area">
+            {displayKicker && <span className="measure-kicker career-values-kicker">{displayKicker}</span>}
+            {displayHeading && <h2 className="measure-heading section-main-heading">{displayHeading}</h2>}
+            {displayDesc && <p className="measure-desc">{displayDesc}</p>}
+          </div>
+        )}
 
-        <div className="measure-accordion">
-          {accordionPanels.map((panel, index) => {
-            const isHovered = hoveredIndex === index;
-            const isDefault = hoveredIndex === null && index === 0;
-            const isActive = isHovered || isDefault;
-
-            return (
-              <div
-                key={panel.id || index}
-                className={`measure-panel ${isActive ? 'active' : ''}`}
-                onMouseEnter={() => setHoveredIndex(index)}
-                onMouseLeave={() => setHoveredIndex(null)}
-              >
-                <div className="measure-panel-bg">
-                  <img src={panel.image || panel.iconClass || defaultImages[index % defaultImages.length]} alt={panel.title} />
-                  <div className="measure-panel-overlay"></div>
-                </div>
-
-                <div className="measure-panel-content">
-                  <div className="measure-panel-top">
-                    <span className="measure-number">{index + 1 < 10 ? `0${index + 1}` : index + 1}</span>
-                    <h3 className="measure-panel-title">{panel.title}</h3>
-                  </div>
-
-                  <div className="measure-panel-bottom">
-                    <p className="measure-panel-desc">{panel.desc || panel.description}</p>
-                    <div className="measure-panel-icon">
-                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                        <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                      </svg>
+        {list.length > 0 && (
+          <div className="measure-grid">
+            {list.map((item, index) => {
+              const iconSrc = getStrapiMedia(item.icon || item.image);
+              return (
+                <article key={item.id || index} className="measure-card">
+                  {iconSrc && (
+                    <div className="measure-icon-wrap">
+                      <img src={iconSrc} alt={item.title || ''} />
                     </div>
-                  </div>
-                </div>
-
-                <div className="measure-panel-vertical-title">
-                  <span>{panel.title}</span>
-                </div>
-              </div>
-            );
-          })}
-        </div>
+                  )}
+                  {item.title && <h3>{item.title}</h3>}
+                  {(item.desc || item.description) && <p>{item.desc || item.description}</p>}
+                </article>
+              );
+            })}
+          </div>
+        )}
       </div>
     </section>
   );

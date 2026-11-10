@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
+import { getStrapiMedia } from '@/lib/strapi';
 
 function getServiceBadge(title = '') {
   const t = title.toLowerCase();
@@ -103,7 +104,7 @@ export default function HeroSection({ dynamicData = null, initialServices = [] }
   const activeServices = rawList.slice(0, 7).map((s, idx) => ({
     key: `service-${s.id || idx}`,
     title: s.title || '',
-    desc: s.description || s.shortDescription || 'Delivering structured market data enabling organizations to gain complete clarity into market dynamics.',
+    desc: s.description || s.shortDescription || '',
     badge: getServiceBadge(s.title),
     cta: getServiceCta(s.title),
     icon: serviceIconList[idx % serviceIconList.length]
@@ -368,7 +369,7 @@ export default function HeroSection({ dynamicData = null, initialServices = [] }
               <div className="hero-btn-area hero-actions-wrap">
                 <a className="hero-common-btn-area btn-sm btn-discover-unimrkt" href="#cta">
                   <span id="heroCtaText">{currentContent.cta}</span>
-                  <img src="/asstes/images/icon/arrow-right-icon-img.png" alt="Arrow Right" />
+                  <img src={getStrapiMedia("/uploads/arrow-right-icon-img.png")} alt="Arrow Right" />
                 </a>
               </div>
             </div>

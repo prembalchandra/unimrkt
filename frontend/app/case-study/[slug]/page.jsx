@@ -30,10 +30,7 @@ export async function generateMetadata({ params }) {
   }
 
   const title = caseStudy.seo?.metaTitle || `${caseStudy.title} | Unimrkt Case Study`;
-  const description =
-    caseStudy.seo?.metaDescription ||
-    caseStudy.excerpt ||
-    'Comprehensive market research case study and strategic intelligence by Unimrkt Research.';
+  const description = caseStudy.seo?.metaDescription || caseStudy.excerpt || caseStudy.title || '';
   const keywords = caseStudy.seo?.keywords
     ? caseStudy.seo.keywords.split(',').map((k) => k.trim())
     : [
@@ -45,7 +42,7 @@ export async function generateMetadata({ params }) {
 
   const imageUrl = getStrapiMedia(
     caseStudy.seo?.shareImage || caseStudy.heroImage,
-    '/asstes/images/case-study-banking.jpg'
+    getStrapiMedia('/uploads/case-study-banking.jpg')
   );
   const canonicalUrl = `https://www.unimrkt.com/case-study/${slug}`;
 
@@ -103,7 +100,7 @@ export default async function DynamicCaseStudyPage({ params }) {
   const ctaSection = findSection(pageData, 'sections.question-cta');
   const heroImageUrl = getStrapiMedia(
     caseStudy.heroImage,
-    '/asstes/images/case-study-banking.jpg'
+    getStrapiMedia('/uploads/case-study-banking.jpg')
   );
 
   // JSON-LD Structured Data
@@ -121,7 +118,7 @@ export default async function DynamicCaseStudyPage({ params }) {
       url: 'https://www.unimrkt.com',
       logo: {
         '@type': 'ImageObject',
-        url: 'https://www.unimrkt.com/asstes/images/unimrkt-resarch-logo.webp',
+        url: 'https://www.unimrkt.com/uploads/unimrkt-resarch-logo.webp',
       },
     },
     mainEntityOfPage: {
@@ -310,7 +307,7 @@ export default async function DynamicCaseStudyPage({ params }) {
                     <img
                       src={getStrapiMedia(
                         item.heroImage,
-                        '/asstes/images/case-study-banking.jpg'
+                        getStrapiMedia('/uploads/case-study-banking.jpg')
                       )}
                       alt={item.title}
                       style={{

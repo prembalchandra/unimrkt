@@ -1,56 +1,67 @@
 import React from 'react';
+import { getStrapiMedia } from '@/lib/strapi';
 
-const defaultIcons = [
-  '/asstes/images/icon/Define-icon-img.png',
-  '/asstes/images/icon/discovery-icon-img.png',
-  '/asstes/images/icon/measure-icon-img.png',
-  '/asstes/images/icon/segment-icon-img.png',
-  '/asstes/images/icon/analyse-icon-img.png',
-  '/asstes/images/icon/activate-icon-img.png',
-];
-
-const defaultSteps = [
-  { icon: '/asstes/images/icon/Define-icon-img.png', title: '1. Define', desc: 'Established research objectives, customer segments and key business questions.' },
-  { icon: '/asstes/images/icon/discovery-icon-img.png', title: '2. Discover', desc: 'Conducted qualitative conversations to uncover motivations, pain points and unmet expectations.' },
-  { icon: '/asstes/images/icon/measure-icon-img.png', title: '3. Measure', desc: 'Used structured surveys to quantify customer preferences and identify meaningful patterns.' },
-  { icon: '/asstes/images/icon/segment-icon-img.png', title: '4. Segment', desc: 'Compared responses across customer profiles, needs and behavioural characteristics.' },
-  { icon: '/asstes/images/icon/analyse-icon-img.png', title: '5. Analyse', desc: 'Identified the strongest drivers of consideration, satisfaction and loyalty.' },
-  { icon: '/asstes/images/icon/activate-icon-img.png', title: '6. Activate', desc: 'Translated findings into practical recommendations for customer experience and service strategy.' },
-];
+function getStepIcon(step, idx = 0) {
+  if (step.icon) return getStrapiMedia(step.icon);
+  const title = (step.title || '').toLowerCase();
+  if (title.includes('define')) return getStrapiMedia('/uploads/Define-icon-img.png');
+  if (title.includes('discover') || title.includes('discovery')) return getStrapiMedia('/uploads/discovery-icon-img.png');
+  if (title.includes('measure')) return getStrapiMedia('/uploads/measure-icon-img.png');
+  if (title.includes('segment')) return getStrapiMedia('/uploads/segment-icon-img.png');
+  if (title.includes('analyse') || title.includes('analyze')) return getStrapiMedia('/uploads/analyse-icon-img.png');
+  if (title.includes('activate')) return getStrapiMedia('/uploads/activate-icon-img.png');
+  const defaults = [
+    getStrapiMedia('/uploads/Define-icon-img.png'),
+    getStrapiMedia('/uploads/discovery-icon-img.png'),
+    getStrapiMedia('/uploads/measure-icon-img.png'),
+    getStrapiMedia('/uploads/segment-icon-img.png'),
+    getStrapiMedia('/uploads/analyse-icon-img.png'),
+    getStrapiMedia('/uploads/activate-icon-img.png'),
+  ];
+  return defaults[idx % defaults.length];
+}
 
 export default function CaseDetailApproach({ approachSteps = [], heading, kicker, description }) {
-  const stepsToRender = (approachSteps && approachSteps.length > 0) ? approachSteps : defaultSteps;
+  const stepsToRender = approachSteps || [];
+
+  if (stepsToRender.length === 0 && !heading) return null;
 
   return (
     <section className="approach-section">
       <div className="srcn-container">
         <div className="approach-container">
-          <div className="approach-header career-journey-header">
-            <span className="approach-eyebrow career-journey-kicker career-values-kicker">{kicker || 'Our Approach'}</span>
-            <h2 className="approach-title section-main-heading">
-              {heading || <>Turning customer conversations<br />into actionable intelligence</>}
-            </h2>
+          {(kicker || heading || description) && (
+            <div className="approach-header career-journey-header">
+              {kicker && <span className="approach-eyebrow career-journey-kicker career-values-kicker">{kicker}</span>}
+              {heading && <h2 className="approach-title section-main-heading">{heading}</h2>}
+              {description && <p className="approach-description section-sub-text">{description}</p>}
+            </div>
+          )}
 
-            <p className="approach-description section-sub-text">
-              {description || 'Unimrkt designed a structured research approach combining quantitative measurement with qualitative exploration to understand both what customers think and why they think it.'}
-            </p>
-          </div>
-
-          <div className="approach-grid">
-            {stepsToRender.map((step, index) => (
-              <article key={step.id || index} className="approach-card career-journey-step">
-                <div className="approach-card-box-area">
-                  <div className="approach-icon career-journey-icon">
-                    <img src={step.icon || step.iconClass || defaultIcons[index % defaultIcons.length]} alt={step.title} />
-                  </div>
-                  <div className="career-journey-content">
-                    <h3 className="approach-card-title">{step.title}</h3>
-                    <p className="approach-card-description">{step.desc || step.description}</p>
-                  </div>
-                </div>
-              </article>
-            ))}
-          </div>
+          {stepsToRender.length > 0 && (
+            <div className="approach-grid">
+              {stepsToRender.map((step, index) => {
+                const icon = getStepIcon(step, index);
+                return (
+                  <article key={step.id || index} className="approach-card career-journey-step">
+                    <div className="approach-card-box-area">
+                      {icon && (
+                        <div className="approach-icon career-journey-icon">
+                          <img src={icon} alt={step.title} />
+                        </div>
+                      )}
+                      <div className="career-journey-content">
+                        {step.title && <h3 className="approach-card-title">{step.title}</h3>}
+                        {(step.desc || step.description) && (
+                          <p className="approach-card-description">{step.desc || step.description}</p>
+                        )}
+                      </div>
+                    </div>
+                  </article>
+                );
+              })}
+            </div>
+          )}
         </div>
       </div>
     </section>
