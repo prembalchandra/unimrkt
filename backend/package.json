@@ -4,8 +4,8 @@
   "version": "1.0.0",
   "description": "Strapi 5 Headless CMS Backend for Unimrkt Research",
   "scripts": {
-    "dev": "node ./node_modules/@strapi/strapi/bin/strapi.js develop --no-build-admin --no-watch-admin",
-    "develop": "node ./node_modules/@strapi/strapi/bin/strapi.js develop --no-build-admin --no-watch-admin",
+    "dev": "node ./node_modules/@strapi/strapi/bin/strapi.js develop",
+    "develop": "node ./node_modules/@strapi/strapi/bin/strapi.js develop",
     "start": "node ./node_modules/@strapi/strapi/bin/strapi.js start",
     "build": "node ./node_modules/@strapi/strapi/bin/strapi.js build",
     "strapi": "node ./node_modules/@strapi/strapi/bin/strapi.js"
