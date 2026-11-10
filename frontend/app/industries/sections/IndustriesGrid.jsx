@@ -1,3 +1,4 @@
+
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
@@ -6,66 +7,88 @@ import { getStrapiMedia } from '../../../lib/strapi';
 
 const ITEMS_PER_PAGE = 6;
 
-function getIndustryImage(slug = '') {
-  const s = slug.toLowerCase();
-  if (s.includes('auto')) return '/asstes/images/automotives-card-img.png';
-  if (s.includes('energy') || s.includes('utilit')) return '/asstes/images/energy-utilities-img.png';
-  if (s.includes('bank') || s.includes('financ')) return '/asstes/images/banking-and-finance-img.png';
-  if (s.includes('food') || s.includes('beverag')) return '/asstes/images/food-&-beverage-img.png';
-  if (s.includes('transport') || s.includes('logistic')) return '/asstes/images/transportation-img.png';
-  if (s.includes('media') || s.includes('entert')) return '/asstes/images/media-&-entertainment-img.png';
-  if (s.includes('health') || s.includes('medic')) return '/asstes/images/case-study-healthcare.jpg';
-  if (s.includes('tech') || s.includes('telecom')) return '/asstes/images/market-trends-card-img2.png';
-  return '/asstes/images/banking-and-finance-img.png';
-}
-
-function formatIndustry(ind, i) {
+// Format Strapi industry data
+function formatIndustry(ind) {
   if (!ind) return null;
-  const slug = ind.slug || `ind-${i}`;
+
+  const slug = ind.slug || ind.documentId || ind.id;
+
+  const imageData =
+    ind.image || ind.featuredImage || ind.heroImage;
+
   return {
     id: slug,
     title: ind.title || ind.name || '',
-    image: getStrapiMedia(ind.image || ind.featuredImage || ind.heroImage, getIndustryImage(slug)),
-    link: slug === 'automotives' || slug === 'automotive-mobility' ? '/automotives' : '/services',
-    desc: ind.shortDescription || ind.description || 'Comprehensive sector intelligence and tailored research insights.',
+    image: imageData ? getStrapiMedia(imageData) : null,
+    link: ind.link || ind.url || ind.ctaLink || '',
+    desc: ind.shortDescription || ind.description || '',
+    alt:
+      imageData?.alternativeText ||
+      ind.title ||
+      ind.name ||
+      '',
   };
 }
 
-export default function IndustriesGrid({ initialIndustries = [], dynamicSection = null }) {
-  const [items, setItems] = useState(() => (initialIndustries || []).map(formatIndustry).filter(Boolean));
+export default function IndustriesGrid({
+  initialIndustries = [],
+  dynamicSection = null,
+}) {
   const [currentPage, setCurrentPage] = useState(1);
   const sectionRef = useRef(null);
 
-  const displayKicker = dynamicSection?.kicker || 'Industries We Serve';
-  const displayHeading = dynamicSection?.heading || dynamicSection?.title || 'Expertise Across Key Markets';
-  const displayDesc = dynamicSection?.description || 'Explore industry-specific research capabilities tailored to uncover actionable market opportunities.';
+  // Strapi CMS content
+  const displayKicker = dynamicSection?.kicker;
+  const displayHeading =
+    dynamicSection?.heading || dynamicSection?.title;
 
+  const displayDesc = dynamicSection?.description;
+
+  // Format industries received from Strapi
+  const items = (initialIndustries || [])
+    .map(formatIndustry)
+    .filter((item) => item && item.id && item.title);
+
+  // Pagination
+  const totalPages = Math.ceil(items.length / ITEMS_PER_PAGE);
+
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+
+  const currentIndustries = items.slice(
+    startIndex,
+    startIndex + ITEMS_PER_PAGE
+  );
+
+  // Reset pagination when CMS data changes
   useEffect(() => {
-    if (initialIndustries && initialIndustries.length > 0) {
-      setItems(initialIndustries.map(formatIndustry).filter(Boolean));
-    } else {
-      const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL || 'http://127.0.0.1:1337';
-      fetch(`${STRAPI_URL}/api/industries?populate=*&pagination[limit]=50`)
-        .then((r) => r.json())
-        .then((d) => {
-          if (Array.isArray(d?.data)) {
-            setItems(d.data.map(formatIndustry).filter(Boolean));
-          }
-        })
-        .catch(() => {});
-    }
+    setCurrentPage(1);
   }, [initialIndustries]);
 
-  const totalPages = Math.ceil(items.length / ITEMS_PER_PAGE) || 1;
-  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-  const currentIndustries = items.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+  // Prevent invalid pagination
+  useEffect(() => {
+    if (totalPages > 0 && currentPage > totalPages) {
+      setCurrentPage(totalPages);
+    }
+  }, [currentPage, totalPages]);
 
+  // Page navigation
   const handlePageChange = (newPage) => {
-    if (newPage < 1 || newPage > totalPages || newPage === currentPage) return;
+    if (
+      newPage < 1 ||
+      newPage > totalPages ||
+      newPage === currentPage
+    ) {
+      return;
+    }
+
     setCurrentPage(newPage);
 
     if (sectionRef.current) {
-      const topOffset = sectionRef.current.getBoundingClientRect().top + window.pageYOffset - 90;
+      const topOffset =
+        sectionRef.current.getBoundingClientRect().top +
+        window.pageYOffset -
+        90;
+
       window.scrollTo({
         top: topOffset,
         behavior: 'smooth',
@@ -73,44 +96,114 @@ export default function IndustriesGrid({ initialIndustries = [], dynamicSection 
     }
   };
 
-  return (
-    <section className="industries-grid-section" id="industries-grid" ref={sectionRef}>
-      <div className="srcn-container">
-        <div className="section-header-area">
-          <span className="career-values-kicker">{displayKicker}</span>
-          <h2 className="section-main-heading">{displayHeading}</h2>
-          <p className="section-sub-text">
-            {displayDesc}
-          </p>
-        </div>
+  // Hide section when CMS has no content
+  if (
+    !displayKicker &&
+    !displayHeading &&
+    !displayDesc &&
+    items.length === 0
+  ) {
+    return null;
+  }
 
-        <div className="industries-cards-grid">
-          {currentIndustries.map((ind) => (
-            <article key={ind.id} className="industries-grid-card">
-              <div className="industries-card-img-wrap">
-                <img
-                  src={ind.image}
-                  alt={ind.title}
-                  loading="lazy"
-                />
-              </div>
-              <div className="industries-card-content">
-                <h3>{ind.title}</h3>
-                <p>{ind.desc}</p>
-                <div className="industries-card-btn-wrap">
-                  <Link href={ind.link} className="industries-card-explore-btn btn-border-sm">
-                    <span>EXPLORE INDUSTRY</span>
-                    <i className="fa fa-long-arrow-right" aria-hidden="true"></i>
-                  </Link>
+  return (
+    <section
+      className="industries-grid-section"
+      id="industries-grid"
+      ref={sectionRef}
+    >
+      <div className="srcn-container">
+
+        {/* Section Header */}
+        {(displayKicker || displayHeading || displayDesc) && (
+          <div className="section-header-area">
+
+            {displayKicker && (
+              <span className="career-values-kicker">
+                {displayKicker}
+              </span>
+            )}
+
+            {displayHeading && (
+              <h2 className="section-main-heading">
+                {displayHeading}
+              </h2>
+            )}
+
+            {displayDesc && (
+              <p className="section-sub-text">
+                {displayDesc}
+              </p>
+            )}
+
+          </div>
+        )}
+
+        {/* Industries Cards */}
+        {currentIndustries.length > 0 && (
+          <div className="industries-cards-grid">
+
+            {currentIndustries.map((ind) => (
+              <article
+                key={ind.id}
+                className="industries-grid-card"
+              >
+
+                {ind.image && (
+                  <div className="industries-card-img-wrap">
+                    <img
+                      src={ind.image}
+                      alt={ind.alt}
+                      loading="lazy"
+                    />
+                  </div>
+                )}
+
+                <div className="industries-card-content">
+
+                  <h3>{ind.title}</h3>
+
+                  {ind.desc && (
+                    <p>{ind.desc}</p>
+                  )}
+
+                  {ind.link && (
+                    <div className="industries-card-btn-wrap">
+                      <Link
+                        href={ind.link}
+                        className="industries-card-explore-btn btn-border-sm"
+                      >
+                        <span>
+                          {ind.ctaText || dynamicSection?.ctaText}
+                        </span>
+
+                        <i
+                          className="fa fa-long-arrow-right"
+                          aria-hidden="true"
+                        />
+                      </Link>
+                    </div>
+                  )}
+
                 </div>
-              </div>
-            </article>
-          ))}
-        </div>
+
+              </article>
+            ))}
+
+          </div>
+        )}
 
         {/* Dynamic Pagination */}
         {totalPages > 1 && (
-          <div className="industries-pagination-area blog-pagination-area" style={{ display: 'flex', marginTop: '48px', justifyContent: 'center' }}>
+          <div
+            className="industries-pagination-area blog-pagination-area"
+            style={{
+              display: 'flex',
+              marginTop: '48px',
+              justifyContent: 'center',
+            }}
+          >
+
             <button
               type="button"
               className="pagination-item arrow-btn prev-btn"
@@ -118,19 +211,31 @@ export default function IndustriesGrid({ initialIndustries = [], dynamicSection 
               onClick={() => handlePageChange(currentPage - 1)}
               aria-label="Previous page"
             >
-              <i className="fa-solid fa-chevron-left" aria-hidden="true"></i>
+              <i
+                className="fa-solid fa-chevron-left"
+                aria-hidden="true"
+              />
             </button>
-            {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+
+            {Array.from(
+              { length: totalPages },
+              (_, i) => i + 1
+            ).map((page) => (
               <button
                 key={page}
                 type="button"
-                className={`pagination-item page-btn ${page === currentPage ? 'active' : ''}`}
+                className={`pagination-item page-btn ${
+                  page === currentPage ? 'active' : ''
+                }`}
                 onClick={() => handlePageChange(page)}
-                aria-current={page === currentPage ? 'page' : 'false'}
+                aria-current={
+                  page === currentPage ? 'page' : undefined
+                }
               >
                 {page}
               </button>
             ))}
+
             <button
               type="button"
               className="pagination-item arrow-btn next-btn"
@@ -138,10 +243,15 @@ export default function IndustriesGrid({ initialIndustries = [], dynamicSection 
               onClick={() => handlePageChange(currentPage + 1)}
               aria-label="Next page"
             >
-              <i className="fa-solid fa-chevron-right" aria-hidden="true"></i>
+              <i
+                className="fa-solid fa-chevron-right"
+                aria-hidden="true"
+              />
             </button>
+
           </div>
         )}
+
       </div>
     </section>
   );

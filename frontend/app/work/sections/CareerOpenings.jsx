@@ -1,6 +1,8 @@
 'use client';
 
 import React, { useState, useMemo, useEffect } from 'react';
+import StrapiBlocksRenderer from '@/components/StrapiBlocksRenderer';
+import { submitContactInquiry } from '@/lib/strapi';
 
 function formatJob(job, idx) {
   if (!job) return null;
@@ -8,42 +10,22 @@ function formatJob(job, idx) {
   const typeLabel = job.job_type || job.jobType || 'Full Time';
   const locationLabel = job.location || 'Gurugram, India';
   const dateLabel = job.posted_date || job.postedDate
-    ? new Date(job.posted_date || job.postedDate).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })
-    : 'Recent';
+    ? new Date(job.posted_date || job.postedDate).toLocaleDateString('en-GB', {
+        day: '2-digit',
+        month: 'short',
+        year: 'numeric',
+      })
+    : '';
 
-  let descContent = null;
-  if (typeof job.description === 'string' && job.description.length > 0) {
-    descContent = <p>{job.description}</p>;
-  } else if (Array.isArray(job.description) && job.description.length > 0) {
-    descContent = (
-      <div>
-        {job.description.map((block, i) => (
-          <p key={i}>{(block.children || []).map((c) => c.text).join('')}</p>
-        ))}
-      </div>
-    );
-  } else {
-    descContent = (
-      <>
-        <h4>Job Description</h4>
-        <p>Support research execution, quality audits, data processing, and client engagement workflows across multi-country studies.</p>
-        <h4>Key Responsibilities</h4>
-        <ul>
-          <li>Execute quantitative and qualitative research methodologies within designated timelines.</li>
-          <li>Ensure high accuracy and strict adherence to ISO 20252 and global compliance standards.</li>
-          <li>Coordinate cross-functional tasks with project managers and field teams.</li>
-        </ul>
-        <h4>Qualifications</h4>
-        <ul>
-          <li>Bachelor's or Master's degree in a relevant discipline.</li>
-          <li>Strong analytical, communication, and problem-solving skills.</li>
-        </ul>
-      </>
-    );
-  }
+  const descContent = job.description ? (
+    <StrapiBlocksRenderer content={job.description} />
+  ) : null;
+
+  const metaParts = [locationLabel, typeLabel, deptLabel, dateLabel].filter(Boolean);
 
   return {
     id: job.id || job.documentId || idx + 1,
+    slug: job.slug || '',
     title: job.title || '',
     department: deptLabel.toLowerCase(),
     deptLabel,
@@ -52,7 +34,7 @@ function formatJob(job, idx) {
     location: locationLabel.toLowerCase(),
     locationLabel,
     dateLabel,
-    metaText: `${locationLabel} · ${typeLabel} · ${deptLabel} · ${dateLabel}`,
+    metaText: metaParts.join(' · '),
     description: descContent,
   };
 }
@@ -66,13 +48,17 @@ export default function CareerOpenings({ initialJobs = [], dynamicSection = null
   const [visibleCount, setVisibleCount] = useState(4);
 
   const displayKicker = dynamicSection?.kicker || 'Open Positions';
-  const displayHeading = dynamicSection?.heading || dynamicSection?.title || 'Find Your Next Opportunity';
-  const displayDesc = dynamicSection?.description || 'Explore roles across different departments and take the next step in your career journey with Unimrkt.';
+  const displayHeading =
+    dynamicSection?.heading || dynamicSection?.title || 'Find Your Next Opportunity';
+  const displayDesc =
+    dynamicSection?.description ||
+    'Explore roles across different departments and take the next step in your career journey with Unimrkt.';
 
   const [selectedJob, setSelectedJob] = useState(null);
   const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
   const [isApplyModalOpen, setIsApplyModalOpen] = useState(false);
   const [applyStatus, setApplyStatus] = useState('');
+  const [applySubmitting, setApplySubmitting] = useState(false);
 
   const [formName, setFormName] = useState('');
   const [formEmail, setFormEmail] = useState('');
@@ -147,7 +133,6 @@ export default function CareerOpenings({ initialJobs = [], dynamicSection = null
     };
 
     window.addEventListener('keydown', handleKeyDown);
-
     return () => {
       document.body.style.overflow = '';
       window.removeEventListener('keydown', handleKeyDown);
@@ -166,24 +151,46 @@ export default function CareerOpenings({ initialJobs = [], dynamicSection = null
     setApplyStatus('');
   };
 
-  const handleApplicationSubmit = (e) => {
+  const handleApplicationSubmit = async (e) => {
     e.preventDefault();
-    const emailBody = [
-      `Position: ${selectedJob ? selectedJob.title : ''}`,
-      `Full Name: ${formName}`,
-      `Email: ${formEmail}`,
-      `Phone: ${formPhone}`,
-      `Experience: ${formExperience}`,
-      `Current Location: ${formLocation}`,
-      `Additional Message: ${formMessage || 'None'}`,
-      '',
-      'Please attach my resume to this application.',
-    ].join('\n');
+    setApplySubmitting(true);
+    setApplyStatus('Submitting your application...');
 
-    const subject = encodeURIComponent(`Job Application: ${selectedJob ? selectedJob.title : ''}`);
-    const body = encodeURIComponent(emailBody);
-    setApplyStatus('Opening your email app. Please attach your resume before sending.');
-    window.location.href = `mailto:careers@unimrkt.com?subject=${subject}&body=${body}`;
+    try {
+      await submitContactInquiry({
+        name: formName,
+        email: formEmail,
+        phone: formPhone,
+        company: `Applicant: ${selectedJob?.title || 'General'}`,
+        message: `Job Application for: ${selectedJob?.title || 'Open Role'}\nExperience: ${formExperience}\nCurrent Location: ${formLocation}\nMessage: ${formMessage || 'None'}`,
+        sourcePage: `careers-${selectedJob?.slug || selectedJob?.id || 'work'}`,
+        countryCode: '+91',
+        consent: true,
+      });
+
+      setApplyStatus('Thank you! Your application has been submitted successfully to our talent team.');
+      setTimeout(() => {
+        setIsApplyModalOpen(false);
+        setApplyStatus('');
+        setFormName('');
+        setFormEmail('');
+        setFormPhone('');
+        setFormExperience('');
+        setFormLocation('');
+        setFormMessage('');
+      }, 3500);
+    } catch (err) {
+      console.error('Job application submission error:', err);
+      // Fallback: trigger email client
+      const subject = encodeURIComponent(`Job Application: ${selectedJob ? selectedJob.title : ''}`);
+      const body = encodeURIComponent(
+        `Position: ${selectedJob ? selectedJob.title : ''}\nName: ${formName}\nEmail: ${formEmail}\nPhone: ${formPhone}\nExperience: ${formExperience}\nLocation: ${formLocation}\n\nMessage:\n${formMessage || 'None'}`
+      );
+      window.location.href = `mailto:careers@unimrkt.com?subject=${subject}&body=${body}`;
+      setApplyStatus('Application drafted. Please send through your email client.');
+    } finally {
+      setApplySubmitting(false);
+    }
   };
 
   return (
@@ -192,9 +199,7 @@ export default function CareerOpenings({ initialJobs = [], dynamicSection = null
         <header className="career-openings-header section-header-area">
           <span className="career-openings-kicker career-values-kicker">{displayKicker}</span>
           <h2 className="section-main-heading">{displayHeading}</h2>
-          <p className="section-sub-text">
-            {displayDesc}
-          </p>
+          <p className="section-sub-text">{displayDesc}</p>
         </header>
 
         <form
@@ -304,14 +309,17 @@ export default function CareerOpenings({ initialJobs = [], dynamicSection = null
                       {job.typeLabel}
                     </li>
                     <li>
-                      <img src="/asstes/images/icon/profile-user-icon-img.png" alt="Department" /> {job.deptLabel}
+                      <img src="/asstes/images/icon/profile-user-icon-img.png" alt="Department" />{' '}
+                      {job.deptLabel}
                     </li>
-                    <li>
-                      <span>
-                        <img src="/asstes/images/icon/calendar-icon-img.png" alt="Date" />
-                      </span>{' '}
-                      {job.dateLabel}
-                    </li>
+                    {job.dateLabel && (
+                      <li>
+                        <span>
+                          <img src="/asstes/images/icon/calendar-icon-img.png" alt="Date" />
+                        </span>{' '}
+                        {job.dateLabel}
+                      </li>
+                    )}
                   </ul>
                 </div>
                 <div className="career-job-actions">
@@ -438,6 +446,7 @@ export default function CareerOpenings({ initialJobs = [], dynamicSection = null
                   value={formName}
                   onChange={(e) => setFormName(e.target.value)}
                   required
+                  disabled={applySubmitting}
                 />
               </label>
               <label className="career-application-field">
@@ -452,6 +461,7 @@ export default function CareerOpenings({ initialJobs = [], dynamicSection = null
                   value={formEmail}
                   onChange={(e) => setFormEmail(e.target.value)}
                   required
+                  disabled={applySubmitting}
                 />
               </label>
               <label className="career-application-field">
@@ -466,6 +476,7 @@ export default function CareerOpenings({ initialJobs = [], dynamicSection = null
                   value={formPhone}
                   onChange={(e) => setFormPhone(e.target.value)}
                   required
+                  disabled={applySubmitting}
                 />
               </label>
               <label className="career-application-field">
@@ -477,13 +488,14 @@ export default function CareerOpenings({ initialJobs = [], dynamicSection = null
                   value={formExperience}
                   onChange={(e) => setFormExperience(e.target.value)}
                   required
+                  disabled={applySubmitting}
                 >
                   <option value="">Select experience</option>
-                  <option>Fresher</option>
-                  <option>Less than 1 year</option>
-                  <option>1-3 years</option>
-                  <option>3-5 years</option>
-                  <option>5+ years</option>
+                  <option value="Fresher">Fresher</option>
+                  <option value="Less than 1 year">Less than 1 year</option>
+                  <option value="1-3 years">1-3 years</option>
+                  <option value="3-5 years">3-5 years</option>
+                  <option value="5+ years">5+ years</option>
                 </select>
               </label>
               <label className="career-application-field">
@@ -498,14 +510,8 @@ export default function CareerOpenings({ initialJobs = [], dynamicSection = null
                   value={formLocation}
                   onChange={(e) => setFormLocation(e.target.value)}
                   required
+                  disabled={applySubmitting}
                 />
-              </label>
-              <label className="career-application-field career-resume-field">
-                <span>
-                  Resume / CV <b>*</b>
-                </span>
-                <input type="file" name="Resume" accept=".pdf,.doc,.docx" />
-                <small>PDF, DOC or DOCX (up to 5 MB)</small>
               </label>
               <label className="career-application-field career-application-message">
                 <span>
@@ -517,15 +523,28 @@ export default function CareerOpenings({ initialJobs = [], dynamicSection = null
                   placeholder="Tell us why you're a great fit for this role..."
                   value={formMessage}
                   onChange={(e) => setFormMessage(e.target.value)}
+                  disabled={applySubmitting}
                 ></textarea>
               </label>
-              <p className="career-application-note">
-                Submitting opens an email draft to our hiring team. Please attach your resume to the email before sending.
-              </p>
-              <button className="career-job-apply career-application-submit" type="submit">
-                Submit Application
+              <button
+                className="career-job-apply career-application-submit"
+                type="submit"
+                disabled={applySubmitting}
+              >
+                {applySubmitting ? 'Submitting...' : 'Submit Application'}
               </button>
-              {applyStatus && <p className="career-application-status">{applyStatus}</p>}
+              {applyStatus && (
+                <p
+                  className="career-application-status"
+                  style={{
+                    color: applyStatus.includes('successfully') ? '#16a34a' : '#d97706',
+                    marginTop: '12px',
+                    fontWeight: '500',
+                  }}
+                >
+                  {applyStatus}
+                </p>
+              )}
             </form>
           </div>
         </div>

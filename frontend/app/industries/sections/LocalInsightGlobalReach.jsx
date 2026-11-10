@@ -1,38 +1,117 @@
+
 'use client';
 
 import React from 'react';
+import { getStrapiMedia } from '../../../lib/strapi';
 
-const defaultIcons = [
-  '/asstes/images/icon/countries-covered-icon-img.png',
-  '/asstes/images/icon/languages-supported-icon-img.png',
-  '/asstes/images/icon/global-regions-icon-img.png',
-  '/asstes/images/icon/multi-industry-icon-img.png',
-];
+export default function LocalInsightGlobalReach({
+  stats = [],
+  kicker = null,
+  heading = null,
+  description = null,
+  dynamicSection = null,
+}) {
+  const displayKicker = dynamicSection?.kicker || kicker;
+  const displayHeading =
+    dynamicSection?.heading ||
+    dynamicSection?.title ||
+    heading;
 
-export default function LocalInsightGlobalReach({ stats = [], kicker, heading, description }) {
-  if (!stats || stats.length === 0) return null;
+  const displayDescription =
+    dynamicSection?.description || description;
+
+  const displayStats =
+    dynamicSection?.stats?.length > 0
+      ? dynamicSection.stats
+      : stats;
+
+  if (
+    !displayKicker &&
+    !displayHeading &&
+    !displayDescription &&
+    (!displayStats || displayStats.length === 0)
+  ) {
+    return null;
+  }
 
   return (
-    <section className="global-reach-dark-section" id="global-reach">
+    <section
+      className="global-reach-dark-section"
+      id="global-reach"
+    >
       <div className="srcn-container">
-        <div className="global-reach-header section-header-area">
-          <span className="global-reach-kicker career-values-kicker">{kicker || 'Beyond Industries'}</span>
-          <h2 className="global-reach-heading section-main-heading">{heading || 'Local Insight. Global Reach.'}</h2>
-          <p className="global-reach-desc industries-expertise-desc">
-            {description || 'Unimrkt delivers research across 90+ countries and 22+ languages, combining deep local understanding with a global perspective. Our international research capabilities help businesses understand diverse markets, audiences and industry dynamics with confidence.'}
-          </p>
-        </div>
-        <div className="global-reach-grid">
-          {stats.map((item, index) => (
-            <article key={item.id || index} className="global-reach-card">
-              <div className="global-reach-icon-wrap">
-                <img src={item.icon || item.iconClass || defaultIcons[index % defaultIcons.length]} alt={item.label} loading="lazy" />
-              </div>
-              <h3 className="global-reach-stat">{item.stat || item.number}</h3>
-              <p className="global-reach-label">{item.label}</p>
-            </article>
-          ))}
-        </div>
+        {(displayKicker || displayHeading || displayDescription) && (
+          <div className="global-reach-header section-header-area">
+            {displayKicker && (
+              <span className="global-reach-kicker career-values-kicker">
+                {displayKicker}
+              </span>
+            )}
+
+            {displayHeading && (
+              <h2 className="global-reach-heading section-main-heading">
+                {displayHeading}
+              </h2>
+            )}
+
+            {displayDescription && (
+              <p className="global-reach-desc industries-expertise-desc">
+                {displayDescription}
+              </p>
+            )}
+
+          </div>
+        )}
+
+        {/* Dynamic Statistics */}
+        {displayStats?.length > 0 && (
+          <div className="global-reach-grid">
+
+            {displayStats.map((item, index) => {
+              const icon = getStrapiMedia(
+                item.icon || item.image
+              );
+
+              const stat = item.stat || item.number;
+
+              return (
+                <article
+                  key={item.id || item.documentId || index}
+                  className="global-reach-card"
+                >
+
+                  {icon && (
+                    <div className="global-reach-icon-wrap">
+                      <img
+                        src={icon}
+                        alt={
+                          item.icon?.alternativeText ||
+                          item.label ||
+                          ''
+                        }
+                        loading="lazy"
+                      />
+                    </div>
+                  )}
+
+                  {stat && (
+                    <h3 className="global-reach-stat">
+                      {stat}
+                    </h3>
+                  )}
+
+                  {item.label && (
+                    <p className="global-reach-label">
+                      {item.label}
+                    </p>
+                  )}
+
+                </article>
+              );
+            })}
+
+          </div>
+        )}
       </div>
     </section>
   );
