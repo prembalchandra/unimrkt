@@ -30,6 +30,13 @@ yarn-error.log*
 # local env files
 .env*.local
 
+# uploads junction
+public/uploads
+
+# temp inspect scripts and html
+scripts/staging_sec_*.html
+scripts/reference_staging_industries.html
+
 # vercel
 .vercel
 

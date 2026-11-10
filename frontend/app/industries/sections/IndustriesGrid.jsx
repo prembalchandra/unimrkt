@@ -6,17 +6,27 @@ import { getStrapiMedia } from '@/lib/strapi';
 
 const ITEMS_PER_PAGE = 6;
 
+const fallbackIndustryPhotos = [
+  '/uploads/oc_industry_healthcare_df075d98d8.jpg',
+  '/uploads/industry_automotive_9d8c1f73cd.jpg',
+  '/uploads/oc_industry_technology_3d259a7b80.jpg',
+  '/uploads/oc_industry_automotive_a401cb0936.jpg',
+  '/uploads/industry_banking_49416162c9.jpg',
+  '/uploads/oc_industry_b2b_industrial_1adf04cab7.jpg',
+];
+
 // Format Strapi industry data
-function formatIndustry(ind) {
+function formatIndustry(ind, idx = 0) {
   if (!ind) return null;
 
   const slug = ind.slug || ind.documentId || ind.id;
   const imageData = ind.image || ind.featuredImage || ind.heroImage;
+  const fallbackImg = fallbackIndustryPhotos[idx % fallbackIndustryPhotos.length];
 
   return {
     id: slug,
     title: ind.title || ind.name || '',
-    image: imageData ? getStrapiMedia(imageData) : '/uploads/b2b-industrial-card-img.png',
+    image: imageData ? getStrapiMedia(imageData) : fallbackImg,
     link: ind.link || ind.url || `/industries/${slug}`,
     desc: ind.shortDescription || ind.description || 'Delivering structured market intelligence and tailored quantitative and qualitative insights.',
     alt: imageData?.alternativeText || ind.title || ind.name || '',
@@ -41,7 +51,7 @@ export default function IndustriesGrid({
 
   // Format industries received from Strapi
   const items = (initialIndustries || [])
-    .map(formatIndustry)
+    .map((ind, idx) => formatIndustry(ind, idx))
     .filter((item) => item && item.id && item.title);
 
   // Pagination

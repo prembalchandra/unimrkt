@@ -73,6 +73,25 @@
       "type": "string",
       "default": "© 2026 Unimrkt Research. All rights reserved."
     },
+    "contactPhone": {
+      "type": "string",
+      "default": "+91-124-400-8800"
+    },
+    "contactEmail": {
+      "type": "string",
+      "default": "info@unimrkt.com"
+    },
+    "contactAddress": {
+      "type": "text",
+      "default": "Unimrkt Research, 5th Floor, Tower B, Unitech Cyber Park, Sector 39, Gurugram, Haryana 122002"
+    },
+    "contactWorkingHours": {
+      "type": "string",
+      "default": "Mon - Fri: 9:00 AM - 6:00 PM IST"
+    },
+    "topNotificationBar": {
+      "type": "string"
+    },
     "legalLinks": {
       "type": "component",
       "repeatable": true,

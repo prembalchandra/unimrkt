@@ -17,6 +17,7 @@ export default function IndustriesHero({ dynamicHero = null }) {
     dynamicHero.breadcrumbHome || 'Home';
   const breadcrumbCurrent =
     dynamicHero.breadcrumbCurrent;
+
   return (
     <>
       <section className="hero-common-area">

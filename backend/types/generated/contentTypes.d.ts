@@ -769,6 +769,14 @@ export interface ApiGlobalGlobal extends Struct.SingleTypeSchema {
     draftAndPublish: false;
   };
   attributes: {
+    contactAddress: Schema.Attribute.Text &
+      Schema.Attribute.DefaultTo<'Unimrkt Research, 5th Floor, Tower B, Unitech Cyber Park, Sector 39, Gurugram, Haryana 122002'>;
+    contactEmail: Schema.Attribute.String &
+      Schema.Attribute.DefaultTo<'info@unimrkt.com'>;
+    contactPhone: Schema.Attribute.String &
+      Schema.Attribute.DefaultTo<'+91-124-400-8800'>;
+    contactWorkingHours: Schema.Attribute.String &
+      Schema.Attribute.DefaultTo<'Mon - Fri: 9:00 AM - 6:00 PM IST'>;
     copyrightText: Schema.Attribute.String &
       Schema.Attribute.DefaultTo<'\u00A9 2026 Unimrkt Research. All rights reserved.'>;
     createdAt: Schema.Attribute.DateTime;
@@ -798,6 +806,7 @@ export interface ApiGlobalGlobal extends Struct.SingleTypeSchema {
       Schema.Attribute.Required &
       Schema.Attribute.DefaultTo<'Unimrkt Research'>;
     socialLinks: Schema.Attribute.Component<'elements.social-link', true>;
+    topNotificationBar: Schema.Attribute.String;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -904,6 +913,7 @@ export interface ApiPagePage extends Struct.CollectionTypeSchema {
       [
         'sections.home-hero',
         'sections.hero-common',
+        'sections.banner-section',
         'sections.question-cta',
         'sections.research-reach',
         'sections.industry-slider',
@@ -915,6 +925,10 @@ export interface ApiPagePage extends Struct.CollectionTypeSchema {
         'sections.rich-text-block',
         'sections.callout-box',
         'sections.contact-form',
+        'sections.custom-html-section',
+        'sections.image-gallery',
+        'sections.icon-cards-section',
+        'sections.video-section',
       ]
     >;
     seo: Schema.Attribute.Component<'shared.seo', false>;

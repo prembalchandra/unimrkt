@@ -91,6 +91,26 @@ export interface ElementsFeatureItem extends Struct.ComponentSchema {
   };
 }
 
+export interface ElementsIconCard extends Struct.ComponentSchema {
+  collectionName: 'components_elements_icon_cards';
+  info: {
+    description: 'Card with custom SVG/PNG icon, title, description, color, and size';
+    displayName: 'Icon Card';
+    icon: 'star';
+  };
+  attributes: {
+    altText: Schema.Attribute.String;
+    description: Schema.Attribute.Text;
+    iconColor: Schema.Attribute.String;
+    iconImage: Schema.Attribute.Media<'images'>;
+    iconSize: Schema.Attribute.Enumeration<['small', 'medium', 'large']> &
+      Schema.Attribute.DefaultTo<'medium'>;
+    iconSvgCode: Schema.Attribute.Text;
+    linkUrl: Schema.Attribute.String;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
+  };
+}
+
 export interface ElementsListItem extends Struct.ComponentSchema {
   collectionName: 'components_elements_list_items';
   info: {
@@ -176,6 +196,27 @@ export interface SectionsAccordionSolutions extends Struct.ComponentSchema {
   };
 }
 
+export interface SectionsBannerSection extends Struct.ComponentSchema {
+  collectionName: 'components_sections_banner_sections';
+  info: {
+    description: 'Full-width or boxed banner with separate desktop, mobile and background images';
+    displayName: 'Banner Section';
+    icon: 'picture';
+  };
+  attributes: {
+    altText: Schema.Attribute.String;
+    backgroundImage: Schema.Attribute.Media<'images'>;
+    button: Schema.Attribute.Component<'elements.button-link', false>;
+    caption: Schema.Attribute.String;
+    description: Schema.Attribute.Text;
+    desktopBanner: Schema.Attribute.Media<'images'>;
+    enabled: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
+    kicker: Schema.Attribute.String;
+    mobileBanner: Schema.Attribute.Media<'images'>;
+    title: Schema.Attribute.String;
+  };
+}
+
 export interface SectionsCalloutBox extends Struct.ComponentSchema {
   collectionName: 'components_sections_callout_boxes';
   info: {
@@ -232,6 +273,24 @@ export interface SectionsContactForm extends Struct.ComponentSchema {
   };
 }
 
+export interface SectionsCustomHtmlSection extends Struct.ComponentSchema {
+  collectionName: 'components_sections_custom_html_sections';
+  info: {
+    description: 'Custom HTML code block with security sanitization';
+    displayName: 'Custom HTML Section';
+    icon: 'code';
+  };
+  attributes: {
+    customCssClass: Schema.Attribute.String;
+    enabled: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
+    htmlCode: Schema.Attribute.Text & Schema.Attribute.Required;
+    kicker: Schema.Attribute.String;
+    renderInContainer: Schema.Attribute.Boolean &
+      Schema.Attribute.DefaultTo<true>;
+    title: Schema.Attribute.String;
+  };
+}
+
 export interface SectionsFaqAccordion extends Struct.ComponentSchema {
   collectionName: 'components_sections_faq_accordions';
   info: {
@@ -284,6 +343,42 @@ export interface SectionsHomeHero extends Struct.ComponentSchema {
     title: Schema.Attribute.String & Schema.Attribute.Required;
     video: Schema.Attribute.Media<'videos' | 'files'>;
     videoUrl: Schema.Attribute.String;
+  };
+}
+
+export interface SectionsIconCardsSection extends Struct.ComponentSchema {
+  collectionName: 'components_sections_icon_cards_sections';
+  info: {
+    description: 'Grid of icon cards with titles and descriptions';
+    displayName: 'Icon Cards Section';
+    icon: 'grid';
+  };
+  attributes: {
+    cards: Schema.Attribute.Component<'elements.icon-card', true>;
+    columns: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<3>;
+    description: Schema.Attribute.Text;
+    enabled: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
+    heading: Schema.Attribute.String;
+    kicker: Schema.Attribute.String;
+  };
+}
+
+export interface SectionsImageGallery extends Struct.ComponentSchema {
+  collectionName: 'components_sections_image_galleries';
+  info: {
+    description: 'Curated responsive image gallery';
+    displayName: 'Image Gallery';
+    icon: 'apps';
+  };
+  attributes: {
+    columns: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<3>;
+    description: Schema.Attribute.Text;
+    enabled: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
+    heading: Schema.Attribute.String;
+    images: Schema.Attribute.Media<'images', true> & Schema.Attribute.Required;
+    kicker: Schema.Attribute.String;
+    layout: Schema.Attribute.Enumeration<['grid', 'masonry', 'slider']> &
+      Schema.Attribute.DefaultTo<'grid'>;
   };
 }
 
@@ -384,6 +479,23 @@ export interface SectionsValuesGrid extends Struct.ComponentSchema {
   };
 }
 
+export interface SectionsVideoSection extends Struct.ComponentSchema {
+  collectionName: 'components_sections_video_sections';
+  info: {
+    description: 'Video embed or media player with poster image';
+    displayName: 'Video Section';
+    icon: 'play';
+  };
+  attributes: {
+    description: Schema.Attribute.Text;
+    enabled: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
+    heading: Schema.Attribute.String;
+    kicker: Schema.Attribute.String;
+    videoPoster: Schema.Attribute.Media<'images'>;
+    videoUrl: Schema.Attribute.String & Schema.Attribute.Required;
+  };
+}
+
 export interface SharedSeo extends Struct.ComponentSchema {
   collectionName: 'components_shared_seos';
   info: {
@@ -419,24 +531,30 @@ declare module '@strapi/strapi' {
       'elements.button-link': ElementsButtonLink;
       'elements.faq-item': ElementsFaqItem;
       'elements.feature-item': ElementsFeatureItem;
+      'elements.icon-card': ElementsIconCard;
       'elements.list-item': ElementsListItem;
       'elements.metric-card': ElementsMetricCard;
       'elements.nav-link': ElementsNavLink;
       'elements.social-link': ElementsSocialLink;
       'layout.footer-column': LayoutFooterColumn;
       'sections.accordion-solutions': SectionsAccordionSolutions;
+      'sections.banner-section': SectionsBannerSection;
       'sections.callout-box': SectionsCalloutBox;
       'sections.client-logos': SectionsClientLogos;
       'sections.contact-form': SectionsContactForm;
+      'sections.custom-html-section': SectionsCustomHtmlSection;
       'sections.faq-accordion': SectionsFaqAccordion;
       'sections.hero-common': SectionsHeroCommon;
       'sections.home-hero': SectionsHomeHero;
+      'sections.icon-cards-section': SectionsIconCardsSection;
+      'sections.image-gallery': SectionsImageGallery;
       'sections.industry-slider': SectionsIndustrySlider;
       'sections.metrics-grid': SectionsMetricsGrid;
       'sections.question-cta': SectionsQuestionCta;
       'sections.research-reach': SectionsResearchReach;
       'sections.rich-text-block': SectionsRichTextBlock;
       'sections.values-grid': SectionsValuesGrid;
+      'sections.video-section': SectionsVideoSection;
       'shared.seo': SharedSeo;
     }
   }

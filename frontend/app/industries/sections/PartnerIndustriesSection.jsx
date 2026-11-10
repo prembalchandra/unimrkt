@@ -42,6 +42,15 @@ const defaultPartnerFeatures = [
   },
 ];
 
+const fallbackPartnerIcons = [
+  '/uploads/industries_icon_beyond_infrastructure_7740e0e270.svg',
+  '/uploads/industries_icon_beyond_repair_e8fe083fb0.svg',
+  '/uploads/industries_icon_beyond_research_db455e8c5f.svg',
+  '/uploads/industries_icon_beyond_dashboard_29b30be305.svg',
+  '/uploads/industries_icon_beyond_configuration_edea846bc9.svg',
+  '/uploads/industries_icon_beyond_growth_c2885d0bdc.svg',
+];
+
 export default function PartnerIndustriesSection({
   features = [],
   kicker = null,
@@ -87,7 +96,9 @@ export default function PartnerIndustriesSection({
         {list.length > 0 && (
           <div className="partner-industries-grid">
             {list.map((item, index) => {
-              const iconSrc = getStrapiMedia(item.icon || item.image);
+              const iconSrc =
+                getStrapiMedia(item.icon || item.image || item.icon_class || item.iconClass) ||
+                fallbackPartnerIcons[index % fallbackPartnerIcons.length];
               const isFeatured = index === 2; // 3rd card is the red highlighted card matching the design!
               return (
                 <article

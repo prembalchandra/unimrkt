@@ -1,0 +1,33 @@
+{
+  "collectionName": "components_sections_video_sections",
+  "info": {
+    "displayName": "Video Section",
+    "icon": "play",
+    "description": "Video embed or media player with poster image"
+  },
+  "options": {},
+  "attributes": {
+    "kicker": {
+      "type": "string"
+    },
+    "heading": {
+      "type": "string"
+    },
+    "description": {
+      "type": "text"
+    },
+    "videoUrl": {
+      "type": "string",
+      "required": true
+    },
+    "videoPoster": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": ["images"]
+    },
+    "enabled": {
+      "type": "boolean",
+      "default": true
+    }
+  }
+}

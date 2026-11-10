@@ -1,0 +1,32 @@
+{
+  "collectionName": "components_sections_custom_html_sections",
+  "info": {
+    "displayName": "Custom HTML Section",
+    "icon": "code",
+    "description": "Custom HTML code block with security sanitization"
+  },
+  "options": {},
+  "attributes": {
+    "kicker": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "htmlCode": {
+      "type": "text",
+      "required": true
+    },
+    "renderInContainer": {
+      "type": "boolean",
+      "default": true
+    },
+    "customCssClass": {
+      "type": "string"
+    },
+    "enabled": {
+      "type": "boolean",
+      "default": true
+    }
+  }
+}

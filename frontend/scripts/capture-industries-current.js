@@ -4,8 +4,8 @@ const path = require('path');
 const os = require('os');
 
 const edgePath = 'C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe';
-const debuggingPort = 9288;
-const tempProfile = fs.mkdtempSync(path.join(os.tmpdir(), 'edge-industries-'));
+const debuggingPort = 9299;
+const tempProfile = fs.mkdtempSync(path.join(os.tmpdir(), 'edge-industries-full-'));
 const outDir = 'C:\\Users\\Helpdesk\\.gemini\\antigravity\\brain\\5018ff38-4817-40bb-8afa-87cdf26304e7';
 
 async function capture() {
@@ -50,12 +50,15 @@ async function capture() {
     ws.onopen = async () => {
       await call('Page.enable');
       await call('DOM.enable');
-      await new Promise(r => setTimeout(r, 3000)); // wait for full render
+      await call('Runtime.enable');
+      await new Promise(r => setTimeout(r, 4000)); // wait for full render
 
-      // Get page layout metrics for full page screenshot
-      const metrics = await call('Page.getLayoutMetrics');
-      const width = Math.ceil(metrics.contentSize.width);
-      const height = Math.ceil(metrics.contentSize.height);
+      // Evaluate full scroll height from DOM
+      const evalRes = await call('Runtime.evaluate', {
+        expression: 'Math.max(document.body.scrollHeight, document.documentElement.scrollHeight, 6000)'
+      });
+      const height = Math.ceil(evalRes.result.value || 6500);
+      const width = 1440;
 
       await call('Emulation.setDeviceMetricsOverride', {
         width,
@@ -64,8 +67,11 @@ async function capture() {
         mobile: false
       });
 
+      await new Promise(r => setTimeout(r, 1000));
+
       const shot = await call('Page.captureScreenshot', {
         format: 'png',
+        fromSurface: true,
         captureBeyondViewport: true
       });
 

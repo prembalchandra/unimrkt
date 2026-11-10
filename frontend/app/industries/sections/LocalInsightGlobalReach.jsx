@@ -1,31 +1,28 @@
+
 'use client';
 
 import React from 'react';
-import { getStrapiMedia } from '@/lib/strapi';
+import { getStrapiMedia } from '../../../lib/strapi';
 
 const defaultStats = [
   {
-    id: 1,
-    stat: '50+',
+    number: '90+',
     label: 'Countries Covered',
-    icon: '/uploads/industries_icon_stat_world_719c98048f.svg',
+    icon: '/uploads/industries_icon_stat_global_network_289b3bf784.svg',
   },
   {
-    id: 2,
-    stat: '22+',
+    number: '22+',
     label: 'Languages Supported',
     icon: '/uploads/industries_icon_stat_communications_eac0fb3a23.svg',
   },
   {
-    id: 3,
-    stat: '4M+',
-    label: 'Global Panelists',
-    icon: '/uploads/industries_icon_stat_global_network_289b3bf784.svg',
+    number: '4M+',
+    label: 'Panel Members',
+    icon: '/uploads/industries_icon_stat_world_719c98048f.svg',
   },
   {
-    id: 4,
-    stat: 'Multi-Industry',
-    label: 'Domain Expertise',
+    number: 'Multi-Industry',
+    label: 'Subject Expertise',
     icon: '/uploads/industries_icon_stat_search_40727a6f43.svg',
   },
 ];
@@ -37,83 +34,105 @@ export default function LocalInsightGlobalReach({
   description = null,
   dynamicSection = null,
 }) {
-  const displayKicker =
-    dynamicSection?.kicker || kicker || 'Beyond Industries';
+  const displayKicker = dynamicSection?.kicker || kicker;
   const displayHeading =
     dynamicSection?.heading ||
     dynamicSection?.title ||
-    heading ||
-    'Local Insight. Global Reach.';
-  const displayDescription =
-    dynamicSection?.description ||
-    description ||
-    'Unimrkt delivers research across 90+ countries and 22+ languages, combining deep local understanding with a global perspective.';
+    heading;
 
-  const rawStats =
+  const displayDescription =
+    dynamicSection?.description || description;
+
+  const displayStats =
     dynamicSection?.stats?.length > 0
       ? dynamicSection.stats
-      : dynamicSection?.metrics?.length > 0
-      ? dynamicSection.metrics
-      : stats?.length > 0
-      ? stats
-      : [];
+      : stats;
 
-  const displayStats = rawStats.length > 0 ? rawStats : defaultStats;
+  if (
+    !displayKicker &&
+    !displayHeading &&
+    !displayDescription &&
+    (!displayStats || displayStats.length === 0)
+  ) {
+    return null;
+  }
 
   return (
-    <section className="global-reach-dark-section" id="global-reach">
+    <section
+      className="global-reach-dark-section"
+      id="global-reach"
+    >
       <div className="srcn-container">
         {(displayKicker || displayHeading || displayDescription) && (
-          <div
-            className="section-header-area text-center"
-            style={{ maxWidth: 940, margin: '0 auto 48px' }}
-          >
+          <div className="global-reach-header section-header-area">
             {displayKicker && (
-              <span className="career-values-kicker" style={{ color: '#ffffff' }}>
+              <span className="global-reach-kicker career-values-kicker">
                 {displayKicker}
               </span>
             )}
+
             {displayHeading && (
-              <h2 className="section-main-heading" style={{ color: '#ffffff' }}>
+              <h2 className="global-reach-heading section-main-heading">
                 {displayHeading}
               </h2>
             )}
+
             {displayDescription && (
-              <p
-                className="section-sub-text"
-                style={{ color: 'rgba(255, 255, 255, 0.8)', margin: '0 auto' }}
-              >
+              <p className="global-reach-desc industries-expertise-desc">
                 {displayDescription}
               </p>
             )}
+
           </div>
         )}
 
-        {/* 4 Circular Statistics */}
+        {/* Dynamic Statistics */}
         {displayStats?.length > 0 && (
           <div className="global-reach-grid">
+
             {displayStats.map((item, index) => {
               const icon =
-                getStrapiMedia(item.icon || item.image) ||
-                (defaultStats[index] && defaultStats[index].icon);
-              const statVal = item.stat || item.number || item.value;
+                getStrapiMedia(item.icon || item.image || item.icon_class || item.iconClass) ||
+                defaultStats[index % defaultStats.length]?.icon;
+
+              const stat = item.stat || item.number;
 
               return (
-                <article key={item.id || index} className="global-reach-card">
+                <article
+                  key={item.id || item.documentId || index}
+                  className="global-reach-card"
+                >
+
                   {icon && (
                     <div className="global-reach-icon-wrap">
-                      <img src={icon} alt={item.label || ''} loading="lazy" />
+                      <img
+                        src={icon}
+                        alt={
+                          item.icon?.alternativeText ||
+                          item.label ||
+                          ''
+                        }
+                        loading="lazy"
+                      />
                     </div>
                   )}
-                  {statVal && (
-                    <div className="global-reach-number">{statVal}</div>
+
+                  {stat && (
+                    <h3 className="global-reach-stat">
+                      {stat}
+                    </h3>
                   )}
+
                   {item.label && (
-                    <p className="global-reach-label">{item.label}</p>
+                    <p className="global-reach-label">
+                      {item.label}
+                    </p>
                   )}
+
                 </article>
               );
             })}
+
           </div>
         )}
       </div>

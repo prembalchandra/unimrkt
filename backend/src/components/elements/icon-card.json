@@ -1,0 +1,41 @@
+{
+  "collectionName": "components_elements_icon_cards",
+  "info": {
+    "displayName": "Icon Card",
+    "icon": "star",
+    "description": "Card with custom SVG/PNG icon, title, description, color, and size"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "text"
+    },
+    "iconImage": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["images"]
+    },
+    "iconSvgCode": {
+      "type": "text"
+    },
+    "iconSize": {
+      "type": "enumeration",
+      "enum": ["small", "medium", "large"],
+      "default": "medium"
+    },
+    "iconColor": {
+      "type": "string"
+    },
+    "altText": {
+      "type": "string"
+    },
+    "linkUrl": {
+      "type": "string"
+    }
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "collectionName": "components_sections_image_galleries",
+  "info": {
+    "displayName": "Image Gallery",
+    "icon": "apps",
+    "description": "Curated responsive image gallery"
+  },
+  "options": {},
+  "attributes": {
+    "kicker": {
+      "type": "string"
+    },
+    "heading": {
+      "type": "string"
+    },
+    "description": {
+      "type": "text"
+    },
+    "images": {
+      "type": "media",
+      "multiple": true,
+      "required": true,
+      "allowedTypes": ["images"]
+    },
+    "layout": {
+      "type": "enumeration",
+      "enum": ["grid", "masonry", "slider"],
+      "default": "grid"
+    },
+    "columns": {
+      "type": "integer",
+      "default": 3
+    },
+    "enabled": {
+      "type": "boolean",
+      "default": true
+    }
+  }
+}

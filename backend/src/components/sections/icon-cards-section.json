@@ -1,0 +1,33 @@
+{
+  "collectionName": "components_sections_icon_cards_sections",
+  "info": {
+    "displayName": "Icon Cards Section",
+    "icon": "grid",
+    "description": "Grid of icon cards with titles and descriptions"
+  },
+  "options": {},
+  "attributes": {
+    "kicker": {
+      "type": "string"
+    },
+    "heading": {
+      "type": "string"
+    },
+    "description": {
+      "type": "text"
+    },
+    "cards": {
+      "type": "component",
+      "repeatable": true,
+      "component": "elements.icon-card"
+    },
+    "columns": {
+      "type": "integer",
+      "default": 3
+    },
+    "enabled": {
+      "type": "boolean",
+      "default": true
+    }
+  }
+}
