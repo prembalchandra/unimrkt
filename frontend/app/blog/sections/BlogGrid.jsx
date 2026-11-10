@@ -18,7 +18,7 @@ function formatBlogCard(b, idx) {
     img: getStrapiMedia(b.featuredImage || b.coverImage, '/asstes/images/customer-experience-img.png'),
     title: b.title || '',
     desc: b.excerpt || b.description || '',
-    link: b.slug ? `/blog-details?slug=${b.slug}` : '/blog-details',
+    link: b.slug ? `/blog/${b.slug}` : '/blog',
   };
 }
 

@@ -1,14 +1,27 @@
 import React from 'react';
 import Link from 'next/link';
+import { getStrapiMedia } from '../../../lib/strapi';
 
-export default function CaseDetailHero({ dynamicHero = null }) {
-  const kicker = dynamicHero?.kicker || 'BANKING & FINANCE';
-  const title =
+export default function CaseDetailHero({
+  dynamicHero = null,
+  title = null,
+  kicker = null,
+  description = null,
+  heroImage = null,
+  clientName = null,
+}) {
+  const displayKicker = kicker || dynamicHero?.kicker || dynamicHero?.industry?.title || 'BANKING & FINANCE';
+  const displayTitle =
+    title ||
     dynamicHero?.title ||
     'Understanding Customer Expectations In A Changing Financial Market';
-  const description =
+  const displayDesc =
+    description ||
     dynamicHero?.description ||
+    dynamicHero?.excerpt ||
     'How research uncovered evolving customer needs, digital expectations, and decision-making drivers to help a financial services organization strengthen its customer strategy.';
+  const imgSrc = getStrapiMedia(heroImage || dynamicHero?.heroImage, '/asstes/images/case-study-banking.jpg');
+  const displayClient = clientName || dynamicHero?.clientName;
 
   return (
     <section className="cs-detail-hero-section">
@@ -20,24 +33,29 @@ export default function CaseDetailHero({ dynamicHero = null }) {
               <span aria-hidden="true">›</span>
               <Link href="/case-study">Case Study</Link>
               <span aria-hidden="true">›</span>
-              <span aria-current="page">{title}</span>
+              <span aria-current="page">{displayTitle}</span>
             </nav>
           </div>
           <div className="cs-detail-hero-content">
             <div className="cs-hero-badge-wrap">
-              <span className="cs-hero-badge">{kicker}</span>
+              <span className="cs-hero-badge">{displayKicker}</span>
+              {displayClient && (
+                <span className="cs-hero-badge cs-hero-client-badge" style={{ marginLeft: '10px', background: 'rgba(255,255,255,0.2)' }}>
+                  {displayClient}
+                </span>
+              )}
             </div>
             <h1 className="cs-hero-title hero-commmon-heading-area">
-              {title}
+              {displayTitle}
             </h1>
             <p className="cs-hero-desc hero-common-title">
-              {description}
+              {displayDesc}
             </p>
 
             <div className="cs-hero-img-box">
               <img
-                src="/asstes/images/case-study-banking.jpg"
-                alt={title}
+                src={imgSrc}
+                alt={displayTitle}
               />
             </div>
           </div>

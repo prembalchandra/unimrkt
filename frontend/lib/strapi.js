@@ -225,6 +225,98 @@ export async function getGalleryItems(limit = 50) {
 }
 
 /**
+ * Fetch a single Blog Post by slug with populated relations, media, and SEO
+ */
+export async function getBlogPostBySlug(slug) {
+  if (!slug) return null;
+  const data = await fetchStrapi('/api/blogs', {
+    'filters[slug][$eq]': slug,
+    'populate[featuredImage][populate]': '*',
+    'populate[category][populate]': '*',
+    'populate[author][populate]': '*',
+    'populate[researchTypes][populate]': '*',
+    'populate[seo][populate]': '*',
+    'populate[calloutBox][populate]': '*',
+  });
+  return data?.data?.[0] || null;
+}
+
+/**
+ * Fetch Related Blogs excluding current slug
+ */
+export async function getRelatedBlogs(currentSlug, categoryId = null, limit = 3) {
+  const query = {
+    'filters[slug][$ne]': currentSlug,
+    'pagination[limit]': limit,
+    sort: 'publishedAt:desc',
+    populate: '*',
+  };
+  if (categoryId) {
+    query['filters[category][id][$eq]'] = categoryId;
+  }
+  const data = await fetchStrapi('/api/blogs', query);
+  const blogs = data?.data || [];
+  if (blogs.length < limit && categoryId) {
+    const fallback = await fetchStrapi('/api/blogs', {
+      'filters[slug][$ne]': currentSlug,
+      'pagination[limit]': limit,
+      sort: 'publishedAt:desc',
+      populate: '*',
+    });
+    return fallback?.data || [];
+  }
+  return blogs;
+}
+
+/**
+ * Fetch a single Case Study by slug with populated components, relations, media, and SEO
+ */
+export async function getCaseStudyBySlug(slug) {
+  if (!slug) return null;
+  const data = await fetchStrapi('/api/case-studies', {
+    'filters[slug][$eq]': slug,
+    'populate[heroImage][populate]': '*',
+    'populate[industry][populate]': '*',
+    'populate[researchType][populate]': '*',
+    'populate[services][populate]': '*',
+    'populate[challengeBullets][populate]': '*',
+    'populate[challengeImage][populate]': '*',
+    'populate[researchPillars][populate]': '*',
+    'populate[approachSteps][populate]': '*',
+    'populate[impactCards][populate]': '*',
+    'populate[seo][populate]': '*',
+  });
+  return data?.data?.[0] || null;
+}
+
+/**
+ * Fetch Related Case Studies excluding current slug
+ */
+export async function getRelatedCaseStudies(currentSlug, industryId = null, limit = 2) {
+  const query = {
+    'filters[slug][$ne]': currentSlug,
+    'pagination[limit]': limit,
+    sort: 'publishedAt:desc',
+    populate: '*',
+  };
+  if (industryId) {
+    query['filters[industry][id][$eq]'] = industryId;
+  }
+  const data = await fetchStrapi('/api/case-studies', query);
+  const studies = data?.data || [];
+  if (studies.length < limit && industryId) {
+    const fallback = await fetchStrapi('/api/case-studies', {
+      'filters[slug][$ne]': currentSlug,
+      'pagination[limit]': limit,
+      sort: 'publishedAt:desc',
+      populate: '*',
+    });
+    return fallback?.data || [];
+  }
+  return studies;
+}
+
+/**
  * Submit Contact Inquiry to Strapi
  */
 export async function submitContactInquiry(formData) {

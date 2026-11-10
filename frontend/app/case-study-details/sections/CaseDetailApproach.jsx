@@ -9,8 +9,17 @@ const defaultIcons = [
   '/asstes/images/icon/activate-icon-img.png',
 ];
 
+const defaultSteps = [
+  { icon: '/asstes/images/icon/Define-icon-img.png', title: '1. Define', desc: 'Established research objectives, customer segments and key business questions.' },
+  { icon: '/asstes/images/icon/discovery-icon-img.png', title: '2. Discover', desc: 'Conducted qualitative conversations to uncover motivations, pain points and unmet expectations.' },
+  { icon: '/asstes/images/icon/measure-icon-img.png', title: '3. Measure', desc: 'Used structured surveys to quantify customer preferences and identify meaningful patterns.' },
+  { icon: '/asstes/images/icon/segment-icon-img.png', title: '4. Segment', desc: 'Compared responses across customer profiles, needs and behavioural characteristics.' },
+  { icon: '/asstes/images/icon/analyse-icon-img.png', title: '5. Analyse', desc: 'Identified the strongest drivers of consideration, satisfaction and loyalty.' },
+  { icon: '/asstes/images/icon/activate-icon-img.png', title: '6. Activate', desc: 'Translated findings into practical recommendations for customer experience and service strategy.' },
+];
+
 export default function CaseDetailApproach({ approachSteps = [], heading, kicker, description }) {
-  if (!approachSteps || approachSteps.length === 0) return null;
+  const stepsToRender = (approachSteps && approachSteps.length > 0) ? approachSteps : defaultSteps;
 
   return (
     <section className="approach-section">
@@ -28,7 +37,7 @@ export default function CaseDetailApproach({ approachSteps = [], heading, kicker
           </div>
 
           <div className="approach-grid">
-            {approachSteps.map((step, index) => (
+            {stepsToRender.map((step, index) => (
               <article key={step.id || index} className="approach-card career-journey-step">
                 <div className="approach-card-box-area">
                   <div className="approach-icon career-journey-icon">

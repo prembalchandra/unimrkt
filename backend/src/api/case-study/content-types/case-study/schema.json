@@ -25,6 +25,9 @@
       "type": "text",
       "required": true
     },
+    "clientName": {
+      "type": "string"
+    },
     "heroImage": {
       "type": "media",
       "multiple": false,
@@ -127,6 +130,15 @@
       "type": "component",
       "repeatable": true,
       "component": "case-study.impact-item"
+    },
+    "testimonialQuote": {
+      "type": "text"
+    },
+    "testimonialAuthor": {
+      "type": "string"
+    },
+    "testimonialRole": {
+      "type": "string"
     },
     "seo": {
       "type": "component",

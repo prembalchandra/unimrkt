@@ -35,6 +35,15 @@
       "type": "blocks",
       "required": true
     },
+    "tags": {
+      "type": "string"
+    },
+    "authorName": {
+      "type": "string"
+    },
+    "authorRole": {
+      "type": "string"
+    },
     "readTime": {
       "type": "string",
       "default": "6 min"

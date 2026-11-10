@@ -12,7 +12,7 @@ function formatBlog(b) {
     id: b.id || b.documentId || b.slug,
     title: b.title || '',
     snippet: b.excerpt || b.snippet || '',
-    link: b.slug ? `/blog-details?slug=${b.slug}` : '/blog',
+    link: b.slug ? `/blog/${b.slug}` : '/blog',
     img: getStrapiMedia(b.featuredImage, '/asstes/images/market-trends-card-img1.png'),
   };
 }

@@ -1,11 +1,36 @@
 import React from 'react';
 import { getStrapiMedia } from '../../../lib/strapi';
 
-export default function CaseDetailChallenge({ dynamicSection = null }) {
-  const displayKicker = dynamicSection?.kicker || 'THE CHALLENGE';
-  const displayHeading = dynamicSection?.heading || dynamicSection?.title || 'Financial Expectations Were Changing Faster Than Ever';
-  const displayDesc = dynamicSection?.description;
-  const image = getStrapiMedia(dynamicSection?.image, '/asstes/images/challenge-portrait.png');
+const defaultBullets = [
+  'What customers truly value when choosing financial services',
+  'How expectations differ across customer segments',
+  'What drives trust, consideration, and loyalty',
+  'How digital experiences influence financial decisions',
+  'Where existing customer journeys create friction',
+  'Which service improvements could create stronger engagement',
+];
+
+export default function CaseDetailChallenge({
+  dynamicSection = null,
+  kicker = null,
+  heading = null,
+  description = null,
+  subtitle = null,
+  bullets = [],
+  summary = null,
+  image = null,
+}) {
+  const displayKicker = kicker || dynamicSection?.kicker || dynamicSection?.challengeKicker || 'THE CHALLENGE';
+  const displayHeading = heading || dynamicSection?.heading || dynamicSection?.title || dynamicSection?.challengeTitle || 'Financial Expectations Were Changing Faster Than Ever';
+  const displayDesc = description || dynamicSection?.description || dynamicSection?.challengeDescription;
+  const displaySubtitle = subtitle || dynamicSection?.subtitle || dynamicSection?.challengeSubtitle || 'Our client needed to understand:';
+  const displayBullets = (bullets && bullets.length > 0)
+    ? bullets
+    : (dynamicSection?.challengeBullets && dynamicSection.challengeBullets.length > 0)
+      ? dynamicSection.challengeBullets.map(b => typeof b === 'string' ? b : b.text || b.title || '')
+      : defaultBullets;
+  const displaySummary = summary || dynamicSection?.summary || dynamicSection?.challengeSummary || 'The challenge was to move beyond basic satisfaction scores and uncover the real motivations behind customer expectations.';
+  const visualImage = getStrapiMedia(image || dynamicSection?.image || dynamicSection?.challengeImage, '/asstes/images/challenge-portrait.png');
 
   return (
     <section className="cs-detail-challenge-section">
@@ -14,7 +39,7 @@ export default function CaseDetailChallenge({ dynamicSection = null }) {
           {/* Left: Circular Avatar Image */}
           <div className="cs-challenge-visual">
             <div className="cs-challenge-avatar-frame">
-              <img src={image} alt={displayHeading} />
+              <img src={visualImage} alt={displayHeading} />
             </div>
           </div>
 
@@ -27,26 +52,21 @@ export default function CaseDetailChallenge({ dynamicSection = null }) {
             {displayDesc ? (
               <p className="cs-challenge-text">{displayDesc}</p>
             ) : (
-              <>
-                <p className="cs-challenge-text">
-                  As financial services become increasingly digital, customers expect more than competitive products. They want simplicity, transparency, personalization, speed, and seamless experiences across every interaction.
-                </p>
-
-                <p className="cs-challenge-subtitle">Our client needed to understand:</p>
-                <ul className="cs-challenge-bullets">
-                  <li>What customers truly value when choosing financial services</li>
-                  <li>How expectations differ across customer segments</li>
-                  <li>What drives trust, consideration, and loyalty</li>
-                  <li>How digital experiences influence financial decisions</li>
-                  <li>Where existing customer journeys create friction</li>
-                  <li>Which service improvements could create stronger engagement</li>
-                </ul>
-
-                <p className="cs-challenge-summary">
-                  The challenge was to move beyond basic satisfaction scores and uncover the real motivations behind customer expectations.
-                </p>
-              </>
+              <p className="cs-challenge-text">
+                As financial services become increasingly digital, customers expect more than competitive products. They want simplicity, transparency, personalization, speed, and seamless experiences across every interaction.
+              </p>
             )}
+
+            {displaySubtitle && <p className="cs-challenge-subtitle">{displaySubtitle}</p>}
+            {displayBullets.length > 0 && (
+              <ul className="cs-challenge-bullets">
+                {displayBullets.map((b, idx) => (
+                  <li key={idx}>{typeof b === 'string' ? b : b.text || b.title}</li>
+                ))}
+              </ul>
+            )}
+
+            {displaySummary && <p className="cs-challenge-summary">{displaySummary}</p>}
           </div>
         </div>
       </div>

@@ -1,7 +1,15 @@
 import React from 'react';
 
+const defaultImpacts = [
+  'Sharper Customer\nUnderstanding',
+  'Identified\nExperience Gaps',
+  'Stronger Customer\nSegmentation',
+  'More Relevant\nProduct Strategy',
+  'Confident, Data\nDriven Decisions',
+];
+
 export default function CaseDetailImpact({ impacts = [], kicker, heading, description }) {
-  if (!impacts || impacts.length === 0) return null;
+  const impactsToRender = (impacts && impacts.length > 0) ? impacts : defaultImpacts;
 
   return (
     <section className="impact-section">
@@ -18,13 +26,13 @@ export default function CaseDetailImpact({ impacts = [], kicker, heading, descri
           </div>
           <div className="impact-cards-wrapper-area">
             <div className="impact-cards-grid">
-              {impacts.map((item, index) => {
-                const title = typeof item === 'string' ? item : item.title;
+              {impactsToRender.map((item, index) => {
+                const title = typeof item === 'string' ? item : item.title || item.heading || '';
                 return (
                   <article key={item.id || index} className="impact-card">
                     <div className="impact-card-area">
                       <div className="impact-icon">
-                        <img src="/asstes/images/icon/identified-icon-img.png" alt={title.replace('\n', ' ')} />
+                        <img src="/asstes/images/icon/identified-icon-img.png" alt={title.replace(/\n/g, ' ')} />
                       </div>
                       <div className="impact-card-content-area">
                         <h3>

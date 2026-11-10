@@ -20,7 +20,7 @@ function formatStudy(item, idx) {
     img: getStrapiMedia(item.heroImage, '/asstes/images/case-study-banking.jpg'),
     title: item.title || '',
     snippet: item.excerpt || '',
-    link: item.slug ? `/case-study-details?slug=${item.slug}` : '/case-study-details',
+    link: item.slug ? `/case-study/${item.slug}` : '/case-study',
   };
 }
 

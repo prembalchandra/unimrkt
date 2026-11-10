@@ -492,6 +492,8 @@ export interface ApiBlogBlog extends Struct.CollectionTypeSchema {
       'manyToOne',
       'api::team-member.team-member'
     >;
+    authorName: Schema.Attribute.String;
+    authorRole: Schema.Attribute.String;
     calloutBox: Schema.Attribute.Component<'sections.callout-box', false>;
     category: Schema.Attribute.Relation<
       'manyToOne',
@@ -516,6 +518,7 @@ export interface ApiBlogBlog extends Struct.CollectionTypeSchema {
     >;
     seo: Schema.Attribute.Component<'shared.seo', false>;
     slug: Schema.Attribute.UID<'title'> & Schema.Attribute.Required;
+    tags: Schema.Attribute.String;
     title: Schema.Attribute.String & Schema.Attribute.Required;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
@@ -602,6 +605,7 @@ export interface ApiCaseStudyCaseStudy extends Struct.CollectionTypeSchema {
     challengeSubtitle: Schema.Attribute.String;
     challengeSummary: Schema.Attribute.Text;
     challengeTitle: Schema.Attribute.String;
+    clientName: Schema.Attribute.String;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -637,6 +641,9 @@ export interface ApiCaseStudyCaseStudy extends Struct.CollectionTypeSchema {
     seo: Schema.Attribute.Component<'shared.seo', false>;
     services: Schema.Attribute.Relation<'manyToMany', 'api::service.service'>;
     slug: Schema.Attribute.UID<'title'> & Schema.Attribute.Required;
+    testimonialAuthor: Schema.Attribute.String;
+    testimonialQuote: Schema.Attribute.Text;
+    testimonialRole: Schema.Attribute.String;
     title: Schema.Attribute.String & Schema.Attribute.Required;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
