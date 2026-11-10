@@ -52,11 +52,12 @@ export default async function GalleryPage() {
 
   const heroSection = findSection(pageData, 'sections.hero-common');
   const ctaSection = findSection(pageData, 'sections.question-cta');
+  const gallerySection = pageData?.sections?.find((s) => s.__component === 'sections.callout-box');
 
   return (
     <main>
       <GalleryHero dynamicHero={heroSection} />
-      <GalleryGrid initialItems={galleryItems} />
+      <GalleryGrid initialItems={galleryItems} dynamicSection={gallerySection} />
       <ResearchCta dynamicCta={ctaSection} />
     </main>
   );

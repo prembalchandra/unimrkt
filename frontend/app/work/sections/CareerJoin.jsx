@@ -1,6 +1,9 @@
 import React from 'react';
 
-export default function CareerJoin() {
+export default function CareerJoin({ dynamicSection = null }) {
+  const displayFraudTitle = dynamicSection?.heading || dynamicSection?.title || 'Disclaimer: Beware of Fraud';
+  const displayFraudDesc = dynamicSection?.description || null;
+
   return (
     <section className="career-join-section">
       <div className="srcn-container">
@@ -13,17 +16,23 @@ export default function CareerJoin() {
           <a href="mailto:careers@unimrkt.com">careers@unimrkt.com</a>.
         </p>
 
-        <h2 className="career-fraud-heading">Disclaimer: Beware of Fraud</h2>
-        <p>
-          Unimrkt Research does not charge candidates any fee at any stage of recruitment. We do not ask applicants to pay for interviews, job offers, training, background checks, or equipment.
-        </p>
-        <p>
-          Please apply only through our official career page and verify that recruitment communication comes from an official Unimrkt channel. Do not share banking details, passwords, or one-time passcodes during recruitment.
-        </p>
-        <p>
-          If you receive a suspicious job offer or payment request claiming to be from Unimrkt, do not make a payment or share sensitive information. Report it to{' '}
-          <a href="mailto:careers@unimrkt.com">careers@unimrkt.com</a> so our team can review it.
-        </p>
+        <h2 className="career-fraud-heading">{displayFraudTitle}</h2>
+        {displayFraudDesc ? (
+          <p>{displayFraudDesc}</p>
+        ) : (
+          <>
+            <p>
+              Unimrkt Research does not charge candidates any fee at any stage of recruitment. We do not ask applicants to pay for interviews, job offers, training, background checks, or equipment.
+            </p>
+            <p>
+              Please apply only through our official career page and verify that recruitment communication comes from an official Unimrkt channel. Do not share banking details, passwords, or one-time passcodes during recruitment.
+            </p>
+            <p>
+              If you receive a suspicious job offer or payment request claiming to be from Unimrkt, do not make a payment or share sensitive information. Report it to{' '}
+              <a href="mailto:careers@unimrkt.com">careers@unimrkt.com</a> so our team can review it.
+            </p>
+          </>
+        )}
       </div>
     </section>
   );

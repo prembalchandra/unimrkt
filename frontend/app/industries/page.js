@@ -86,11 +86,18 @@ export default async function IndustriesPage() {
 
   const displayFaqs = (faqSection?.items && faqSection.items.length > 0) ? faqSection.items : faqs.slice(0, 6);
 
+  const overviewSection = sections.find(
+    (s) => s.__component === 'sections.callout-box' && (s.title?.includes('One Research Partner') || s.kicker?.includes('About Our Services'))
+  );
+  const gridSection = sections.find(
+    (s) => s.__component === 'sections.callout-box' && (s.title?.includes('Expertise Across') || s.kicker?.includes('Industries We Serve'))
+  );
+
   return (
     <main>
       <IndustriesHero dynamicHero={heroSection} />
-      <IndustriesAbout />
-      <IndustriesGrid initialIndustries={strapiIndustries} />
+      <IndustriesAbout dynamicOverview={overviewSection} />
+      <IndustriesGrid initialIndustries={strapiIndustries} dynamicSection={gridSection} />
       <PartnerIndustriesSection
         features={partnerSection?.cards || []}
         kicker={partnerSection?.kicker}
@@ -100,6 +107,7 @@ export default async function IndustriesPage() {
       <QuestionCTA dynamicCta={ctaSection} />
       <QuestionsToInsightsSection
         items={questionsSection?.cards || partnerSection?.cards || []}
+        dynamicSection={questionsSection}
       />
       <BusinessOutcomesSection
         outcomes={outcomesSection?.values || []}

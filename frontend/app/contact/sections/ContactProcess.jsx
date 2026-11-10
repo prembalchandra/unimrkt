@@ -7,9 +7,22 @@ import { Autoplay, Pagination } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/pagination';
 
-export default function ContactProcess({ steps = [], title, description }) {
+export default function ContactProcess({
+  steps = [],
+  title,
+  description,
+  kicker,
+  dynamicSection = null,
+}) {
   const sliderRef = useRef(null);
   const swiperInstanceRef = useRef(null);
+
+  const displayKicker = dynamicSection?.kicker || kicker || 'HOW WE ENGAGE';
+  const displayTitle = dynamicSection?.heading || dynamicSection?.title || title || 'From First Conversation to Actionable Results';
+  const displayDesc =
+    dynamicSection?.description ||
+    description ||
+    'A structured, transparent research journey designed around your business decisions.';
 
   useEffect(() => {
     if (!sliderRef.current || steps.length === 0) return;
@@ -69,13 +82,13 @@ export default function ContactProcess({ steps = [], title, description }) {
       <div className="contact-process-container">
         <div className="contact-process-header">
           <span className="contact-process-kicker">
-            HOW WE ENGAGE
+            {displayKicker}
           </span>
           <h2 className="contact-process-heading">
-            {title || 'From First Conversation to Actionable Results'}
+            {displayTitle}
           </h2>
           <p className="contact-process-description">
-            {description || 'A structured, transparent research journey designed around your business decisions.'}
+            {displayDesc}
           </p>
         </div>
 

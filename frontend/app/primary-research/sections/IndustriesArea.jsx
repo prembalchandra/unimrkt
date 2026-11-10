@@ -28,8 +28,12 @@ function formatIndustry(ind) {
   };
 }
 
-export default function IndustriesArea({ initialIndustries = [] }) {
+export default function IndustriesArea({ initialIndustries = [], dynamicSection = null }) {
   const [list, setList] = useState(() => (initialIndustries || []).map(formatIndustry).filter(Boolean));
+
+  const displayKicker = dynamicSection?.kicker || 'WHO WE SERVE';
+  const displayHeading = dynamicSection?.heading || dynamicSection?.title || 'Industries We Support';
+  const displayDesc = dynamicSection?.description || 'Tailoring specialized research methodologies to unique sector challenges and dynamics.';
 
   useEffect(() => {
     if (initialIndustries && initialIndustries.length > 0) {
@@ -55,30 +59,24 @@ export default function IndustriesArea({ initialIndustries = [] }) {
         <div className="our-industries-wrapper-inner">
           <div className="our-industries-top-content primary-services-header">
             <span className="sub-title-red" style={{ display: 'inline-block', marginBottom: '8px' }}>
-              WHO WE SERVE
+              {displayKicker}
             </span>
-            <h2 className="our-industries-heading">Industries We Support</h2>
-            <p className="our-industries-title">
-              Our primary research expertise spans multiple sectors, giving us the domain knowledge needed to design relevant surveys and ask the right questions.
+            <h2 className="our-industries-heading">{displayHeading}</h2>
+            <p className="primary-services-desc">
+              {displayDesc}
             </p>
           </div>
-          <div className="our-industries-wapper-area">
-            <div className="our-industries-grid">
-              {list.slice(0, 10).map((ind, idx) => (
-                <div key={idx} className="our-industries-card-col">
-                  <Link href={ind.link} className="our-industries-card-wapper">
-                    <div className="our-industries-card">
-                      <div className="icon-img-box">
-                        <img src={ind.icon} alt={ind.name} />
-                      </div>
-                      <div className="our-industries-content-area">
-                        <h3 className="our-industries-content">{ind.name}</h3>
-                      </div>
-                    </div>
-                  </Link>
-                </div>
-              ))}
-            </div>
+          <div className="our-industries-box-listing">
+            {list.map((item, index) => (
+              <div key={index} className="our-industries-itme">
+                <Link href={item.link}>
+                  <div className="our-industries-icon-text">
+                    <img src={item.icon} alt={item.name} />
+                    <span>{item.name}</span>
+                  </div>
+                </Link>
+              </div>
+            ))}
           </div>
         </div>
       </div>

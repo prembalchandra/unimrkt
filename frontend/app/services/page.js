@@ -72,9 +72,16 @@ export default async function ServicesPage() {
   const faqSection = findSection(pageData, 'sections.faq-accordion');
   const ctaSection = findSection(pageData, 'sections.question-cta');
 
+  const overviewSection = sections.find((s) => s.__component === 'sections.callout-box');
+  const endToEndSection = sections.find(
+    (s) => s.__component === 'sections.accordion-solutions' && s.heading?.includes('End-To-End')
+  ) || sections.find((s) => s.__component === 'sections.accordion-solutions');
+  const editorialSection = sections.find(
+    (s) => s.__component === 'sections.rich-text-block' || s.__component === 'sections.callout-box'
+  );
   const srvWorkflowSection = sections.find(
     (s) => s.__component === 'sections.accordion-solutions' && s.heading?.includes('Workflow')
-  ) || sections.find((s) => s.__component === 'sections.accordion-solutions');
+  );
   const whyChooseSection = sections.find(
     (s) => s.__component === 'sections.metrics-grid' && (s.heading?.includes('Why Choose') || s.kicker?.includes('WHY CHOOSE'))
   );
@@ -82,8 +89,8 @@ export default async function ServicesPage() {
   return (
     <>
       <ServicesHero dynamicHero={heroSection} />
-      <ServicesAboutOverview />
-      <EndToEndSolutions initialServices={servicesList} />
+      <ServicesAboutOverview dynamicOverview={overviewSection} />
+      <EndToEndSolutions initialServices={servicesList} dynamicSection={endToEndSection} />
       <WhyChooseUs
         items={whyChooseSection?.metrics || []}
         title={whyChooseSection?.heading}
@@ -100,12 +107,16 @@ export default async function ServicesPage() {
         title={metricsSection?.heading || 'Research Reach That Goes Beyond Markets'}
         description={metricsSection?.description}
       />
-      <ServicesIndustriesExpertise />
+      <ServicesIndustriesExpertise dynamicSection={overviewSection} />
       <CaseStudiesImpactCta />
       <CommonTrustedPartnersTestimonials initialTestimonials={testimonials} />
       <CommonBlogSection initialBlogs={blogs} />
       <ServicesFaq dynamicFaq={faqSection} />
-      <InsightsEditorial />
+      <InsightsEditorial
+        kicker={editorialSection?.kicker || 'About Telephonic Surveys'}
+        title={editorialSection?.heading || editorialSection?.title || 'Direct Conversations. Deeper Insights.'}
+        paragraph1={editorialSection?.description}
+      />
       <ResearchCta dynamicCta={ctaSection} />
     </>
   );

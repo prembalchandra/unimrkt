@@ -66,16 +66,30 @@ export default async function WorkPage() {
   const faqSection = sections.find((s) => s.__component === 'sections.faq-accordion');
   const ctaSection = sections.find((s) => s.__component === 'sections.question-cta');
 
+  const openingsSection = sections.find(
+    (s) => s.__component === 'sections.callout-box' && (s.title?.includes('Opportunity') || s.kicker?.includes('Open Positions'))
+  );
+  const fraudSection = sections.find(
+    (s) => s.__component === 'sections.callout-box' && (s.title?.includes('Fraud') || s.kicker?.includes('IMPORTANT NOTICE'))
+  );
+  const editorialSection = sections.find(
+    (s) => s.__component === 'sections.rich-text-block' || s.__component === 'sections.callout-box'
+  );
+
   return (
     <>
       <WorkHero dynamicHero={heroSection} />
       <CareerValues dynamicValues={valuesSection} />
       <CareerBenefits dynamicBenefits={benefitsSection} />
-      <CareerOpenings initialJobs={careerJobs} />
+      <CareerOpenings initialJobs={careerJobs} dynamicSection={openingsSection} />
       <CareerJourney dynamicJourney={journeySection} />
-      <CareerJoin />
+      <CareerJoin dynamicSection={fraudSection} />
       <WorkFaq dynamicFaq={faqSection} />
-      <InsightsEditorial />
+      <InsightsEditorial
+        kicker={editorialSection?.kicker || 'WHAT WE BELIEVE'}
+        title={editorialSection?.heading || editorialSection?.title || 'Insights That Drive Smarter Business Decisions'}
+        paragraph1={editorialSection?.description}
+      />
       <ResearchCta dynamicCta={ctaSection} />
     </>
   );

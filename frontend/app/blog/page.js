@@ -58,14 +58,22 @@ export default async function BlogPage() {
   const heroSection = findSection(pageData, 'sections.hero-common');
   const faqSection = findSection(pageData, 'sections.faq-accordion');
   const ctaSection = findSection(pageData, 'sections.question-cta');
+  const gridSection = pageData?.sections?.find((s) => s.__component === 'sections.callout-box');
+  const editorialSection = pageData?.sections?.find(
+    (s) => s.__component === 'sections.rich-text-block' || s.__component === 'sections.callout-box'
+  );
 
   return (
     <main>
       <BlogHero dynamicHero={heroSection} />
-      <BlogGrid initialBlogs={strapiBlogs} />
+      <BlogGrid initialBlogs={strapiBlogs} dynamicSection={gridSection} />
       <CommonBlogSection initialBlogs={strapiBlogs} />
       <BlogFaq dynamicFaq={faqSection} />
-      <InsightsEditorial />
+      <InsightsEditorial
+        kicker={editorialSection?.kicker || 'WHAT WE BELIEVE'}
+        title={editorialSection?.heading || editorialSection?.title || 'Insights That Drive Smarter Business Decisions'}
+        paragraph1={editorialSection?.description}
+      />
       <ResearchCta dynamicCta={ctaSection} />
     </main>
   );

@@ -9,7 +9,7 @@ export default function Footer({ globalData: initialGlobalData = null }) {
 
   useEffect(() => {
     if (!initialGlobalData) {
-      fetch('http://127.0.0.1:1337/api/global?populate=*')
+      fetch('http://127.0.0.1:1337/api/global?populate[footerColumns][populate]=*&populate[socialLinks][populate]=*&populate[footerLogo][populate]=*&populate[legalLinks][populate]=*')
         .then((res) => res.json())
         .then((json) => {
           if (json?.data) setGlobalData(json.data);
@@ -49,41 +49,56 @@ export default function Footer({ globalData: initialGlobalData = null }) {
               </div>
             </div>
 
-            {/* Column 2: Our Company */}
-            <div className="footer-nav-col">
-              <h3>Our Company</h3>
-              <ul>
-                <li className="footer-time-area"><Link href="/about" className="footer-menu-link">About Us</Link></li>
-                <li className="footer-time-area"><Link href="/team" className="footer-menu-link">Our Leadership</Link></li>
-                <li className="footer-time-area"><Link href="/work" className="footer-menu-link">Careers</Link></li>
-                <li className="footer-time-area"><Link href="/services" className="footer-menu-link">Global Panel</Link></li>
-                <li className="footer-time-area"><Link href="/gallery" className="footer-menu-link">Gallery</Link></li>
-              </ul>
-            </div>
-
-            {/* Column 3: Services */}
-            <div className="footer-nav-col">
-              <h3>Services</h3>
-              <ul>
-                <li className="footer-time-area"><Link href="/primary-research" className="footer-menu-link">Primary Research</Link></li>
-                <li className="footer-time-area"><Link href="/services" className="footer-menu-link">Secondary Research</Link></li>
-                <li className="footer-time-area"><Link href="/telephonic-surveys" className="footer-menu-link">CATI / Telephonic</Link></li>
-                <li className="footer-time-area"><Link href="/services" className="footer-menu-link">Online Surveys</Link></li>
-                <li className="footer-time-area"><Link href="/services" className="footer-menu-link">Data Analytics</Link></li>
-              </ul>
-            </div>
-
-            {/* Column 4: Quick Links */}
-            <div className="footer-nav-col">
-              <h3>Quick Links</h3>
-              <ul>
-                <li className="footer-time-area"><Link href="/blog" className="footer-menu-link">Blogs &amp; Articles</Link></li>
-                <li className="footer-time-area"><Link href="/case-study" className="footer-menu-link">Case Studies</Link></li>
-                <li className="footer-time-area"><Link href="/blog" className="footer-menu-link">Whitepapers</Link></li>
-                <li className="footer-time-area"><Link href="/primary-research" className="footer-menu-link">Methodologies</Link></li>
-                <li className="footer-time-area"><Link href="/faq" className="footer-menu-link">FAQs</Link></li>
-              </ul>
-            </div>
+            {/* Dynamic Footer Columns from Strapi */}
+            {globalData?.footerColumns && globalData.footerColumns.length > 0 ? (
+              globalData.footerColumns.map((col, idx) => (
+                <div key={col.id || idx} className="footer-nav-col">
+                  <h3>{col.title}</h3>
+                  <ul>
+                    {(col.links || []).map((link, lIdx) => (
+                      <li key={link.id || lIdx} className="footer-time-area">
+                        <Link href={link.url || '/'} className="footer-menu-link">
+                          {link.label}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))
+            ) : (
+              <>
+                <div className="footer-nav-col">
+                  <h3>Our Company</h3>
+                  <ul>
+                    <li className="footer-time-area"><Link href="/about" className="footer-menu-link">About Us</Link></li>
+                    <li className="footer-time-area"><Link href="/team" className="footer-menu-link">Our Leadership</Link></li>
+                    <li className="footer-time-area"><Link href="/work" className="footer-menu-link">Careers</Link></li>
+                    <li className="footer-time-area"><Link href="/services" className="footer-menu-link">Global Panel</Link></li>
+                    <li className="footer-time-area"><Link href="/gallery" className="footer-menu-link">Gallery</Link></li>
+                  </ul>
+                </div>
+                <div className="footer-nav-col">
+                  <h3>Services</h3>
+                  <ul>
+                    <li className="footer-time-area"><Link href="/primary-research" className="footer-menu-link">Primary Research</Link></li>
+                    <li className="footer-time-area"><Link href="/services" className="footer-menu-link">Secondary Research</Link></li>
+                    <li className="footer-time-area"><Link href="/telephonic-surveys" className="footer-menu-link">CATI / Telephonic</Link></li>
+                    <li className="footer-time-area"><Link href="/services" className="footer-menu-link">Online Surveys</Link></li>
+                    <li className="footer-time-area"><Link href="/services" className="footer-menu-link">Data Analytics</Link></li>
+                  </ul>
+                </div>
+                <div className="footer-nav-col">
+                  <h3>Quick Links</h3>
+                  <ul>
+                    <li className="footer-time-area"><Link href="/blog" className="footer-menu-link">Blogs &amp; Articles</Link></li>
+                    <li className="footer-time-area"><Link href="/case-study" className="footer-menu-link">Case Studies</Link></li>
+                    <li className="footer-time-area"><Link href="/blog" className="footer-menu-link">Whitepapers</Link></li>
+                    <li className="footer-time-area"><Link href="/primary-research" className="footer-menu-link">Methodologies</Link></li>
+                    <li className="footer-time-area"><Link href="/faq" className="footer-menu-link">FAQs</Link></li>
+                  </ul>
+                </div>
+              </>
+            )}
 
             {/* Column 5: Connect with us */}
             <div className="footer-nav-col">

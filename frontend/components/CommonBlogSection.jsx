@@ -17,9 +17,13 @@ function formatBlog(b) {
   };
 }
 
-export default function CommonBlogSection({ initialBlogs = [] }) {
+export default function CommonBlogSection({ initialBlogs = [], dynamicSection = null }) {
   const swiperRef = useRef(null);
   const [blogs, setBlogs] = useState(() => (initialBlogs || []).map(formatBlog).filter(Boolean));
+
+  const displayKicker = dynamicSection?.kicker || 'LATEST BLOGS';
+  const displayTitle = dynamicSection?.heading || dynamicSection?.title || 'Exploring Market Trends';
+  const displayDesc = dynamicSection?.description || 'Discover Emerging Market Trends That Shape Smarter Business Decisions.';
 
   useEffect(() => {
     if (initialBlogs && initialBlogs.length > 0) {
@@ -93,12 +97,12 @@ export default function CommonBlogSection({ initialBlogs = [] }) {
       <div className="market-trends-container">
         <div className="market-trends-layout">
           <div className="market-trends-left-col">
-            <span className="market-trends-kicker sub-title-red">LATEST BLOGS</span>
+            <span className="market-trends-kicker sub-title-red">{displayKicker}</span>
             <h2 className="market-trends-title section-main-heading">
-              Exploring<br />Market Trends
+              {displayTitle}
             </h2>
             <p className="market-trends-desc section-sub-text">
-              Discover Emerging Market Trends That Shape Smarter Business Decisions.
+              {displayDesc}
             </p>
             <div className="market-trends-nav-btns" aria-label="Slider navigation">
               <button className="market-trends-nav-btn market-trends-prev" aria-label="Previous slide">

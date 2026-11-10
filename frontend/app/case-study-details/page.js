@@ -59,6 +59,16 @@ export default async function CaseStudyDetailPage({ searchParams }) {
   const heroSection = findSection(pageData, 'sections.hero-common');
   const ctaSection = findSection(pageData, 'sections.question-cta');
 
+  const challengeSection = sections.find(
+    (s) => s.__component === 'sections.callout-box' && (s.title?.includes('Financial Expectations') || s.kicker?.includes('CHALLENGE'))
+  );
+  const questionSection = sections.find(
+    (s) => s.__component === 'sections.callout-box' && (s.title?.includes('Uncovering') || s.kicker?.includes('RESEARCH QUESTION'))
+  );
+  const editorialSection = sections.find(
+    (s) => s.__component === 'sections.rich-text-block' || s.__component === 'sections.callout-box'
+  );
+
   const approachSection = sections.find(
     (s) => s.__component === 'sections.accordion-solutions'
   );
@@ -74,8 +84,8 @@ export default async function CaseStudyDetailPage({ searchParams }) {
   return (
     <>
       <CaseDetailHero dynamicHero={heroSection} />
-      <CaseDetailChallenge />
-      <CaseDetailResearchQuestion />
+      <CaseDetailChallenge dynamicSection={challengeSection} />
+      <CaseDetailResearchQuestion dynamicSection={questionSection} />
       <CaseDetailApproach
         approachSteps={approachSection?.cards || []}
         heading={approachSection?.heading}
@@ -88,7 +98,11 @@ export default async function CaseStudyDetailPage({ searchParams }) {
         description={impactSection?.description}
       />
       <CaseDetailFaq faqs={displayFaqs} />
-      <InsightsEditorial />
+      <InsightsEditorial
+        kicker={editorialSection?.kicker || 'WHAT WE BELIEVE'}
+        title={editorialSection?.heading || editorialSection?.title || 'Insights That Drive Smarter Business Decisions'}
+        paragraph1={editorialSection?.description}
+      />
       <ResearchCta dynamicCta={ctaSection} />
     </>
   );

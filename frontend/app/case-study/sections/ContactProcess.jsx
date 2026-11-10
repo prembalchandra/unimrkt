@@ -15,10 +15,23 @@ function formatTestimonial(t) {
   };
 }
 
-export default function ContactProcess({ initialTestimonials = [] }) {
+export default function ContactProcess({
+  initialTestimonials = [],
+  dynamicSection = null,
+  kicker,
+  title,
+  description,
+}) {
   const sliderRef = useRef(null);
   const paginationRef = useRef(null);
   const [items, setItems] = useState(() => (initialTestimonials || []).map(formatTestimonial).filter(Boolean));
+
+  const displayKicker = dynamicSection?.kicker || kicker || 'How it works';
+  const displayTitle = dynamicSection?.heading || dynamicSection?.title || title || 'What Happens After You Contact Us?';
+  const displayDesc =
+    dynamicSection?.description ||
+    description ||
+    'A simple process designed to understand your requirement and connect you with the right research expert.';
 
   useEffect(() => {
     if (initialTestimonials && initialTestimonials.length > 0) {
@@ -77,11 +90,9 @@ export default function ContactProcess({ initialTestimonials = [] }) {
     <section className="contact-process-section">
       <div className="srcn-container">
         <div className="contact-process-header">
-          <span className="contact-process-kicker career-values-kicker">How it works</span>
-          <h2 className="contact-process-title section-main-heading">What Happens After You Contact Us?</h2>
-          <p className="contact-process-subtitle section-sub-text">
-            A simple process designed to understand your requirement and connect you with the right research expert.
-          </p>
+          <span className="contact-process-kicker career-values-kicker">{displayKicker}</span>
+          <h2 className="contact-process-title section-main-heading">{displayTitle}</h2>
+          <p className="contact-process-subtitle section-sub-text">{displayDesc}</p>
         </div>
         <div className="swiper testimonial-process-slider" ref={sliderRef}>
           <div className="swiper-wrapper">

@@ -31,10 +31,14 @@ function formatIndustry(ind, i) {
   };
 }
 
-export default function IndustriesGrid({ initialIndustries = [] }) {
+export default function IndustriesGrid({ initialIndustries = [], dynamicSection = null }) {
   const [items, setItems] = useState(() => (initialIndustries || []).map(formatIndustry).filter(Boolean));
   const [currentPage, setCurrentPage] = useState(1);
   const sectionRef = useRef(null);
+
+  const displayKicker = dynamicSection?.kicker || 'Industries We Serve';
+  const displayHeading = dynamicSection?.heading || dynamicSection?.title || 'Expertise Across Key Markets';
+  const displayDesc = dynamicSection?.description || 'Explore industry-specific research capabilities tailored to uncover actionable market opportunities.';
 
   useEffect(() => {
     if (initialIndustries && initialIndustries.length > 0) {
@@ -73,10 +77,10 @@ export default function IndustriesGrid({ initialIndustries = [] }) {
     <section className="industries-grid-section" id="industries-grid" ref={sectionRef}>
       <div className="srcn-container">
         <div className="section-header-area">
-          <span className="career-values-kicker">Industries We Serve</span>
-          <h2 className="section-main-heading">Expertise Across Key Markets</h2>
+          <span className="career-values-kicker">{displayKicker}</span>
+          <h2 className="section-main-heading">{displayHeading}</h2>
           <p className="section-sub-text">
-            Explore industry-specific research capabilities tailored to uncover actionable market opportunities.
+            {displayDesc}
           </p>
         </div>
 

@@ -22,10 +22,14 @@ function formatBlogCard(b, idx) {
   };
 }
 
-export default function BlogGrid({ initialBlogs = [] }) {
+export default function BlogGrid({ initialBlogs = [], dynamicSection = null }) {
   const [blogs, setBlogs] = useState(() => (initialBlogs || []).map(formatBlogCard).filter(Boolean));
   const [activeCategory, setActiveCategory] = useState('all');
   const [currentPage, setCurrentPage] = useState(1);
+
+  const displayKicker = dynamicSection?.kicker || '';
+  const displayHeading = dynamicSection?.heading || dynamicSection?.title || 'Insights & Stories';
+  const displayDesc = dynamicSection?.description || 'Explore in-depth articles, industry breakdowns, and forward-looking research perspectives.';
 
   useEffect(() => {
     if (initialBlogs && initialBlogs.length > 0) {
@@ -84,9 +88,10 @@ export default function BlogGrid({ initialBlogs = [] }) {
       <div className="srcn-container">
         {/* Section Header */}
         <div className="section-header-area">
-          <h2 className="section-main-heading">Insights &amp; Stories</h2>
+          {displayKicker && <span className="career-values-kicker">{displayKicker}</span>}
+          <h2 className="section-main-heading">{displayHeading}</h2>
           <p className="section-sub-text">
-            Explore in-depth articles, industry breakdowns, and forward-looking research perspectives.
+            {displayDesc}
           </p>
         </div>
 
@@ -110,7 +115,7 @@ export default function BlogGrid({ initialBlogs = [] }) {
 
         {/* Blog Cards Grid */}
         <div className="blog-sction-wapper">
-          <div className="blog-col-grid">
+          <div className="blog-col-grid blog-grid-area">
             {visibleCards.map((card) => (
               <Link key={card.id} href={card.link} className="blog-col-box">
                 <div className="blog-wapper">

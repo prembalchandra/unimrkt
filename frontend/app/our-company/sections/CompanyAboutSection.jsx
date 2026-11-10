@@ -1,6 +1,7 @@
 import React from 'react';
 
 export default function CompanyAboutSection({ dynamicRichText = null }) {
+  const kicker = dynamicRichText?.kicker || 'About Unimrkt';
   const title = dynamicRichText?.title || 'We Turn Questions Into Clarity';
 
   const renderContent = () => {
@@ -27,7 +28,7 @@ export default function CompanyAboutSection({ dynamicRichText = null }) {
       <div className="srcn-container">
         <div className="telephonic-overview-grid">
           <div className="telephonic-overview-content">
-            <span className="telephonic-overview-kicker sub-title-red">About Unimrkt</span>
+            <span className="telephonic-overview-kicker sub-title-red">{kicker}</span>
             <h2 className="telephonic-overview-title">{title}</h2>
             {renderContent()}
           </div>

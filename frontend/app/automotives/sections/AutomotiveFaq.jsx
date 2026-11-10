@@ -2,14 +2,18 @@
 
 import React, { useState } from 'react';
 
-export default function AutomotiveFaq({ faqs = [] }) {
+export default function AutomotiveFaq({ faqs = [], dynamicFaq = null, heading = null, kicker = null }) {
   const [openIndex, setOpenIndex] = useState(null);
+
+  const displayHeading = heading || dynamicFaq?.heading || dynamicFaq?.title || 'Frequently Asked Questions';
+  const displayKicker = kicker || dynamicFaq?.kicker || '';
 
   const toggleAccordion = (index) => {
     setOpenIndex(openIndex === index ? null : index);
   };
 
-  if (!faqs || faqs.length === 0) return null;
+  const list = (dynamicFaq?.items && dynamicFaq.items.length > 0) ? dynamicFaq.items : faqs;
+  if (!list || list.length === 0) return null;
 
   return (
     <section className="faq-section-area">
@@ -18,11 +22,12 @@ export default function AutomotiveFaq({ faqs = [] }) {
       </div>
       <div className="srcn-container">
         <div className="section-header-area">
-          <h2 className="section-main-heading">Frequently Asked Questions</h2>
+          {displayKicker && <span className="career-values-kicker">{displayKicker}</span>}
+          <h2 className="section-main-heading">{displayHeading}</h2>
         </div>
 
         <div className="faq-accordion-container">
-          {faqs.map((faq, index) => {
+          {list.map((faq, index) => {
             const isOpen = openIndex === index;
             return (
               <div

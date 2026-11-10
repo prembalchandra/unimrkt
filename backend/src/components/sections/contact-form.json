@@ -1,0 +1,53 @@
+{
+  "collectionName": "components_sections_contact_forms",
+  "info": {
+    "displayName": "Contact Form",
+    "icon": "mail",
+    "description": "CMS-driven contact and inquiry form"
+  },
+  "options": {},
+  "attributes": {
+    "kicker": {
+      "type": "string"
+    },
+    "heading": {
+      "type": "string"
+    },
+    "description": {
+      "type": "text"
+    },
+    "namePlaceholder": {
+      "type": "string"
+    },
+    "emailPlaceholder": {
+      "type": "string"
+    },
+    "countryCodeOptions": {
+      "type": "text"
+    },
+    "phonePlaceholder": {
+      "type": "string"
+    },
+    "companyPlaceholder": {
+      "type": "string"
+    },
+    "consentText": {
+      "type": "text"
+    },
+    "submitButtonText": {
+      "type": "string"
+    },
+    "submittingButtonText": {
+      "type": "string"
+    },
+    "successMessage": {
+      "type": "text"
+    },
+    "errorMessage": {
+      "type": "text"
+    },
+    "notificationEmail": {
+      "type": "email"
+    }
+  }
+}

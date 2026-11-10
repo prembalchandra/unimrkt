@@ -19,10 +19,14 @@ function formatMember(m) {
   };
 }
 
-export default function TeamDirectory({ initialTeam = [] }) {
+export default function TeamDirectory({ initialTeam = [], dynamicSection = null }) {
   const [members, setMembers] = useState(() => (initialTeam || []).map(formatMember).filter(Boolean));
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedMember, setSelectedMember] = useState(null);
+
+  const displayKicker = dynamicSection?.kicker || '';
+  const displayHeading = dynamicSection?.heading || dynamicSection?.title || 'People. Expertise. Impact.';
+  const displayDesc = dynamicSection?.description || '';
 
   useEffect(() => {
     if (initialTeam && initialTeam.length > 0) {
@@ -82,9 +86,13 @@ export default function TeamDirectory({ initialTeam = [] }) {
   return (
     <section className="team-page-section" aria-labelledby="team-page-title">
       <div className="srcn-container">
-        <h2 id="team-page-title" className="section-main-heading">
-          People. Expertise. Impact.
-        </h2>
+        <div className="section-header-area" style={{ marginBottom: '32px' }}>
+          {displayKicker && <span className="career-values-kicker">{displayKicker}</span>}
+          <h2 id="team-page-title" className="section-main-heading">
+            {displayHeading}
+          </h2>
+          {displayDesc && <p className="section-sub-text">{displayDesc}</p>}
+        </div>
 
         <div className="team-profile-grid" id="teamProfileGrid">
           {visibleMembers.map((member) => (

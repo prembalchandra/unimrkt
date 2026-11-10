@@ -71,7 +71,19 @@ export default async function PrimaryResearchPage() {
   const faqSection = findSection(pageData, 'sections.faq-accordion');
   const ctaSection = findSection(pageData, 'sections.question-cta');
 
-  const methodSection = sections.find((s) => s.__component === 'sections.accordion-solutions');
+  const overviewSection = sections.find((s) => s.__component === 'sections.callout-box');
+  const primaryServicesSection = sections.find(
+    (s) => s.__component === 'sections.accordion-solutions' && s.heading?.includes('Primary Research Services')
+  );
+  const indAreaSection = sections.find(
+    (s) => s.__component === 'sections.accordion-solutions' && s.heading?.includes('Industries We Support')
+  );
+  const contactFormSection = sections.find((s) => s.__component === 'sections.contact-form');
+  const editorialSection = sections.find(
+    (s) => s.__component === 'sections.rich-text-block' || s.__component === 'sections.callout-box'
+  );
+
+  const methodSection = sections.find((s) => s.__component === 'sections.accordion-solutions' && !s.heading?.includes('Primary Research Services') && !s.heading?.includes('Industries We Support')) || sections.find((s) => s.__component === 'sections.accordion-solutions');
   const reachSection = sections.find((s) => s.__component === 'sections.research-reach');
 
   const displaySteps = methodSection?.cards || valuesSection?.values || [];
@@ -81,8 +93,8 @@ export default async function PrimaryResearchPage() {
     <>
       <PrimaryHero dynamicHero={heroSection} />
       <TrustedClients />
-      <AbouPrimaryOverview />
-      <PrimaryServices initialServices={services} />
+      <AbouPrimaryOverview dynamicOverview={overviewSection} />
+      <PrimaryServices initialServices={services} dynamicSection={primaryServicesSection} />
       <UnimrktResearchArea
         metrics={displayMetrics}
         kicker={reachSection?.kicker}
@@ -94,11 +106,11 @@ export default async function PrimaryResearchPage() {
         heading={methodSection?.heading}
         description={methodSection?.description}
       />
-      <IndustriesArea initialIndustries={industries} />
-      <ContactFormSection />
+      <IndustriesArea initialIndustries={industries} dynamicSection={indAreaSection} />
+      <ContactFormSection dynamicForm={contactFormSection} />
       <CommonBlogSection initialBlogs={blogs} />
       <FqaPrimaryresearch dynamicFaq={faqSection} />
-      <PrimaryresEditorialAbout />
+      <PrimaryresEditorialAbout dynamicEditorial={editorialSection} />
       <PrimaryresearchResearchCta dynamicCta={ctaSection} />
     </>
   );

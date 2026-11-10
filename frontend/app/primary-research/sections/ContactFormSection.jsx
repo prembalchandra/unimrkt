@@ -1,72 +1,186 @@
 'use client';
 
 import React, { useState } from 'react';
+import { submitContactInquiry } from '../../../lib/strapi';
 
-export default function ContactFormSection() {
+export default function ContactFormSection({ dynamicForm = null }) {
+  const displayKicker = dynamicForm?.kicker || '';
+  const displayHeading = dynamicForm?.heading || '';
+  const displayDesc = dynamicForm?.description || '';
+
+  const namePlaceholder = dynamicForm?.namePlaceholder || 'Name';
+  const emailPlaceholder = dynamicForm?.emailPlaceholder || 'Email';
+  const phonePlaceholder = dynamicForm?.phonePlaceholder || 'Phone number';
+  const companyPlaceholder = dynamicForm?.companyPlaceholder || 'Company / Research Requirements';
+  const consentText = dynamicForm?.consentText || '';
+  const submitButtonText = dynamicForm?.submitButtonText || 'Submit';
+  const submittingButtonText = dynamicForm?.submittingButtonText || 'Submitting...';
+  const successMessage = dynamicForm?.successMessage || 'Thank You! Your inquiry has been received. Our research team will reach out to you shortly.';
+  const errorMessageText = dynamicForm?.errorMessage || 'An error occurred while submitting. Please try again.';
+
+  const countryOptions = dynamicForm?.countryCodeOptions
+    ? dynamicForm.countryCodeOptions.split(',').map((item) => {
+        const [val, ...lbl] = item.trim().split(':');
+        return { value: val.trim(), label: lbl.join(':').trim() || val.trim() };
+      })
+    : [
+        { value: '+91', label: '🇮🇳 +91' },
+        { value: '+1', label: '🇺🇸 +1' },
+        { value: '+44', label: '🇬🇧 +44' },
+        { value: '+61', label: '🇦🇺 +61' },
+        { value: '+49', label: '🇩🇪 +49' },
+      ];
+
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    countryCode: countryOptions[0]?.value || '+91',
+    phone: '',
+    company: '',
+    consent: false,
+  });
   const [submitted, setSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [formError, setFormError] = useState(null);
 
-  const handleSubmit = (e) => {
+  const handleChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: type === 'checkbox' ? checked : value,
+    }));
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setSubmitted(true);
+    setIsSubmitting(true);
+    setFormError(null);
+
+    try {
+      await submitContactInquiry({
+        name: formData.name,
+        email: formData.email,
+        countryCode: formData.countryCode,
+        phone: formData.phone,
+        company: formData.company,
+        consent: formData.consent,
+        sourcePage: 'primary-research',
+      });
+      setSubmitted(true);
+    } catch (err) {
+      console.warn('Submission issue:', err.message);
+      setFormError(errorMessageText);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
     <section className="contact-form-section" id="cta">
       <div className="srcn-container">
         <div className="contact-form-layout">
-          <div className="contact-form-heading">
-            <span className="contact-form-kicker">GET IN TOUCH WITH US</span>
-            <h2 className="section-main-heading">
-              Let's Discuss Your<br />Research Needs
-            </h2>
-            <p className="section-sub-text">
-              Our experts are ready to help you design and execute primary research that delivers answers to your critical business questions.
-            </p>
-          </div>
+          {(displayKicker || displayHeading || displayDesc) && (
+            <div className="contact-form-heading">
+              {displayKicker && <span className="contact-form-kicker">{displayKicker}</span>}
+              {displayHeading && <h2 className="section-main-heading">{displayHeading}</h2>}
+              {displayDesc && <p className="section-sub-text">{displayDesc}</p>}
+            </div>
+          )}
 
           <div className="contact-form-card-box">
             {submitted ? (
               <div style={{ padding: '30px', textAlign: 'center', background: '#fff', borderRadius: '12px' }}>
                 <i className="fa-solid fa-circle-check" style={{ fontSize: '3rem', color: '#10B981', marginBottom: '16px' }}></i>
-                <h3 style={{ fontSize: '1.4rem', marginBottom: '8px', color: '#1B212D' }}>Thank You!</h3>
-                <p style={{ color: '#4B5563' }}>Your inquiry has been received. Our research team will reach out to you shortly.</p>
+                <h3 style={{ fontSize: '1.4rem', marginBottom: '8px', color: '#1B212D' }}>{successMessage}</h3>
               </div>
             ) : (
               <form className="contact-form" onSubmit={handleSubmit}>
+                {formError && (
+                  <div style={{ color: '#EF4444', marginBottom: '16px' }}>{formError}</div>
+                )}
                 <label className="contact-form-field">
-                  <span className="visually-hidden">Name</span>
-                  <input type="text" name="Name" placeholder="Name*" autoComplete="name" required />
+                  <span className="visually-hidden">{namePlaceholder}</span>
+                  <input
+                    type="text"
+                    name="name"
+                    placeholder={namePlaceholder}
+                    autoComplete="name"
+                    required
+                    value={formData.name}
+                    onChange={handleChange}
+                  />
                 </label>
                 <label className="contact-form-field">
-                  <span className="visually-hidden">Email ID</span>
-                  <input type="email" name="Email" placeholder="Email ID*" autoComplete="email" required />
+                  <span className="visually-hidden">{emailPlaceholder}</span>
+                  <input
+                    type="email"
+                    name="email"
+                    placeholder={emailPlaceholder}
+                    autoComplete="email"
+                    required
+                    value={formData.email}
+                    onChange={handleChange}
+                  />
                 </label>
                 <div className="contact-form-phone">
                   <label className="contact-form-country">
                     <span className="visually-hidden">Country calling code</span>
-                    <select name="Country code" aria-label="Country calling code" defaultValue="+91">
-                      <option value="+91">🇮🇳 +91</option>
-                      <option value="+1">🇺🇸 +1</option>
-                      <option value="+44">🇬🇧 +44</option>
-                      <option value="+61">🇦🇺 +61</option>
-                      <option value="+49">🇩🇪 +49</option>
+                    <select
+                      name="countryCode"
+                      aria-label="Country calling code"
+                      value={formData.countryCode}
+                      onChange={handleChange}
+                    >
+                      {countryOptions.map((opt) => (
+                        <option key={opt.value} value={opt.value}>
+                          {opt.label}
+                        </option>
+                      ))}
                     </select>
                   </label>
                   <label className="contact-form-field">
-                    <span className="visually-hidden">Phone number</span>
-                    <input type="tel" name="Phone" placeholder="Phone number*" autoComplete="tel" required />
+                    <span className="visually-hidden">{phonePlaceholder}</span>
+                    <input
+                      type="tel"
+                      name="phone"
+                      placeholder={phonePlaceholder}
+                      autoComplete="tel"
+                      required
+                      value={formData.phone}
+                      onChange={handleChange}
+                    />
                   </label>
                 </div>
                 <label className="contact-form-field">
-                  <span className="visually-hidden">Company / Requirements</span>
-                  <input type="text" name="Company" placeholder="Company / Research Requirements*" required />
+                  <span className="visually-hidden">{companyPlaceholder}</span>
+                  <input
+                    type="text"
+                    name="company"
+                    placeholder={companyPlaceholder}
+                    required
+                    value={formData.company}
+                    onChange={handleChange}
+                  />
                 </label>
-                <label className="contact-form-consent">
-                  <input type="checkbox" name="Consent" value="I agree to be contacted" required />
-                  <span>I agree to be contacted regarding my research enquiry.</span>
-                </label>
-                <button className="contact-form-submit btn-sm" type="submit">
-                  Submit <img src="/asstes/images/icon/arrow-right-icon-img.png" alt="Arrow Right"></img>
+                {consentText && (
+                  <label className="contact-form-consent">
+                    <input
+                      type="checkbox"
+                      name="consent"
+                      checked={formData.consent}
+                      onChange={handleChange}
+                      required
+                    />
+                    <span>{consentText}</span>
+                  </label>
+                )}
+                <button
+                  className="contact-form-submit btn-sm"
+                  type="submit"
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? submittingButtonText : submitButtonText}{' '}
+                  <img src="/asstes/images/icon/arrow-right-icon-img.png" alt="Arrow Right" />
                 </button>
               </form>
             )}

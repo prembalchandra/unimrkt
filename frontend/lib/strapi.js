@@ -33,12 +33,13 @@ export async function fetchStrapi(endpoint, query = {}, options = {}) {
       }
     });
 
+    const isDev = process.env.NODE_ENV === 'development';
     const res = await fetch(url.toString(), {
       headers: {
         'Content-Type': 'application/json',
       },
       signal: AbortSignal.timeout(8000),
-      next: { revalidate: options.revalidate ?? 60 }, // 60s ISR default
+      ...(isDev ? { cache: 'no-store' } : { next: { revalidate: options.revalidate ?? 60 } }),
       ...options,
     });
 
@@ -60,7 +61,15 @@ export async function fetchStrapi(endpoint, query = {}, options = {}) {
  */
 export async function getGlobalSettings() {
   const data = await fetchStrapi('/api/global', {
-    populate: '*',
+    'populate[navigation][populate]': '*',
+    'populate[headerCta][populate]': '*',
+    'populate[footerColumns][populate]': '*',
+    'populate[socialLinks][populate]': '*',
+    'populate[legalLinks][populate]': '*',
+    'populate[headerLogo][populate]': '*',
+    'populate[footerLogo][populate]': '*',
+    'populate[footerCertificationLogos][populate]': '*',
+    'populate[defaultSeo][populate]': '*',
   });
   return data?.data || null;
 }

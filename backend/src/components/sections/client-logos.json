@@ -7,9 +7,15 @@
   },
   "options": {},
   "attributes": {
+    "kicker": {
+      "type": "string"
+    },
     "title": {
       "type": "string",
       "default": "Trusted by Global Enterprises"
+    },
+    "description": {
+      "type": "text"
     },
     "logos": {
       "type": "media",

@@ -172,6 +172,7 @@ export interface SectionsAccordionSolutions extends Struct.ComponentSchema {
     cards: Schema.Attribute.Component<'elements.feature-item', true>;
     description: Schema.Attribute.Text;
     heading: Schema.Attribute.String & Schema.Attribute.Required;
+    kicker: Schema.Attribute.String;
   };
 }
 
@@ -185,6 +186,7 @@ export interface SectionsCalloutBox extends Struct.ComponentSchema {
   attributes: {
     button: Schema.Attribute.Component<'elements.button-link', false>;
     description: Schema.Attribute.Text & Schema.Attribute.Required;
+    kicker: Schema.Attribute.String;
     title: Schema.Attribute.String & Schema.Attribute.Required;
   };
 }
@@ -197,9 +199,36 @@ export interface SectionsClientLogos extends Struct.ComponentSchema {
     icon: 'picture';
   };
   attributes: {
+    description: Schema.Attribute.Text;
+    kicker: Schema.Attribute.String;
     logos: Schema.Attribute.Media<'images', true> & Schema.Attribute.Required;
     title: Schema.Attribute.String &
       Schema.Attribute.DefaultTo<'Trusted by Global Enterprises'>;
+  };
+}
+
+export interface SectionsContactForm extends Struct.ComponentSchema {
+  collectionName: 'components_sections_contact_forms';
+  info: {
+    description: 'CMS-driven contact and inquiry form';
+    displayName: 'Contact Form';
+    icon: 'mail';
+  };
+  attributes: {
+    companyPlaceholder: Schema.Attribute.String;
+    consentText: Schema.Attribute.Text;
+    countryCodeOptions: Schema.Attribute.Text;
+    description: Schema.Attribute.Text;
+    emailPlaceholder: Schema.Attribute.String;
+    errorMessage: Schema.Attribute.Text;
+    heading: Schema.Attribute.String;
+    kicker: Schema.Attribute.String;
+    namePlaceholder: Schema.Attribute.String;
+    notificationEmail: Schema.Attribute.Email;
+    phonePlaceholder: Schema.Attribute.String;
+    submitButtonText: Schema.Attribute.String;
+    submittingButtonText: Schema.Attribute.String;
+    successMessage: Schema.Attribute.Text;
   };
 }
 
@@ -299,6 +328,7 @@ export interface SectionsQuestionCta extends Struct.ComponentSchema {
   attributes: {
     button: Schema.Attribute.Component<'elements.button-link', false>;
     description: Schema.Attribute.Text & Schema.Attribute.Required;
+    kicker: Schema.Attribute.String;
     title: Schema.Attribute.String &
       Schema.Attribute.Required &
       Schema.Attribute.DefaultTo<"Have A Question? Let's Find The Answer.">;
@@ -330,6 +360,8 @@ export interface SectionsRichTextBlock extends Struct.ComponentSchema {
   };
   attributes: {
     content: Schema.Attribute.Blocks & Schema.Attribute.Required;
+    kicker: Schema.Attribute.String;
+    subtitle: Schema.Attribute.Text;
     title: Schema.Attribute.String;
   };
 }
@@ -395,6 +427,7 @@ declare module '@strapi/strapi' {
       'sections.accordion-solutions': SectionsAccordionSolutions;
       'sections.callout-box': SectionsCalloutBox;
       'sections.client-logos': SectionsClientLogos;
+      'sections.contact-form': SectionsContactForm;
       'sections.faq-accordion': SectionsFaqAccordion;
       'sections.hero-common': SectionsHeroCommon;
       'sections.home-hero': SectionsHomeHero;

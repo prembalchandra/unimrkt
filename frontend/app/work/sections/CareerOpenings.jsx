@@ -57,13 +57,17 @@ function formatJob(job, idx) {
   };
 }
 
-export default function CareerOpenings({ initialJobs = [] }) {
+export default function CareerOpenings({ initialJobs = [], dynamicSection = null }) {
   const [jobs, setJobs] = useState(() => (initialJobs || []).map(formatJob).filter(Boolean));
   const [searchQuery, setSearchQuery] = useState('');
   const [department, setDepartment] = useState('');
   const [jobType, setJobType] = useState('');
   const [location, setLocation] = useState('');
   const [visibleCount, setVisibleCount] = useState(4);
+
+  const displayKicker = dynamicSection?.kicker || 'Open Positions';
+  const displayHeading = dynamicSection?.heading || dynamicSection?.title || 'Find Your Next Opportunity';
+  const displayDesc = dynamicSection?.description || 'Explore roles across different departments and take the next step in your career journey with Unimrkt.';
 
   const [selectedJob, setSelectedJob] = useState(null);
   const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
@@ -185,11 +189,11 @@ export default function CareerOpenings({ initialJobs = [] }) {
   return (
     <section className="career-openings-section" id="open-positions">
       <div className="srcn-container">
-        <header className="career-openings-header">
-          <span className="career-openings-kicker career-values-kicker">Open Positions</span>
-          <h2 className="section-main-heading">Find Your Next Opportunity</h2>
+        <header className="career-openings-header section-header-area">
+          <span className="career-openings-kicker career-values-kicker">{displayKicker}</span>
+          <h2 className="section-main-heading">{displayHeading}</h2>
           <p className="section-sub-text">
-            Explore roles across different departments and take the next step in your career journey with Unimrkt.
+            {displayDesc}
           </p>
         </header>
 

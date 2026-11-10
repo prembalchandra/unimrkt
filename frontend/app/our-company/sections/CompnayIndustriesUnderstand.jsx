@@ -1,7 +1,20 @@
 import React from 'react';
 import Link from 'next/link';
 
-export default function CompnayIndustriesUnderstand({ industries = [] }) {
+export default function CompnayIndustriesUnderstand({
+  industries = [],
+  dynamicSection = null,
+  kicker,
+  title,
+  description,
+}) {
+  const displayKicker = dynamicSection?.kicker || kicker || 'INDUSTRIES WE UNDERSTAND';
+  const displayTitle = dynamicSection?.heading || dynamicSection?.title || title || 'Deep Knowledge Across Diverse Industries';
+  const displayDesc =
+    dynamicSection?.description ||
+    description ||
+    'Industry-specific expertise that helps us understand complex markets and deliver insights that drive informed business decisions.';
+
   if (!industries || industries.length === 0) return null;
 
   return (
@@ -9,16 +22,15 @@ export default function CompnayIndustriesUnderstand({ industries = [] }) {
       <div className="srcn-container">
         <div className="primary-services-header">
           <span className="primary-services-kicker">
-            INDUSTRIES WE UNDERSTAND
+            {displayKicker}
           </span>
 
           <h2 className="primary-services-title">
-            Deep Knowledge Across Diverse Industries
+            {displayTitle}
           </h2>
 
           <p className="primary-services-desc">
-            Industry-specific expertise that helps us understand complex
-            markets and deliver insights that drive informed business decisions.
+            {displayDesc}
           </p>
         </div>
 

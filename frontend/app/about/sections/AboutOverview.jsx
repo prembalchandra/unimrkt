@@ -9,7 +9,11 @@ function getPillarIcon(title = '') {
   return '/asstes/images/icon/experience-icon-img.png';
 }
 
-export default function AboutOverview({ dynamicMetrics = null, dynamicValues = null }) {
+export default function AboutOverview({ dynamicMetrics = null, dynamicValues = null, dynamicOverview = null }) {
+  const introKicker = dynamicOverview?.kicker || 'WHO WE ARE';
+  const introHeading = dynamicOverview?.heading || dynamicOverview?.title || 'Pioneering Precision Research Since 2009';
+  const introLead = dynamicOverview?.description || 'Unimrkt Research is a global market research and intelligence firm empowering enterprises, consulting leaders, and agencies to make high-conviction decisions.';
+
   const stats = (dynamicMetrics?.metrics || []).map((m) => ({
     count: m.number || '',
     label: m.label || '',
@@ -31,12 +35,12 @@ export default function AboutOverview({ dynamicMetrics = null, dynamicValues = n
         <div className="srcn-container">
           <div className="narrative-grid">
             <div className="narrative-col text-col">
-              <span className="narrative-kicker career-values-kicker">WHO WE ARE</span>
+              <span className="narrative-kicker career-values-kicker">{introKicker}</span>
               <h2 className="section-main-heading">
-                Pioneering Precision Research Since 2009
+                {introHeading}
               </h2>
               <p className="narrative-lead section-sub-text">
-                Unimrkt Research is a global market research and intelligence firm empowering enterprises, consulting leaders, and agencies to make high-conviction decisions.
+                {introLead}
               </p>
               <p className="section-sub-text">
                 With operational headquarters in Gurugram, India, and strategic client hubs in the United States and the United Kingdom, our reach spans 90+ countries across North America, Europe, APAC, Latin America, and the Middle East.

@@ -35,7 +35,15 @@ function formatOffice(office) {
   };
 }
 
-export default function OfficePresence({ initialOffices = [] }) {
+export default function OfficePresence({
+  initialOffices = [],
+  kicker = 'Office Address',
+  heading = 'Our Presence',
+  dynamicSection = null,
+}) {
+  const displayKicker = dynamicSection?.kicker || kicker;
+  const displayHeading = dynamicSection?.heading || dynamicSection?.title || heading;
+
   const [offices, setOffices] = useState(() => (initialOffices || []).map(formatOffice).filter(Boolean));
   const [activeOffice, setActiveOffice] = useState('india');
   const mapContainerRef = useRef(null);
@@ -135,8 +143,8 @@ export default function OfficePresence({ initialOffices = [] }) {
       <div className="srcn-container">
         <div className="office-presence-shell">
           <div className="office-presence-header">
-            <span className="section-kicker career-values-kicker">Office Address</span>
-            <h2 className="office-presence-title section-main-heading">Our Presence</h2>
+            <span className="section-kicker career-values-kicker">{displayKicker}</span>
+            <h2 className="office-presence-title section-main-heading">{displayHeading}</h2>
           </div>
 
           <div className="office-presence-map-board">

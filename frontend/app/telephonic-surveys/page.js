@@ -78,18 +78,23 @@ export default async function TelephonicSurveysPage() {
     (s) => s.__component === 'sections.accordion-solutions' && s.heading?.includes('Process')
   );
 
+  const overviewSection = sections.find((s) => s.__component === 'sections.callout-box');
+  const editorialSection = sections.find(
+    (s) => s.__component === 'sections.rich-text-block' || s.__component === 'sections.callout-box'
+  );
+
   return (
     <>
       <TelephonicHero dynamicHero={heroSection} />
       <ResearchImpact dynamicMetrics={metricsSection} />
-      <TelephonicOverview />
+      <TelephonicOverview dynamicOverview={overviewSection} />
       <WhyTelephonic dynamicValues={valuesSection} />
       <TelephonicProcess
         processSteps={processSection?.cards || []}
         title={processSection?.heading}
         description={processSection?.description}
       />
-      <TelephonicCanMeasure items={canMeasureSection?.cards || []} />
+      <TelephonicCanMeasure items={canMeasureSection?.cards || []} dynamicSection={canMeasureSection || measureSection} />
       <QualityFirst
         qualityPoints={qualitySection?.values || []}
         kicker={qualitySection?.kicker}
@@ -104,7 +109,11 @@ export default async function TelephonicSurveysPage() {
       />
       <CommonBlogSection />
       <TelephonicFaq dynamicFaq={faqSection} />
-      <InsightsEditorial />
+      <InsightsEditorial
+        kicker={editorialSection?.kicker || 'About Telephonic Surveys'}
+        title={editorialSection?.heading || editorialSection?.title || 'Direct Conversations. Deeper Insights.'}
+        paragraph1={editorialSection?.description}
+      />
       <ResearchCta dynamicCta={ctaSection} />
     </>
   );

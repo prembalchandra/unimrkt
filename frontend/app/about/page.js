@@ -53,11 +53,16 @@ export default async function AboutPage() {
   const valuesSection = findSection(pageData, 'sections.values-grid');
   const reachSection = findSection(pageData, 'sections.research-reach');
   const ctaSection = findSection(pageData, 'sections.question-cta');
+  const overviewSection = findSection(pageData, 'sections.callout-box') || findSection(pageData, 'sections.rich-text-block');
 
   return (
     <main>
       <AboutHero dynamicHero={heroSection} />
-      <AboutOverview dynamicMetrics={metricsSection} dynamicValues={valuesSection} />
+      <AboutOverview
+        dynamicMetrics={metricsSection}
+        dynamicValues={valuesSection}
+        dynamicOverview={overviewSection}
+      />
       <ResearchReachSection dynamicReach={reachSection} />
       <ResearchCta dynamicCta={ctaSection} />
     </main>

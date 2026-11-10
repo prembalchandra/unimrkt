@@ -1,17 +1,21 @@
 import React from 'react';
 
-export default function CaseDetailResearchQuestion() {
+export default function CaseDetailResearchQuestion({ dynamicSection = null }) {
+  const displayKicker = dynamicSection?.kicker || 'THE RESEARCH QUESTION';
+  const displayHeading = dynamicSection?.heading || dynamicSection?.title || 'What Do Customers Really Expect From Their Financial Providers?';
+  const displayDesc = dynamicSection?.description || 'We explored the complete customer perspective — from awareness and consideration to selection, usage, and ongoing engagement.';
+
   return (
     <section className="cs-detail-research-question-section">
       <div className="srcn-container">
         <div className="cs-question-card">
           <div className="cs-question-header">
-            <span className="cs-kicker-red career-values-kicker">THE RESEARCH QUESTION</span>
+            <span className="cs-kicker-red career-values-kicker">{displayKicker}</span>
             <h2 className="cs-question-title section-main-heading">
-              What Do Customers Really Expect From<br />Their Financial Providers?
+              {displayHeading}
             </h2>
             <p className="cs-question-desc section-sub-text">
-              We explored the complete customer perspective — from awareness and consideration to selection, usage, and ongoing engagement.
+              {displayDesc}
             </p>
           </div>
 
@@ -60,31 +64,31 @@ export default function CaseDetailResearchQuestion() {
                 </div>
               </div>
 
-              {/* 4. Value */}
+              {/* 4. Relationship */}
               <div className="cs-diagram-item cs-step-4">
                 <div className="cs-circle-wrap">
                   <div className="cs-diagram-circle">
-                    <img src="/asstes/images/icon/increase-icon-img.png" alt="Value" />
+                    <img src="/asstes/images/icon/handshake-partnership-icon-img.png" alt="Relationship" />
                   </div>
                 </div>
                 <div className="cs-diagram-stem"></div>
                 <div className="cs-diagram-info">
-                  <h4 className="cs-diagram-name">4. Value</h4>
-                  <p className="cs-diagram-text">Which product features, pricing factors, and benefits influence decisions?</p>
+                  <h4 className="cs-diagram-name">4. Relationship</h4>
+                  <p className="cs-diagram-text">How do human interactions and advisory support impact perceptions?</p>
                 </div>
               </div>
 
-              {/* 5. Relationship */}
+              {/* 5. Value */}
               <div className="cs-diagram-item cs-step-5">
                 <div className="cs-circle-wrap">
                   <div className="cs-diagram-circle">
-                    <img src="/asstes/images/icon/relationship-icon-img.png" alt="Relationship" />
+                    <img src="/asstes/images/icon/cup-research excellence-icon-img.png" alt="Value" />
                   </div>
                 </div>
                 <div className="cs-diagram-stem"></div>
                 <div className="cs-diagram-info">
-                  <h4 className="cs-diagram-name">5. Relationship</h4>
-                  <p className="cs-diagram-text">What makes customers stay engaged and recommend a financial brand?</p>
+                  <h4 className="cs-diagram-name">5. Value</h4>
+                  <p className="cs-diagram-text">What creates long-term differentiation beyond price?</p>
                 </div>
               </div>
             </div>

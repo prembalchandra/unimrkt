@@ -51,11 +51,12 @@ export default async function TeamPage() {
 
   const heroSection = findSection(pageData, 'sections.hero-common');
   const ctaSection = findSection(pageData, 'sections.question-cta');
+  const teamSection = pageData?.sections?.find((s) => s.__component === 'sections.callout-box');
 
   return (
     <>
       <TeamHero dynamicHero={heroSection} />
-      <TeamDirectory initialTeam={strapiTeam} />
+      <TeamDirectory initialTeam={strapiTeam} dynamicSection={teamSection} />
       <ResearchCta dynamicCta={ctaSection} />
     </>
   );

@@ -29,11 +29,15 @@ function formatIndustry(item) {
   };
 }
 
-export default function ServicesIndustriesExpertise({ initialIndustries = [] }) {
+export default function ServicesIndustriesExpertise({ initialIndustries = [], dynamicSection = null }) {
   const sliderRef = useRef(null);
   const paginationRef = useRef(null);
   const swiperInstanceRef = useRef(null);
   const [industries, setIndustries] = useState(() => (initialIndustries || []).map(formatIndustry).filter(Boolean));
+
+  const displayKicker = dynamicSection?.kicker || 'INDUSTRIES WE SERVE';
+  const displayHeading = dynamicSection?.heading || dynamicSection?.title || 'Research Expertise Across Diverse Industries';
+  const displayDesc = dynamicSection?.description || 'From financial services and healthcare to technology, retail and industrial markets, our research capabilities help organizations understand their customers, markets and business opportunities. We work across diverse sectors, tailoring research approaches to each industry\'s unique challenges, audiences and decision-making needs. By combining the right methodologies, market expertise and quality-focused execution, we help businesses uncover meaningful insights and make more informed strategic decisions.';
 
   useEffect(() => {
     if (initialIndustries && initialIndustries.length > 0) {
@@ -108,12 +112,12 @@ export default function ServicesIndustriesExpertise({ initialIndustries = [] }) 
     <section className="industries-expertise-section" id="industries-expertise">
       <div className="srcn-container">
         <div className="industries-expertise-header section-header-area ">
-          <span className="industries-expertise-kicker career-values-kicker">INDUSTRIES WE SERVE</span>
+          <span className="industries-expertise-kicker career-values-kicker">{displayKicker}</span>
           <h2 className="industries-expertise-heading section-main-heading">
-            Research Expertise Across Diverse Industries
+            {displayHeading}
           </h2>
           <p className="industries-expertise-desc section-sub-text">
-            From financial services and healthcare to technology, retail and industrial markets, our research capabilities help organizations understand their customers, markets and business opportunities. We work across diverse sectors, tailoring research approaches to each industry's unique challenges, audiences and decision-making needs. By combining the right methodologies, market expertise and quality-focused execution, we help businesses uncover meaningful insights and make more informed strategic decisions.
+            {displayDesc}
           </p>
         </div>
 

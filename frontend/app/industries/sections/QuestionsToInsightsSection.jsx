@@ -11,11 +11,15 @@ const defaultIcons = [
   '/asstes/images/icon/stronger-growth-icon-img.png',
 ];
 
-export default function QuestionsToInsightsSection({ items = [] }) {
+export default function QuestionsToInsightsSection({ items = [], dynamicSection = null }) {
   const [openIndex, setOpenIndex] = useState(0); 
   const toggleItem = (idx) => {
     setOpenIndex((prev) => (prev === idx ? -1 : idx));
   };
+
+  const displayKicker = dynamicSection?.kicker || 'QUESTIONS WE HELP ANSWER';
+  const displayHeading = dynamicSection?.heading || dynamicSection?.title || 'From Key Questions to Strategic Insights';
+  const displayDesc = dynamicSection?.description || 'Navigating business uncertainty requires answers to critical questions. We help organizations across industries uncover the insights needed to make informed, forward-looking decisions.';
 
   if (!items || items.length === 0) return null;
 
@@ -23,10 +27,10 @@ export default function QuestionsToInsightsSection({ items = [] }) {
     <section className="questions-to-insights-section" id="questions-to-insights">
       <div className="srcn-container">
         <div className="questions-insights-header section-header-area">
-          <span className="questions-insights-kicker career-values-kicker">QUESTIONS WE HELP ANSWER</span>
-          <h2 className="questions-insights-heading section-main-heading">From Key Questions to Strategic Insights</h2>
+          <span className="questions-insights-kicker career-values-kicker">{displayKicker}</span>
+          <h2 className="questions-insights-heading section-main-heading">{displayHeading}</h2>
           <p className="questions-insights-desc industries-expertise-desc">
-            Navigating business uncertainty requires answers to critical questions. We help organizations across industries uncover the insights needed to make informed, forward-looking decisions.
+            {displayDesc}
           </p>
         </div>
 
@@ -58,15 +62,14 @@ export default function QuestionsToInsightsSection({ items = [] }) {
                 <div 
                   className="qti-accordion-body"
                   style={{
-                    maxHeight: isOpen ? '400px' : '0',
+                    maxHeight: isOpen ? '400px' : '0px',
                     opacity: isOpen ? 1 : 0,
                     overflow: 'hidden',
-                    transition: 'max-height 0.35s ease, opacity 0.3s ease',
+                    transition: 'all 0.35s ease-in-out',
+                    padding: isOpen ? '16px 20px 24px' : '0 20px',
                   }}
                 >
-                  <div className="qti-body-inner">
-                    <p>{item.desc || item.description}</p>
-                  </div>
+                  <p>{item.description || item.desc}</p>
                 </div>
               </div>
             );

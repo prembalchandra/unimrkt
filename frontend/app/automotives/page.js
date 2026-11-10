@@ -97,10 +97,16 @@ export default async function AutomotivesPage() {
   // FAQs
   const displayFaqs = (faqSection?.items && faqSection.items.length > 0) ? faqSection.items : faqs.slice(0, 6);
 
+  const overviewSection = sections.find((s) => s.__component === 'sections.callout-box');
+  const empowerCtaSection = sections.find(
+    (s) => s.__component === 'sections.question-cta' && s.title?.includes('Empower')
+  ) || ctaSection;
+  const contactFormSection = sections.find((s) => s.__component === 'sections.contact-form');
+
   return (
     <>
       <AutomotiveHero dynamicHero={heroSection} />
-      <AutomotiveAboutOverview />
+      <AutomotiveAboutOverview dynamicOverview={overviewSection} />
       <AutomotiveIntelligenceCards
         cards={intelSection?.cards || []}
         heading={intelSection?.heading}
@@ -128,8 +134,8 @@ export default async function AutomotivesPage() {
         kicker={methodsSection?.kicker}
         description={methodsSection?.description}
       />
-      <AutomotiveEmpowerCta />
-      <ContactFormSection />
+      <AutomotiveEmpowerCta dynamicCta={empowerCtaSection} />
+      <ContactFormSection dynamicForm={contactFormSection} />
       <CommonBlogSection />
       <AutomotiveFaq faqs={displayFaqs} />
       <AutomotiveOverview caseStudies={displayStudies} />

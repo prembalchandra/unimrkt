@@ -12,17 +12,21 @@ const defaultImages = [
   '/asstes/images/employee-research-img.png',
 ];
 
-export default function TelephonicCanMeasure({ items = [] }) {
+export default function TelephonicCanMeasure({ items = [], dynamicSection = null }) {
   if (!items || items.length === 0) return null;
+
+  const displayKicker = dynamicSection?.kicker || 'WHAT WE MEASURE';
+  const displayTitle = dynamicSection?.heading || dynamicSection?.title || 'What Telephonic Surveys Can Measure';
+  const displayDesc = dynamicSection?.description || 'Telephonic surveys allow direct, structured conversations across various business and research needs.';
 
   return (
     <section className="primary-services-section">
       <div className="srcn-container">
         <div className="primary-services-header">
-          <span className="primary-services-kicker">WHAT WE MEASURE</span>
-          <h2 className="primary-services-title">What Telephonic Surveys Can Measure</h2>
+          <span className="primary-services-kicker">{displayKicker}</span>
+          <h2 className="primary-services-title">{displayTitle}</h2>
           <p className="primary-services-desc">
-            Telephonic surveys allow direct, structured conversations across various business and research needs.
+            {displayDesc}
           </p>
         </div>
 

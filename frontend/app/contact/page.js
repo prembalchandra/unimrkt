@@ -66,24 +66,40 @@ export default async function ContactPage() {
   const faqSection = findSection(pageData, 'sections.faq-accordion');
   const ctaSection = findSection(pageData, 'sections.question-cta');
 
+  const contactFormSection = sections.find(
+    (s) => s.__component === 'sections.contact-form'
+  );
   const processSection = sections.find(
     (s) => s.__component === 'sections.accordion-solutions'
+  );
+  const editorialSection = sections.find(
+    (s) => s.__component === 'sections.rich-text-block' || s.__component === 'sections.callout-box'
   );
 
   return (
     <main>
       <ContactHero dynamicHero={heroSection} />
       <ResearchImpact dynamicMetrics={metricsSection} />
-      <OfficePresence initialOffices={offices} />
+      <OfficePresence
+        initialOffices={offices}
+        kicker={metricsSection?.kicker || "Office Address"}
+        heading={metricsSection?.heading ? "Our Presence" : "Our Presence"}
+      />
       <ResearchValue dynamicValues={valuesSection} />
       <ContactProcess
         steps={processSection?.cards || []}
         title={processSection?.heading}
         description={processSection?.description}
+        kicker={processSection?.kicker}
+        dynamicSection={processSection}
       />
-      <ContactForm />
+      <ContactForm
+        dynamicForm={contactFormSection}
+      />
       <ContactFaq dynamicFaq={faqSection} />
-      <InsightsEditorial />
+      <InsightsEditorial
+        dynamicEditorial={editorialSection}
+      />
       <ResearchCta dynamicCta={ctaSection} />
     </main>
   );

@@ -42,8 +42,12 @@ function formatService(s, idx) {
   };
 }
 
-export default function PrimaryServices({ initialServices = [] }) {
+export default function PrimaryServices({ initialServices = [], dynamicSection = null }) {
   const [servicesList, setServicesList] = useState(() => (initialServices || []).map(formatService).filter(Boolean));
+
+  const displayKicker = dynamicSection?.kicker || 'WHAT WE DO';
+  const displayTitle = dynamicSection?.heading || dynamicSection?.title || 'Our Primary Research Services';
+  const displayDesc = dynamicSection?.description || 'Delivering actionable data through custom research methodologies designed to help you understand your market, your competitors, and your customers.';
 
   useEffect(() => {
     if (initialServices && initialServices.length > 0) {
@@ -68,13 +72,13 @@ export default function PrimaryServices({ initialServices = [] }) {
       <div className="srcn-container">
         <div className="primary-services-header">
           <span className="primary-services-kicker">
-            WHAT WE DO
+            {displayKicker}
           </span>
           <h2 className="primary-services-title">
-            Our Primary Research Services
+            {displayTitle}
           </h2>
           <p className="primary-services-desc">
-            Delivering actionable data through custom research methodologies designed to help you understand your market, your competitors, and your customers.
+            {displayDesc}
           </p>
         </div>
         <div className="primary-services-grid">

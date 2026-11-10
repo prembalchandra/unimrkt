@@ -39,7 +39,9 @@
         "sections.faq-accordion",
         "sections.client-logos",
         "sections.values-grid",
-        "sections.rich-text-block"
+        "sections.rich-text-block",
+        "sections.callout-box",
+        "sections.contact-form"
       ]
     }
   }

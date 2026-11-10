@@ -15,7 +15,7 @@ export default function Header({ globalData: initialGlobalData = null }) {
 
   useEffect(() => {
     if (!initialGlobalData) {
-      fetch('http://127.0.0.1:1337/api/global?populate=*')
+      fetch('http://127.0.0.1:1337/api/global?populate[navigation][populate]=*&populate[headerCta][populate]=*&populate[headerLogo][populate]=*')
         .then((res) => res.json())
         .then((json) => {
           if (json?.data) setGlobalData(json.data);

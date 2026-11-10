@@ -52,9 +52,13 @@ function formatService(s, idx) {
   };
 }
 
-export default function EndToEndSolutions({ initialServices = [] }) {
+export default function EndToEndSolutions({ initialServices = [], dynamicSection = null }) {
   const [solutions, setSolutions] = useState(() => (initialServices || []).map(formatService).filter(Boolean));
   const [hoveredIndex, setHoveredIndex] = useState(null);
+
+  const displayKicker = dynamicSection?.kicker || 'OUR SERVICES';
+  const displayTitle = dynamicSection?.heading || dynamicSection?.title || 'End-To-End Market Research Solutions';
+  const displayDesc = dynamicSection?.description || 'From research design and respondent recruitment to data collection, analysis, and reporting, Unimrkt Research provides comprehensive market research solutions tailored to your business objectives. Our expert team delivers accurate, actionable insights that help organizations make informed decisions, uncover opportunities, and drive sustainable growth.';
 
   useEffect(() => {
     if (initialServices && initialServices.length > 0) {
@@ -78,10 +82,10 @@ export default function EndToEndSolutions({ initialServices = [] }) {
     <section className="end-to-end-solutions-section">
       <div className="srcn-container">
         <div className="end-to-end-header">
-          <span className="end-to-end-eyebrow">OUR SERVICES</span>
-          <h2 className="end-to-end-title">End-To-End Market Research Solutions</h2>
+          <span className="end-to-end-eyebrow">{displayKicker}</span>
+          <h2 className="end-to-end-title">{displayTitle}</h2>
           <p className="end-to-end-desc">
-            From research design and respondent recruitment to data collection, analysis, and reporting, Unimrkt Research provides comprehensive market research solutions tailored to your business objectives. Our expert team delivers accurate, actionable insights that help organizations make informed decisions, uncover opportunities, and drive sustainable growth.
+            {displayDesc}
           </p>
         </div>
 

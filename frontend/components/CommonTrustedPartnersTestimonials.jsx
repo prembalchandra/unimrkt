@@ -4,11 +4,20 @@ import React, { useEffect, useRef, useState } from 'react';
 import Swiper from 'swiper';
 import { Autoplay, Pagination } from 'swiper/modules';
 
-export default function CommonTrustedPartnersTestimonials({ dynamicTestimonials = null }) {
-  const [items, setItems] = useState(dynamicTestimonials || []);
+export default function CommonTrustedPartnersTestimonials({
+  dynamicTestimonials = null,
+  initialTestimonials = null,
+  dynamicSection = null,
+  kicker = null,
+  heading = null,
+}) {
+  const [items, setItems] = useState(dynamicTestimonials || initialTestimonials || []);
   const sliderRef = useRef(null);
   const paginationRef = useRef(null);
   const swiperInstanceRef = useRef(null);
+
+  const displayKicker = kicker || dynamicSection?.kicker || 'CLIENT SUCCESS STORIES';
+  const displayHeading = heading || dynamicSection?.heading || dynamicSection?.title || 'Trusted Research Partner For Businesses Worldwide';
 
   useEffect(() => {
     if (!dynamicTestimonials || dynamicTestimonials.length === 0) {
@@ -80,8 +89,8 @@ export default function CommonTrustedPartnersTestimonials({ dynamicTestimonials 
     <section className="testimonials-showcase-section" id="testimonials">
       <div className="testimonials-showcase-container">
         <div className="testimonials-header">
-          <span className="testimonials-kicker">CLIENT SUCCESS STORIES</span>
-          <h2 className="testimonials-heading">Trusted Research Partner For Businesses Worldwide</h2>
+          <span className="testimonials-kicker">{displayKicker}</span>
+          <h2 className="testimonials-heading">{displayHeading}</h2>
         </div>
         <div className="common-swiper-box">
           <div className="swiper testimonials-swiper" ref={sliderRef}>

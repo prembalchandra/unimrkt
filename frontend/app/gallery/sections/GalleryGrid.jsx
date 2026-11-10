@@ -25,13 +25,17 @@ function formatGalleryItem(item, idx) {
   };
 }
 
-export default function GalleryGrid({ initialItems = [] }) {
+export default function GalleryGrid({ initialItems = [], dynamicSection = null }) {
   const [items, setItems] = useState(() => (initialItems || []).map(formatGalleryItem).filter(Boolean));
   const [activeCategory, setActiveCategory] = useState('all');
   const [visibleCount, setVisibleCount] = useState(6);
   const [isOpen, setIsOpen] = useState(false);
   const [initialSlide, setInitialSlide] = useState(0);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
+
+  const displayKicker = dynamicSection?.kicker || '';
+  const displayHeading = dynamicSection?.heading || dynamicSection?.title || 'Our Gallery';
+  const displayDesc = dynamicSection?.description || '';
 
   const swiperContainerRef = useRef(null);
   const prevBtnRef = useRef(null);
@@ -185,8 +189,10 @@ export default function GalleryGrid({ initialItems = [] }) {
   return (
     <section className="our-gallery-section">
       <div className="srcn-container">
-        <div className="our-gallery-header">
-          <h2 className="our-gallery-title">Our Gallery</h2>
+        <div className="our-gallery-header section-header-area">
+          {displayKicker && <span className="career-values-kicker">{displayKicker}</span>}
+          <h2 className="our-gallery-title section-main-heading">{displayHeading}</h2>
+          {displayDesc && <p className="section-sub-text">{displayDesc}</p>}
         </div>
 
         {/* Category filters */}

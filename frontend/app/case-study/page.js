@@ -57,18 +57,36 @@ export default async function CaseStudyPage() {
     getFaqs({ limit: 10 }).catch(() => []),
   ]);
 
+  const sections = Array.isArray(pageData?.sections) ? pageData.sections : [];
+
   const heroSection = findSection(pageData, 'sections.hero-common');
+  const valuesSection = findSection(pageData, 'sections.values-grid');
+  const processSection = findSection(pageData, 'sections.accordion-solutions');
   const faqSection = findSection(pageData, 'sections.faq-accordion');
   const ctaSection = findSection(pageData, 'sections.question-cta');
+  const editorialSection = sections.find(
+    (s) => s.__component === 'sections.callout-box' || s.__component === 'sections.rich-text-block'
+  );
 
   return (
     <>
       <CaseStudyHero dynamicHero={heroSection} />
-      <CaseStudyExplorer initialCaseStudies={strapiStudies} />
-      <ResearchValue />
-      <ContactProcess initialTestimonials={testimonials} />
+      <CaseStudyExplorer
+        initialCaseStudies={strapiStudies}
+        kicker="Case Study Explorer"
+        title="Explore Our Research Stories"
+        description="Discover how we solve complex research challenges across industries, markets and methodologies."
+      />
+      <ResearchValue dynamicValues={valuesSection} />
+      <ContactProcess
+        initialTestimonials={testimonials}
+        dynamicSection={processSection}
+        kicker={processSection?.kicker}
+        title={processSection?.heading || processSection?.title}
+        description={processSection?.description}
+      />
       <CaseStudyFaq dynamicFaq={faqSection} initialFaqs={faqs} />
-      <InsightsEditorial />
+      <InsightsEditorial dynamicEditorial={editorialSection} />
       <ResearchCta dynamicCta={ctaSection} />
     </>
   );

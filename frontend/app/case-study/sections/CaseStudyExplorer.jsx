@@ -24,7 +24,20 @@ function formatStudy(item, idx) {
   };
 }
 
-export default function CaseStudyExplorer({ initialCaseStudies = [] }) {
+export default function CaseStudyExplorer({
+  initialCaseStudies = [],
+  dynamicSection = null,
+  kicker,
+  title,
+  description,
+}) {
+  const displayKicker = dynamicSection?.kicker || kicker || 'Case Study Explorer';
+  const displayTitle = dynamicSection?.heading || dynamicSection?.title || title || 'Explore Our Research Stories';
+  const displayDesc =
+    dynamicSection?.description ||
+    description ||
+    'Discover how we solve complex research challenges across industries, markets and methodologies.';
+
   const [studies, setStudies] = useState(() => (initialCaseStudies || []).map(formatStudy).filter(Boolean));
   const [activeIndustry, setActiveIndustry] = useState('all');
   const [activeResearch, setActiveResearch] = useState('all');
@@ -135,11 +148,9 @@ export default function CaseStudyExplorer({ initialCaseStudies = [] }) {
       <div className="srcn-container">
         {/* Section Header */}
         <div className="section-header-area">
-          <span className="career-values-kicker">Case Study Explorer</span>
-          <h2 className="section-main-heading">Explore Our Research Stories</h2>
-          <p className="section-sub-text">
-            Discover how we solve complex research challenges across industries, markets and methodologies.
-          </p>
+          <span className="career-values-kicker">{displayKicker}</span>
+          <h2 className="section-main-heading">{displayTitle}</h2>
+          <p className="section-sub-text">{displayDesc}</p>
         </div>
 
         {/* Category Filter Pills & Dropdowns */}
