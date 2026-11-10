@@ -37,7 +37,7 @@ export default function ResearchImpact() {
                 <div className="research-impact-icon">
                   <img src={stat.icon} alt={stat.label} />
                 </div>
-                <div className="research-impact-contnet-area">
+                <div className="research-impact-content-area">
                   <h3 className="research-impact-number">{stat.number}</h3>
                   <p className="research-impact-label">{stat.label}</p>
                 </div>

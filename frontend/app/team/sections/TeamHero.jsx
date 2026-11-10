@@ -23,8 +23,8 @@ export default function TeamHero({ dynamicHero = null }) {
         <div className="srcn-container">
           <div className="hero-common-row">
             <div className="hero-common-content">
-              <div className="hero-common-contnet-area">
-                <span className="-hero-common-sub-tille-area">
+              <div className="hero-common-content-area">
+                <span className="hero-common-sub-title-area">
                   <i className="fa-solid fa-bolt" style={{ fontSize: '0.75rem', color: '#ff526b' }}></i>
                   {kicker}
                 </span>

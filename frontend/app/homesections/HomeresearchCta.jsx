@@ -10,8 +10,8 @@ export default function HomeresearchCta({ dynamicCta = null }) {
   const btnUrl = dynamicCta?.button?.url || '/contact';
 
   return (
-    <section className="research-cta-sections" id="cta">
-      <div className="srcn-containers">
+    <section className="research-cta-section" id="cta">
+      <div className="srcn-container">
         <div className="research-cta-banner-wrapper research-home-banner-wrapper">
           <video
             className="research-cta-bg-image"

@@ -426,7 +426,7 @@ export default function HeroSection() {
         <div className="hero-container">
           <div className="hero-two-col-grid">
             <div className={`hero-content-col ${isFading ? 'content-fade-out' : ''}`} id="heroContentCol">
-              <div className="hero-badge-pill -hero-common-sub-tille-area">
+              <div className="hero-badge-pill hero-common-sub-title-area">
                 <span className="badge-red-dot"></span>
                 <span className="badge-text" id="heroBadgeText">
                   {currentContent.badge}
@@ -442,7 +442,7 @@ export default function HeroSection() {
               <p className="hero-sub-paragraph hero-common-title" id="heroSubParagraph">
                 {currentContent.desc}
               </p>
-              <div class="hero-btn-area hero-actions-wrap"><a class="hero-common-btn-area btn-sm btn-discover-unimrkt" href="#cta"> <span id="heroCtaText">{currentContent.cta}</span>
+              <div className="hero-btn-area hero-actions-wrap"><a className="hero-common-btn-area btn-sm btn-discover-unimrkt" href="#cta"> <span id="heroCtaText">{currentContent.cta}</span>
               <img src="/asstes/images/icon/arrow-right-icon-img.png" alt="Arrow Right"/></a>
              
               </div>

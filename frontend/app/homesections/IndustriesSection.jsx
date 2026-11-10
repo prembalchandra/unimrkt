@@ -127,7 +127,7 @@ export default function IndustriesSection() {
   };
 
   return (
-    <section className="industries-sections" id="industries">
+    <section className="industries-section" id="industries">
       <div className="srcn-container">
         <div className="industries-banner-wapper-banner">
           <div className="industries-banner-box">

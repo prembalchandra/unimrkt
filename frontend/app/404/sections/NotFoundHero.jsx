@@ -29,7 +29,7 @@ export default function NotFoundHero() {
             <p className="notfound-desc hero-common-title">
               The page you are looking for doesn't exist or has been moved. But don't worry, you can always head back to our homepage or get in touch with us.
             </p>
-            <div class="hero-btn-area notfound-actions">
+            <div className="hero-btn-area notfound-actions">
 
               <a href="/" class=" btn-sm"><span>Go to Homepage</span><img src="/asstes/images/icon/arrow-right-icon-img.png" alt="Arrow Right" /></a>
               <a href="/contact" class="btn-white">Contact Us <i class="fa fa-long-arrow-up" aria-hidden="true"></i></a>
