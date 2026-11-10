@@ -2,40 +2,61 @@
 
 import React from 'react';
 import Link from 'next/link';
+import { getStrapiMedia } from '@/lib/strapi';
 
 export default function QuestionCTA({ dynamicCta = null }) {
-  if (!dynamicCta) return null;
+  const title =
+    dynamicCta?.title ||
+    dynamicCta?.heading ||
+    "Have A Question? Let's Find The Answer.";
+  const desc =
+    dynamicCta?.description ||
+    'A simple process designed to understand your requirement and connect you with the right research expert.';
+  const btnLabel =
+    dynamicCta?.button?.label ||
+    dynamicCta?.btnLabel ||
+    'Talk To Our Experts';
+  const btnUrl = dynamicCta?.button?.url || dynamicCta?.btnUrl || '/contact';
 
-  const title = dynamicCta.title || dynamicCta.heading;
-  const desc = dynamicCta.description;
-  const btnLabel = dynamicCta.button?.label;
-  const btnUrl = dynamicCta.button?.url || '/contact';
-
-  if (!title && !desc) return null;
+  const coupleImage =
+    getStrapiMedia(dynamicCta?.image) ||
+    '/uploads/industries_couple_cutout_326ad2e1c1.webp';
 
   return (
-    <section className="research-cta-section" id="cta">
+    <section className="question-cta-section" id="question-cta">
       <div className="srcn-container">
-        <div className="research-cta-banner-wrapper">
-          <video
-            className="research-cta-bg-image"
-            autoPlay
-            muted
-            loop
-            playsInline
-          >
-            <source src="/asstes/images/video-banner-img.mp4" type="video/mp4" />
-          </video>
+        <div className="question-cta-container">
+          <div className="question-cta-banner">
+            <div className="question-cta-content">
+              {title && (
+                <h2 className="question-cta-title">
+                  {title}
+                </h2>
+              )}
+              {desc && (
+                <p className="question-cta-description">
+                  {desc}
+                </p>
+              )}
+              {btnLabel && (
+                <Link href={btnUrl} className="question-cta-button">
+                  <span>{btnLabel}</span>
+                  <i
+                    className="fa fa-long-arrow-right"
+                    aria-hidden="true"
+                    style={{ marginLeft: 8 }}
+                  />
+                </Link>
+              )}
+            </div>
 
-          <div className="research-cta-overlay"></div>
-          <div className="srcn-container research-cta-content">
-            {title && <h2 className="section-main-heading research-cta-title">{title}</h2>}
-            {desc && <p className="research-cta-desc hero-common-title">{desc}</p>}
-            {btnLabel && (
-              <Link href={btnUrl} className="btn-white">
-                {btnLabel} <i className="fa fa-long-arrow-up" aria-hidden="true"></i>
-              </Link>
-            )}
+            <div className="question-cta-image">
+              <img
+                src={coupleImage}
+                alt={title || 'Have a Question'}
+                loading="lazy"
+              />
+            </div>
           </div>
         </div>
       </div>

@@ -116,7 +116,7 @@ export default async function RootLayout({ children }) {
         <link rel="stylesheet" href="/asstes/css/swiper-bundle.min.css" />
         <link rel="stylesheet" href="/asstes/css/leaflet.css" />
         <link rel="stylesheet" href="/asstes/css/global.css?v=1.1" />
-        <link rel="stylesheet" href="/asstes/css/style.css?v=3.6" />
+        <link rel="stylesheet" href="/asstes/css/style.css?v=3.7" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdOrg) }}

@@ -80,7 +80,7 @@ export default async function IndustriesPage() {
     (s) => s.__component === 'sections.accordion-solutions' && s.heading?.includes('Questions')
   );
   const processSection = sections.find(
-    (s) => s.__component === 'sections.accordion-solutions' && (s.heading?.includes('Structured Research') || s.heading?.includes('Process'))
+    (s) => s.heading?.includes('Structured Research') || s.heading?.includes('Process') || s.heading?.includes('Impact') || s.kicker?.includes('PROCESS') || s.kicker?.includes('Process')
   );
   const faqSection = findSection(pageData, 'sections.faq-accordion');
 
