@@ -31,7 +31,11 @@
       "type": "media",
       "multiple": false,
       "required": true,
-      "allowedTypes": ["images"]
+      "allowedTypes": [
+        "images",
+        "videos",
+        "files"
+      ]
     },
     "caption": {
       "type": "string"

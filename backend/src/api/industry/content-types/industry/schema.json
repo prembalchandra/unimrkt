@@ -28,13 +28,21 @@
       "type": "media",
       "multiple": false,
       "required": false,
-      "allowedTypes": ["images"]
+      "allowedTypes": [
+        "images",
+        "videos",
+        "files"
+      ]
     },
     "thumbnail": {
       "type": "media",
       "multiple": false,
       "required": false,
-      "allowedTypes": ["images"]
+      "allowedTypes": [
+        "images",
+        "videos",
+        "files"
+      ]
     },
     "caseStudies": {
       "type": "relation",

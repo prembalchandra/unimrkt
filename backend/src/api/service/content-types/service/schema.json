@@ -28,19 +28,31 @@
       "type": "media",
       "multiple": false,
       "required": false,
-      "allowedTypes": ["images"]
+      "allowedTypes": [
+        "images",
+        "videos",
+        "files"
+      ]
     },
     "bannerImage": {
       "type": "media",
       "multiple": false,
       "required": false,
-      "allowedTypes": ["images"]
+      "allowedTypes": [
+        "images",
+        "videos",
+        "files"
+      ]
     },
     "featuredImage": {
       "type": "media",
       "multiple": false,
       "required": false,
-      "allowedTypes": ["images"]
+      "allowedTypes": [
+        "images",
+        "videos",
+        "files"
+      ]
     },
     "category": {
       "type": "relation",

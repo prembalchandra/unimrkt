@@ -23,7 +23,11 @@
     "videoPoster": {
       "type": "media",
       "multiple": false,
-      "allowedTypes": ["images"]
+      "allowedTypes": [
+        "images",
+        "videos",
+        "files"
+      ]
     },
     "enabled": {
       "type": "boolean",

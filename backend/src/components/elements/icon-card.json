@@ -18,14 +18,22 @@
       "type": "media",
       "multiple": false,
       "required": false,
-      "allowedTypes": ["images"]
+      "allowedTypes": [
+        "images",
+        "videos",
+        "files"
+      ]
     },
     "iconSvgCode": {
       "type": "text"
     },
     "iconSize": {
       "type": "enumeration",
-      "enum": ["small", "medium", "large"],
+      "enum": [
+        "small",
+        "medium",
+        "large"
+      ],
       "default": "medium"
     },
     "iconColor": {

@@ -8,6 +8,7 @@
     "develop": "node ./node_modules/@strapi/strapi/bin/strapi.js develop",
     "start": "node ./node_modules/@strapi/strapi/bin/strapi.js start",
     "build": "node ./node_modules/@strapi/strapi/bin/strapi.js build",
+    "patch-theme": "node ./scripts/patch-admin-theme.js",
     "strapi": "node ./node_modules/@strapi/strapi/bin/strapi.js"
   },
   "dependencies": {

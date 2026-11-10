@@ -20,11 +20,19 @@
       "type": "media",
       "multiple": true,
       "required": true,
-      "allowedTypes": ["images"]
+      "allowedTypes": [
+        "images",
+        "videos",
+        "files"
+      ]
     },
     "layout": {
       "type": "enumeration",
-      "enum": ["grid", "masonry", "slider"],
+      "enum": [
+        "grid",
+        "masonry",
+        "slider"
+      ],
       "default": "grid"
     },
     "columns": {

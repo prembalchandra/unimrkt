@@ -9,7 +9,7 @@ export interface CaseStudyApproachStep extends Struct.ComponentSchema {
   };
   attributes: {
     description: Schema.Attribute.Text;
-    icon: Schema.Attribute.Media<'images'>;
+    icon: Schema.Attribute.Media<'images' | 'videos' | 'files'>;
     stepNumber: Schema.Attribute.String & Schema.Attribute.Required;
     title: Schema.Attribute.String & Schema.Attribute.Required;
   };
@@ -24,7 +24,7 @@ export interface CaseStudyDiagramPillar extends Struct.ComponentSchema {
   };
   attributes: {
     description: Schema.Attribute.Text;
-    icon: Schema.Attribute.Media<'images'>;
+    icon: Schema.Attribute.Media<'images' | 'videos' | 'files'>;
     name: Schema.Attribute.String & Schema.Attribute.Required;
     stepNumber: Schema.Attribute.String & Schema.Attribute.Required;
   };
@@ -39,7 +39,7 @@ export interface CaseStudyImpactItem extends Struct.ComponentSchema {
   };
   attributes: {
     description: Schema.Attribute.Text;
-    icon: Schema.Attribute.Media<'images'>;
+    icon: Schema.Attribute.Media<'images' | 'videos' | 'files'>;
     title: Schema.Attribute.String & Schema.Attribute.Required;
   };
 }
@@ -85,7 +85,7 @@ export interface ElementsFeatureItem extends Struct.ComponentSchema {
   };
   attributes: {
     description: Schema.Attribute.Text;
-    icon: Schema.Attribute.Media<'images'>;
+    icon: Schema.Attribute.Media<'images' | 'videos' | 'files'>;
     iconClass: Schema.Attribute.String;
     title: Schema.Attribute.String & Schema.Attribute.Required;
   };
@@ -102,7 +102,7 @@ export interface ElementsIconCard extends Struct.ComponentSchema {
     altText: Schema.Attribute.String;
     description: Schema.Attribute.Text;
     iconColor: Schema.Attribute.String;
-    iconImage: Schema.Attribute.Media<'images'>;
+    iconImage: Schema.Attribute.Media<'images' | 'videos' | 'files'>;
     iconSize: Schema.Attribute.Enumeration<['small', 'medium', 'large']> &
       Schema.Attribute.DefaultTo<'medium'>;
     iconSvgCode: Schema.Attribute.Text;
@@ -131,7 +131,7 @@ export interface ElementsMetricCard extends Struct.ComponentSchema {
     icon: 'chartBubble';
   };
   attributes: {
-    icon: Schema.Attribute.Media<'images'>;
+    icon: Schema.Attribute.Media<'images' | 'videos' | 'files'>;
     label: Schema.Attribute.String & Schema.Attribute.Required;
     number: Schema.Attribute.String & Schema.Attribute.Required;
   };
@@ -205,14 +205,14 @@ export interface SectionsBannerSection extends Struct.ComponentSchema {
   };
   attributes: {
     altText: Schema.Attribute.String;
-    backgroundImage: Schema.Attribute.Media<'images'>;
+    backgroundImage: Schema.Attribute.Media<'images' | 'videos' | 'files'>;
     button: Schema.Attribute.Component<'elements.button-link', false>;
     caption: Schema.Attribute.String;
     description: Schema.Attribute.Text;
-    desktopBanner: Schema.Attribute.Media<'images'>;
+    desktopBanner: Schema.Attribute.Media<'images' | 'videos' | 'files'>;
     enabled: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
     kicker: Schema.Attribute.String;
-    mobileBanner: Schema.Attribute.Media<'images'>;
+    mobileBanner: Schema.Attribute.Media<'images' | 'videos' | 'files'>;
     title: Schema.Attribute.String;
   };
 }
@@ -242,7 +242,8 @@ export interface SectionsClientLogos extends Struct.ComponentSchema {
   attributes: {
     description: Schema.Attribute.Text;
     kicker: Schema.Attribute.String;
-    logos: Schema.Attribute.Media<'images', true> & Schema.Attribute.Required;
+    logos: Schema.Attribute.Media<'images' | 'videos' | 'files', true> &
+      Schema.Attribute.Required;
     title: Schema.Attribute.String &
       Schema.Attribute.DefaultTo<'Trusted by Global Enterprises'>;
   };
@@ -317,7 +318,7 @@ export interface SectionsHeroCommon extends Struct.ComponentSchema {
     icon: 'landscape';
   };
   attributes: {
-    bannerImage: Schema.Attribute.Media<'images'>;
+    bannerImage: Schema.Attribute.Media<'images' | 'videos' | 'files'>;
     description: Schema.Attribute.Text;
     kicker: Schema.Attribute.String;
     primaryButton: Schema.Attribute.Component<'elements.button-link', false>;
@@ -338,10 +339,10 @@ export interface SectionsHomeHero extends Struct.ComponentSchema {
     description: Schema.Attribute.Text & Schema.Attribute.Required;
     eyebrow: Schema.Attribute.String &
       Schema.Attribute.DefaultTo<'Market Intelligence'>;
-    fallbackImage: Schema.Attribute.Media<'images'>;
+    fallbackImage: Schema.Attribute.Media<'images' | 'videos' | 'files'>;
     servicePills: Schema.Attribute.Component<'elements.feature-item', true>;
     title: Schema.Attribute.String & Schema.Attribute.Required;
-    video: Schema.Attribute.Media<'videos' | 'files'>;
+    video: Schema.Attribute.Media<'images' | 'videos' | 'files'>;
     videoUrl: Schema.Attribute.String;
   };
 }
@@ -375,7 +376,8 @@ export interface SectionsImageGallery extends Struct.ComponentSchema {
     description: Schema.Attribute.Text;
     enabled: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
     heading: Schema.Attribute.String;
-    images: Schema.Attribute.Media<'images', true> & Schema.Attribute.Required;
+    images: Schema.Attribute.Media<'images' | 'videos' | 'files', true> &
+      Schema.Attribute.Required;
     kicker: Schema.Attribute.String;
     layout: Schema.Attribute.Enumeration<['grid', 'masonry', 'slider']> &
       Schema.Attribute.DefaultTo<'grid'>;
@@ -427,7 +429,7 @@ export interface SectionsQuestionCta extends Struct.ComponentSchema {
     title: Schema.Attribute.String &
       Schema.Attribute.Required &
       Schema.Attribute.DefaultTo<"Have A Question? Let's Find The Answer.">;
-    visualImage: Schema.Attribute.Media<'images'>;
+    visualImage: Schema.Attribute.Media<'images' | 'videos' | 'files'>;
   };
 }
 
@@ -491,7 +493,7 @@ export interface SectionsVideoSection extends Struct.ComponentSchema {
     enabled: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
     heading: Schema.Attribute.String;
     kicker: Schema.Attribute.String;
-    videoPoster: Schema.Attribute.Media<'images'>;
+    videoPoster: Schema.Attribute.Media<'images' | 'videos' | 'files'>;
     videoUrl: Schema.Attribute.String & Schema.Attribute.Required;
   };
 }
@@ -511,7 +513,7 @@ export interface SharedSeo extends Struct.ComponentSchema {
       Schema.Attribute.SetMinMaxLength<{
         maxLength: 160;
       }>;
-    metaImage: Schema.Attribute.Media<'images'>;
+    metaImage: Schema.Attribute.Media<'images' | 'videos' | 'files'>;
     metaTitle: Schema.Attribute.String &
       Schema.Attribute.Required &
       Schema.Attribute.SetMinMaxLength<{

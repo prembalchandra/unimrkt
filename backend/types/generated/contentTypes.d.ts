@@ -505,7 +505,8 @@ export interface ApiBlogBlog extends Struct.CollectionTypeSchema {
       Schema.Attribute.Private;
     excerpt: Schema.Attribute.Text & Schema.Attribute.Required;
     featured: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
-    featuredImage: Schema.Attribute.Media<'images'> & Schema.Attribute.Required;
+    featuredImage: Schema.Attribute.Media<'images' | 'videos' | 'files'> &
+      Schema.Attribute.Required;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<'oneToMany', 'api::blog.blog'> &
       Schema.Attribute.Private;
@@ -599,7 +600,7 @@ export interface ApiCaseStudyCaseStudy extends Struct.CollectionTypeSchema {
     approachTitle: Schema.Attribute.String;
     challengeBullets: Schema.Attribute.Component<'elements.list-item', true>;
     challengeDescription: Schema.Attribute.Text;
-    challengeImage: Schema.Attribute.Media<'images'>;
+    challengeImage: Schema.Attribute.Media<'images' | 'videos' | 'files'>;
     challengeKicker: Schema.Attribute.String &
       Schema.Attribute.DefaultTo<'THE CHALLENGE'>;
     challengeSubtitle: Schema.Attribute.String;
@@ -611,7 +612,8 @@ export interface ApiCaseStudyCaseStudy extends Struct.CollectionTypeSchema {
       Schema.Attribute.Private;
     excerpt: Schema.Attribute.Text & Schema.Attribute.Required;
     featured: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
-    heroImage: Schema.Attribute.Media<'images'> & Schema.Attribute.Required;
+    heroImage: Schema.Attribute.Media<'images' | 'videos' | 'files'> &
+      Schema.Attribute.Required;
     impactCards: Schema.Attribute.Component<'case-study.impact-item', true>;
     impactDescription: Schema.Attribute.Text;
     impactKicker: Schema.Attribute.String &
@@ -741,7 +743,8 @@ export interface ApiGalleryItemGalleryItem extends Struct.CollectionTypeSchema {
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    image: Schema.Attribute.Media<'images'> & Schema.Attribute.Required;
+    image: Schema.Attribute.Media<'images' | 'videos' | 'files'> &
+      Schema.Attribute.Required;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
@@ -783,14 +786,19 @@ export interface ApiGlobalGlobal extends Struct.SingleTypeSchema {
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
     defaultSeo: Schema.Attribute.Component<'shared.seo', false>;
-    favicon: Schema.Attribute.Media<'images'>;
-    footerCertificationLogos: Schema.Attribute.Media<'images', true>;
+    favicon: Schema.Attribute.Media<'images' | 'videos' | 'files'>;
+    footerCertificationLogos: Schema.Attribute.Media<
+      'images' | 'videos' | 'files',
+      true
+    >;
     footerColumns: Schema.Attribute.Component<'layout.footer-column', true>;
     footerDescription: Schema.Attribute.Text &
       Schema.Attribute.DefaultTo<'Delivering global market research, data collection, and actionable insights that drive smarter business decisions.'>;
-    footerLogo: Schema.Attribute.Media<'images'> & Schema.Attribute.Required;
+    footerLogo: Schema.Attribute.Media<'images' | 'videos' | 'files'> &
+      Schema.Attribute.Required;
     headerCta: Schema.Attribute.Component<'elements.button-link', false>;
-    headerLogo: Schema.Attribute.Media<'images'> & Schema.Attribute.Required;
+    headerLogo: Schema.Attribute.Media<'images' | 'videos' | 'files'> &
+      Schema.Attribute.Required;
     legalLinks: Schema.Attribute.Component<'elements.button-link', true>;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
@@ -832,7 +840,7 @@ export interface ApiIndustryIndustry extends Struct.CollectionTypeSchema {
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    icon: Schema.Attribute.Media<'images'>;
+    icon: Schema.Attribute.Media<'images' | 'videos' | 'files'>;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
@@ -843,7 +851,7 @@ export interface ApiIndustryIndustry extends Struct.CollectionTypeSchema {
     seo: Schema.Attribute.Component<'shared.seo', false>;
     shortDescription: Schema.Attribute.Text;
     slug: Schema.Attribute.UID<'title'> & Schema.Attribute.Required;
-    thumbnail: Schema.Attribute.Media<'images'>;
+    thumbnail: Schema.Attribute.Media<'images' | 'videos' | 'files'>;
     title: Schema.Attribute.String & Schema.Attribute.Required;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
@@ -1022,7 +1030,7 @@ export interface ApiServiceService extends Struct.CollectionTypeSchema {
     draftAndPublish: true;
   };
   attributes: {
-    bannerImage: Schema.Attribute.Media<'images'>;
+    bannerImage: Schema.Attribute.Media<'images' | 'videos' | 'files'>;
     caseStudies: Schema.Attribute.Relation<
       'manyToMany',
       'api::case-study.case-study'
@@ -1034,8 +1042,8 @@ export interface ApiServiceService extends Struct.CollectionTypeSchema {
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    featuredImage: Schema.Attribute.Media<'images'>;
-    icon: Schema.Attribute.Media<'images'>;
+    featuredImage: Schema.Attribute.Media<'images' | 'videos' | 'files'>;
+    icon: Schema.Attribute.Media<'images' | 'videos' | 'files'>;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
@@ -1091,7 +1099,7 @@ export interface ApiTeamMemberTeamMember extends Struct.CollectionTypeSchema {
       Schema.Attribute.Private;
     name: Schema.Attribute.String & Schema.Attribute.Required;
     order: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<0>;
-    photo: Schema.Attribute.Media<'images'>;
+    photo: Schema.Attribute.Media<'images' | 'videos' | 'files'>;
     publishedAt: Schema.Attribute.DateTime;
     role: Schema.Attribute.String & Schema.Attribute.Required;
     updatedAt: Schema.Attribute.DateTime;
@@ -1114,7 +1122,7 @@ export interface ApiTestimonialTestimonial extends Struct.CollectionTypeSchema {
   attributes: {
     authorName: Schema.Attribute.String;
     authorRole: Schema.Attribute.String & Schema.Attribute.Required;
-    avatar: Schema.Attribute.Media<'images'>;
+    avatar: Schema.Attribute.Media<'images' | 'videos' | 'files'>;
     companyName: Schema.Attribute.String & Schema.Attribute.Required;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &

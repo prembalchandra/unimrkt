@@ -23,7 +23,11 @@
       "type": "media",
       "multiple": false,
       "required": false,
-      "allowedTypes": ["videos", "files"]
+      "allowedTypes": [
+        "images",
+        "videos",
+        "files"
+      ]
     },
     "videoUrl": {
       "type": "string"
@@ -32,7 +36,11 @@
       "type": "media",
       "multiple": false,
       "required": false,
-      "allowedTypes": ["images"]
+      "allowedTypes": [
+        "images",
+        "videos",
+        "files"
+      ]
     },
     "cta": {
       "type": "component",
