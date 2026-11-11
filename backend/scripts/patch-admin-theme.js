@@ -36,5 +36,9 @@ content = content.replace(/fill:"#F0F0FF"/g, 'fill:"#fee2e2"');
 content = content.replace(/stroke:"#D9D8FF"/g, 'stroke:"#fca5a5"');
 content = content.replace(/fill:"#9593FF"/g, 'fill:"#ef4444"');
 
+// Replace SVG URL encoded colors in logo
+content = content.replace(/%234945FF/g, '%23BE2C28');
+content = content.replace(/%239593FF/g, '%23EF4444');
+
 fs.writeFileSync(filePath, content, 'utf8');
 console.log('Successfully patched strapi-2XxV9tDn.js with Unimrkt Crimson Red theme!');
