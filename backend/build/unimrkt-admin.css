@@ -1,51 +1,22 @@
 /* ==========================================================================
-   UNIMRKT RESEARCH ENTERPRISE CMS - COMPREHENSIVE ADMIN DESIGN SYSTEM
-   Ultra-modern, premium UI styling across all folders, pages, modals & components
+   UNIMRKT RESEARCH - PROFESSIONAL ENTERPRISE ADMIN THEME
+   Subtle, clean brand styling across all folders, tables, inputs & media library
+   (Keeps official login logo and default system typography intact)
    ========================================================================== */
 
 :root {
-  --unimrkt-red: #BE2C28;
-  --unimrkt-red-dark: #9E1F1C;
-  --unimrkt-red-darker: #7E1512;
-  --unimrkt-red-light: #FEF2F2;
-  --unimrkt-red-tint: rgba(190, 44, 40, 0.08);
-  --unimrkt-red-glow: rgba(190, 44, 40, 0.22);
-  --unimrkt-red-border: #FECACA;
-  --unimrkt-navy-950: #040914;
-  --unimrkt-navy-900: #07101E;
-  --unimrkt-navy-850: #0B1629;
-  --unimrkt-navy-800: #0E1B31;
-  --unimrkt-navy-700: #172847;
+  --unimrkt-primary: #BE2C28;
+  --unimrkt-primary-hover: #A3201D;
+  --unimrkt-primary-active: #821916;
+  --unimrkt-primary-light: #FEF2F2;
+  --unimrkt-primary-border: #FECACA;
+  --unimrkt-focus-ring: rgba(190, 44, 40, 0.18);
   --unimrkt-slate-50: #F8FAFC;
   --unimrkt-slate-100: #F1F5F9;
   --unimrkt-slate-200: #E2E8F0;
   --unimrkt-slate-300: #CBD5E1;
-  --unimrkt-slate-400: #94A3B8;
-  --unimrkt-slate-500: #64748B;
-  --unimrkt-slate-600: #475569;
   --unimrkt-slate-700: #334155;
-  --unimrkt-slate-800: #1E293B;
   --unimrkt-slate-900: #0F172A;
-  --unimrkt-font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Inter", "Helvetica Neue", Arial, sans-serif;
-  --unimrkt-radius: 8px;
-  --unimrkt-radius-md: 10px;
-  --unimrkt-radius-lg: 14px;
-  --unimrkt-radius-full: 9999px;
-  --unimrkt-shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.06), 0 1px 2px 0 rgba(0, 0, 0, 0.03);
-  --unimrkt-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -1px rgba(0, 0, 0, 0.04);
-  --unimrkt-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.04);
-  --unimrkt-shadow-hover: 0 12px 24px -4px rgba(190, 44, 40, 0.12), 0 4px 6px -2px rgba(0, 0, 0, 0.03);
-}
-
-/* --------------------------------------------------------------------------
-   1. GLOBAL RESET & BASE STYLING
-   -------------------------------------------------------------------------- */
-body, html, #strapi {
-  font-family: var(--unimrkt-font) !important;
-  color: var(--unimrkt-slate-900);
-  background-color: var(--unimrkt-slate-50);
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 }
 
 /* Custom Sleek Scrollbar */
@@ -58,369 +29,23 @@ body, html, #strapi {
 }
 ::-webkit-scrollbar-thumb {
   background: var(--unimrkt-slate-300);
-  border-radius: var(--unimrkt-radius-full);
+  border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--unimrkt-slate-400);
+  background: #94A3B8;
 }
 
-/* --------------------------------------------------------------------------
-   2. PRIMARY NAVIGATION SIDEBAR (aside, nav)
-   -------------------------------------------------------------------------- */
-aside:first-of-type,
-nav:first-of-type {
-  background-color: var(--unimrkt-navy-950) !important;
-  border-right: 1px solid rgba(255, 255, 255, 0.07) !important;
-}
-
-/* Navigation Links in Main Left Sidebar */
-nav a, 
-nav button[role="link"] {
-  border-radius: var(--unimrkt-radius) !important;
-  font-weight: 500 !important;
-  font-size: 13px !important;
-  transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1) !important;
-  margin: 2px 0 !important;
-}
-
-nav a:hover,
-nav button[role="link"]:hover {
-  background-color: rgba(255, 255, 255, 0.07) !important;
-  color: #FFFFFF !important;
-}
-
-/* Active Main Sidebar Link */
-nav a[aria-current="page"],
-nav a[data-active="true"],
-nav a.active {
-  background: linear-gradient(90deg, rgba(190, 44, 40, 0.28) 0%, rgba(190, 44, 40, 0.06) 100%) !important;
-  color: #FFFFFF !important;
-  border-left: 3px solid var(--unimrkt-red) !important;
-  font-weight: 600 !important;
-}
-
-nav a[aria-current="page"] svg,
-nav a[data-active="true"] svg,
-nav a.active svg {
-  fill: var(--unimrkt-red) !important;
-  color: var(--unimrkt-red) !important;
-}
-
-/* --------------------------------------------------------------------------
-   3. SUB-NAVIGATION (Inside Content Manager & Settings Folders)
-   -------------------------------------------------------------------------- */
-nav[aria-label="Content Manager"],
-div:has(> nav[aria-label="Content Manager"]),
-nav[aria-label="Secondary navigation"],
-div:has(> nav[aria-label="Secondary navigation"]) {
-  background: #FFFFFF !important;
-  border-right: 1px solid var(--unimrkt-slate-200) !important;
-}
-
-/* SubNav Links (e.g., Pages, Blogs, Services, Industries, Testimonials) */
-nav[aria-label="Content Manager"] a,
-nav[aria-label="Secondary navigation"] a {
-  border-radius: var(--unimrkt-radius) !important;
-  margin: 2px 8px !important;
-  padding: 8px 12px !important;
-  color: var(--unimrkt-slate-700) !important;
-  font-size: 13px !important;
-  font-weight: 500 !important;
-  transition: all 0.15s ease !important;
-}
-
-nav[aria-label="Content Manager"] a:hover,
-nav[aria-label="Secondary navigation"] a:hover {
-  background-color: var(--unimrkt-slate-100) !important;
-  color: var(--unimrkt-slate-900) !important;
-}
-
-/* Active Collection in SubNav */
-nav[aria-label="Content Manager"] a[aria-current="page"],
-nav[aria-label="Secondary navigation"] a[aria-current="page"] {
-  background-color: var(--unimrkt-red-light) !important;
-  color: var(--unimrkt-red) !important;
-  font-weight: 600 !important;
-  border-left: 3px solid var(--unimrkt-red) !important;
-}
-
-/* Counter Pills inside SubNav */
-nav[aria-label="Content Manager"] span[data-variant="secondary"] {
-  background: var(--unimrkt-slate-100) !important;
-  color: var(--unimrkt-slate-600) !important;
-  font-size: 11px !important;
-  font-weight: 600 !important;
-  border-radius: var(--unimrkt-radius-full) !important;
-}
-
-/* --------------------------------------------------------------------------
-   4. MEDIA LIBRARY & FOLDERS ("sabh folder ke ander")
-   -------------------------------------------------------------------------- */
-/* Folder Cards Grid & Aesthetics */
-[data-testid="folder-card"],
-div[aria-label*="folder" i],
-div:has(> svg path[d*="folder" i]) {
-  border-radius: var(--unimrkt-radius-lg) !important;
-  border: 1px solid var(--unimrkt-slate-200) !important;
-  background: #FFFFFF !important;
-  box-shadow: var(--unimrkt-shadow-sm) !important;
-  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1) !important;
-}
-
-[data-testid="folder-card"]:hover,
-div[aria-label*="folder" i]:hover {
-  border-color: var(--unimrkt-red-border) !important;
-  box-shadow: var(--unimrkt-shadow-hover) !important;
-  transform: translateY(-2px) !important;
-}
-
-/* Folder Icon in Folder Cards */
-[data-testid="folder-card"] svg,
-div[aria-label*="folder" i] svg {
-  color: var(--unimrkt-red) !important;
-  fill: var(--unimrkt-red) !important;
-}
-
-/* Folder Title */
-[data-testid="folder-card"] h2,
-[data-testid="folder-card"] span {
-  font-weight: 600 !important;
-  color: var(--unimrkt-slate-900) !important;
-}
-
-/* Media Library Breadcrumbs Path */
-nav[aria-label="Breadcrumb"],
-nav[aria-label="Breadcrumbs"] {
-  padding: 10px 0 !important;
-}
-
-nav[aria-label="Breadcrumb"] a,
-nav[aria-label="Breadcrumbs"] a {
-  color: var(--unimrkt-slate-600) !important;
-  font-weight: 500 !important;
-  font-size: 13.5px !important;
-  transition: color 0.15s ease !important;
-}
-
-nav[aria-label="Breadcrumb"] a:hover,
-nav[aria-label="Breadcrumbs"] a:hover {
-  color: var(--unimrkt-red) !important;
-}
-
-/* Asset Cards (Images, Videos, Files inside Folders) */
-[data-testid="asset-card"],
-div[aria-label*="asset" i] {
-  border-radius: var(--unimrkt-radius-lg) !important;
-  border: 1px solid var(--unimrkt-slate-200) !important;
-  background: #FFFFFF !important;
-  overflow: hidden !important;
-  box-shadow: var(--unimrkt-shadow-sm) !important;
-  transition: all 0.22s ease !important;
-}
-
-[data-testid="asset-card"]:hover,
-div[aria-label*="asset" i]:hover {
-  border-color: var(--unimrkt-red) !important;
-  box-shadow: var(--unimrkt-shadow-lg) !important;
-  transform: translateY(-1px) !important;
-}
-
-/* Asset Card Image Zoom on Hover */
-[data-testid="asset-card"] img,
-[data-testid="asset-card"] video {
-  transition: transform 0.25s ease !important;
-}
-
-[data-testid="asset-card"]:hover img,
-[data-testid="asset-card"]:hover video {
-  transform: scale(1.03) !important;
-}
-
-/* File extension badge on assets (.PNG, .MP4, .SVG, .WEBP) */
-[data-testid="asset-card"] [data-variant="secondary"],
-[data-testid="asset-card"] span:has(> b) {
-  background: var(--unimrkt-slate-100) !important;
-  color: var(--unimrkt-slate-700) !important;
-  font-weight: 700 !important;
-  font-size: 10.5px !important;
-  letter-spacing: 0.04em !important;
-  border-radius: 4px !important;
-  padding: 2px 6px !important;
-}
-
-/* Dropzone & Upload Asset Area */
-[data-testid="assets-dropzone"],
-[data-testid="upload-asset"],
-div[role="button"][tabindex="0"] {
-  border: 2px dashed var(--unimrkt-slate-300) !important;
-  border-radius: var(--unimrkt-radius-lg) !important;
-  background: var(--unimrkt-slate-50) !important;
-  transition: all 0.2s ease !important;
-}
-
-[data-testid="assets-dropzone"]:hover,
-[data-testid="upload-asset"]:hover,
-div[role="button"][tabindex="0"]:hover {
-  border-color: var(--unimrkt-red) !important;
-  background: var(--unimrkt-red-light) !important;
-}
-
-/* --------------------------------------------------------------------------
-   5. MODERN DATA TABLES ACROSS ALL COLLECTIONS
-   -------------------------------------------------------------------------- */
-table {
-  border-collapse: separate !important;
-  border-spacing: 0 !important;
-  width: 100% !important;
-}
-
-thead th {
-  background: var(--unimrkt-slate-50) !important;
-  color: var(--unimrkt-slate-600) !important;
-  font-size: 11.5px !important;
-  font-weight: 700 !important;
-  text-transform: uppercase !important;
-  letter-spacing: 0.06em !important;
-  padding: 12px 16px !important;
-  border-bottom: 2px solid var(--unimrkt-slate-200) !important;
-}
-
-tbody tr {
-  transition: background-color 0.15s ease !important;
-}
-
-tbody tr:hover {
-  background-color: #FAFCFF !important;
-}
-
-tbody td {
-  padding: 12px 16px !important;
-  border-bottom: 1px solid var(--unimrkt-slate-100) !important;
-  color: var(--unimrkt-slate-700) !important;
-  font-size: 13.5px !important;
-}
-
-/* Published / Draft Status Badges */
-span[data-variant="success"],
-span:has(> span[title="Published"]) {
-  background: #DCFCE7 !important;
-  color: #15803D !important;
-  border: 1px solid #BBF7D0 !important;
-  border-radius: var(--unimrkt-radius-full) !important;
-  font-weight: 600 !important;
-  font-size: 11px !important;
-  padding: 3px 9px !important;
-}
-
-span[data-variant="secondary"],
-span:has(> span[title="Draft"]) {
-  background: #FEF3C7 !important;
-  color: #B45309 !important;
-  border: 1px solid #FDE68A !important;
-  border-radius: var(--unimrkt-radius-full) !important;
-  font-weight: 600 !important;
-  font-size: 11px !important;
-  padding: 3px 9px !important;
-}
-
-/* Action Icons inside Tables (Edit, Delete, Duplicate) */
-tbody td button {
-  border-radius: var(--unimrkt-radius) !important;
-  transition: background-color 0.15s ease, color 0.15s ease !important;
-}
-
-tbody td button:hover {
-  background-color: var(--unimrkt-slate-100) !important;
-}
-
-/* --------------------------------------------------------------------------
-   6. FORM FIELDS, INPUTS & DYNAMIC ZONES (Entry Edit Views)
-   -------------------------------------------------------------------------- */
-input[type="text"],
-input[type="email"],
-input[type="password"],
-input[type="number"],
-input[type="search"],
-textarea,
-select {
-  border-radius: var(--unimrkt-radius) !important;
-  border: 1px solid var(--unimrkt-slate-300) !important;
-  background-color: #FFFFFF !important;
-  color: var(--unimrkt-slate-900) !important;
-  font-size: 13.5px !important;
-  padding: 8px 12px !important;
-  transition: border-color 0.18s ease, box-shadow 0.18s ease !important;
-}
-
-input:focus,
-textarea:focus,
-select:focus {
-  border-color: var(--unimrkt-red) !important;
-  box-shadow: 0 0 0 3px var(--unimrkt-red-glow) !important;
-  outline: none !important;
-}
-
-/* Dynamic Zone Component Accordion Cards */
-div:has(> button[aria-expanded]) {
-  border-radius: var(--unimrkt-radius-md) !important;
-  border: 1px solid var(--unimrkt-slate-200) !important;
-  background: #FFFFFF !important;
-  box-shadow: var(--unimrkt-shadow-sm) !important;
-  margin-bottom: 12px !important;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease !important;
-}
-
-div:has(> button[aria-expanded]):hover {
-  border-color: var(--unimrkt-slate-300) !important;
-}
-
-/* Expanded Dynamic Zone Component Accent Line */
-div:has(> button[aria-expanded="true"]) {
-  border-left: 3px solid var(--unimrkt-red) !important;
-  box-shadow: var(--unimrkt-shadow-md) !important;
-}
-
-/* Component Accordion Headers */
-button[aria-expanded] {
-  padding: 12px 16px !important;
-}
-
-/* Drag Handle Grip */
-button:has(> svg path[d*="drag" i]),
-svg:has(> path[d*="drag" i]) {
-  cursor: grab !important;
-}
-
-/* "+ Add a component to Dynamic Zone" Button */
-button:has(> span:contains("Add a component")),
-button:has(> svg path[d*="plus" i]) {
-  border-radius: var(--unimrkt-radius) !important;
-}
-
-/* Repeatable Component Number Badges */
-span[data-variant="primary"] {
-  background-color: var(--unimrkt-red-light) !important;
-  color: var(--unimrkt-red) !important;
-  border-color: var(--unimrkt-red-border) !important;
-  font-weight: 700 !important;
-}
-
-/* --------------------------------------------------------------------------
-   7. ACTION BUTTONS (Save, Publish, Create)
-   -------------------------------------------------------------------------- */
+/* 1. Primary Action Buttons (Save, Publish, Login, Create, Add Asset) */
 button[data-variant="default"],
 button[variant="default"],
 button[type="submit"],
 a[data-variant="default"],
 button[data-testid="save-button"],
 button[data-testid="publish-button"] {
-  background: linear-gradient(180deg, #CE332F 0%, #BE2C28 100%) !important;
-  border: 1px solid var(--unimrkt-red-dark) !important;
+  background-color: var(--unimrkt-primary) !important;
+  border-color: var(--unimrkt-primary) !important;
   color: #FFFFFF !important;
-  font-weight: 600 !important;
-  border-radius: var(--unimrkt-radius) !important;
-  box-shadow: 0 2px 4px rgba(190, 44, 40, 0.2) !important;
-  transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  transition: background-color 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease !important;
 }
 
 button[data-variant="default"]:hover,
@@ -429,50 +54,141 @@ button[type="submit"]:hover,
 a[data-variant="default"]:hover,
 button[data-testid="save-button"]:hover,
 button[data-testid="publish-button"]:hover {
-  background: linear-gradient(180deg, #BE2C28 0%, #A3201D 100%) !important;
-  box-shadow: 0 4px 12px rgba(190, 44, 40, 0.32) !important;
-  transform: translateY(-1px) !important;
+  background-color: var(--unimrkt-primary-hover) !important;
+  border-color: var(--unimrkt-primary-hover) !important;
 }
 
 button[data-variant="default"]:active,
 button[variant="default"]:active,
 button[type="submit"]:active {
-  transform: translateY(0) !important;
-  box-shadow: 0 1px 2px rgba(190, 44, 40, 0.2) !important;
+  background-color: var(--unimrkt-primary-active) !important;
+  border-color: var(--unimrkt-primary-active) !important;
 }
 
-/* --------------------------------------------------------------------------
-   8. MODALS, DIALOGS & DRAWERS
-   -------------------------------------------------------------------------- */
-[role="dialog"] {
-  border-radius: var(--unimrkt-radius-lg) !important;
+/* 2. Navigation & Sidebar Active Links */
+nav a[aria-current="page"],
+nav a[data-active="true"],
+nav a.active {
+  background-color: var(--unimrkt-primary-light) !important;
+  color: var(--unimrkt-primary) !important;
+  border-left: 3px solid var(--unimrkt-primary) !important;
+  font-weight: 600 !important;
+}
+
+nav a[aria-current="page"] svg,
+nav a[data-active="true"] svg,
+nav a.active svg {
+  fill: var(--unimrkt-primary) !important;
+  color: var(--unimrkt-primary) !important;
+}
+
+/* 3. Media Library & Folder Navigation ("sabh folder ke ander") */
+/* Folder Cards */
+[data-testid="folder-card"],
+div[aria-label*="folder" i] {
   border: 1px solid var(--unimrkt-slate-200) !important;
-  box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.25) !important;
-  overflow: hidden !important;
+  border-radius: 8px !important;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease !important;
 }
 
-div:has(> [role="dialog"]) {
-  backdrop-filter: blur(4px) !important;
-  background-color: rgba(15, 23, 42, 0.5) !important;
+[data-testid="folder-card"]:hover,
+div[aria-label*="folder" i]:hover {
+  border-color: var(--unimrkt-primary-border) !important;
+  box-shadow: 0 4px 12px rgba(190, 44, 40, 0.08) !important;
 }
 
-/* Modal Headers */
-[role="dialog"] header {
-  border-bottom: 1px solid var(--unimrkt-slate-200) !important;
-  background-color: var(--unimrkt-slate-50) !important;
+/* Asset Cards */
+[data-testid="asset-card"],
+div[aria-label*="asset" i] {
+  border: 1px solid var(--unimrkt-slate-200) !important;
+  border-radius: 8px !important;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease !important;
+}
+
+[data-testid="asset-card"]:hover,
+div[aria-label*="asset" i]:hover {
+  border-color: var(--unimrkt-primary) !important;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08) !important;
+}
+
+/* Media Library Breadcrumb links */
+nav[aria-label="Breadcrumb"] a:hover,
+nav[aria-label="Breadcrumbs"] a:hover {
+  color: var(--unimrkt-primary) !important;
+}
+
+/* Dropzone & Upload Area */
+[data-testid="assets-dropzone"],
+[data-testid="upload-asset"],
+div[role="button"][tabindex="0"] {
+  transition: border-color 0.2s ease, background-color 0.2s ease !important;
+}
+
+[data-testid="assets-dropzone"]:hover,
+[data-testid="upload-asset"]:hover,
+div[role="button"][tabindex="0"]:hover {
+  border-color: var(--unimrkt-primary) !important;
+  background-color: var(--unimrkt-primary-light) !important;
+}
+
+/* 4. Content Manager Tables */
+table tbody tr:hover {
+  background-color: #FAFCFF !important;
+}
+
+/* Status Badges */
+span[data-variant="success"],
+span:has(> span[title="Published"]) {
+  background: #DCFCE7 !important;
+  color: #15803D !important;
+  border: 1px solid #BBF7D0 !important;
+  border-radius: 9999px !important;
+  font-weight: 600 !important;
+  font-size: 11px !important;
+  padding: 2px 8px !important;
+}
+
+span[data-variant="secondary"],
+span:has(> span[title="Draft"]) {
+  background: #FEF3C7 !important;
+  color: #B45309 !important;
+  border: 1px solid #FDE68A !important;
+  border-radius: 9999px !important;
+  font-weight: 600 !important;
+  font-size: 11px !important;
+  padding: 2px 8px !important;
+}
+
+/* 5. Inputs, Textareas & Focus States */
+input:focus,
+textarea:focus,
+select:focus {
+  border-color: var(--unimrkt-primary) !important;
+  box-shadow: 0 0 0 3px var(--unimrkt-focus-ring) !important;
+  outline: none !important;
 }
 
 /* Checkbox Checked */
 input[type="checkbox"]:checked {
-  background-color: var(--unimrkt-red) !important;
-  border-color: var(--unimrkt-red) !important;
+  background-color: var(--unimrkt-primary) !important;
+  border-color: var(--unimrkt-primary) !important;
 }
 
-/* Focus Ring on interactive elements */
-button:focus-visible,
-input:focus-visible,
-textarea:focus-visible,
-select:focus-visible {
-  outline: 2px solid var(--unimrkt-red) !important;
-  outline-offset: 1px !important;
+/* Text Links */
+a[color="primary600"] {
+  color: var(--unimrkt-primary) !important;
+}
+a[color="primary600"]:hover {
+  color: var(--unimrkt-primary-hover) !important;
+}
+
+/* 6. Dynamic Zones & Repeatable Components */
+div:has(> button[aria-expanded="true"]) {
+  border-left: 3px solid var(--unimrkt-primary) !important;
+}
+
+/* Active Tabs */
+[role="tab"][aria-selected="true"] {
+  color: var(--unimrkt-primary) !important;
+  border-bottom: 2px solid var(--unimrkt-primary) !important;
 }

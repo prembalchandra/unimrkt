@@ -9,9 +9,10 @@ if (!fs.existsSync(backupPath)) {
   console.log('Created backup:', backupPath);
 }
 
+// Always start clean from backup
 let content = fs.readFileSync(backupPath, 'utf8');
 
-// Replace light theme colors
+// Replace light theme colors to Unimrkt Red
 content = content.replace(/buttonPrimary500:"#7b79ff"/g, 'buttonPrimary500:"#cc332f"');
 content = content.replace(/buttonPrimary600:"#4945ff"/g, 'buttonPrimary600:"#be2c28"');
 content = content.replace(/primary100:"#f0f0ff"/g, 'primary100:"#fee2e2"');
@@ -29,16 +30,7 @@ content = content.replace(/primary700:"#7b79ff"/g, 'primary700:"#cc332f"');
 content = content.replace(/rgb\(39, 31, 224\)/g, 'rgb(190, 44, 40)');
 content = content.replace(/rgba\(76, 191, 255, 0.75\)/g, 'rgba(190, 44, 40, 0.4)');
 
-// SVG icons
-content = content.replace(/fill:"#4945FF"/g, 'fill:"#be2c28"');
-content = content.replace(/stroke:"#4945FF"/g, 'stroke:"#be2c28"');
-content = content.replace(/fill:"#F0F0FF"/g, 'fill:"#fee2e2"');
-content = content.replace(/stroke:"#D9D8FF"/g, 'stroke:"#fca5a5"');
-content = content.replace(/fill:"#9593FF"/g, 'fill:"#ef4444"');
-
-// Replace SVG URL encoded colors in logo
-content = content.replace(/%234945FF/g, '%23BE2C28');
-content = content.replace(/%239593FF/g, '%23EF4444');
+// NOTE: We deliberately DO NOT replace logo data URIs (%234945FF) so the official Strapi login logo remains 100% default!
 
 fs.writeFileSync(filePath, content, 'utf8');
-console.log('Successfully patched strapi-2XxV9tDn.js with Unimrkt Crimson Red theme!');
+console.log('Successfully patched strapi-2XxV9tDn.js with Unimrkt Red theme while keeping login logo default!');
